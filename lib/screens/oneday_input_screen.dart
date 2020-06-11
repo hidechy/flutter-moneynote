@@ -4,7 +4,7 @@ import '../db/database.dart';
 import '../main.dart';
 import '../utilities/utility.dart';
 import 'detail_display_screen.dart';
-import 'monthly_display_screen.dart';
+import 'monthly_list_screen.dart';
 
 class OnedayInputScreen extends StatefulWidget {
   final String date;
@@ -156,11 +156,12 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
           Image.asset(
             'assets/image/bg.png',
             fit: BoxFit.cover,
-            color: Colors.black.withOpacity(0.9),
+            color: Colors.black.withOpacity(0.7),
             colorBlendMode: BlendMode.darken,
           ),
           SingleChildScrollView(
             child: Card(
+              color: Colors.black.withOpacity(0.7),
               child: Column(
                 children: <Widget>[
                   SizedBox(
@@ -335,13 +336,13 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   }
 
   /**
-   * 画面遷移（MonthlyDisplayScreen）
+   * 画面遷移（MonthlyListScreen）
    */
   _goMonthlyScreen() {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => MonthlyDisplayScreen(
+        builder: (context) => MonthlyListScreen(
           date: _date,
         ),
       ),

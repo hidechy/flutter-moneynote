@@ -3,15 +3,15 @@ import '../utilities/utility.dart';
 import '../main.dart';
 import 'oneday_input_screen.dart';
 
-class MonthlyDisplayScreen extends StatefulWidget {
+class MonthlyListScreen extends StatefulWidget {
   final String date;
-  MonthlyDisplayScreen({@required this.date});
+  MonthlyListScreen({@required this.date});
 
   @override
-  _MonthlyDisplayScreenState createState() => _MonthlyDisplayScreenState();
+  _MonthlyListScreenState createState() => _MonthlyListScreenState();
 }
 
-class _MonthlyDisplayScreenState extends State<MonthlyDisplayScreen> {
+class _MonthlyListScreenState extends State<MonthlyListScreen> {
   Utility _utility = Utility();
   String year;
   String month;
@@ -156,7 +156,7 @@ class _MonthlyDisplayScreenState extends State<MonthlyDisplayScreen> {
           Image.asset(
             'assets/image/bg.png',
             fit: BoxFit.cover,
-            color: Colors.black.withOpacity(0.9),
+            color: Colors.black.withOpacity(0.7),
             colorBlendMode: BlendMode.darken,
           ),
           _monthlyList()
@@ -180,6 +180,7 @@ class _MonthlyDisplayScreenState extends State<MonthlyDisplayScreen> {
    */
   Widget _listItem(int position) {
     return Card(
+      color: Colors.black.withOpacity(0.7),
       elevation: 10.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -221,7 +222,7 @@ class _MonthlyDisplayScreenState extends State<MonthlyDisplayScreen> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => MonthlyDisplayScreen(
+        builder: (context) => MonthlyListScreen(
           date: prevMonth.toString(),
         ),
       ),
@@ -235,7 +236,7 @@ class _MonthlyDisplayScreenState extends State<MonthlyDisplayScreen> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => MonthlyDisplayScreen(
+        builder: (context) => MonthlyListScreen(
           date: nextMonth.toString(),
         ),
       ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:moneynote/screens/detail_display_screen.dart';
+import 'detail_display_screen.dart';
 import 'package:toast/toast.dart';
 import '../db/database.dart';
 import '../main.dart';
@@ -93,11 +93,12 @@ class _BankInputScreenState extends State<BankInputScreen> {
           Image.asset(
             'assets/image/bg.png',
             fit: BoxFit.cover,
-            color: Colors.black.withOpacity(0.9),
+            color: Colors.black.withOpacity(0.7),
             colorBlendMode: BlendMode.darken,
           ),
           SingleChildScrollView(
             child: Card(
+              color: Colors.black.withOpacity(0.7),
               child: DefaultTextStyle(
                 style: TextStyle(fontSize: 16.0, fontFamily: "Yomogi"),
                 child: Column(

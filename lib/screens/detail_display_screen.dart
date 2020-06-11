@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:moneynote/screens/bank_input_screen.dart';
-import 'package:moneynote/screens/monthly_display_screen.dart';
+import 'package:moneynote/db/database.dart';
+import '../main.dart';
+import 'bank_input_screen.dart';
+import 'monthly_list_screen.dart';
 import '../utilities/utility.dart';
 import 'oneday_input_screen.dart';
-import 'score_display_screen.dart';
+import 'score_list_screen.dart';
 
 class DetailDisplayScreen extends StatefulWidget {
   final String date;
@@ -25,9 +27,6 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   DateTime prevDate;
   DateTime nextDate;
 
-  int _total = 0;
-  int _spend = 0;
-
   String _yen10000 = '0';
   String _yen5000 = '0';
   String _yen2000 = '0';
@@ -46,6 +45,11 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
 
   String _payA = '0';
   String _payB = '0';
+
+  List<Monie> _monieData = List();
+
+  int _total = 0;
+  int _spend = 0;
 
   /**
    * 初期動作
@@ -73,6 +77,77 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
         new DateTime(int.parse(year), int.parse(month), int.parse(day) - 1);
     nextDate =
         new DateTime(int.parse(year), int.parse(month), int.parse(day) + 1);
+
+    ////////////////////////////////////////////////
+    //本日分のレコードを取得
+    _monieData = await database.selectRecord(_date);
+
+    if (_monieData.length > 0) {
+      _yen10000 = _monieData[0].strYen10000;
+      _yen5000 = _monieData[0].strYen5000;
+      _yen2000 = _monieData[0].strYen2000;
+      _yen1000 = _monieData[0].strYen1000;
+      _yen500 = _monieData[0].strYen500;
+      _yen100 = _monieData[0].strYen100;
+      _yen50 = _monieData[0].strYen50;
+      _yen10 = _monieData[0].strYen10;
+      _yen5 = _monieData[0].strYen5;
+      _yen1 = _monieData[0].strYen1;
+
+      _bankA = _monieData[0].strBankA;
+      _bankB = _monieData[0].strBankB;
+      _bankC = _monieData[0].strBankC;
+      _bankD = _monieData[0].strBankD;
+
+      _payA = _monieData[0].strPayA;
+      _payB = _monieData[0].strPayB;
+
+      _utility.makeTotal(_monieData);
+      _total = _utility.total;
+
+      ////////////////////////////////////////////////
+      //昨日分のレコードを取得
+      _utility.makeYMDYData(prevDate.toString(), 0);
+      var yYear = _utility.year;
+      var yMonth = _utility.month;
+      var yDay = _utility.day;
+
+      var _yesterdayData =
+          await database.selectRecord(yYear + "-" + yMonth + "-" + yDay);
+
+      if (_yesterdayData.length > 0) {
+        List<List<String>> _totalValue = List();
+
+        _totalValue.add(['10000', _yesterdayData[0].strYen10000]);
+        _totalValue.add(['5000', _yesterdayData[0].strYen5000]);
+        _totalValue.add(['2000', _yesterdayData[0].strYen2000]);
+        _totalValue.add(['1000', _yesterdayData[0].strYen1000]);
+        _totalValue.add(['500', _yesterdayData[0].strYen500]);
+        _totalValue.add(['100', _yesterdayData[0].strYen100]);
+        _totalValue.add(['50', _yesterdayData[0].strYen50]);
+        _totalValue.add(['10', _yesterdayData[0].strYen10]);
+        _totalValue.add(['5', _yesterdayData[0].strYen5]);
+        _totalValue.add(['1', _yesterdayData[0].strYen1]);
+
+        _totalValue.add(['1', _yesterdayData[0].strBankA]);
+        _totalValue.add(['1', _yesterdayData[0].strBankB]);
+        _totalValue.add(['1', _yesterdayData[0].strBankC]);
+        _totalValue.add(['1', _yesterdayData[0].strBankD]);
+
+        _totalValue.add(['1', _yesterdayData[0].strPayA]);
+        _totalValue.add(['1', _yesterdayData[0].strPayB]);
+
+        var _yesterdayTotal = 0;
+        for (int i = 0; i < _totalValue.length; i++) {
+          _yesterdayTotal +=
+              (int.parse(_totalValue[i][0]) * int.parse(_totalValue[i][1]));
+        }
+
+        _spend = (_yesterdayTotal - _total) * -1;
+      }
+    }
+
+    setState(() {});
   }
 
   /**
@@ -104,7 +179,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
           Image.asset(
             'assets/image/bg.png',
             fit: BoxFit.cover,
-            color: Colors.black.withOpacity(0.9),
+            color: Colors.black.withOpacity(0.7),
             colorBlendMode: BlendMode.darken,
           ),
           DefaultTextStyle(
@@ -112,6 +187,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
             child: Column(
               children: <Widget>[
                 Card(
+                  color: Colors.black.withOpacity(0.7),
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 30.0),
                     child: Column(
@@ -260,12 +336,6 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     ),
                   ),
                 ),
-                Divider(
-                  color: Colors.indigo,
-                  height: 20.0,
-                  indent: 20.0,
-                  endIndent: 20.0,
-                ),
                 Expanded(
                   child: Center(
                     child: IconButton(
@@ -409,13 +479,13 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-   * 画面遷移（ScoreDisplayScreen）
+   * 画面遷移（ScoreListScreen）
    */
   _goScoreDisplayScreen() {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => ScoreDisplayScreen(
+        builder: (context) => ScoreListScreen(
           date: _date,
         ),
       ),
@@ -423,13 +493,13 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-   * 画面遷移（MonthlyDisplayScreen）
+   * 画面遷移（MonthlyListScreen）
    */
   _goMonthlyDisplayScreen() {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => MonthlyDisplayScreen(
+        builder: (context) => MonthlyListScreen(
           date: _date,
         ),
       ),

@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 import '../utilities/utility.dart';
 
-class ScoreDisplayScreen extends StatefulWidget {
+class ScoreListScreen extends StatefulWidget {
   final String date;
-  ScoreDisplayScreen({@required this.date});
+  ScoreListScreen({@required this.date});
 
   @override
-  _ScoreDisplayScreenState createState() => _ScoreDisplayScreenState();
+  _ScoreListScreenState createState() => _ScoreListScreenState();
 }
 
-class _ScoreDisplayScreenState extends State<ScoreDisplayScreen> {
+class _ScoreListScreenState extends State<ScoreListScreen> {
   Utility _utility = Utility();
 
   List<List<String>> _scoreData = List();
@@ -121,7 +121,7 @@ class _ScoreDisplayScreenState extends State<ScoreDisplayScreen> {
           Image.asset(
             'assets/image/bg.png',
             fit: BoxFit.cover,
-            color: Colors.black.withOpacity(0.9),
+            color: Colors.black.withOpacity(0.7),
             colorBlendMode: BlendMode.darken,
           ),
           _scoreList()
@@ -145,6 +145,7 @@ class _ScoreDisplayScreenState extends State<ScoreDisplayScreen> {
    */
   Widget _listItem(int position) {
     return Card(
+      color: Colors.black.withOpacity(0.7),
       elevation: 10.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
