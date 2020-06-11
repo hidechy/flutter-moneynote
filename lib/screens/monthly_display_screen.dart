@@ -1,0 +1,258 @@
+import 'package:flutter/material.dart';
+import '../utilities/utility.dart';
+import '../main.dart';
+import 'oneday_input_screen.dart';
+
+class MonthlyDisplayScreen extends StatefulWidget {
+  final String date;
+  MonthlyDisplayScreen({@required this.date});
+
+  @override
+  _MonthlyDisplayScreenState createState() => _MonthlyDisplayScreenState();
+}
+
+class _MonthlyDisplayScreenState extends State<MonthlyDisplayScreen> {
+  Utility _utility = Utility();
+  String year;
+  String month;
+  String day;
+  String _month;
+  String youbiStr;
+
+  DateTime prevMonth;
+  DateTime nextMonth;
+
+  String _prevMonthEndDateTime;
+  String _prevMonthEndDate;
+  String _thisMonthEndDateTime;
+  String _thisMonthEndDay;
+
+  List<List<String>> _monthData = List();
+
+  /**
+   * 初期動作
+   */
+  @override
+  void initState() {
+    super.initState();
+
+    _makeDefaultDisplayData();
+  }
+
+  /**
+   * 初期データ作成
+   */
+  _makeDefaultDisplayData() async {
+    _utility.makeYMDYData(widget.date, 0);
+    year = _utility.year;
+    month = _utility.month;
+    day = _utility.day;
+
+    _month = year + "-" + month;
+
+    youbiStr = _utility.youbiStr;
+
+    prevMonth = new DateTime(int.parse(year), int.parse(month) - 1, 1);
+    nextMonth = new DateTime(int.parse(year), int.parse(month) + 1, 1);
+
+    //--------------------------------------//
+    _utility.makeMonthEnd(int.parse(year), int.parse(month), 0);
+    _prevMonthEndDateTime = _utility.monthEndDateTime;
+
+    _utility.makeYMDYData(_prevMonthEndDateTime, 0);
+    _prevMonthEndDate =
+        _utility.year + "-" + _utility.month + "-" + _utility.day;
+
+    _utility.makeMonthEnd(int.parse(year), int.parse(month) + 1, 0);
+    _thisMonthEndDateTime = _utility.monthEndDateTime;
+
+    _utility.makeYMDYData(_thisMonthEndDateTime, 0);
+    _thisMonthEndDay = _utility.day;
+
+    ///////////////////////////
+    var _prevMonthEndTotal = 0;
+    var val = await database.selectRecord(_prevMonthEndDate);
+    if (val.length > 0) {
+      _utility.makeTotal(val);
+      _prevMonthEndTotal = _utility.total;
+    }
+    ///////////////////////////
+
+    var _yesterdaySpend = 0;
+    _monthData = List();
+    for (int i = 1; i <= int.parse(_thisMonthEndDay); i++) {
+      var _thisDay = year + "-" + month + "-" + i.toString().padLeft(2, "0");
+
+      var _thisDayTotal = 0;
+      var _monieData = await database.selectRecord(_thisDay);
+
+      if (_monieData.length > 0) {
+        List<List<String>> _totalValue = List();
+        _totalValue.add(['10000', _monieData[0].strYen10000]);
+        _totalValue.add(['5000', _monieData[0].strYen5000]);
+        _totalValue.add(['2000', _monieData[0].strYen2000]);
+        _totalValue.add(['1000', _monieData[0].strYen1000]);
+        _totalValue.add(['500', _monieData[0].strYen500]);
+        _totalValue.add(['100', _monieData[0].strYen100]);
+        _totalValue.add(['50', _monieData[0].strYen50]);
+        _totalValue.add(['10', _monieData[0].strYen10]);
+        _totalValue.add(['5', _monieData[0].strYen5]);
+        _totalValue.add(['1', _monieData[0].strYen1]);
+
+        _totalValue.add(['1', _monieData[0].strBankA]);
+        _totalValue.add(['1', _monieData[0].strBankB]);
+        _totalValue.add(['1', _monieData[0].strBankC]);
+        _totalValue.add(['1', _monieData[0].strBankD]);
+
+        _totalValue.add(['1', _monieData[0].strPayA]);
+        _totalValue.add(['1', _monieData[0].strPayB]);
+
+        for (int i = 0; i < _totalValue.length; i++) {
+          _thisDayTotal +=
+              (int.parse(_totalValue[i][0]) * int.parse(_totalValue[i][1]));
+        }
+      }
+
+      var onedaySpend = (i == 1)
+          ? (_prevMonthEndTotal - _thisDayTotal) * -1
+          : (_yesterdaySpend - _thisDayTotal) * -1;
+
+      _monthData
+          .add([_thisDay, _thisDayTotal.toString(), onedaySpend.toString()]);
+      _yesterdaySpend = _thisDayTotal;
+    }
+
+    setState(() {});
+  }
+
+  /**
+   * 画面描画
+   */
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          _month,
+          style: TextStyle(fontFamily: "Yomogi"),
+        ),
+        centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.skip_previous),
+            tooltip: '前日',
+            onPressed: () => _goPrevMonth(context),
+          ),
+          IconButton(
+            icon: Icon(Icons.skip_next),
+            tooltip: '翌日',
+            onPressed: () => _goNextMonth(context),
+          ),
+        ],
+      ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          Image.asset(
+            'assets/image/bg.png',
+            fit: BoxFit.cover,
+            color: Colors.black.withOpacity(0.9),
+            colorBlendMode: BlendMode.darken,
+          ),
+          _monthlyList()
+        ],
+      ),
+    );
+  }
+
+  /**
+   * リスト表示
+   */
+  _monthlyList() {
+    return ListView.builder(
+      itemCount: _monthData.length,
+      itemBuilder: (context, int position) => _listItem(position),
+    );
+  }
+
+  /**
+   * リストアイテム表示
+   */
+  Widget _listItem(int position) {
+    return Card(
+      elevation: 10.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: ListTile(
+        title: Text(
+          _getDisplayListText(_monthData, position),
+          style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Yomogi',
+            fontSize: 12.0,
+          ),
+        ),
+        onLongPress: () => _goOnedayInputScreen(position),
+      ),
+    );
+  }
+
+  /**
+   * リストテキスト表示
+   */
+  _getDisplayListText(List _monthData, int position) {
+    _utility.makeYMDYData(_monthData[position][0], 0);
+    youbiStr = _utility.youbiStr;
+
+    return _monthData[position][0] +
+        "（" +
+        youbiStr +
+        "）　" +
+        _monthData[position][1] +
+        "　" +
+        _monthData[position][2];
+  }
+
+  /**
+   * 画面遷移（前月）
+   */
+  _goPrevMonth(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MonthlyDisplayScreen(
+          date: prevMonth.toString(),
+        ),
+      ),
+    );
+  }
+
+  /**
+   * 画面遷移（翌月）
+   */
+  _goNextMonth(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MonthlyDisplayScreen(
+          date: nextMonth.toString(),
+        ),
+      ),
+    );
+  }
+
+  /**
+   * 画面遷移（OnedayInputScreen）
+   */
+  _goOnedayInputScreen(int position) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => OnedayInputScreen(
+          date: _monthData[position][0],
+        ),
+      ),
+    );
+  }
+}
