@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 import '../db/database.dart';
@@ -161,7 +162,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
           ),
           SingleChildScrollView(
             child: Card(
-              color: Colors.black.withOpacity(0.7),
+              color: Colors.black.withOpacity(0.65),
               child: Column(
                 children: <Widget>[
                   const SizedBox(
@@ -170,95 +171,63 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
                   Table(
                     children: [
                       TableRow(children: [
-                        _getDisplayYen('10000'),
-                        _getDisplayYen('5000'),
-                        _getDisplayYen('2000'),
-                        _getDisplayYen('1000'),
+                        _getTextField('10000', _teCont10000),
+                        _getTextField('5000', _teCont5000),
+                        _getTextField('2000', _teCont2000),
+                        _getTextField('1000', _teCont1000),
                       ]),
                       TableRow(children: [
-                        _getTextField(_teCont10000),
-                        _getTextField(_teCont5000),
-                        _getTextField(_teCont2000),
-                        _getTextField(_teCont1000),
+                        _getTextField('500', _teCont500),
+                        _getTextField('100', _teCont100),
+                        _getTextField('50', _teCont50),
+                        _getTextField('10', _teCont10),
                       ]),
                       TableRow(children: [
-                        _getDisplayYen('500'),
-                        _getDisplayYen('100'),
-                        _getDisplayYen('50'),
-                        _getDisplayYen('10'),
-                      ]),
-                      TableRow(children: [
-                        _getTextField(_teCont500),
-                        _getTextField(_teCont100),
-                        _getTextField(_teCont50),
-                        _getTextField(_teCont10),
-                      ]),
-                      TableRow(children: [
-                        _getDisplayYen('5'),
-                        _getDisplayYen('1'),
+                        _getTextField('5', _teCont5),
+                        _getTextField('1', _teCont1),
                         const Align(),
                         const Align(),
                       ]),
                       TableRow(children: [
-                        _getTextField(_teCont5),
-                        _getTextField(_teCont1),
-                        const Align(),
-                        const Align(),
+                        _getTextField('BankA', _teContBankA),
+                        _getTextField('BankB', _teContBankB),
+                        _getTextField('BankC', _teContBankC),
+                        _getTextField('BankD', _teContBankD),
                       ]),
                       TableRow(children: [
-                        _getDisplayYen('BankA'),
-                        _getDisplayYen('BankB'),
-                        _getDisplayYen('BankC'),
-                        _getDisplayYen('BankD'),
-                      ]),
-                      TableRow(children: [
-                        _getTextField(_teContBankA),
-                        _getTextField(_teContBankB),
-                        _getTextField(_teContBankC),
-                        _getTextField(_teContBankD),
-                      ]),
-                      TableRow(children: [
-                        _getDisplayYen('PayA'),
-                        _getDisplayYen('PayB'),
+                        _getTextField('PayA', _teContPayA),
+                        _getTextField('PayB', _teContPayB),
                         const Align(),
                         const Align(),
                       ]),
-                      TableRow(children: [
-                        _getTextField(_teContPayA),
-                        _getTextField(_teContPayB),
-                        const Align(),
-                        const Align(),
-                      ]),
-                      TableRow(
-                        children: [
-                          Align(
-                            child: RaisedButton(
-                              child: const Text('list'),
-                              color: Colors.green,
-                              onPressed: () => _goMonthlyScreen(),
-                            ),
-                          ),
-                          Align(
-                            child: RaisedButton(
-                              child: const Text('detail'),
-                              color: Colors.green,
-                              onPressed: () => _goDetailScreen(),
-                            ),
-                          ),
-                          Align(
-                            child: RaisedButton(
-                              child: const Text('jump'),
-                              color: Colors.green,
-                              onPressed: () => _showDatepicker(context),
-                            ),
-                          ),
-                          Align(
-                            child: RaisedButton(
-                              child: const Text('input'),
-                              onPressed: () => _insertRecord(context),
-                            ),
-                          ),
-                        ],
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.list),
+                        tooltip: 'list',
+                        onPressed: () => _goMonthlyScreen(),
+                        color: Colors.blueAccent,
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.details),
+                        tooltip: 'detail',
+                        onPressed: () => _goDetailScreen(),
+                        color: Colors.blueAccent,
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.calendar_today),
+                        tooltip: 'jump',
+                        onPressed: () => _showDatepicker(context),
+                        color: Colors.blueAccent,
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.input),
+                        tooltip: 'input',
+                        onPressed: () => _insertRecord(context),
+                        color: Colors.greenAccent,
                       ),
                     ],
                   ),
@@ -272,34 +241,16 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   }
 
   /**
-   * テキスト部分表示
-   */
-  Widget _getDisplayYen(String yen) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Text(
-        yen,
-        style: TextStyle(
-          color: Colors.yellowAccent,
-        ),
-      ),
-    );
-  }
-
-  /**
    * テキストフィールド部分表示
    */
-  Widget _getTextField(TextEditingController con) {
+  Widget _getTextField(String yen, TextEditingController con) {
     return Padding(
-      padding: const EdgeInsets.only(
-        left: 8.0,
-        right: 8.0,
-        bottom: 8.0,
-      ),
+      padding: const EdgeInsets.all(8.0),
       child: TextField(
         keyboardType: TextInputType.number,
         controller: con,
         textAlign: TextAlign.end,
+        decoration: InputDecoration(labelText: yen),
         onChanged: (value) {
           setState(
             () {

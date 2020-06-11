@@ -98,7 +98,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
           ),
           SingleChildScrollView(
             child: Card(
-              color: Colors.black.withOpacity(0.7),
+              color: Colors.black.withOpacity(0.65),
               child: DefaultTextStyle(
                 style: const TextStyle(fontSize: 16.0, fontFamily: "Yomogi"),
                 child: Column(

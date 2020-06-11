@@ -187,7 +187,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
             child: Column(
               children: <Widget>[
                 Card(
-                  color: Colors.black.withOpacity(0.7),
+                  color: Colors.black.withOpacity(0.65),
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 30.0),
                     child: Column(
