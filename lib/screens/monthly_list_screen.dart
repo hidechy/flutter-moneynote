@@ -134,17 +134,17 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
       appBar: AppBar(
         title: Text(
           _month,
-          style: TextStyle(fontFamily: "Yomogi"),
+          style: const TextStyle(fontFamily: "Yomogi"),
         ),
         centerTitle: true,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.skip_previous),
+            icon: const Icon(Icons.skip_previous),
             tooltip: '前日',
             onPressed: () => _goPrevMonth(context),
           ),
           IconButton(
-            icon: Icon(Icons.skip_next),
+            icon: const Icon(Icons.skip_next),
             tooltip: '翌日',
             onPressed: () => _goNextMonth(context),
           ),
@@ -188,7 +188,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
       child: ListTile(
         title: Text(
           _getDisplayListText(_monthData, position),
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontFamily: 'Yomogi',
             fontSize: 12.0,

@@ -134,17 +134,17 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
       appBar: AppBar(
         title: Text(
           _date + '(' + youbiStr + ')',
-          style: TextStyle(fontFamily: "Yomogi"),
+          style: const TextStyle(fontFamily: "Yomogi"),
         ),
         centerTitle: true,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.skip_previous),
+            icon: const Icon(Icons.skip_previous),
             tooltip: '前日',
             onPressed: () => _goPrevDate(context),
           ),
           IconButton(
-            icon: Icon(Icons.skip_next),
+            icon: const Icon(Icons.skip_next),
             tooltip: '翌日',
             onPressed: () => _goNextDate(context),
           ),
@@ -164,7 +164,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
               color: Colors.black.withOpacity(0.7),
               child: Column(
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     height: 10.0,
                   ),
                   Table(
@@ -196,14 +196,14 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
                       TableRow(children: [
                         _getDisplayYen('5'),
                         _getDisplayYen('1'),
-                        Align(),
-                        Align(),
+                        const Align(),
+                        const Align(),
                       ]),
                       TableRow(children: [
                         _getTextField(_teCont5),
                         _getTextField(_teCont1),
-                        Align(),
-                        Align(),
+                        const Align(),
+                        const Align(),
                       ]),
                       TableRow(children: [
                         _getDisplayYen('BankA'),
@@ -220,41 +220,41 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
                       TableRow(children: [
                         _getDisplayYen('PayA'),
                         _getDisplayYen('PayB'),
-                        Align(),
-                        Align(),
+                        const Align(),
+                        const Align(),
                       ]),
                       TableRow(children: [
                         _getTextField(_teContPayA),
                         _getTextField(_teContPayB),
-                        Align(),
-                        Align(),
+                        const Align(),
+                        const Align(),
                       ]),
                       TableRow(
                         children: [
                           Align(
                             child: RaisedButton(
-                              child: Text('list'),
+                              child: const Text('list'),
                               color: Colors.green,
                               onPressed: () => _goMonthlyScreen(),
                             ),
                           ),
                           Align(
                             child: RaisedButton(
-                              child: Text('detail'),
+                              child: const Text('detail'),
                               color: Colors.green,
                               onPressed: () => _goDetailScreen(),
                             ),
                           ),
                           Align(
                             child: RaisedButton(
-                              child: Text('jump'),
+                              child: const Text('jump'),
                               color: Colors.green,
                               onPressed: () => _showDatepicker(context),
                             ),
                           ),
                           Align(
                             child: RaisedButton(
-                              child: Text('input'),
+                              child: const Text('input'),
                               onPressed: () => _insertRecord(context),
                             ),
                           ),
@@ -291,7 +291,11 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
    */
   Widget _getTextField(TextEditingController con) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(
+        left: 8.0,
+        right: 8.0,
+        bottom: 8.0,
+      ),
       child: TextField(
         keyboardType: TextInputType.number,
         controller: con,

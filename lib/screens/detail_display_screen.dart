@@ -157,18 +157,18 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           '所持金額',
           style: TextStyle(fontFamily: "Yomogi"),
         ),
         centerTitle: true,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.refresh),
+            icon: const Icon(Icons.refresh),
             onPressed: () => _goDetailScreen(),
           ),
           IconButton(
-            icon: Icon(Icons.calendar_today),
+            icon: const Icon(Icons.calendar_today),
             onPressed: () => _showDatepicker(context),
           ),
         ],
@@ -183,7 +183,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
             colorBlendMode: BlendMode.darken,
           ),
           DefaultTextStyle(
-            style: TextStyle(fontSize: 16.0, fontFamily: "Yomogi"),
+            style: const TextStyle(fontSize: 16.0, fontFamily: "Yomogi"),
             child: Column(
               children: <Widget>[
                 Card(
@@ -198,10 +198,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                             FlatButton(
                               child: Row(
                                 children: <Widget>[
-                                  Icon(Icons.skip_previous),
-                                  Text(
-                                    '前日',
-                                  ),
+                                  const Icon(Icons.skip_previous),
+                                  const Text('前日'),
                                 ],
                               ),
                               onPressed: () => _goPrevDate(context),
@@ -212,17 +210,15 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                             FlatButton(
                               child: Row(
                                 children: <Widget>[
-                                  Text(
-                                    '翌日',
-                                  ),
-                                  Icon(Icons.skip_next),
+                                  const Text('翌日'),
+                                  const Icon(Icons.skip_next),
                                 ],
                               ),
                               onPressed: () => _goNextDate(context),
                             )
                           ],
                         ),
-                        Divider(
+                        const Divider(
                           color: Colors.indigo,
                           height: 20.0,
                           indent: 20.0,
@@ -233,16 +229,16 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                             TableRow(children: [
                               _getTextDispWidget('total'),
                               _getTextDispWidget(_total.toString()),
-                              Align(),
+                              const Align(),
                             ]),
                             TableRow(children: [
                               _getTextDispWidget('spend'),
                               _getTextDispWidget(_spend.toString()),
-                              Align(),
+                              const Align(),
                             ]),
                           ],
                         ),
-                        Divider(
+                        const Divider(
                           color: Colors.indigo,
                           height: 20.0,
                           indent: 20.0,
@@ -282,7 +278,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                             ]),
                           ],
                         ),
-                        Divider(
+                        const Divider(
                           color: Colors.indigo,
                           height: 20.0,
                           indent: 20.0,
@@ -293,26 +289,26 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                             TableRow(children: [
                               _getTextDispWidget('bank_a'),
                               _getTextDispWidget(_bankA),
-                              Align(),
+                              const Align(),
                             ]),
                             TableRow(children: [
                               _getTextDispWidget('bank_b'),
                               _getTextDispWidget(_bankB),
-                              Align(),
+                              const Align(),
                             ]),
                             TableRow(children: [
                               _getTextDispWidget('bank_c'),
                               _getTextDispWidget(_bankC),
-                              Align(),
+                              const Align(),
                             ]),
                             TableRow(children: [
                               _getTextDispWidget('bank_d'),
                               _getTextDispWidget(_bankD),
-                              Align(),
+                              const Align(),
                             ]),
                           ],
                         ),
-                        Divider(
+                        const Divider(
                           color: Colors.indigo,
                           height: 20.0,
                           indent: 20.0,
@@ -323,12 +319,12 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                             TableRow(children: [
                               _getTextDispWidget('pay_a'),
                               _getTextDispWidget(_payA),
-                              Align(),
+                              const Align(),
                             ]),
                             TableRow(children: [
                               _getTextDispWidget('pay_b'),
                               _getTextDispWidget(_payB),
-                              Align(),
+                              const Align(),
                             ]),
                           ],
                         ),
@@ -339,7 +335,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                 Expanded(
                   child: Center(
                     child: IconButton(
-                      icon: Icon(Icons.keyboard_arrow_up),
+                      icon: const Icon(Icons.keyboard_arrow_up),
                       tooltip: 'menu',
                       color: Colors.blue,
                       onPressed: () => _showUnderMenu(),
@@ -419,28 +415,28 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              leading: Icon(Icons.trending_up),
-              title: Text('Score'),
+              leading: const Icon(Icons.trending_up),
+              title: const Text('Score'),
               onTap: () => _goScoreDisplayScreen(),
             ),
             ListTile(
-              leading: Icon(Icons.list),
-              title: Text('Monthly'),
+              leading: const Icon(Icons.list),
+              title: const Text('Monthly'),
               onTap: () => _goMonthlyDisplayScreen(),
             ),
             Container(
               color: Colors.grey[900],
               child: ListTile(
-                leading: Icon(Icons.input),
-                title: Text('Oneday Input'),
+                leading: const Icon(Icons.input),
+                title: const Text('Oneday Input'),
                 onTap: () => _goOnedayInputScreen(),
               ),
             ),
             Container(
               color: Colors.grey[900],
               child: ListTile(
-                leading: Icon(Icons.business),
-                title: Text('Bank Input'),
+                leading: const Icon(Icons.business),
+                title: const Text('Bank Input'),
                 onTap: () => _goBankInputScreen(),
               ),
             ),

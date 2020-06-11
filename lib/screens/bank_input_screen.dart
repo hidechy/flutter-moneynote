@@ -83,7 +83,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
       appBar: AppBar(
         title: Text(
           '${_date}',
-          style: TextStyle(fontFamily: "Yomogi"),
+          style: const TextStyle(fontFamily: "Yomogi"),
         ),
         centerTitle: true,
       ),
@@ -100,7 +100,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
             child: Card(
               color: Colors.black.withOpacity(0.7),
               child: DefaultTextStyle(
-                style: TextStyle(fontSize: 16.0, fontFamily: "Yomogi"),
+                style: const TextStyle(fontSize: 16.0, fontFamily: "Yomogi"),
                 child: Column(
                   children: <Widget>[
                     Table(
@@ -113,7 +113,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
                         _displayBankRecord('PayB', _payB),
                       ],
                     ),
-                    Divider(
+                    const Divider(
                       color: Colors.indigo,
                       height: 20.0,
                       indent: 20.0,
@@ -126,7 +126,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
                           Expanded(
                             flex: 1,
                             child: IconButton(
-                              icon: Icon(Icons.calendar_today),
+                              icon: const Icon(Icons.calendar_today),
                               onPressed: () => _showDatepicker(context),
                             ),
                           ),
@@ -153,7 +153,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         RaisedButton(
-                          child: Text('Update'),
+                          child: const Text('Update'),
                           onPressed: () => _bankDataUpdate(),
                         ),
                         Checkbox(
@@ -164,12 +164,12 @@ class _BankInputScreenState extends State<BankInputScreen> {
                             });
                           },
                         ),
-                        Text('Continue'),
-                        SizedBox(
+                        const Text('Continue'),
+                        const SizedBox(
                           width: 20.0,
                         ),
                         IconButton(
-                          icon: Icon(Icons.star),
+                          icon: const Icon(Icons.star),
                           onPressed: () => _goDetailScreen(),
                           color: Colors.blue,
                         ),
@@ -203,7 +203,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
         padding: const EdgeInsets.symmetric(vertical: 15.0),
         child: Text(_bankValue),
       ),
-      Align(),
+      const Align(),
     ]);
   }
 
