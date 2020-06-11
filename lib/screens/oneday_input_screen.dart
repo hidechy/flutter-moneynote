@@ -206,25 +206,25 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       IconButton(
-                        icon: Icon(Icons.list),
+                        icon: const Icon(Icons.list),
                         tooltip: 'list',
                         onPressed: () => _goMonthlyScreen(),
                         color: Colors.blueAccent,
                       ),
                       IconButton(
-                        icon: Icon(Icons.details),
+                        icon: const Icon(Icons.details),
                         tooltip: 'detail',
                         onPressed: () => _goDetailScreen(),
                         color: Colors.blueAccent,
                       ),
                       IconButton(
-                        icon: Icon(Icons.calendar_today),
+                        icon: const Icon(Icons.calendar_today),
                         tooltip: 'jump',
                         onPressed: () => _showDatepicker(context),
                         color: Colors.blueAccent,
                       ),
                       IconButton(
-                        icon: Icon(Icons.input),
+                        icon: const Icon(Icons.input),
                         tooltip: 'input',
                         onPressed: () => _insertRecord(context),
                         color: Colors.greenAccent,

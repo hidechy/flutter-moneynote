@@ -416,12 +416,12 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
           children: <Widget>[
             ListTile(
               leading: const Icon(Icons.trending_up),
-              title: const Text('Score'),
+              title: const Text('Score List'),
               onTap: () => _goScoreDisplayScreen(),
             ),
             ListTile(
               leading: const Icon(Icons.list),
-              title: const Text('Monthly'),
+              title: const Text('Monthly List'),
               onTap: () => _goMonthlyDisplayScreen(),
             ),
             Container(
