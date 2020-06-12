@@ -206,6 +206,12 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       IconButton(
+                        icon: const Icon(Icons.content_copy),
+                        tooltip: 'copy',
+                        onPressed: () => _dataCopy(),
+                        color: Colors.blueAccent,
+                      ),
+                      IconButton(
                         icon: const Icon(Icons.list),
                         tooltip: 'list',
                         onPressed: () => _goMonthlyScreen(),
@@ -260,6 +266,42 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
         },
       ),
     );
+  }
+
+  /**
+   * 前日データのコピー
+   */
+  _dataCopy() async {
+    _utility.makeYMDYData(prevDate.toString(), 0);
+    year = _utility.year;
+    month = _utility.month;
+    day = _utility.day;
+    var _yesterdayDate = year + "-" + month + "-" + day;
+
+    //データベースのレコードを取得
+    _monieData = await database.selectRecord(_yesterdayDate);
+    if (_monieData.length > 0) {
+      _teCont10000 = new TextEditingController(text: _monieData[0].strYen10000);
+      _teCont5000 = new TextEditingController(text: _monieData[0].strYen5000);
+      _teCont2000 = new TextEditingController(text: _monieData[0].strYen2000);
+      _teCont1000 = new TextEditingController(text: _monieData[0].strYen1000);
+      _teCont500 = new TextEditingController(text: _monieData[0].strYen500);
+      _teCont100 = new TextEditingController(text: _monieData[0].strYen100);
+      _teCont50 = new TextEditingController(text: _monieData[0].strYen50);
+      _teCont10 = new TextEditingController(text: _monieData[0].strYen10);
+      _teCont5 = new TextEditingController(text: _monieData[0].strYen5);
+      _teCont1 = new TextEditingController(text: _monieData[0].strYen1);
+
+      _teContBankA = new TextEditingController(text: _monieData[0].strBankA);
+      _teContBankB = new TextEditingController(text: _monieData[0].strBankB);
+      _teContBankC = new TextEditingController(text: _monieData[0].strBankC);
+      _teContBankD = new TextEditingController(text: _monieData[0].strBankD);
+
+      _teContPayA = new TextEditingController(text: _monieData[0].strPayA);
+      _teContPayB = new TextEditingController(text: _monieData[0].strPayB);
+    }
+
+    setState(() {});
   }
 
   /**
