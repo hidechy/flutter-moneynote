@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import '../utilities/utility.dart';
 import '../main.dart';
+import 'detail_display_screen.dart';
 import 'oneday_input_screen.dart';
 
 class MonthlyListScreen extends StatefulWidget {
@@ -179,22 +181,42 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
    * リストアイテム表示
    */
   Widget _listItem(int position) {
-    return Card(
-      color: Colors.black.withOpacity(0.7),
-      elevation: 10.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: ListTile(
-        title: Text(
-          _getDisplayListText(_monthData, position),
-          style: const TextStyle(
-            color: Colors.white,
-            fontFamily: 'Yomogi',
-            fontSize: 12.0,
+    return InkWell(
+      child: Slidable(
+        actionPane: SlidableDrawerActionPane(),
+        actionExtentRatio: 0.15,
+        child: Card(
+          color: Colors.black.withOpacity(0.7),
+          elevation: 10.0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: ListTile(
+            title: Text(
+              _getDisplayListText(_monthData, position),
+              style: const TextStyle(
+                color: Colors.white,
+                fontFamily: 'Yomogi',
+                fontSize: 12.0,
+              ),
+            ),
           ),
         ),
-        onLongPress: () => _goOnedayInputScreen(position),
+        //actions: <Widget>[],
+        secondaryActions: <Widget>[
+          IconSlideAction(
+            color: Colors.black.withOpacity(0.7),
+            foregroundColor: Colors.greenAccent,
+            icon: Icons.details,
+            onTap: () => _goDetailScreen(position),
+          ),
+          IconSlideAction(
+            color: Colors.black.withOpacity(0.7),
+            foregroundColor: Colors.greenAccent,
+            icon: Icons.input,
+            onTap: () => _goOnedayInputScreen(position),
+          ),
+        ],
       ),
     );
   }
@@ -251,6 +273,20 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => OnedayInputScreen(
+          date: _monthData[position][0],
+        ),
+      ),
+    );
+  }
+
+  /**
+   * 画面遷移（DetailDisplayScreen）
+   */
+  _goDetailScreen(int position) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DetailDisplayScreen(
           date: _monthData[position][0],
         ),
       ),
