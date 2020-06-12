@@ -183,7 +183,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   Widget _listItem(int position) {
     return InkWell(
       child: Slidable(
-        actionPane: SlidableDrawerActionPane(),
+        actionPane: const SlidableDrawerActionPane(),
         actionExtentRatio: 0.15,
         child: Card(
           color: Colors.black.withOpacity(0.7),
@@ -193,7 +193,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
           ),
           child: ListTile(
             title: Text(
-              _getDisplayListText(_monthData, position),
+              _getDisplayListText(position),
               style: const TextStyle(
                 color: Colors.white,
                 fontFamily: 'Yomogi',
@@ -206,13 +206,13 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
         secondaryActions: <Widget>[
           IconSlideAction(
             color: Colors.black.withOpacity(0.7),
-            foregroundColor: Colors.greenAccent,
+            foregroundColor: Colors.blueAccent,
             icon: Icons.details,
             onTap: () => _goDetailScreen(position),
           ),
           IconSlideAction(
             color: Colors.black.withOpacity(0.7),
-            foregroundColor: Colors.greenAccent,
+            foregroundColor: Colors.blueAccent,
             icon: Icons.input,
             onTap: () => _goOnedayInputScreen(position),
           ),
@@ -224,7 +224,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   /**
    * リストテキスト表示
    */
-  _getDisplayListText(List _monthData, int position) {
+  _getDisplayListText(int position) {
     _utility.makeYMDYData(_monthData[position][0], 0);
     youbiStr = _utility.youbiStr;
 

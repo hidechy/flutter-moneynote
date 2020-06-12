@@ -166,10 +166,12 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () => _goDetailScreen(),
+            color: Colors.blueAccent,
           ),
           IconButton(
             icon: const Icon(Icons.calendar_today),
             onPressed: () => _showDatepicker(context),
+            color: Colors.blueAccent,
           ),
         ],
       ),

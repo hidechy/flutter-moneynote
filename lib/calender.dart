@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel;
 import 'package:flutter_calendar_carousel/classes/event.dart';
+import 'screens/monthly_list_screen.dart';
+import 'screens/score_list_screen.dart';
+import 'utilities/utility.dart';
 import 'screens/detail_display_screen.dart';
 
 class Calender extends StatefulWidget {
@@ -14,6 +17,14 @@ class Calender extends StatefulWidget {
 class _CalenderState extends State<Calender> {
   DateTime _currentDate = DateTime.now();
 
+  Utility _utility = Utility();
+  String year;
+  String month;
+  String day;
+  String youbiStr;
+
+  String _date;
+
   /**
    * 画面描画
    */
@@ -21,8 +32,22 @@ class _CalenderState extends State<Calender> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        title: Text("money note"),
+        title: const Text("money note"),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.trending_up),
+            tooltip: 'score',
+            onPressed: () => _goScoreDisplayScreen(),
+            color: Colors.blueAccent,
+          ),
+          IconButton(
+            icon: const Icon(Icons.list),
+            tooltip: 'list',
+            onPressed: () => _goMonthlyScreen(),
+            color: Colors.blueAccent,
+          ),
+        ],
       ),
       body: Stack(
         fit: StackFit.expand,
@@ -91,6 +116,46 @@ class _CalenderState extends State<Calender> {
       MaterialPageRoute(
         builder: (context) => DetailDisplayScreen(
           date: _currentDate.toString(),
+        ),
+      ),
+    );
+  }
+
+  /**
+   * 画面遷移（ScoreListScreen）
+   */
+  _goScoreDisplayScreen() {
+    _utility.makeYMDYData(_currentDate.toString(), 0);
+    year = _utility.year;
+    month = _utility.month;
+    day = _utility.day;
+    _date = year + "-" + month + "-" + day;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ScoreListScreen(
+          date: _date,
+        ),
+      ),
+    );
+  }
+
+  /**
+   * 画面遷移（MonthlyListScreen）
+   */
+  _goMonthlyScreen() {
+    _utility.makeYMDYData(_currentDate.toString(), 0);
+    year = _utility.year;
+    month = _utility.month;
+    day = _utility.day;
+    _date = year + "-" + month + "-" + day;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MonthlyListScreen(
+          date: _date,
         ),
       ),
     );
