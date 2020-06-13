@@ -145,7 +145,7 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
    */
   Widget _listItem(int position) {
     return Card(
-      color: Colors.black.withOpacity(0.7),
+      color: Colors.black.withOpacity(0.3),
       elevation: 10.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),

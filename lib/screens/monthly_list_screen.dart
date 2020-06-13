@@ -186,7 +186,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
         actionPane: const SlidableDrawerActionPane(),
         actionExtentRatio: 0.15,
         child: Card(
-          color: Colors.black.withOpacity(0.7),
+          color: getBgColor(position),
           elevation: 10.0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
@@ -200,18 +200,19 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
                 fontSize: 12.0,
               ),
             ),
+            onLongPress: () => _goOnedayInputScreen(position),
           ),
         ),
         //actions: <Widget>[],
         secondaryActions: <Widget>[
           IconSlideAction(
-            color: Colors.black.withOpacity(0.7),
+            color: getBgColor(position),
             foregroundColor: Colors.blueAccent,
             icon: Icons.details,
             onTap: () => _goDetailScreen(position),
           ),
           IconSlideAction(
-            color: Colors.black.withOpacity(0.7),
+            color: getBgColor(position),
             foregroundColor: Colors.blueAccent,
             icon: Icons.input,
             onTap: () => _goOnedayInputScreen(position),
@@ -219,6 +220,26 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
         ],
       ),
     );
+  }
+
+  /**
+   * 背景色取得
+   */
+  getBgColor(int position) {
+    _utility.makeYMDYData(_monthData[position][0], 0);
+    switch (_utility.youbiNo) {
+      case 0:
+        return Colors.redAccent[700].withOpacity(0.3);
+        break;
+
+      case 6:
+        return Colors.blueAccent[700].withOpacity(0.3);
+        break;
+
+      default:
+        return Colors.black.withOpacity(0.3);
+        break;
+    }
   }
 
   /**
