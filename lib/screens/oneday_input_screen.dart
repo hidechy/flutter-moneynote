@@ -162,7 +162,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
           ),
           SingleChildScrollView(
             child: Card(
-              color: Colors.black.withOpacity(0.65),
+              color: Colors.black.withOpacity(0.3),
               child: Column(
                 children: <Widget>[
                   const SizedBox(
