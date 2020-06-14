@@ -36,12 +36,15 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
       for (int i = 0; i < val.length; i++) {
         _utility.makeYMDYData(val[i].strDate, 0);
         if (_utility.day == '01') {
+
+          //先月末の日付
           _utility.makeMonthEnd(
               int.parse(_utility.year), int.parse(_utility.month), 0);
           _utility.makeYMDYData(_utility.monthEndDateTime, 0);
           var prevMonthEnd =
               _utility.year + "-" + _utility.month + "-" + _utility.day;
 
+          //今月末の日付
           _utility.makeYMDYData(val[i].strDate, 0);
           _utility.makeMonthEnd(
               int.parse(_utility.year), int.parse(_utility.month) + 1, 0);
@@ -72,14 +75,14 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
         var monie = await database.selectRecord(_scoreDayInfo[i][j]);
 
         switch (j) {
-          case 1:
+          case 1://先月末の日付
             prevTotal = 0;
             if (monie.length > 0) {
               _utility.makeTotal(monie);
               prevTotal = _utility.total;
             }
             break;
-          case 2:
+          case 2://今月末の日付
             thisTotal = 0;
             if (monie.length > 0) {
               _utility.makeTotal(monie);

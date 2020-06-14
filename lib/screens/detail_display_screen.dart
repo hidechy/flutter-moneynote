@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moneynote/db/database.dart';
+import 'package:moneynote/screens/sameday_display_screen.dart';
 import '../main.dart';
 import 'bank_input_screen.dart';
 import 'monthly_list_screen.dart';
@@ -426,6 +427,11 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
               title: const Text('Monthly List'),
               onTap: () => _goMonthlyDisplayScreen(),
             ),
+//            ListTile(
+//              leading: const Icon(Icons.all_inclusive),
+//              title: const Text('Same Day'),
+//              onTap: () => _goSamedayDisplayScreen(),
+//            ),
             Container(
               color: Colors.grey[900],
               child: ListTile(
@@ -512,6 +518,17 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => BankInputScreen(
+          date: _date,
+        ),
+      ),
+    );
+  }
+
+  _goSamedayDisplayScreen() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SamedayDisplayScreen(
           date: _date,
         ),
       ),
