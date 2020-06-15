@@ -31,6 +31,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   DateTime prevDate;
   DateTime nextDate;
 
+  DateTime _prevMonthEndDate;
+
   String _yen10000 = '0';
   String _yen5000 = '0';
   String _yen2000 = '0';
@@ -55,6 +57,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   int _total = 0;
   int _spend = 0;
   int _temochi = 0;
+  int _monthSpend = 0;
 
   /**
    * 初期動作
@@ -82,6 +85,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
         new DateTime(int.parse(year), int.parse(month), int.parse(day) - 1);
     nextDate =
         new DateTime(int.parse(year), int.parse(month), int.parse(day) + 1);
+
+    _prevMonthEndDate = new DateTime(int.parse(year), int.parse(month), 0);
 
     ////////////////////////////////////////////////
     //本日分のレコードを取得
@@ -153,6 +158,42 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
       }
     }
 
+    //当月の使用金額
+    _utility.makeYMDYData(_prevMonthEndDate.toString(), 0);
+    var _lastMonthEndData = await database.selectRecord(
+        _utility.year + "-" + _utility.month + "-" + _utility.day);
+
+    var _lastMonthTotal = 0;
+    if (_lastMonthEndData.length > 0) {
+      List<List<String>> _totalValue = List();
+
+      _totalValue.add(['10000', _lastMonthEndData[0].strYen10000]);
+      _totalValue.add(['5000', _lastMonthEndData[0].strYen5000]);
+      _totalValue.add(['2000', _lastMonthEndData[0].strYen2000]);
+      _totalValue.add(['1000', _lastMonthEndData[0].strYen1000]);
+      _totalValue.add(['500', _lastMonthEndData[0].strYen500]);
+      _totalValue.add(['100', _lastMonthEndData[0].strYen100]);
+      _totalValue.add(['50', _lastMonthEndData[0].strYen50]);
+      _totalValue.add(['10', _lastMonthEndData[0].strYen10]);
+      _totalValue.add(['5', _lastMonthEndData[0].strYen5]);
+      _totalValue.add(['1', _lastMonthEndData[0].strYen1]);
+
+      _totalValue.add(['1', _lastMonthEndData[0].strBankA]);
+      _totalValue.add(['1', _lastMonthEndData[0].strBankB]);
+      _totalValue.add(['1', _lastMonthEndData[0].strBankC]);
+      _totalValue.add(['1', _lastMonthEndData[0].strBankD]);
+
+      _totalValue.add(['1', _lastMonthEndData[0].strPayA]);
+      _totalValue.add(['1', _lastMonthEndData[0].strPayB]);
+
+      for (int i = 0; i < _totalValue.length; i++) {
+        _lastMonthTotal +=
+            (int.parse(_totalValue[i][0]) * int.parse(_totalValue[i][1]));
+      }
+    }
+
+    _monthSpend = (_lastMonthTotal - _total) * -1;
+
     setState(() {});
   }
 
@@ -170,14 +211,14 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
         centerTitle: true,
         actions: <Widget>[
           IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () => _goDetailScreen(),
-            color: Colors.blueAccent,
+            icon: const Icon(Icons.skip_previous),
+            tooltip: '前日',
+            onPressed: () => _goPrevDate(context),
           ),
           IconButton(
-            icon: const Icon(Icons.calendar_today),
-            onPressed: () => _showDatepicker(context),
-            color: Colors.blueAccent,
+            icon: const Icon(Icons.skip_next),
+            tooltip: '翌日',
+            onPressed: () => _goNextDate(context),
           ),
         ],
       ),
@@ -196,155 +237,154 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
               children: <Widget>[
                 Card(
                   color: Colors.black.withOpacity(0.3),
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 30.0),
-                    child: Column(
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            FlatButton(
-                              child: Row(
-                                children: <Widget>[
-                                  const Icon(Icons.skip_previous),
-                                  const Text('前日'),
-                                ],
-                              ),
-                              onPressed: () => _goPrevDate(context),
-                            ),
-                            Text(
-                              _date + '（' + youbiStr + '）',
-                            ),
-                            FlatButton(
-                              child: Row(
-                                children: <Widget>[
-                                  const Text('翌日'),
-                                  const Icon(Icons.skip_next),
-                                ],
-                              ),
-                              onPressed: () => _goNextDate(context),
-                            )
-                          ],
-                        ),
-                        const Divider(
-                          color: Colors.indigo,
-                          height: 20.0,
-                          indent: 20.0,
-                          endIndent: 20.0,
-                        ),
-                        Table(
-                          children: [
-                            TableRow(children: [
-                              _getTextDispWidget('total'),
-                              _getTextDispWidget(_total.toString()),
-                              const Align(),
-                            ]),
-                            TableRow(children: [
-                              _getTextDispWidget('spend'),
-                              _getTextDispWidget(_spend.toString()),
-                              const Align(),
-                            ]),
-                          ],
-                        ),
-                        const Divider(
-                          color: Colors.indigo,
-                          height: 20.0,
-                          indent: 20.0,
-                          endIndent: 20.0,
-                        ),
-                        Table(
-                          children: [
-                            TableRow(children: [
-                              _getTextDispWidget('10000'),
-                              _getTextDispWidget(_yen10000),
-                              _getTextDispWidget('100'),
-                              _getTextDispWidget(_yen100),
-                            ]),
-                            TableRow(children: [
-                              _getTextDispWidget('5000'),
-                              _getTextDispWidget(_yen5000),
-                              _getTextDispWidget('50'),
-                              _getTextDispWidget(_yen50),
-                            ]),
-                            TableRow(children: [
-                              _getTextDispWidget('2000'),
-                              _getTextDispWidget(_yen2000),
-                              _getTextDispWidget('10'),
-                              _getTextDispWidget(_yen10),
-                            ]),
-                            TableRow(children: [
-                              _getTextDispWidget('1000'),
-                              _getTextDispWidget(_yen1000),
-                              _getTextDispWidget('5'),
-                              _getTextDispWidget(_yen5),
-                            ]),
-                            TableRow(children: [
-                              _getTextDispWidget('500'),
-                              _getTextDispWidget(_yen500),
-                              _getTextDispWidget('1'),
-                              _getTextDispWidget(_yen1),
-                            ]),
-                          ],
-                        ),
-                        const Divider(
-                          color: Colors.indigo,
-                          height: 20.0,
-                          indent: 20.0,
-                          endIndent: 20.0,
-                        ),
-                        Container(
-                          alignment: Alignment.centerRight,
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 45.0),
-                            child: Text(_temochi.toString()),
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: Center(
+                          child: Text(
+                            _date + '（' + youbiStr + '）',
                           ),
                         ),
-                        Table(
-                          children: [
-                            TableRow(children: [
-                              _getTextDispWidget('bank_a'),
-                              _getTextDispWidget(_bankA),
-                              const Align(),
-                            ]),
-                            TableRow(children: [
-                              _getTextDispWidget('bank_b'),
-                              _getTextDispWidget(_bankB),
-                              const Align(),
-                            ]),
-                            TableRow(children: [
-                              _getTextDispWidget('bank_c'),
-                              _getTextDispWidget(_bankC),
-                              const Align(),
-                            ]),
-                            TableRow(children: [
-                              _getTextDispWidget('bank_d'),
-                              _getTextDispWidget(_bankD),
-                              const Align(),
-                            ]),
-                          ],
+                      ),
+                      const Divider(
+                        color: Colors.indigo,
+                        height: 20.0,
+                        indent: 20.0,
+                        endIndent: 20.0,
+                      ),
+                      Table(
+                        children: [
+                          TableRow(children: [
+                            _getTextDispWidget('total'),
+                            _getTextDispWidget(_total.toString()),
+                            const Align(),
+                          ]),
+                          TableRow(children: [
+                            _getTextDispWidget('spend'),
+                            _getTextDispWidget(_spend.toString()),
+                            const Align(),
+                          ]),
+                          TableRow(children: [
+                            _getTextDispWidget('month spend'),
+                            _getTextDispWidget(_monthSpend.toString()),
+                            const Align(),
+                          ]),
+                        ],
+                      ),
+                      const Divider(
+                        color: Colors.indigo,
+                        height: 20.0,
+                        indent: 20.0,
+                        endIndent: 20.0,
+                      ),
+                      Table(
+                        children: [
+                          TableRow(children: [
+                            _getTextDispWidget('10000'),
+                            _getTextDispWidget(_yen10000),
+                            _getTextDispWidget('100'),
+                            _getTextDispWidget(_yen100),
+                          ]),
+                          TableRow(children: [
+                            _getTextDispWidget('5000'),
+                            _getTextDispWidget(_yen5000),
+                            _getTextDispWidget('50'),
+                            _getTextDispWidget(_yen50),
+                          ]),
+                          TableRow(children: [
+                            _getTextDispWidget('2000'),
+                            _getTextDispWidget(_yen2000),
+                            _getTextDispWidget('10'),
+                            _getTextDispWidget(_yen10),
+                          ]),
+                          TableRow(children: [
+                            _getTextDispWidget('1000'),
+                            _getTextDispWidget(_yen1000),
+                            _getTextDispWidget('5'),
+                            _getTextDispWidget(_yen5),
+                          ]),
+                          TableRow(children: [
+                            _getTextDispWidget('500'),
+                            _getTextDispWidget(_yen500),
+                            _getTextDispWidget('1'),
+                            _getTextDispWidget(_yen1),
+                          ]),
+                        ],
+                      ),
+                      const Divider(
+                        color: Colors.indigo,
+                        height: 20.0,
+                        indent: 20.0,
+                        endIndent: 20.0,
+                      ),
+                      Container(
+                        alignment: Alignment.centerRight,
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 45.0),
+                          child: Text(_temochi.toString()),
                         ),
-                        const Divider(
-                          color: Colors.indigo,
-                          height: 20.0,
-                          indent: 20.0,
-                          endIndent: 20.0,
-                        ),
-                        Table(
-                          children: [
-                            TableRow(children: [
-                              _getTextDispWidget('pay_a'),
-                              _getTextDispWidget(_payA),
-                              const Align(),
-                            ]),
-                            TableRow(children: [
-                              _getTextDispWidget('pay_b'),
-                              _getTextDispWidget(_payB),
-                              const Align(),
-                            ]),
-                          ],
-                        ),
-                      ],
-                    ),
+                      ),
+                      Table(
+                        children: [
+                          TableRow(children: [
+                            _getTextDispWidget('bank_a'),
+                            _getTextDispWidget(_bankA),
+                            const Align(),
+                          ]),
+                          TableRow(children: [
+                            _getTextDispWidget('bank_b'),
+                            _getTextDispWidget(_bankB),
+                            const Align(),
+                          ]),
+                          TableRow(children: [
+                            _getTextDispWidget('bank_c'),
+                            _getTextDispWidget(_bankC),
+                            const Align(),
+                          ]),
+                          TableRow(children: [
+                            _getTextDispWidget('bank_d'),
+                            _getTextDispWidget(_bankD),
+                            const Align(),
+                          ]),
+                        ],
+                      ),
+                      const Divider(
+                        color: Colors.indigo,
+                        height: 20.0,
+                        indent: 20.0,
+                        endIndent: 20.0,
+                      ),
+                      Table(
+                        children: [
+                          TableRow(children: [
+                            _getTextDispWidget('pay_a'),
+                            _getTextDispWidget(_payA),
+                            const Align(),
+                          ]),
+                          TableRow(children: [
+                            _getTextDispWidget('pay_b'),
+                            _getTextDispWidget(_payB),
+                            const Align(),
+                          ]),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          IconButton(
+                            icon: const Icon(Icons.calendar_today),
+                            onPressed: () => _showDatepicker(context),
+                            color: Colors.blueAccent,
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.refresh),
+                            onPressed: () => _goDetailScreen(),
+                            color: Colors.blueAccent,
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
                 Expanded(
