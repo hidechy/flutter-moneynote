@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel;
 import 'package:flutter_calendar_carousel/classes/event.dart';
+
 import 'screens/monthly_list_screen.dart';
 import 'screens/score_list_screen.dart';
-import 'utilities/utility.dart';
 import 'screens/detail_display_screen.dart';
+
+import 'utilities/utility.dart';
 
 class Calender extends StatefulWidget {
   @override

@@ -941,12 +941,256 @@ class $MoniesTable extends Monies with TableInfo<$MoniesTable, Monie> {
   }
 }
 
+class Benefit extends DataClass implements Insertable<Benefit> {
+  final String strDate;
+  final String strCompany;
+  final String strPrice;
+  Benefit(
+      {@required this.strDate,
+      @required this.strCompany,
+      @required this.strPrice});
+  factory Benefit.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final stringType = db.typeSystem.forDartType<String>();
+    return Benefit(
+      strDate: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}str_date']),
+      strCompany: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}str_company']),
+      strPrice: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}str_price']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || strDate != null) {
+      map['str_date'] = Variable<String>(strDate);
+    }
+    if (!nullToAbsent || strCompany != null) {
+      map['str_company'] = Variable<String>(strCompany);
+    }
+    if (!nullToAbsent || strPrice != null) {
+      map['str_price'] = Variable<String>(strPrice);
+    }
+    return map;
+  }
+
+  BenefitsCompanion toCompanion(bool nullToAbsent) {
+    return BenefitsCompanion(
+      strDate: strDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(strDate),
+      strCompany: strCompany == null && nullToAbsent
+          ? const Value.absent()
+          : Value(strCompany),
+      strPrice: strPrice == null && nullToAbsent
+          ? const Value.absent()
+          : Value(strPrice),
+    );
+  }
+
+  factory Benefit.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return Benefit(
+      strDate: serializer.fromJson<String>(json['strDate']),
+      strCompany: serializer.fromJson<String>(json['strCompany']),
+      strPrice: serializer.fromJson<String>(json['strPrice']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'strDate': serializer.toJson<String>(strDate),
+      'strCompany': serializer.toJson<String>(strCompany),
+      'strPrice': serializer.toJson<String>(strPrice),
+    };
+  }
+
+  Benefit copyWith({String strDate, String strCompany, String strPrice}) =>
+      Benefit(
+        strDate: strDate ?? this.strDate,
+        strCompany: strCompany ?? this.strCompany,
+        strPrice: strPrice ?? this.strPrice,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Benefit(')
+          ..write('strDate: $strDate, ')
+          ..write('strCompany: $strCompany, ')
+          ..write('strPrice: $strPrice')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf(
+      $mrjc(strDate.hashCode, $mrjc(strCompany.hashCode, strPrice.hashCode)));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is Benefit &&
+          other.strDate == this.strDate &&
+          other.strCompany == this.strCompany &&
+          other.strPrice == this.strPrice);
+}
+
+class BenefitsCompanion extends UpdateCompanion<Benefit> {
+  final Value<String> strDate;
+  final Value<String> strCompany;
+  final Value<String> strPrice;
+  const BenefitsCompanion({
+    this.strDate = const Value.absent(),
+    this.strCompany = const Value.absent(),
+    this.strPrice = const Value.absent(),
+  });
+  BenefitsCompanion.insert({
+    @required String strDate,
+    @required String strCompany,
+    @required String strPrice,
+  })  : strDate = Value(strDate),
+        strCompany = Value(strCompany),
+        strPrice = Value(strPrice);
+  static Insertable<Benefit> custom({
+    Expression<String> strDate,
+    Expression<String> strCompany,
+    Expression<String> strPrice,
+  }) {
+    return RawValuesInsertable({
+      if (strDate != null) 'str_date': strDate,
+      if (strCompany != null) 'str_company': strCompany,
+      if (strPrice != null) 'str_price': strPrice,
+    });
+  }
+
+  BenefitsCompanion copyWith(
+      {Value<String> strDate,
+      Value<String> strCompany,
+      Value<String> strPrice}) {
+    return BenefitsCompanion(
+      strDate: strDate ?? this.strDate,
+      strCompany: strCompany ?? this.strCompany,
+      strPrice: strPrice ?? this.strPrice,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (strDate.present) {
+      map['str_date'] = Variable<String>(strDate.value);
+    }
+    if (strCompany.present) {
+      map['str_company'] = Variable<String>(strCompany.value);
+    }
+    if (strPrice.present) {
+      map['str_price'] = Variable<String>(strPrice.value);
+    }
+    return map;
+  }
+}
+
+class $BenefitsTable extends Benefits with TableInfo<$BenefitsTable, Benefit> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $BenefitsTable(this._db, [this._alias]);
+  final VerificationMeta _strDateMeta = const VerificationMeta('strDate');
+  GeneratedTextColumn _strDate;
+  @override
+  GeneratedTextColumn get strDate => _strDate ??= _constructStrDate();
+  GeneratedTextColumn _constructStrDate() {
+    return GeneratedTextColumn(
+      'str_date',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _strCompanyMeta = const VerificationMeta('strCompany');
+  GeneratedTextColumn _strCompany;
+  @override
+  GeneratedTextColumn get strCompany => _strCompany ??= _constructStrCompany();
+  GeneratedTextColumn _constructStrCompany() {
+    return GeneratedTextColumn(
+      'str_company',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _strPriceMeta = const VerificationMeta('strPrice');
+  GeneratedTextColumn _strPrice;
+  @override
+  GeneratedTextColumn get strPrice => _strPrice ??= _constructStrPrice();
+  GeneratedTextColumn _constructStrPrice() {
+    return GeneratedTextColumn(
+      'str_price',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [strDate, strCompany, strPrice];
+  @override
+  $BenefitsTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'benefits';
+  @override
+  final String actualTableName = 'benefits';
+  @override
+  VerificationContext validateIntegrity(Insertable<Benefit> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('str_date')) {
+      context.handle(_strDateMeta,
+          strDate.isAcceptableOrUnknown(data['str_date'], _strDateMeta));
+    } else if (isInserting) {
+      context.missing(_strDateMeta);
+    }
+    if (data.containsKey('str_company')) {
+      context.handle(
+          _strCompanyMeta,
+          strCompany.isAcceptableOrUnknown(
+              data['str_company'], _strCompanyMeta));
+    } else if (isInserting) {
+      context.missing(_strCompanyMeta);
+    }
+    if (data.containsKey('str_price')) {
+      context.handle(_strPriceMeta,
+          strPrice.isAcceptableOrUnknown(data['str_price'], _strPriceMeta));
+    } else if (isInserting) {
+      context.missing(_strPriceMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {strDate};
+  @override
+  Benefit map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return Benefit.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  $BenefitsTable createAlias(String alias) {
+    return $BenefitsTable(_db, alias);
+  }
+}
+
 abstract class _$MyDatabase extends GeneratedDatabase {
   _$MyDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $MoniesTable _monies;
   $MoniesTable get monies => _monies ??= $MoniesTable(this);
+  $BenefitsTable _benefits;
+  $BenefitsTable get benefits => _benefits ??= $BenefitsTable(this);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [monies];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [monies, benefits];
 }

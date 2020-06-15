@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+
 import '../db/database.dart';
 import '../utilities/utility.dart';
-
 import '../main.dart';
 
-class SamedayDisplayScreen extends StatefulWidget {
+class SamedayListScreen extends StatefulWidget {
   final String date;
-  SamedayDisplayScreen({@required this.date});
+  SamedayListScreen({@required this.date});
 
   @override
-  _SamedayDisplayScreenState createState() => _SamedayDisplayScreenState();
+  _SamedayListScreenState createState() => _SamedayListScreenState();
 }
 
-class _SamedayDisplayScreenState extends State<SamedayDisplayScreen> {
+class _SamedayListScreenState extends State<SamedayListScreen> {
   List<DropdownMenuItem<String>> _menuItems = List();
   String _numberOfMenu = '';
 

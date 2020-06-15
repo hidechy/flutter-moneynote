@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+
 import '../utilities/utility.dart';
 import '../main.dart';
+
 import 'detail_display_screen.dart';
 import 'oneday_input_screen.dart';
 

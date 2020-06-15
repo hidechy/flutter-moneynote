@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:moneynote/db/database.dart';
-import 'package:moneynote/screens/sameday_display_screen.dart';
+
 import '../main.dart';
+import '../utilities/utility.dart';
+import '../db/database.dart';
+
 import 'bank_input_screen.dart';
 import 'monthly_list_screen.dart';
-import '../utilities/utility.dart';
 import 'oneday_input_screen.dart';
 import 'score_list_screen.dart';
+import 'benefit_input_screen.dart';
+import 'sameday_list_screen.dart';
 
 class DetailDisplayScreen extends StatefulWidget {
   final String date;
@@ -369,7 +372,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
     final selectedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(DateTime.now().year),
+      firstDate: DateTime(DateTime.now().year - 3),
       lastDate: DateTime(DateTime.now().year + 6),
       locale: const Locale('ja'),
     );
@@ -448,6 +451,15 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                 onTap: () => _goBankInputScreen(),
               ),
             ),
+
+            Container(
+              color: Colors.grey[900],
+              child: ListTile(
+                leading: const Icon(Icons.beenhere),
+                title: const Text('Benefit Input'),
+                onTap: () => _goBenefitInputScreen(),
+              ),
+            ),
           ],
         );
       },
@@ -524,11 +536,28 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
     );
   }
 
+  /**
+   * 画面遷移（SamedayDisplayScreen）
+   */
   _goSamedayDisplayScreen() {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => SamedayDisplayScreen(
+        builder: (context) => SamedayListScreen(
+          date: _date,
+        ),
+      ),
+    );
+  }
+
+  /**
+   * 画面遷移（BenefitInputScreen）
+   */
+  _goBenefitInputScreen() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BenefitInputScreen(
           date: _date,
         ),
       ),

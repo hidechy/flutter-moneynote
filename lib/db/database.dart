@@ -32,12 +32,29 @@ class Monies extends Table {
   Set<Column> get primaryKey => {strDate};
 }
 
-@UseMoor(tables: [Monies])
+class Benefits extends Table {
+  TextColumn get strDate => text()();
+  TextColumn get strCompany => text()();
+  TextColumn get strPrice => text()();
+
+  @override
+  Set<Column> get primaryKey => {strDate};
+}
+
+@UseMoor(tables: [Monies, Benefits])
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
+        return m.createAll();
+      }, onUpgrade: (Migrator m, int from, int to) async {
+        if (from == 1) {
+          await m.createTable(benefits);
+        }
+      });
 
   ////////////////////////////////////////////////////////////Monies
   //追加
@@ -54,9 +71,37 @@ class MyDatabase extends _$MyDatabase {
   Future deleteRecord(Monie monie) =>
       (delete(monies)..where((tbl) => tbl.strDate.equals(monie.strDate))).go();
 
+  //全削除
+  Future deleteAllRecord() => delete(monies).go();
+
   //全選択（日付順）
   Future<List<Monie>> get selectSortedAllRecord => (select(monies)
-    ..orderBy([(tbl) => OrderingTerm(expression: tbl.strDate)]))
+        ..orderBy([(tbl) => OrderingTerm(expression: tbl.strDate)]))
+      .get();
+
+  ////////////////////////////////////////////////////////////Benefits
+  //追加
+  Future insertBenefitRecord(Benefit benefit) => into(benefits).insert(benefit);
+
+  //更新
+  Future updateBenefitRecord(Benefit benefit) =>
+      update(benefits).replace(benefit);
+
+  //選択
+  Future selectBenefitRecord(String date) =>
+      (select(benefits)..where((tbl) => tbl.strDate.equals(date))).get();
+
+  //削除
+  Future deleteBenefitRecord(Benefit benefit) =>
+      (delete(benefits)..where((tbl) => tbl.strDate.equals(benefit.strDate)))
+          .go();
+
+  //全削除
+  Future deleteBenefitAllRecord() => delete(benefits).go();
+
+  //全選択（日付順）
+  Future<List<Benefit>> get selectBenefitSortedAllRecord => (select(benefits)
+        ..orderBy([(tbl) => OrderingTerm(expression: tbl.strDate)]))
       .get();
 }
 

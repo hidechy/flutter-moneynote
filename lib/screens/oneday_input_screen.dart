@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
+
 import '../db/database.dart';
 import '../main.dart';
 import '../utilities/utility.dart';
+
 import 'detail_display_screen.dart';
 import 'monthly_list_screen.dart';
 
@@ -367,7 +369,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
     final selectedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(DateTime.now().year),
+      firstDate: DateTime(DateTime.now().year - 3),
       lastDate: DateTime(DateTime.now().year + 6),
       locale: const Locale('ja'),
     );

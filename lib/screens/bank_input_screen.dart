@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'detail_display_screen.dart';
 import 'package:toast/toast.dart';
+
 import '../db/database.dart';
 import '../main.dart';
 import '../utilities/utility.dart';
+
+import 'detail_display_screen.dart';
 
 class BankInputScreen extends StatefulWidget {
   final String date;
@@ -224,7 +226,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
     final selectedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(DateTime.now().year),
+      firstDate: DateTime(DateTime.now().year - 3),
       lastDate: DateTime(DateTime.now().year + 6),
       locale: const Locale('ja'),
     );
