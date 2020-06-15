@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../main.dart';
 import '../db/database.dart';
 import '../utilities/utility.dart';
+
+import 'detail_display_screen.dart';
 
 class BenefitInputScreen extends StatefulWidget {
   final String date;
@@ -19,9 +22,6 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   TextEditingController _teContPrice = TextEditingController();
 
   Utility _utility = Utility();
-  String year;
-  String month;
-  String day;
 
   String _dialogSelectedDate = "";
 
@@ -107,6 +107,18 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
+                        IconButton(
+                          icon: const Icon(Icons.refresh),
+                          tooltip: 'reload',
+                          onPressed: () => _goBenefitInputScreen(),
+                          color: Colors.blueAccent,
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.details),
+                          tooltip: 'detail',
+                          onPressed: () => _goDetailScreen(),
+                          color: Colors.blueAccent,
+                        ),
                         Text(_dialogSelectedDate),
                         IconButton(
                           icon: const Icon(Icons.calendar_today),
@@ -122,15 +134,6 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
                         ),
                       ],
                     ),
-//                    Container(
-//                      alignment: Alignment.topLeft,
-//                      child: IconButton(
-//                        icon: const Icon(Icons.clear),
-//                        tooltip: '全削除',
-//                        onPressed: () => _deleteAllRecord(context),
-//                        color: Colors.redAccent,
-//                      ),
-//                    ),
                   ],
                 ),
               ),
@@ -158,21 +161,36 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
    * リストアイテム表示
    */
   Widget _listItem(int position) {
-    return Card(
-      color: Colors.black.withOpacity(0.3),
-      elevation: 10.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: ListTile(
-        title: Text(
-          '${_benefitData[position][0]}　${_benefitData[position][1]}　${_benefitData[position][2]}',
-          style: const TextStyle(
-            color: Colors.white,
-            fontFamily: 'Yomogi',
-            fontSize: 12.0,
+    return InkWell(
+      child: Slidable(
+        actionPane: const SlidableDrawerActionPane(),
+        actionExtentRatio: 0.15,
+        child: Card(
+          color: Colors.black.withOpacity(0.3),
+          elevation: 10.0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: ListTile(
+            title: Text(
+              '${_benefitData[position][0]}　${_benefitData[position][1]}　${_benefitData[position][2]}',
+              style: const TextStyle(
+                color: Colors.white,
+                fontFamily: 'Yomogi',
+                fontSize: 12.0,
+              ),
+            ),
           ),
         ),
+        //actions: <Widget>[],
+        secondaryActions: <Widget>[
+          IconSlideAction(
+            color: Colors.black.withOpacity(0.3),
+            foregroundColor: Colors.blueAccent,
+            icon: Icons.delete,
+            onTap: () => _deleteRecord(position),
+          ),
+        ],
       ),
     );
   }
@@ -215,11 +233,8 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
 
     if (selectedDate != null) {
       _utility.makeYMDYData(selectedDate.toString(), 0);
-      year = _utility.year;
-      month = _utility.month;
-      day = _utility.day;
-
-      _dialogSelectedDate = year + "-" + month + "-" + day;
+      _dialogSelectedDate =
+          _utility.year + "-" + _utility.month + "-" + _utility.day;
 
       //レコード取得
       var _benefit = await database.selectBenefitRecord(_dialogSelectedDate);
@@ -229,9 +244,6 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
         _teContPrice = new TextEditingController(text: _benefit[0].strPrice);
 
         _updateFlag = true;
-      } else {
-        _teContCompany = new TextEditingController(text: '');
-        _teContPrice = new TextEditingController(text: '0');
       }
 
       setState(() {});
@@ -260,9 +272,6 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
       strPrice: _teContPrice.text,
     );
 
-    print(benefit);
-    print(_updateFlag);
-
     if (_updateFlag == false) {
       await database.insertBenefitRecord(benefit);
       Toast.show('登録が完了しました', context, duration: Toast.LENGTH_LONG);
@@ -275,14 +284,19 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   }
 
   /**
-   * データ全削除
+   * データ削除
    */
-//  _deleteAllRecord(BuildContext context) {
-//    database.deleteBenefitAllRecord();
-//    Toast.show('データを削除しました', context, duration: Toast.LENGTH_LONG);
-//
-//    _goBenefitInputScreen();
-//  }
+  _deleteRecord(int position) async {
+    var benefit = Benefit(
+      strDate: _benefitData[position][0],
+      strCompany: _benefitData[position][1],
+      strPrice: _benefitData[position][2],
+    );
+
+    await database.deleteBenefitRecord(benefit);
+    Toast.show('データを削除しました', context, duration: Toast.LENGTH_LONG);
+    _goBenefitInputScreen();
+  }
 
   /**
    * 画面遷移（BenefitInputScreen）
@@ -292,6 +306,20 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => BenefitInputScreen(
+          date: widget.date,
+        ),
+      ),
+    );
+  }
+
+  /**
+   * 画面遷移（DetailDisplayScreen）
+   */
+  _goDetailScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DetailDisplayScreen(
           date: widget.date,
         ),
       ),

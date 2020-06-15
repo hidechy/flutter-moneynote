@@ -54,6 +54,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
 
   int _total = 0;
   int _spend = 0;
+  int _temochi = 0;
 
   /**
    * 初期動作
@@ -108,6 +109,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
 
       _utility.makeTotal(_monieData);
       _total = _utility.total;
+      _temochi = _utility.temochi;
 
       ////////////////////////////////////////////////
       //昨日分のレコードを取得
@@ -289,6 +291,13 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                           height: 20.0,
                           indent: 20.0,
                           endIndent: 20.0,
+                        ),
+                        Container(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 45.0),
+                            child: Text(_temochi.toString()),
+                          ),
                         ),
                         Table(
                           children: [

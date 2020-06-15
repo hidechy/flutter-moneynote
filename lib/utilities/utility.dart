@@ -71,6 +71,7 @@ class Utility {
    * 合計金額取得
    */
   int total = 0;
+  int temochi = 0;
   makeTotal(_monieData) {
     List<List<String>> _totalValue = List();
 
@@ -84,6 +85,11 @@ class Utility {
     _totalValue.add(['10', _monieData[0].strYen10]);
     _totalValue.add(['5', _monieData[0].strYen5]);
     _totalValue.add(['1', _monieData[0].strYen1]);
+
+    temochi = 0;
+    for (int i = 0; i < _totalValue.length; i++) {
+      temochi += (int.parse(_totalValue[i][0]) * int.parse(_totalValue[i][1]));
+    }
 
     _totalValue.add(['1', _monieData[0].strBankA]);
     _totalValue.add(['1', _monieData[0].strBankB]);
