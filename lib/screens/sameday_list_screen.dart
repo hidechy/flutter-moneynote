@@ -18,7 +18,10 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
 
   Utility _utility = Utility();
 
+  //全データ取得用
   List<Monie> _monieData = List();
+
+  //同日リスト作成用
   List<List<String>> _samedayData = List();
 
   /**
@@ -56,6 +59,7 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
       );
     }
 
+    //全データ取得
     _monieData = await database.selectSortedAllRecord;
   }
 
@@ -91,12 +95,25 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
                 Container(
                   color: Colors.black.withOpacity(0.3),
                   width: double.infinity,
-                  child: Center(
-                    child: DropdownButton(
-                      items: _menuItems,
-                      value: _numberOfMenu,
-                      onChanged: (value) => _makeSamedayList(value),
-                    ),
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20.0),
+                        child: DropdownButton(
+                          items: _menuItems,
+                          value: _numberOfMenu,
+                          onChanged: (value) => _makeSamedayList(value),
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.arrow_upward),
+                        onPressed: () => _numberUpDown(1),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.arrow_downward),
+                        onPressed: () => _numberUpDown(-1),
+                      ),
+                    ],
                   ),
                 ),
                 const Divider(
@@ -131,7 +148,7 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
       ),
       child: ListTile(
         title: Text(
-          '${_samedayData[position][0]}　${_samedayData[position][1]}　${_samedayData[position][2]}',
+          '${_samedayData[position][0]}　${_samedayData[position][1]}',
           style: const TextStyle(
             color: Colors.white,
             fontFamily: 'Yomogi',
@@ -149,107 +166,64 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
     //プルダウンに選択された日付を表示する
     _numberOfMenu = value;
 
-    //リストデータ作成
-    var _monthData = List();
+    //同日リスト作成
+    _samedayData = List();
     if (_monieData.length > 0) {
       for (int i = 0; i < _monieData.length; i++) {
-        //--------------------------------------------//total
-        List<List<String>> _totalValue = List();
-
-        _totalValue.add(['10000', _monieData[i].strYen10000]);
-        _totalValue.add(['5000', _monieData[i].strYen5000]);
-        _totalValue.add(['2000', _monieData[i].strYen2000]);
-        _totalValue.add(['1000', _monieData[i].strYen1000]);
-        _totalValue.add(['500', _monieData[i].strYen500]);
-        _totalValue.add(['100', _monieData[i].strYen100]);
-        _totalValue.add(['50', _monieData[i].strYen50]);
-        _totalValue.add(['10', _monieData[i].strYen10]);
-        _totalValue.add(['5', _monieData[i].strYen5]);
-        _totalValue.add(['1', _monieData[i].strYen1]);
-
-        _totalValue.add(['1', _monieData[i].strBankA]);
-        _totalValue.add(['1', _monieData[i].strBankB]);
-        _totalValue.add(['1', _monieData[i].strBankC]);
-        _totalValue.add(['1', _monieData[i].strBankD]);
-
-        _totalValue.add(['1', _monieData[i].strPayA]);
-        _totalValue.add(['1', _monieData[i].strPayB]);
-
-        var total = 0;
-        for (int j = 0; j < _totalValue.length; j++) {
-          total +=
-              (int.parse(_totalValue[j][0]) * int.parse(_totalValue[j][1]));
-        }
-        //--------------------------------------------//total
-
         _utility.makeYMDYData(_monieData[i].strDate, 0);
 
-        if (int.parse(_utility.day) > int.parse(value)) {
-          continue;
-        }
+        //プルダウンと同日の場合のみリストに追加する
+        if (int.parse(_utility.day) == int.parse(value)) {
+          //--------------------------------------------//total
+          List<List<String>> _totalValue = List();
 
-        var _dayData = List();
-        _dayData.add([_utility.day, total]);
+          _totalValue.add(['10000', _monieData[i].strYen10000]);
+          _totalValue.add(['5000', _monieData[i].strYen5000]);
+          _totalValue.add(['2000', _monieData[i].strYen2000]);
+          _totalValue.add(['1000', _monieData[i].strYen1000]);
+          _totalValue.add(['500', _monieData[i].strYen500]);
+          _totalValue.add(['100', _monieData[i].strYen100]);
+          _totalValue.add(['50', _monieData[i].strYen50]);
+          _totalValue.add(['10', _monieData[i].strYen10]);
+          _totalValue.add(['5', _monieData[i].strYen5]);
+          _totalValue.add(['1', _monieData[i].strYen1]);
 
-        _monthData.add([_utility.year + "-" + _utility.month, _dayData]);
-      }
+          _totalValue.add(['1', _monieData[i].strBankA]);
+          _totalValue.add(['1', _monieData[i].strBankB]);
+          _totalValue.add(['1', _monieData[i].strBankC]);
+          _totalValue.add(['1', _monieData[i].strBankD]);
+
+          _totalValue.add(['1', _monieData[i].strPayA]);
+          _totalValue.add(['1', _monieData[i].strPayB]);
+
+          var total = 0;
+          for (int j = 0; j < _totalValue.length; j++) {
+            total +=
+                (int.parse(_totalValue[j][0]) * int.parse(_totalValue[j][1]));
+          }
+          //--------------------------------------------//total
+
+          _samedayData.add([_monieData[i].strDate, total.toString()]);
+        } //if (int.parse(_utility.day) == int.parse(value))
+      } //for[i]
     }
-
-    String _ym = "";
-    int _listTotal = 0;
-    var _samedayTotalList = List();
-
-    for (int i = 0; i < _monthData.length; i++) {
-      String _listDate = '';
-      if (_ym != _monthData[i][0]) {
-        _listDate = _monthData[i][0];
-        _listTotal = 0;
-      }
-
-      for (int j = 0; j < _monthData[i][1][0].length; j++) {
-        if (j == 0) {
-          continue;
-        }
-        _listTotal += _monthData[i][1][0][j];
-      } //for[j]
-
-      if (_listDate == "") {
-        _samedayTotalList.add([_ym, _listTotal.toString()]);
-      }
-
-      _ym = _monthData[i][0];
-    } //for[i]
-
-    //print(_samedayTotalList);
-
-    _samedayData = List();
-
-    for (int i = 0; i < _samedayTotalList.length; i++) {
-      //先月末の日付
-      _utility.makeYMDYData(_samedayTotalList[i][0] + '-01', 0);
-      _utility.makeMonthEnd(
-          int.parse(_utility.year), int.parse(_utility.month), 0);
-      _utility.makeYMDYData(_utility.monthEndDateTime, 0);
-      var prevMonthEnd =
-          _utility.year + "-" + _utility.month + "-" + _utility.day;
-
-      //前月末のデータを取得
-      var _prevMonthEndData = await database.selectRecord(prevMonthEnd);
-
-      var prevTotal = 0;
-      if (_prevMonthEndData.length > 0) {
-        _utility.makeTotal(_prevMonthEndData);
-        prevTotal = _utility.total;
-      }
-
-      var diff = 0;
-      diff = prevTotal - int.parse(_samedayTotalList[i][1]);
-      _samedayData.add(
-          [_samedayTotalList[i][0], _samedayTotalList[i][1], diff.toString()]);
-    }
-
-    print(_samedayData);
 
     setState(() {});
+  }
+
+  /**
+   * 日付増減ボタン挙動
+   */
+  _numberUpDown(int i) {
+    var number = (_numberOfMenu == '') ? 0 : int.parse(_numberOfMenu);
+    var num = number + i;
+    if (num < 1) {
+      num = 1;
+    }
+    if (num > 31) {
+      num = 31;
+    }
+
+    _makeSamedayList(num.toString());
   }
 }

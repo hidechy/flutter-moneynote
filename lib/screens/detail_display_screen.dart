@@ -479,11 +479,11 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
               title: const Text('Monthly List'),
               onTap: () => _goMonthlyDisplayScreen(),
             ),
-//            ListTile(
-//              leading: const Icon(Icons.all_inclusive),
-//              title: const Text('Same Day'),
-//              onTap: () => _goSamedayDisplayScreen(),
-//            ),
+            ListTile(
+              leading: const Icon(Icons.all_inclusive),
+              title: const Text('Same Day'),
+              onTap: () => _goSamedayDisplayScreen(),
+            ),
             Container(
               color: Colors.grey[900],
               child: ListTile(
