@@ -71,7 +71,7 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Same Day',
+          'Same Day List',
           style: TextStyle(fontFamily: "Yomogi"),
         ),
         centerTitle: true,
@@ -106,11 +106,11 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
                         ),
                       ),
                       IconButton(
-                        icon: Icon(Icons.arrow_upward),
+                        icon: const Icon(Icons.arrow_upward),
                         onPressed: () => _numberUpDown(1),
                       ),
                       IconButton(
-                        icon: Icon(Icons.arrow_downward),
+                        icon: const Icon(Icons.arrow_downward),
                         onPressed: () => _numberUpDown(-1),
                       ),
                     ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moneynote/screens/allday_list_screen.dart';
 
 import '../main.dart';
 import '../utilities/utility.dart';
@@ -236,6 +237,9 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
             child: Column(
               children: <Widget>[
                 Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
                   color: Colors.black.withOpacity(0.3),
                   child: Column(
                     children: <Widget>[
@@ -379,7 +383,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                           ),
                           IconButton(
                             icon: const Icon(Icons.refresh),
-                            onPressed: () => _goDetailScreen(),
+                            onPressed: () => _goDetailDisplayScreen(),
                             color: Colors.blueAccent,
                           ),
                         ],
@@ -472,17 +476,22 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
             ListTile(
               leading: const Icon(Icons.trending_up),
               title: const Text('Score List'),
-              onTap: () => _goScoreDisplayScreen(),
+              onTap: () => _goScoreListScreen(),
             ),
             ListTile(
               leading: const Icon(Icons.list),
               title: const Text('Monthly List'),
-              onTap: () => _goMonthlyDisplayScreen(),
+              onTap: () => _goMonthlyListScreen(),
+            ),
+            ListTile(
+              leading: const Icon(Icons.all_out),
+              title: const Text('AllDay List'),
+              onTap: () => _goAlldayListScreen(),
             ),
             ListTile(
               leading: const Icon(Icons.all_inclusive),
-              title: const Text('Same Day'),
-              onTap: () => _goSamedayDisplayScreen(),
+              title: const Text('SameDay List'),
+              onTap: () => _goSamedayListScreen(),
             ),
             Container(
               color: Colors.grey[900],
@@ -500,7 +509,6 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                 onTap: () => _goBankInputScreen(),
               ),
             ),
-
             Container(
               color: Colors.grey[900],
               child: ListTile(
@@ -518,7 +526,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（DetailDisplayScreen）
    */
-  _goDetailScreen() {
+  _goDetailDisplayScreen() {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -546,7 +554,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（ScoreListScreen）
    */
-  _goScoreDisplayScreen() {
+  _goScoreListScreen() {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -560,7 +568,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（MonthlyListScreen）
    */
-  _goMonthlyDisplayScreen() {
+  _goMonthlyListScreen() {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -588,7 +596,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（SamedayDisplayScreen）
    */
-  _goSamedayDisplayScreen() {
+  _goSamedayListScreen() {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -607,6 +615,20 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => BenefitInputScreen(
+          date: _date,
+        ),
+      ),
+    );
+  }
+
+  /**
+   * 画面遷移（AlldayListScreen）
+   */
+  _goAlldayListScreen() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AlldayListScreen(
           date: _date,
         ),
       ),

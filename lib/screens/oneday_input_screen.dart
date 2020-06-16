@@ -164,6 +164,9 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
           ),
           SingleChildScrollView(
             child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
               color: Colors.black.withOpacity(0.3),
               child: Column(
                 children: <Widget>[
@@ -216,13 +219,13 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
                       IconButton(
                         icon: const Icon(Icons.list),
                         tooltip: 'list',
-                        onPressed: () => _goMonthlyScreen(),
+                        onPressed: () => _goMonthlyListScreen(),
                         color: Colors.blueAccent,
                       ),
                       IconButton(
                         icon: const Icon(Icons.details),
                         tooltip: 'detail',
-                        onPressed: () => _goDetailScreen(),
+                        onPressed: () => _goDetailDisplayScreen(),
                         color: Colors.blueAccent,
                       ),
                       IconButton(
@@ -337,7 +340,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   /**
    * 画面遷移（MonthlyListScreen）
    */
-  _goMonthlyScreen() {
+  _goMonthlyListScreen() {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -351,7 +354,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   /**
    * 画面遷移（DetailDisplayScreen）
    */
-  _goDetailScreen() {
+  _goDetailDisplayScreen() {
     Navigator.push(
       context,
       MaterialPageRoute(

@@ -100,6 +100,9 @@ class _BankInputScreenState extends State<BankInputScreen> {
           ),
           SingleChildScrollView(
             child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
               color: Colors.black.withOpacity(0.3),
               child: DefaultTextStyle(
                 style: const TextStyle(fontSize: 16.0, fontFamily: "Yomogi"),
@@ -172,7 +175,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
                         ),
                         IconButton(
                           icon: const Icon(Icons.star),
-                          onPressed: () => _goDetailScreen(),
+                          onPressed: () => _goDetailDisplayScreen(),
                           color: Colors.blue,
                         ),
                       ],
@@ -321,7 +324,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
     if (_isContinue == true) {
       _goBankInputScreen();
     } else {
-      _goDetailScreen();
+      _goDetailDisplayScreen();
     }
   }
 
@@ -342,7 +345,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
   /**
    * 画面遷移（DetailDisplayScreen）
    */
-  void _goDetailScreen() {
+  void _goDetailDisplayScreen() {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

@@ -83,7 +83,7 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
       appBar: AppBar(
         title: const Text(
           'Benefit',
-          style: TextStyle(fontFamily: "Yomogi"),
+          style: const TextStyle(fontFamily: "Yomogi"),
         ),
         centerTitle: true,
       ),
@@ -99,6 +99,9 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
           Column(
             children: <Widget>[
               Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
                 color: Colors.black.withOpacity(0.3),
                 child: Column(
                   children: <Widget>[
@@ -116,7 +119,7 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
                         IconButton(
                           icon: const Icon(Icons.details),
                           tooltip: 'detail',
-                          onPressed: () => _goDetailScreen(),
+                          onPressed: () => _goDetailDisplayScreen(),
                           color: Colors.blueAccent,
                         ),
                         Text(_dialogSelectedDate),
@@ -315,7 +318,7 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   /**
    * 画面遷移（DetailDisplayScreen）
    */
-  _goDetailScreen() {
+  _goDetailDisplayScreen() {
     Navigator.push(
       context,
       MaterialPageRoute(

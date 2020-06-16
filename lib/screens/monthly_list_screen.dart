@@ -211,7 +211,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
             color: getBgColor(position),
             foregroundColor: Colors.blueAccent,
             icon: Icons.details,
-            onTap: () => _goDetailScreen(position),
+            onTap: () => _goDetailDisplayScreen(position),
           ),
           IconSlideAction(
             color: getBgColor(position),
@@ -305,7 +305,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   /**
    * 画面遷移（DetailDisplayScreen）
    */
-  _goDetailScreen(int position) {
+  _goDetailDisplayScreen(int position) {
     Navigator.push(
       context,
       MaterialPageRoute(
