@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
-import '../db/database.dart';
 import '../main.dart';
 import '../utilities/utility.dart';
-
-import 'detail_display_screen.dart';
+import '../db/database.dart';
 
 class BankInputScreen extends StatefulWidget {
   final String date;
@@ -16,6 +15,8 @@ class BankInputScreen extends StatefulWidget {
 }
 
 class _BankInputScreenState extends State<BankInputScreen> {
+  String _chipValue = 'bank_a';
+
   Utility _utility = Utility();
   String year;
   String month;
@@ -25,17 +26,12 @@ class _BankInputScreenState extends State<BankInputScreen> {
 
   String _dialogSelectedDate = "";
 
-  Monie _bankData;
-  String _bankA = "";
-  String _bankB = "";
-  String _bankC = "";
-  String _bankD = "";
-  String _payA = "";
-  String _payB = "";
+  List<List<String>> _bankData = List();
 
-  TextEditingController _teContBank = TextEditingController();
+  String _text = '';
+  TextEditingController _teContPrice = TextEditingController();
 
-  var _isContinue = false;
+  String _lastRecordDate;
 
   /**
    * 初期動作
@@ -57,20 +53,49 @@ class _BankInputScreenState extends State<BankInputScreen> {
 
     _dialogSelectedDate = year + "-" + month + "-01";
 
-    //////////////////////////////
-    var val = await database.selectSortedAllRecord;
-    if (val.length > 0) {
-      for (int i = 0; i < val.length; i++) {
-        _bankData = val[i];
-      }
+    _teContPrice.text = '0';
 
-      _date = _bankData.strDate;
-      _bankA = _bankData.strBankA;
-      _bankB = _bankData.strBankB;
-      _bankC = _bankData.strBankC;
-      _bankD = _bankData.strBankD;
-      _payA = _bankData.strPayA;
-      _payB = _bankData.strPayB;
+    _getBankValue();
+  }
+
+  /**
+   * 表示データ作成
+   */
+  _getBankValue() async {
+    var _monieData = await database.selectSortedAllRecord;
+    int _value = 0;
+    int _prevValue = 0;
+    if (_monieData.length > 0) {
+      _bankData = List();
+      for (int i = 0; i < _monieData.length; i++) {
+        switch (_chipValue) {
+          case 'bank_a':
+            _value = int.parse(_monieData[i].strBankA);
+            break;
+          case 'bank_b':
+            _value = int.parse(_monieData[i].strBankB);
+            break;
+          case 'bank_c':
+            _value = int.parse(_monieData[i].strBankC);
+            break;
+          case 'bank_d':
+            _value = int.parse(_monieData[i].strBankD);
+            break;
+          case 'pay_a':
+            _value = int.parse(_monieData[i].strPayA);
+            break;
+          case 'pay_b':
+            _value = int.parse(_monieData[i].strPayB);
+            break;
+        }
+
+        var _diffMark = (_prevValue != _value) ? 1 : 0;
+        _bankData.add(
+            [_monieData[i].strDate, _value.toString(), _diffMark.toString()]);
+        _prevValue = _value;
+
+        _lastRecordDate = _monieData[i].strDate;
+      }
     }
 
     setState(() {});
@@ -84,7 +109,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          '${_date}',
+          'Bank Input',
           style: const TextStyle(fontFamily: "Yomogi"),
         ),
         centerTitle: true,
@@ -98,24 +123,27 @@ class _BankInputScreenState extends State<BankInputScreen> {
             color: Colors.black.withOpacity(0.7),
             colorBlendMode: BlendMode.darken,
           ),
-          SingleChildScrollView(
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              color: Colors.black.withOpacity(0.3),
-              child: DefaultTextStyle(
-                style: const TextStyle(fontSize: 16.0, fontFamily: "Yomogi"),
+          Column(
+            children: <Widget>[
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                color: Colors.black.withOpacity(0.3),
                 child: Column(
                   children: <Widget>[
-                    Table(
-                      children: [
-                        _displayBankRecord('BankA', _bankA),
-                        _displayBankRecord('BankB', _bankB),
-                        _displayBankRecord('BankC', _bankC),
-                        _displayBankRecord('BankD', _bankD),
-                        _displayBankRecord('PayA', _payA),
-                        _displayBankRecord('PayB', _payB),
+                    Row(
+                      children: <Widget>[
+                        _getChoiceChip('bank_a'),
+                        _getChoiceChip('bank_b'),
+                        _getChoiceChip('bank_c'),
+                        _getChoiceChip('bank_d'),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        _getChoiceChip('pay_a'),
+                        _getChoiceChip('pay_b'),
                       ],
                     ),
                     const Divider(
@@ -124,66 +152,61 @@ class _BankInputScreenState extends State<BankInputScreen> {
                       indent: 20.0,
                       endIndent: 20.0,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            flex: 1,
-                            child: IconButton(
-                              icon: const Icon(Icons.calendar_today),
-                              onPressed: () => _showDatepicker(context),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 3,
-                            child: Text(_dialogSelectedDate),
-                          ),
-                          Expanded(
-                            flex: 3,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10.0),
-                              child: TextField(
-                                keyboardType: TextInputType.number,
-                                controller: _teContBank,
-                                textAlign: TextAlign.end,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        RaisedButton(
-                          child: const Text('Update'),
-                          onPressed: () => _bankDataUpdate(),
-                        ),
-                        Checkbox(
-                          value: _isContinue,
-                          onChanged: (value) {
-                            setState(() {
-                              _isContinue = value;
-                            });
-                          },
-                        ),
-                        const Text('Continue'),
-                        const SizedBox(
-                          width: 20.0,
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.star),
-                          onPressed: () => _goDetailDisplayScreen(),
-                          color: Colors.blue,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15.0),
+                          child: Text(
+                            '${_chipValue}',
+                            style: TextStyle(
+                              color: Colors.greenAccent,
+                            ),
+                          ),
                         ),
                       ],
                     ),
+                    Row(
+                      children: <Widget>[
+                        IconButton(
+                          icon: const Icon(Icons.calendar_today),
+                          tooltip: 'jump',
+                          onPressed: () => _showDatepicker(context),
+                          color: Colors.blueAccent,
+                        ),
+                        Text('${_dialogSelectedDate}'),
+                        IconButton(
+                          icon: const Icon(Icons.input),
+                          tooltip: 'input',
+                          onPressed: () => _updateRecord(context),
+                          color: Colors.greenAccent,
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextField(
+                        controller: _teContPrice,
+                        keyboardType: TextInputType.number,
+                        textAlign: TextAlign.end,
+                        onChanged: (value) {
+                          setState(
+                            () {
+                              _text = value;
+                            },
+                          );
+                        },
+                      ),
+                    )
                   ],
                 ),
               ),
-            ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: _bankData.length,
+                  itemBuilder: (context, int position) => _listItem(position),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -191,36 +214,82 @@ class _BankInputScreenState extends State<BankInputScreen> {
   }
 
   /**
-   * 入力部品表示
+   * リストアイテム表示
    */
-  _displayBankRecord(String _bankName, String _bankValue) {
-    return TableRow(children: [
-      new Radio(
-        value: _bankName,
-        groupValue: _radioValue,
-        onChanged: _radioChange,
+  Widget _listItem(int position) {
+    return InkWell(
+      child: Slidable(
+        actionPane: const SlidableDrawerActionPane(),
+        actionExtentRatio: 0.15,
+        child: Card(
+          color: Colors.black.withOpacity(0.3),
+          elevation: 10.0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: ListTile(
+            leading: _getLeading(_bankData[position][2]),
+            title: Text(
+              '${_bankData[position][0]}　${_bankData[position][1]}',
+              style: const TextStyle(
+                color: Colors.white,
+                fontFamily: 'Yomogi',
+                fontSize: 12.0,
+              ),
+            ),
+          ),
+        ),
+
+        //actions: <Widget>[],
+        secondaryActions: <Widget>[
+          IconSlideAction(
+            color: Colors.black.withOpacity(0.3),
+            foregroundColor: Colors.blueAccent,
+            icon: Icons.check,
+            onTap: () => _dayPickup(position),
+          ),
+        ],
       ),
-      Padding(
-        padding: const EdgeInsets.symmetric(vertical: 15.0),
-        child: Text(_bankName),
-      ),
-      Padding(
-        padding: const EdgeInsets.symmetric(vertical: 15.0),
-        child: Text(_bankValue),
-      ),
-      const Align(),
-    ]);
+    );
   }
 
   /**
-   * ラジオボタンの挙動
+   * リーディングマーク取得
    */
-  String _radioValue = '';
-  void _radioChange(String e) => setState(
-        () {
-          _radioValue = e;
-        },
+  Widget _getLeading(String mark) {
+    if (int.parse(mark) == 1) {
+      return const Icon(
+        Icons.refresh,
+        color: Colors.greenAccent,
       );
+    } else {
+      return const Icon(
+        Icons.check_box_outline_blank,
+        color: Color(0xFF2e2e2e),
+      );
+    }
+  }
+
+  /**
+   * チョイスチップ作成
+   */
+  Widget _getChoiceChip(String _selectedChip) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+      child: ChoiceChip(
+        backgroundColor: Colors.black,
+        label: Text(
+          _selectedChip,
+          style: const TextStyle(color: Colors.white),
+        ),
+        selected: _chipValue == _selectedChip,
+        onSelected: (bool isSelected) {
+          _chipValue = _selectedChip;
+          _getBankValue();
+        },
+      ),
+    );
+  }
 
   /**
    * デートピッカー表示
@@ -236,53 +305,40 @@ class _BankInputScreenState extends State<BankInputScreen> {
 
     if (selectedDate != null) {
       _utility.makeYMDYData(selectedDate.toString(), 0);
-      year = _utility.year;
-      month = _utility.month;
-      day = _utility.day;
-
-      _dialogSelectedDate = year + "-" + month + "-" + day;
-
+      _dialogSelectedDate =
+          _utility.year + "-" + _utility.month + "-" + _utility.day;
       setState(() {});
     }
   }
 
   /**
-   * バンクデータ更新
+   * レコード更新
    */
-  _bankDataUpdate() async {
-    if (_radioValue.length == 0) {
-      Toast.show('Bankが選択されていません', context, duration: Toast.LENGTH_LONG);
-      return false;
-    }
-
-    if (_teContBank.text.length == 0) {
+  _updateRecord(BuildContext context) async {
+    if (_teContPrice.text == '0') {
       Toast.show('金額が入力されていません', context, duration: Toast.LENGTH_LONG);
       return false;
     }
 
-    //-----------------------------------------//
+    //----------------------------------//更新日付リスト作成
+    List<String> _upDates = List();
+
+    int diffDays = DateTime.parse(_lastRecordDate)
+        .difference(DateTime.parse(_dialogSelectedDate))
+        .inDays;
+
     _utility.makeYMDYData(_dialogSelectedDate.toString(), 0);
     var baseYear = _utility.year;
     var baseMonth = _utility.month;
     var baseDay = _utility.day;
 
-    int diffDays = DateTime.parse(_date)
-        .difference(DateTime.parse(_dialogSelectedDate))
-        .inDays;
-
-    List<String> _upDates = List();
     for (int i = 0; i <= diffDays; i++) {
       var genDate = new DateTime(
           int.parse(baseYear), int.parse(baseMonth), (int.parse(baseDay) + i));
-
       _utility.makeYMDYData(genDate.toString(), 0);
-      var genYear = _utility.year;
-      var genMonth = _utility.month;
-      var genDay = _utility.day;
-
-      _upDates.add(genYear + "-" + genMonth + "-" + genDay);
+      _upDates.add(_utility.year + "-" + _utility.month + "-" + _utility.day);
     }
-    //-----------------------------------------//
+    //----------------------------------//更新日付リスト作成
 
     for (int i = 0; i < _upDates.length; i++) {
       var record = await database.selectRecord(_upDates[i]);
@@ -300,59 +356,38 @@ class _BankInputScreenState extends State<BankInputScreen> {
             strYen10: record[0].strYen10,
             strYen5: record[0].strYen5,
             strYen1: record[0].strYen1,
-            strBankA: (_radioValue == 'BankA')
-                ? _teContBank.text
+            strBankA: (_chipValue == 'bank_a')
+                ? _teContPrice.text
                 : record[0].strBankA,
-            strBankB: (_radioValue == 'BankB')
-                ? _teContBank.text
+            strBankB: (_chipValue == 'bank_b')
+                ? _teContPrice.text
                 : record[0].strBankB,
-            strBankC: (_radioValue == 'BankC')
-                ? _teContBank.text
+            strBankC: (_chipValue == 'bank_c')
+                ? _teContPrice.text
                 : record[0].strBankC,
-            strBankD: (_radioValue == 'BankD')
-                ? _teContBank.text
+            strBankD: (_chipValue == 'bank_d')
+                ? _teContPrice.text
                 : record[0].strBankD,
             strPayA:
-                (_radioValue == 'PayA') ? _teContBank.text : record[0].strPayA,
-            strPayB:
-                (_radioValue == 'PayB') ? _teContBank.text : record[0].strPayB);
+                (_chipValue == 'pay_a') ? _teContPrice.text : record[0].strPayA,
+            strPayB: (_chipValue == 'pay_b')
+                ? _teContPrice.text
+                : record[0].strPayB);
 
         await database.updateRecord(monie);
       }
-    } //for
+    } //for[i]
 
-    if (_isContinue == true) {
-      _goBankInputScreen();
-    } else {
-      _goDetailDisplayScreen();
-    }
+    _teContPrice.text = '0';
+
+    _getBankValue();
   }
 
   /**
-   * 画面遷移（自画面）
+   * リストからの日付選択
    */
-  void _goBankInputScreen() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => BankInputScreen(
-          date: _date,
-        ),
-      ),
-    );
-  }
-
-  /**
-   * 画面遷移（DetailDisplayScreen）
-   */
-  void _goDetailDisplayScreen() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => DetailDisplayScreen(
-          date: _date,
-        ),
-      ),
-    );
+  _dayPickup(int position) {
+    _dialogSelectedDate = _bankData[position][0];
+    setState(() {});
   }
 }
