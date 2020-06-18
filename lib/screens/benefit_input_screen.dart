@@ -122,13 +122,13 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
                           onPressed: () => _goDetailDisplayScreen(),
                           color: Colors.blueAccent,
                         ),
-                        Text(_dialogSelectedDate),
                         IconButton(
                           icon: const Icon(Icons.calendar_today),
                           tooltip: 'jump',
                           onPressed: () => _showDatepicker(context),
                           color: Colors.blueAccent,
                         ),
+                        Text(_dialogSelectedDate),
                         IconButton(
                           icon: const Icon(Icons.input),
                           tooltip: 'input',

@@ -30,6 +30,35 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
    * 初期データ作成
    */
   _makeDefaultDisplayData() async {
+    ///////////////////////////////////benefit
+    var val2 = await database.selectBenefitSortedAllRecord;
+    var _beneInfo = Map();
+    if (val2.length > 0) {
+      String _strDate;
+      int j = 0;
+      for (int i = 0; i < val2.length; i++) {
+        var _exDate = val2[i].strDate.split(('-'));
+        if (_strDate != _exDate[0] + '-' + _exDate[1]) {
+          j = 0;
+        }
+        _beneInfo[_exDate[0] + '-' + _exDate[1]] = Map();
+        _beneInfo[_exDate[0] + '-' + _exDate[1]][j] = val2[i].strPrice;
+        j++;
+        _strDate = _exDate[0] + '-' + _exDate[1];
+      }
+    }
+
+    var _beneSum = Map();
+    _beneInfo.forEach((var key, var value) {
+      int sum = 0;
+      value.forEach((var key2, var value2) {
+        sum += int.parse(value2);
+      });
+      _beneSum[key] = sum;
+    });
+    //print(_beneSum);
+    ///////////////////////////////////benefit
+
     //-----------------------------------//
     List<List<String>> _scoreDayInfo = List();
     var val = await database.selectSortedAllRecord;
@@ -37,7 +66,6 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
       for (int i = 0; i < val.length; i++) {
         _utility.makeYMDYData(val[i].strDate, 0);
         if (_utility.day == '01') {
-
           //先月末の日付
           _utility.makeMonthEnd(
               int.parse(_utility.year), int.parse(_utility.month), 0);
@@ -76,14 +104,14 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
         var monie = await database.selectRecord(_scoreDayInfo[i][j]);
 
         switch (j) {
-          case 1://先月末の日付
+          case 1: //先月末の日付
             prevTotal = 0;
             if (monie.length > 0) {
               _utility.makeTotal(monie);
               prevTotal = _utility.total;
             }
             break;
-          case 2://今月末の日付
+          case 2: //今月末の日付
             thisTotal = 0;
             if (monie.length > 0) {
               _utility.makeTotal(monie);
@@ -93,15 +121,19 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
         }
       } //for[j]
 
+      int _benefit = (_beneSum[dispMonth] != null) ? _beneSum[dispMonth] : 0;
+      int _score = ((prevTotal - thisTotal) * -1);
+      int _minus = (_benefit > 0) ? (_benefit - _score) : 0;
+
       _scoreData.add([
         dispMonth,
         prevTotal.toString(),
         thisTotal.toString(),
-        ((prevTotal - thisTotal) * -1).toString()
+        _score.toString(),
+        _benefit.toString(),
+        _minus.toString()
       ]);
     } //for[i]
-
-//    print(_scoreData);
 
     setState(() {});
   }
@@ -156,7 +188,7 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
       ),
       child: ListTile(
         title: Text(
-          '${_scoreData[position][0]}　${_scoreData[position][1]}　${_scoreData[position][2]}　${_scoreData[position][3]}',
+          _getDispStr(position),
           style: const TextStyle(
             color: Colors.white,
             fontFamily: 'Yomogi',
@@ -165,5 +197,21 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
         ),
       ),
     );
+  }
+
+  String _getDispStr(int position) {
+    var str = '';
+    str += _scoreData[position][0];
+    str += '\n';
+    str += '(start)' + _scoreData[position][1];
+    str += '　';
+    str += '(end)' + _scoreData[position][2];
+    str += '\n';
+    str += '(score)' + _scoreData[position][3];
+    str += '\n';
+    str += '(benefit)' + _scoreData[position][4];
+    str += '　';
+    str += '(minus)' + _scoreData[position][5];
+    return str;
   }
 }
