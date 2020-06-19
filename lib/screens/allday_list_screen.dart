@@ -129,12 +129,16 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
           borderRadius: BorderRadius.circular(10.0),
         ),
         child: ListTile(
-          title: Text(
-            _getDisplayListText(position),
-            style: const TextStyle(
-              color: Colors.white,
-              fontFamily: 'Yomogi',
-              fontSize: 12.0,
+          title: DefaultTextStyle(
+            style: TextStyle(fontSize: 10.0),
+            child: Table(
+              children: [
+                TableRow(children: [
+                  _getDisplayContainer(position, 0),
+                  _getDisplayContainer(position, 1),
+                  _getDisplayContainer(position, 2),
+                ]),
+              ],
             ),
           ),
         ),
@@ -164,18 +168,19 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   }
 
   /**
-   * リストテキスト表示
+   * データコンテナ表示
    */
-  _getDisplayListText(int position) {
-    _utility.makeYMDYData(_alldayData[position][0], 0);
-    youbiStr = _utility.youbiStr;
+  Widget _getDisplayContainer(int position, int column) {
+    if (column == 0) {
+      _utility.makeYMDYData(_alldayData[position][0], 0);
+      youbiStr = _utility.youbiStr;
+    }
 
-    return _alldayData[position][0] +
-        "（" +
-        youbiStr +
-        "）　" +
-        _alldayData[position][1] +
-        "　" +
-        _alldayData[position][2];
+    return Container(
+      alignment: (column == 1) ? Alignment.topCenter : Alignment.topLeft,
+      child: (column == 0)
+          ? Text(_alldayData[position][column] + '（' + youbiStr + '）')
+          : Text(_alldayData[position][column]),
+    );
   }
 }

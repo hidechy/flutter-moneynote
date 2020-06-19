@@ -123,7 +123,7 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
 
       int _benefit = (_beneSum[dispMonth] != null) ? _beneSum[dispMonth] : 0;
       int _score = ((prevTotal - thisTotal) * -1);
-      int _minus = (_benefit > 0) ? (_benefit - _score) : 0;
+      int _minus = (_benefit > 0) ? (_benefit - _score) : (_score * -1);
 
       _scoreData.add([
         dispMonth,
@@ -146,7 +146,7 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Score',
+          'Score List',
           style: TextStyle(fontFamily: "Yomogi"),
         ),
         centerTitle: true,
@@ -187,31 +187,53 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: ListTile(
-        title: Text(
-          _getDispStr(position),
-          style: const TextStyle(
-            color: Colors.white,
-            fontFamily: 'Yomogi',
-            fontSize: 12.0,
+        title: DefaultTextStyle(
+          style: TextStyle(fontSize: 10.0),
+          child: Table(
+            children: [
+              TableRow(children: [
+                _getDisplayContainer('left', '', position, 0),
+                Container(),
+                Container(),
+                Container(),
+                Container(),
+              ]),
+              TableRow(children: [
+                _getDisplayContainer('right', 'start : ', null, null),
+                _getDisplayContainer('right', '', position, 1),
+                _getDisplayContainer('right', 'end : ', null, null),
+                _getDisplayContainer('right', '', position, 2),
+                Container(),
+              ]),
+              TableRow(children: [
+                _getDisplayContainer('right', 'score : ', null, null),
+                _getDisplayContainer('right', '', position, 3),
+                _getDisplayContainer('right', 'spend : ', null, null),
+                _getDisplayContainer('right', '', position, 5),
+                Container(),
+              ]),
+              TableRow(children: [
+                _getDisplayContainer('right', 'benefit : ', null, null),
+                _getDisplayContainer('right', '', position, 4),
+                Container(),
+                Container(),
+                Container(),
+              ]),
+            ],
           ),
         ),
       ),
     );
   }
 
-  String _getDispStr(int position) {
-    var str = '';
-    str += _scoreData[position][0];
-    str += '\n';
-    str += '(start)' + _scoreData[position][1];
-    str += '　';
-    str += '(end)' + _scoreData[position][2];
-    str += '\n';
-    str += '(score)' + _scoreData[position][3];
-    str += '\n';
-    str += '(benefit)' + _scoreData[position][4];
-    str += '　';
-    str += '(minus)' + _scoreData[position][5];
-    return str;
+  /**
+   * データコンテナ表示
+   */
+  Widget _getDisplayContainer(
+      String align, String text, int position, int column) {
+    return Container(
+      alignment: (align == 'left') ? Alignment.topLeft : Alignment.topRight,
+      child: (text != '') ? Text(text) : Text(_scoreData[position][column]),
+    );
   }
 }

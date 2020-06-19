@@ -23,6 +23,8 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
 
   Utility _utility = Utility();
 
+  String youbiStr;
+
   String _dialogSelectedDate = "";
 
   bool _updateFlag = false;
@@ -175,12 +177,16 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
             borderRadius: BorderRadius.circular(10.0),
           ),
           child: ListTile(
-            title: Text(
-              '${_benefitData[position][0]}　${_benefitData[position][1]}　${_benefitData[position][2]}',
-              style: const TextStyle(
-                color: Colors.white,
-                fontFamily: 'Yomogi',
-                fontSize: 12.0,
+            title: DefaultTextStyle(
+              style: TextStyle(fontSize: 10.0),
+              child: Table(
+                children: [
+                  TableRow(children: [
+                    _getDisplayContainer(position, 0),
+                    _getDisplayContainer(position, 1),
+                    _getDisplayContainer(position, 2),
+                  ]),
+                ],
               ),
             ),
           ),
@@ -195,6 +201,23 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  /**
+   * データコンテナ表示
+   */
+  Widget _getDisplayContainer(int position, int column) {
+    if (column == 0) {
+      _utility.makeYMDYData(_benefitData[position][0], 0);
+      youbiStr = _utility.youbiStr;
+    }
+
+    return Container(
+      alignment: Alignment.topLeft,
+      child: (column == 0)
+          ? Text(_benefitData[position][column] + '（' + youbiStr + '）')
+          : Text(_benefitData[position][column]),
     );
   }
 
