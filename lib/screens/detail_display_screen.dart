@@ -6,7 +6,7 @@ import '../utilities/utility.dart';
 import '../db/database.dart';
 
 import 'bank_input_screen.dart';
-import 'credit_record_input_screen.dart';
+import 'bank_record_input_screen.dart';
 import 'monthly_list_screen.dart';
 import 'oneday_input_screen.dart';
 import 'score_list_screen.dart';
@@ -472,62 +472,65 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
       context: context,
       builder: (BuildContext context) {
         return SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              ListTile(
-                leading: const Icon(Icons.trending_up),
-                title: const Text('Score List'),
-                onTap: () => _goScoreListScreen(),
-              ),
-              ListTile(
-                leading: const Icon(Icons.list),
-                title: const Text('Monthly List'),
-                onTap: () => _goMonthlyListScreen(),
-              ),
-              ListTile(
-                leading: const Icon(Icons.all_out),
-                title: const Text('AllDay List'),
-                onTap: () => _goAlldayListScreen(),
-              ),
-              ListTile(
-                leading: const Icon(Icons.all_inclusive),
-                title: const Text('SameDay List'),
-                onTap: () => _goSamedayListScreen(),
-              ),
-              Container(
-                color: Colors.grey[900],
-                child: ListTile(
-                  leading: const Icon(Icons.input),
-                  title: const Text('Oneday Input'),
-                  onTap: () => _goOnedayInputScreen(),
+          child: DefaultTextStyle(
+            style: TextStyle(fontSize: 10.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListTile(
+                  leading: const Icon(Icons.trending_up),
+                  title: const Text('Score List'),
+                  onTap: () => _goScoreListScreen(),
                 ),
-              ),
-              Container(
-                color: Colors.grey[900],
-                child: ListTile(
-                  leading: const Icon(Icons.business),
-                  title: const Text('Bank Input'),
-                  onTap: () => _goBankInputScreen(),
+                ListTile(
+                  leading: const Icon(Icons.list),
+                  title: const Text('Monthly List'),
+                  onTap: () => _goMonthlyListScreen(),
                 ),
-              ),
-              Container(
-                color: Colors.grey[900],
-                child: ListTile(
-                  leading: const Icon(Icons.category),
-                  title: const Text('Credit Record Input'),
-                  onTap: () => _goCreditRecordInputScreen(),
+                ListTile(
+                  leading: const Icon(Icons.all_out),
+                  title: const Text('AllDay List'),
+                  onTap: () => _goAlldayListScreen(),
                 ),
-              ),
-              Container(
-                color: Colors.grey[900],
-                child: ListTile(
-                  leading: const Icon(Icons.beenhere),
-                  title: const Text('Benefit Input'),
-                  onTap: () => _goBenefitInputScreen(),
+                ListTile(
+                  leading: const Icon(Icons.all_inclusive),
+                  title: const Text('SameDay List'),
+                  onTap: () => _goSamedayListScreen(),
                 ),
-              ),
-            ],
+                Container(
+                  color: Colors.grey[900],
+                  child: ListTile(
+                    leading: const Icon(Icons.input),
+                    title: const Text('Oneday Input'),
+                    onTap: () => _goOnedayInputScreen(),
+                  ),
+                ),
+                Container(
+                  color: Colors.grey[900],
+                  child: ListTile(
+                    leading: const Icon(Icons.business),
+                    title: const Text('Bank Input'),
+                    onTap: () => _goBankInputScreen(),
+                  ),
+                ),
+                Container(
+                  color: Colors.grey[900],
+                  child: ListTile(
+                    leading: const Icon(Icons.category),
+                    title: const Text('Bank Record Input'),
+                    onTap: () => _goCreditRecordInputScreen(),
+                  ),
+                ),
+                Container(
+                  color: Colors.grey[900],
+                  child: ListTile(
+                    leading: const Icon(Icons.beenhere),
+                    title: const Text('Benefit Input'),
+                    onTap: () => _goBenefitInputScreen(),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },

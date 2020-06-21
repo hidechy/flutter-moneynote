@@ -109,7 +109,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Bank Input',
+          '銀行預金',
           style: const TextStyle(fontFamily: "Yomogi"),
         ),
         centerTitle: true,
@@ -146,26 +146,26 @@ class _BankInputScreenState extends State<BankInputScreen> {
                         _getChoiceChip('pay_b'),
                       ],
                     ),
-                    const Divider(
-                      color: Colors.indigo,
-                      height: 20.0,
-                      indent: 20.0,
-                      endIndent: 20.0,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0,
+                        vertical: 8.0,
+                      ),
+                      child: TextField(
+                        controller: _teContPrice,
+                        keyboardType: TextInputType.number,
+                        textAlign: TextAlign.end,
+                        onChanged: (value) {
+                          setState(
+                            () {
+                              _text = value;
+                            },
+                          );
+                        },
+                      ),
                     ),
                     Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15.0),
-                          child: Text(
-                            '${_chipValue}',
-                            style: TextStyle(
-                              color: Colors.greenAccent,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         IconButton(
                           icon: const Icon(Icons.calendar_today),
@@ -182,21 +182,6 @@ class _BankInputScreenState extends State<BankInputScreen> {
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextField(
-                        controller: _teContPrice,
-                        keyboardType: TextInputType.number,
-                        textAlign: TextAlign.end,
-                        onChanged: (value) {
-                          setState(
-                            () {
-                              _text = value;
-                            },
-                          );
-                        },
-                      ),
-                    )
                   ],
                 ),
               ),

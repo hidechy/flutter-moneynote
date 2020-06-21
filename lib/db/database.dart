@@ -138,6 +138,10 @@ class MyDatabase extends _$MyDatabase {
   Future selectCreditRecord(int id) =>
       (select(credits)..where((tbl) => tbl.intId.equals(id))).get();
 
+  //選択(日付)
+  Future selectCreditDateRecord(String date) =>
+      (select(credits)..where((tbl) => tbl.strDate.equals(date))).get();
+
   //選択（勘定科目）
   Future<List<Credit>> selectCreditItemRecord(String item) => (select(credits)
         ..where((tbl) => tbl.strItem.equals(item))

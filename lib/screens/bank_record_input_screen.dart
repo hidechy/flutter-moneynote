@@ -140,7 +140,7 @@ class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          '通帳履歴登録',
+          '通帳履歴',
           style: const TextStyle(fontFamily: "Yomogi"),
         ),
         centerTitle: true,
@@ -248,12 +248,6 @@ class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
                     ),
                   ],
                 ),
-              ),
-              const Divider(
-                color: Colors.indigo,
-                height: 20.0,
-                indent: 20.0,
-                endIndent: 20.0,
               ),
               Expanded(
                 child: _creditList(),

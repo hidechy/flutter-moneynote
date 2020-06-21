@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
@@ -121,8 +123,11 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
           ? (_prevMonthEndTotal - _thisDayTotal) * -1
           : (_yesterdaySpend - _thisDayTotal) * -1;
 
-      _monthData
-          .add([_thisDay, _thisDayTotal.toString(), onedaySpend.toString()]);
+      var _creRec = await database.selectCreditDateRecord(_thisDay);
+      var _flag = (_creRec.length > 0) ? '1' : '0';
+
+      _monthData.add(
+          [_thisDay, _thisDayTotal.toString(), onedaySpend.toString(), _flag]);
       _yesterdaySpend = _thisDayTotal;
     }
 
@@ -194,6 +199,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
             borderRadius: BorderRadius.circular(10.0),
           ),
           child: ListTile(
+            leading: _getLeading(_monthData[position][3]),
             title: DefaultTextStyle(
               style: TextStyle(fontSize: 10.0),
               child: Table(
@@ -211,6 +217,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
         ),
         //actions: <Widget>[],
         secondaryActions: <Widget>[
+          _getDetailDialogButton(position),
           IconSlideAction(
             color: getBgColor(position),
             foregroundColor: Colors.blueAccent,
@@ -226,6 +233,83 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
         ],
       ),
     );
+  }
+
+  /**
+   * ダイアログボタン表示
+   */
+  _getDetailDialogButton(int position) {
+    if (_monthData[position][3] == '1') {
+      return IconSlideAction(
+        color: getBgColor(position),
+        foregroundColor: Colors.blueAccent,
+        icon: Icons.business,
+        onTap: () => _displayDialog(position),
+      );
+    } else {
+      return IconSlideAction(
+        color: getBgColor(position),
+        foregroundColor: Color(0xFF2e2e2e),
+        icon: Icons.check_box_outline_blank,
+      );
+    }
+  }
+
+  /**
+   * ダイアログ表示
+   */
+  _displayDialog(int position) async {
+    var value = await database.selectCreditDateRecord(_monthData[position][0]);
+
+    String _title;
+
+    List<String> _con = List();
+    for (var i = 0; i < value.length; i++) {
+      _title = value[i].strDate;
+
+      _con.add("□" + value[i].strItem);
+      _con.add(value[i].strPrice + "　" + value[i].strBank);
+    }
+
+    String _content;
+    _content = _con.join('\n');
+
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text(
+          _title,
+          style: TextStyle(color: Colors.white, fontFamily: 'Loboto'),
+        ),
+        content: Text(
+          _content,
+          style: TextStyle(color: Colors.white, fontFamily: 'Loboto'),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('閉じる'),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /**
+   * リーディングマーク取得
+   */
+  Widget _getLeading(String mark) {
+    if (int.parse(mark) == 1) {
+      return const Icon(
+        Icons.business,
+        color: Colors.blueAccent,
+      );
+    } else {
+      return const Icon(
+        Icons.check_box_outline_blank,
+        color: Color(0xFF2e2e2e),
+      );
+    }
   }
 
   /**
@@ -260,7 +344,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
     return Container(
       alignment: (column == 1) ? Alignment.topCenter : Alignment.topLeft,
       child: (column == 0)
-          ? Text(_monthData[position][column] + '（' + youbiStr + '）')
+          ? Text(_monthData[position][column] + ' : ' + youbiStr)
           : Text(_monthData[position][column]),
     );
   }
