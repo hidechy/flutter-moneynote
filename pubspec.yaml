@@ -45,6 +45,7 @@ flutter:
 
   assets:
     - assets/image/
+    - assets/file/
 
 flutter_native_splash:
   image: "assets/image/money.png"

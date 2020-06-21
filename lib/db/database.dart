@@ -41,18 +41,34 @@ class Benefits extends Table {
   Set<Column> get primaryKey => {strDate};
 }
 
-@UseMoor(tables: [Monies, Benefits])
+class Credits extends Table {
+  IntColumn get intId => integer().autoIncrement()();
+
+  TextColumn get strDate => text()();
+  TextColumn get strBank => text()();
+  TextColumn get strItem => text()();
+  TextColumn get strPrice => text()();
+
+  @override
+  Set<Column> get primaryKey => {intId};
+}
+
+@UseMoor(tables: [Monies, Benefits, Credits])
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
         return m.createAll();
       }, onUpgrade: (Migrator m, int from, int to) async {
         if (from == 1) {
           await m.createTable(benefits);
+        }
+
+        if (from == 2) {
+          await m.createTable(credits);
         }
       });
 
@@ -102,6 +118,41 @@ class MyDatabase extends _$MyDatabase {
   //全選択（日付順）
   Future<List<Benefit>> get selectBenefitSortedAllRecord => (select(benefits)
         ..orderBy([(tbl) => OrderingTerm(expression: tbl.strDate)]))
+      .get();
+
+  ////////////////////////////////////////////////////////////Credits
+  //追加
+  Future insertCreditRecord(Credit credit) => into(credits).insert(credit);
+
+  //更新
+  Future updateCreditRecord(Credit credit) => update(credits).replace(credit);
+
+  //全削除
+  Future deleteCreditAllRecord() => delete(credits).go();
+
+  //削除
+  Future deleteCreditIdRecord(Credit credit) =>
+      (delete(credits)..where((tbl) => tbl.intId.equals(credit.intId))).go();
+
+  //選択(id)
+  Future selectCreditRecord(int id) =>
+      (select(credits)..where((tbl) => tbl.intId.equals(id))).get();
+
+  //選択（勘定科目）
+  Future<List<Credit>> selectCreditItemRecord(String item) => (select(credits)
+        ..where((tbl) => tbl.strItem.equals(item))
+        ..orderBy([
+          (tbl) => OrderingTerm(expression: tbl.strDate),
+          (tbl) => OrderingTerm(expression: tbl.intId)
+        ]))
+      .get();
+
+  //全選択（日付順）
+  Future<List<Credit>> get selectCreditSortedAllRecord => (select(credits)
+        ..orderBy([
+          (tbl) => OrderingTerm(expression: tbl.strDate),
+          (tbl) => OrderingTerm(expression: tbl.intId)
+        ]))
       .get();
 }
 

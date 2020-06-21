@@ -1183,14 +1183,348 @@ class $BenefitsTable extends Benefits with TableInfo<$BenefitsTable, Benefit> {
   }
 }
 
+class Credit extends DataClass implements Insertable<Credit> {
+  final int intId;
+  final String strDate;
+  final String strBank;
+  final String strItem;
+  final String strPrice;
+  Credit(
+      {@required this.intId,
+      @required this.strDate,
+      @required this.strBank,
+      @required this.strItem,
+      @required this.strPrice});
+  factory Credit.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    return Credit(
+      intId: intType.mapFromDatabaseResponse(data['${effectivePrefix}int_id']),
+      strDate: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}str_date']),
+      strBank: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}str_bank']),
+      strItem: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}str_item']),
+      strPrice: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}str_price']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || intId != null) {
+      map['int_id'] = Variable<int>(intId);
+    }
+    if (!nullToAbsent || strDate != null) {
+      map['str_date'] = Variable<String>(strDate);
+    }
+    if (!nullToAbsent || strBank != null) {
+      map['str_bank'] = Variable<String>(strBank);
+    }
+    if (!nullToAbsent || strItem != null) {
+      map['str_item'] = Variable<String>(strItem);
+    }
+    if (!nullToAbsent || strPrice != null) {
+      map['str_price'] = Variable<String>(strPrice);
+    }
+    return map;
+  }
+
+  CreditsCompanion toCompanion(bool nullToAbsent) {
+    return CreditsCompanion(
+      intId:
+          intId == null && nullToAbsent ? const Value.absent() : Value(intId),
+      strDate: strDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(strDate),
+      strBank: strBank == null && nullToAbsent
+          ? const Value.absent()
+          : Value(strBank),
+      strItem: strItem == null && nullToAbsent
+          ? const Value.absent()
+          : Value(strItem),
+      strPrice: strPrice == null && nullToAbsent
+          ? const Value.absent()
+          : Value(strPrice),
+    );
+  }
+
+  factory Credit.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return Credit(
+      intId: serializer.fromJson<int>(json['intId']),
+      strDate: serializer.fromJson<String>(json['strDate']),
+      strBank: serializer.fromJson<String>(json['strBank']),
+      strItem: serializer.fromJson<String>(json['strItem']),
+      strPrice: serializer.fromJson<String>(json['strPrice']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'intId': serializer.toJson<int>(intId),
+      'strDate': serializer.toJson<String>(strDate),
+      'strBank': serializer.toJson<String>(strBank),
+      'strItem': serializer.toJson<String>(strItem),
+      'strPrice': serializer.toJson<String>(strPrice),
+    };
+  }
+
+  Credit copyWith(
+          {int intId,
+          String strDate,
+          String strBank,
+          String strItem,
+          String strPrice}) =>
+      Credit(
+        intId: intId ?? this.intId,
+        strDate: strDate ?? this.strDate,
+        strBank: strBank ?? this.strBank,
+        strItem: strItem ?? this.strItem,
+        strPrice: strPrice ?? this.strPrice,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Credit(')
+          ..write('intId: $intId, ')
+          ..write('strDate: $strDate, ')
+          ..write('strBank: $strBank, ')
+          ..write('strItem: $strItem, ')
+          ..write('strPrice: $strPrice')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      intId.hashCode,
+      $mrjc(
+          strDate.hashCode,
+          $mrjc(
+              strBank.hashCode, $mrjc(strItem.hashCode, strPrice.hashCode)))));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is Credit &&
+          other.intId == this.intId &&
+          other.strDate == this.strDate &&
+          other.strBank == this.strBank &&
+          other.strItem == this.strItem &&
+          other.strPrice == this.strPrice);
+}
+
+class CreditsCompanion extends UpdateCompanion<Credit> {
+  final Value<int> intId;
+  final Value<String> strDate;
+  final Value<String> strBank;
+  final Value<String> strItem;
+  final Value<String> strPrice;
+  const CreditsCompanion({
+    this.intId = const Value.absent(),
+    this.strDate = const Value.absent(),
+    this.strBank = const Value.absent(),
+    this.strItem = const Value.absent(),
+    this.strPrice = const Value.absent(),
+  });
+  CreditsCompanion.insert({
+    this.intId = const Value.absent(),
+    @required String strDate,
+    @required String strBank,
+    @required String strItem,
+    @required String strPrice,
+  })  : strDate = Value(strDate),
+        strBank = Value(strBank),
+        strItem = Value(strItem),
+        strPrice = Value(strPrice);
+  static Insertable<Credit> custom({
+    Expression<int> intId,
+    Expression<String> strDate,
+    Expression<String> strBank,
+    Expression<String> strItem,
+    Expression<String> strPrice,
+  }) {
+    return RawValuesInsertable({
+      if (intId != null) 'int_id': intId,
+      if (strDate != null) 'str_date': strDate,
+      if (strBank != null) 'str_bank': strBank,
+      if (strItem != null) 'str_item': strItem,
+      if (strPrice != null) 'str_price': strPrice,
+    });
+  }
+
+  CreditsCompanion copyWith(
+      {Value<int> intId,
+      Value<String> strDate,
+      Value<String> strBank,
+      Value<String> strItem,
+      Value<String> strPrice}) {
+    return CreditsCompanion(
+      intId: intId ?? this.intId,
+      strDate: strDate ?? this.strDate,
+      strBank: strBank ?? this.strBank,
+      strItem: strItem ?? this.strItem,
+      strPrice: strPrice ?? this.strPrice,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (intId.present) {
+      map['int_id'] = Variable<int>(intId.value);
+    }
+    if (strDate.present) {
+      map['str_date'] = Variable<String>(strDate.value);
+    }
+    if (strBank.present) {
+      map['str_bank'] = Variable<String>(strBank.value);
+    }
+    if (strItem.present) {
+      map['str_item'] = Variable<String>(strItem.value);
+    }
+    if (strPrice.present) {
+      map['str_price'] = Variable<String>(strPrice.value);
+    }
+    return map;
+  }
+}
+
+class $CreditsTable extends Credits with TableInfo<$CreditsTable, Credit> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $CreditsTable(this._db, [this._alias]);
+  final VerificationMeta _intIdMeta = const VerificationMeta('intId');
+  GeneratedIntColumn _intId;
+  @override
+  GeneratedIntColumn get intId => _intId ??= _constructIntId();
+  GeneratedIntColumn _constructIntId() {
+    return GeneratedIntColumn('int_id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _strDateMeta = const VerificationMeta('strDate');
+  GeneratedTextColumn _strDate;
+  @override
+  GeneratedTextColumn get strDate => _strDate ??= _constructStrDate();
+  GeneratedTextColumn _constructStrDate() {
+    return GeneratedTextColumn(
+      'str_date',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _strBankMeta = const VerificationMeta('strBank');
+  GeneratedTextColumn _strBank;
+  @override
+  GeneratedTextColumn get strBank => _strBank ??= _constructStrBank();
+  GeneratedTextColumn _constructStrBank() {
+    return GeneratedTextColumn(
+      'str_bank',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _strItemMeta = const VerificationMeta('strItem');
+  GeneratedTextColumn _strItem;
+  @override
+  GeneratedTextColumn get strItem => _strItem ??= _constructStrItem();
+  GeneratedTextColumn _constructStrItem() {
+    return GeneratedTextColumn(
+      'str_item',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _strPriceMeta = const VerificationMeta('strPrice');
+  GeneratedTextColumn _strPrice;
+  @override
+  GeneratedTextColumn get strPrice => _strPrice ??= _constructStrPrice();
+  GeneratedTextColumn _constructStrPrice() {
+    return GeneratedTextColumn(
+      'str_price',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns =>
+      [intId, strDate, strBank, strItem, strPrice];
+  @override
+  $CreditsTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'credits';
+  @override
+  final String actualTableName = 'credits';
+  @override
+  VerificationContext validateIntegrity(Insertable<Credit> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('int_id')) {
+      context.handle(
+          _intIdMeta, intId.isAcceptableOrUnknown(data['int_id'], _intIdMeta));
+    }
+    if (data.containsKey('str_date')) {
+      context.handle(_strDateMeta,
+          strDate.isAcceptableOrUnknown(data['str_date'], _strDateMeta));
+    } else if (isInserting) {
+      context.missing(_strDateMeta);
+    }
+    if (data.containsKey('str_bank')) {
+      context.handle(_strBankMeta,
+          strBank.isAcceptableOrUnknown(data['str_bank'], _strBankMeta));
+    } else if (isInserting) {
+      context.missing(_strBankMeta);
+    }
+    if (data.containsKey('str_item')) {
+      context.handle(_strItemMeta,
+          strItem.isAcceptableOrUnknown(data['str_item'], _strItemMeta));
+    } else if (isInserting) {
+      context.missing(_strItemMeta);
+    }
+    if (data.containsKey('str_price')) {
+      context.handle(_strPriceMeta,
+          strPrice.isAcceptableOrUnknown(data['str_price'], _strPriceMeta));
+    } else if (isInserting) {
+      context.missing(_strPriceMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {intId};
+  @override
+  Credit map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return Credit.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  $CreditsTable createAlias(String alias) {
+    return $CreditsTable(_db, alias);
+  }
+}
+
 abstract class _$MyDatabase extends GeneratedDatabase {
   _$MyDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $MoniesTable _monies;
   $MoniesTable get monies => _monies ??= $MoniesTable(this);
   $BenefitsTable _benefits;
   $BenefitsTable get benefits => _benefits ??= $BenefitsTable(this);
+  $CreditsTable _credits;
+  $CreditsTable get credits => _credits ??= $CreditsTable(this);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [monies, benefits];
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [monies, benefits, credits];
 }

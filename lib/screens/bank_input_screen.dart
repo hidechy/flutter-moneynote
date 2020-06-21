@@ -277,7 +277,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5.0),
       child: ChoiceChip(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.blueAccent.withOpacity(0.5),
         label: Text(
           _selectedChip,
           style: const TextStyle(color: Colors.white),
