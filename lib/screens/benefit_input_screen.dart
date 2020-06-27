@@ -3,9 +3,9 @@ import 'package:toast/toast.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../main.dart';
+
 import '../db/database.dart';
 import '../utilities/utility.dart';
-
 import 'detail_display_screen.dart';
 
 class BenefitInputScreen extends StatefulWidget {
@@ -342,7 +342,7 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
    * 画面遷移（DetailDisplayScreen）
    */
   _goDetailDisplayScreen() {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => DetailDisplayScreen(

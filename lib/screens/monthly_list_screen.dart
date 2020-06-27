@@ -1,10 +1,9 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-import '../utilities/utility.dart';
 import '../main.dart';
+
+import '../utilities/utility.dart';
 
 import 'detail_display_screen.dart';
 import 'oneday_input_screen.dart';
@@ -145,7 +144,6 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
           _month,
           style: const TextStyle(fontFamily: "Yomogi"),
         ),
-        centerTitle: true,
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.skip_previous),
@@ -158,6 +156,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
             onPressed: () => _goNextMonth(context),
           ),
         ],
+        centerTitle: true,
       ),
       body: Stack(
         fit: StackFit.expand,
@@ -395,7 +394,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
    * 画面遷移（DetailDisplayScreen）
    */
   _goDetailDisplayScreen(int position) {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => DetailDisplayScreen(

@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 
-import '../db/database.dart';
 import '../main.dart';
+
+import '../db/database.dart';
 import '../utilities/utility.dart';
 
 import 'detail_display_screen.dart';
@@ -355,7 +356,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
    * 画面遷移（DetailDisplayScreen）
    */
   _goDetailDisplayScreen() {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => DetailDisplayScreen(

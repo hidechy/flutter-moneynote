@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../main.dart';
+
 import '../db/database.dart';
 import '../utilities/utility.dart';
-import '../main.dart';
 
 class SamedayListScreen extends StatefulWidget {
   final String date;
