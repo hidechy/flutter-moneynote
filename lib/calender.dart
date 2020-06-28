@@ -4,6 +4,7 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
 import 'package:flutter_calendar_carousel/classes/event.dart';
 
 import 'screens/monthly_list_screen.dart';
+import 'screens/oneday_input_screen.dart';
 import 'screens/score_list_screen.dart';
 import 'screens/detail_display_screen.dart';
 
@@ -104,6 +105,14 @@ class _CalenderState extends State<Calender> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xFf2e2e2e),
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        onPressed: () => _goOnedayInputScreen(),
+      ),
     );
   }
 
@@ -158,6 +167,25 @@ class _CalenderState extends State<Calender> {
       MaterialPageRoute(
         builder: (context) => MonthlyListScreen(
           date: _date,
+        ),
+      ),
+    );
+  }
+
+  /**
+   * 画面遷移（OnedayInputScreen）
+   */
+  _goOnedayInputScreen() {
+    //print(DateTime.now());
+
+    var _inputDate = DateTime.now().toString().substring(0, 10);
+    print(_inputDate);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => OnedayInputScreen(
+          date: _inputDate,
         ),
       ),
     );
