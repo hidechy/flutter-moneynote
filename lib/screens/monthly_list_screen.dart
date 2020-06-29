@@ -260,18 +260,20 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   _displayDialog(int position) async {
     var value = await database.selectCreditDateRecord(_monthData[position][0]);
 
-    String _title;
+    int _bankPrice = 0;
 
+    String _title;
+    String _content;
     List<String> _con = List();
     for (var i = 0; i < value.length; i++) {
       _title = value[i].strDate;
-
       _con.add("□" + value[i].strItem);
       _con.add(value[i].strPrice + "　" + value[i].strBank);
+      _bankPrice += int.parse(value[i].strPrice);
     }
-
-    String _content;
     _content = _con.join('\n');
+
+    int _onedaySpend = (int.parse(_monthData[position][2]) * -1) - _bankPrice;
 
     showDialog(
       context: context,
@@ -280,9 +282,27 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
           _title,
           style: TextStyle(color: Colors.white, fontFamily: 'Loboto'),
         ),
-        content: Text(
-          _content,
-          style: TextStyle(color: Colors.white, fontFamily: 'Loboto'),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              _content,
+              style: TextStyle(color: Colors.white, fontFamily: 'Loboto'),
+            ),
+            const Divider(
+              color: Colors.indigo,
+              height: 20.0,
+              indent: 20.0,
+              endIndent: 20.0,
+            ),
+            Text(_onedaySpend.toString()),
+            const Divider(
+              color: Colors.indigo,
+              height: 20.0,
+              indent: 20.0,
+              endIndent: 20.0,
+            ),
+          ],
         ),
         actions: <Widget>[
           FlatButton(

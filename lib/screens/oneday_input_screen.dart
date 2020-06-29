@@ -56,6 +56,8 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
 
   bool _updateFlag = false;
 
+  int _onedayTotal = 0;
+
   /**
    * 初期動作
    */
@@ -204,7 +206,17 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
                         _getTextField('PayA', _teContPayA),
                         _getTextField('PayB', _teContPayB),
                         const Align(),
-                        const Align(),
+                        Container(
+                          alignment: Alignment.bottomRight,
+                          height: 70.0,
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: Text(
+                              '${_onedayTotal}',
+                              style: TextStyle(color: Colors.greenAccent),
+                            ),
+                          ),
+                        ),
                       ]),
                     ],
                   ),
@@ -236,6 +248,12 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
                         color: Colors.blueAccent,
                       ),
                       IconButton(
+                        icon: const Icon(Icons.check_box),
+                        tooltip: 'total',
+                        onPressed: () => _displayTotal(),
+                        color: Colors.greenAccent,
+                      ),
+                      IconButton(
                         icon: const Icon(Icons.input),
                         tooltip: 'input',
                         onPressed: () => _insertRecord(context),
@@ -262,7 +280,12 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
         keyboardType: TextInputType.number,
         controller: con,
         textAlign: TextAlign.end,
-        decoration: InputDecoration(labelText: yen),
+        decoration: InputDecoration(
+          labelText: yen,
+        ),
+        style: TextStyle(
+          fontSize: 12.0,
+        ),
         onChanged: (value) {
           setState(
             () {
@@ -415,5 +438,37 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
     }
 
     _makeDefaultDisplayData();
+  }
+
+  /**
+   * 合計金額表示
+   */
+  _displayTotal() {
+    List<List<String>> _totalValue = List();
+    _totalValue.add(['10000', _teCont10000.text]);
+    _totalValue.add(['5000', _teCont5000.text]);
+    _totalValue.add(['2000', _teCont2000.text]);
+    _totalValue.add(['1000', _teCont1000.text]);
+    _totalValue.add(['500', _teCont500.text]);
+    _totalValue.add(['100', _teCont100.text]);
+    _totalValue.add(['50', _teCont50.text]);
+    _totalValue.add(['10', _teCont10.text]);
+    _totalValue.add(['5', _teCont5.text]);
+    _totalValue.add(['1', _teCont1.text]);
+    _totalValue.add(['1', _teContBankA.text]);
+    _totalValue.add(['1', _teContBankB.text]);
+    _totalValue.add(['1', _teContBankC.text]);
+    _totalValue.add(['1', _teContBankD.text]);
+    _totalValue.add(['1', _teContPayA.text]);
+    _totalValue.add(['1', _teContPayB.text]);
+
+    for (int i = 0; i < _totalValue.length; i++) {
+      _onedayTotal +=
+          (int.parse(_totalValue[i][0]) * int.parse(_totalValue[i][1]));
+    }
+
+    print(_onedayTotal);
+
+    setState(() {});
   }
 }
