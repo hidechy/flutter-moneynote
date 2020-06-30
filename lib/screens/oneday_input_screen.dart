@@ -57,6 +57,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   bool _updateFlag = false;
 
   int _onedayTotal = 0;
+  int _onedaySpend = 0;
 
   /**
    * 初期動作
@@ -206,15 +207,23 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
                         _getTextField('PayA', _teContPayA),
                         _getTextField('PayB', _teContPayB),
                         const Align(),
-                        Container(
-                          alignment: Alignment.bottomRight,
-                          height: 70.0,
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 10.0),
-                            child: Text(
-                              '${_onedayTotal}',
-                              style: TextStyle(color: Colors.greenAccent),
-                            ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            right: 10.0,
+                            top: 20.0,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              Text(
+                                '${_onedayTotal}',
+                                style: TextStyle(color: Colors.greenAccent),
+                              ),
+                              Text(
+                                '${_onedaySpend}',
+                                style: TextStyle(color: Colors.greenAccent),
+                              ),
+                            ],
                           ),
                         ),
                       ]),
@@ -302,13 +311,9 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
    */
   _dataCopy() async {
     _utility.makeYMDYData(prevDate.toString(), 0);
-    year = _utility.year;
-    month = _utility.month;
-    day = _utility.day;
-    var _yesterdayDate = year + "-" + month + "-" + day;
+    _monieData = await database.selectRecord(
+        _utility.year + "-" + _utility.month + "-" + _utility.day);
 
-    //データベースのレコードを取得
-    _monieData = await database.selectRecord(_yesterdayDate);
     if (_monieData.length > 0) {
       _teCont10000 = new TextEditingController(text: _monieData[0].strYen10000);
       _teCont5000 = new TextEditingController(text: _monieData[0].strYen5000);
@@ -443,7 +448,10 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   /**
    * 合計金額表示
    */
-  _displayTotal() {
+  _displayTotal() async {
+    //-------------------------------//現在の合計値
+    _onedayTotal = 0;
+
     List<List<String>> _totalValue = List();
     _totalValue.add(['10000', _teCont10000.text]);
     _totalValue.add(['5000', _teCont5000.text]);
@@ -455,10 +463,12 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
     _totalValue.add(['10', _teCont10.text]);
     _totalValue.add(['5', _teCont5.text]);
     _totalValue.add(['1', _teCont1.text]);
+
     _totalValue.add(['1', _teContBankA.text]);
     _totalValue.add(['1', _teContBankB.text]);
     _totalValue.add(['1', _teContBankC.text]);
     _totalValue.add(['1', _teContBankD.text]);
+
     _totalValue.add(['1', _teContPayA.text]);
     _totalValue.add(['1', _teContPayB.text]);
 
@@ -466,8 +476,41 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
       _onedayTotal +=
           (int.parse(_totalValue[i][0]) * int.parse(_totalValue[i][1]));
     }
+    //-------------------------------//現在の合計値
 
-    print(_onedayTotal);
+    //-------------------------------//前日の合計値
+    var _prevDayTotal = 0;
+    _utility.makeYMDYData(prevDate.toString(), 0);
+    var prevDayData = await database.selectRecord(
+        _utility.year + "-" + _utility.month + "-" + _utility.day);
+
+    List<List<String>> _totalValue2 = List();
+    _totalValue2.add(['10000', prevDayData[0].strYen10000]);
+    _totalValue2.add(['5000', prevDayData[0].strYen5000]);
+    _totalValue2.add(['2000', prevDayData[0].strYen2000]);
+    _totalValue2.add(['1000', prevDayData[0].strYen1000]);
+    _totalValue2.add(['500', prevDayData[0].strYen500]);
+    _totalValue2.add(['100', prevDayData[0].strYen100]);
+    _totalValue2.add(['50', prevDayData[0].strYen50]);
+    _totalValue2.add(['10', prevDayData[0].strYen10]);
+    _totalValue2.add(['5', prevDayData[0].strYen5]);
+    _totalValue2.add(['1', prevDayData[0].strYen1]);
+
+    _totalValue2.add(['1', prevDayData[0].strBankA]);
+    _totalValue2.add(['1', prevDayData[0].strBankB]);
+    _totalValue2.add(['1', prevDayData[0].strBankC]);
+    _totalValue2.add(['1', prevDayData[0].strBankD]);
+
+    _totalValue2.add(['1', prevDayData[0].strPayA]);
+    _totalValue2.add(['1', prevDayData[0].strPayB]);
+
+    for (int i = 0; i < _totalValue2.length; i++) {
+      _prevDayTotal +=
+          (int.parse(_totalValue2[i][0]) * int.parse(_totalValue2[i][1]));
+    }
+
+    _onedaySpend = (_prevDayTotal - _onedayTotal);
+    //-------------------------------//前日の合計値
 
     setState(() {});
   }

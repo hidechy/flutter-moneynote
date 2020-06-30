@@ -122,11 +122,19 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
           ? (_prevMonthEndTotal - _thisDayTotal) * -1
           : (_yesterdaySpend - _thisDayTotal) * -1;
 
+      var _flag = '0';
       var _creRec = await database.selectCreditDateRecord(_thisDay);
-      var _flag = (_creRec.length > 0) ? '1' : '0';
+      if (_creRec.length > 0) {
+        _flag = '1';
+      }
+      var _beneRec = await database.selectBenefitRecord(_thisDay);
+      if (_beneRec.length > 0) {
+        _flag = '2';
+      }
 
       _monthData.add(
           [_thisDay, _thisDayTotal.toString(), onedaySpend.toString(), _flag]);
+
       _yesterdaySpend = _thisDayTotal;
     }
 
@@ -238,19 +246,32 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
    * ダイアログボタン表示
    */
   _getDetailDialogButton(int position) {
-    if (_monthData[position][3] == '1') {
-      return IconSlideAction(
-        color: getBgColor(position),
-        foregroundColor: Colors.blueAccent,
-        icon: Icons.business,
-        onTap: () => _displayDialog(position),
-      );
-    } else {
-      return IconSlideAction(
-        color: getBgColor(position),
-        foregroundColor: Color(0xFF2e2e2e),
-        icon: Icons.check_box_outline_blank,
-      );
+    switch (_monthData[position][3]) {
+      case '1':
+        return IconSlideAction(
+          color: getBgColor(position),
+          foregroundColor: Colors.blueAccent,
+          icon: Icons.business,
+          onTap: () => _displayDialog(position),
+        );
+        break;
+
+      case '2':
+        return IconSlideAction(
+          color: getBgColor(position),
+          foregroundColor: Colors.orangeAccent,
+          icon: Icons.beenhere,
+          onTap: () => _displayDialog(position),
+        );
+        break;
+
+      default:
+        return IconSlideAction(
+          color: getBgColor(position),
+          foregroundColor: Color(0xFF2e2e2e),
+          icon: Icons.check_box_outline_blank,
+        );
+        break;
     }
   }
 
@@ -258,22 +279,51 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
    * ダイアログ表示
    */
   _displayDialog(int position) async {
-    var value = await database.selectCreditDateRecord(_monthData[position][0]);
-
+    String _title = '';
+    int _onedaySpend = 0;
     int _bankPrice = 0;
 
-    String _title;
-    String _content;
-    List<String> _con = List();
-    for (var i = 0; i < value.length; i++) {
-      _title = value[i].strDate;
-      _con.add("□" + value[i].strItem);
-      _con.add(value[i].strPrice + "　" + value[i].strBank);
-      _bankPrice += int.parse(value[i].strPrice);
+    //----------------//
+    String _creditStr = '';
+    var value = await database.selectCreditDateRecord(_monthData[position][0]);
+    if (value.length > 0) {
+      List<String> _cre = List();
+      for (var i = 0; i < value.length; i++) {
+        _title = value[i].strDate;
+        //
+        _cre.add("□" + value[i].strItem);
+        _cre.add(value[i].strBank + "　" + value[i].strPrice);
+        //
+        _bankPrice += int.parse(value[i].strPrice);
+      }
+      _creditStr = _cre.join('\n');
     }
-    _content = _con.join('\n');
+    //----------------//
 
-    int _onedaySpend = (int.parse(_monthData[position][2]) * -1) - _bankPrice;
+    //----------------//
+    String _benefitStr = '';
+    var value2 = await database.selectBenefitRecord(_monthData[position][0]);
+    if (value2.length > 0) {
+      List<String> _bene = List();
+      for (var i = 0; i < value2.length; i++) {
+        if (_title == '') {
+          _title = value2[0].strDate;
+        }
+        //
+        _bene.add(value2[i].strCompany + "　" + value2[i].strPrice);
+        //
+        _bankPrice += int.parse(value2[i].strPrice) * -1;
+      }
+      _benefitStr = _bene.join('\n');
+    }
+    //----------------//
+
+    if (_bankPrice != 0) {
+      _onedaySpend = (int.parse(_monthData[position][2]) * -1) - _bankPrice;
+      if (value2.length > 0) {
+        _onedaySpend *= -1;
+      }
+    }
 
     showDialog(
       context: context,
@@ -285,17 +335,47 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            (_creditStr == '')
+                ? Container()
+                : Text(
+                    _creditStr,
+                    style: TextStyle(
+                      fontFamily: 'Loboto',
+                      fontSize: 12.0,
+                    ),
+                  ),
+            (_creditStr == '')
+                ? Container()
+                : Divider(
+                    color: Colors.indigo,
+                    height: 20.0,
+                    indent: 20.0,
+                    endIndent: 20.0,
+                  ),
+            (_benefitStr == '')
+                ? Container()
+                : Text(
+                    _benefitStr,
+                    style: TextStyle(
+                      fontFamily: 'Loboto',
+                      fontSize: 12.0,
+                    ),
+                  ),
+            (_benefitStr == '')
+                ? Container()
+                : Divider(
+                    color: Colors.indigo,
+                    height: 20.0,
+                    indent: 20.0,
+                    endIndent: 20.0,
+                  ),
             Text(
-              _content,
-              style: TextStyle(color: Colors.white, fontFamily: 'Loboto'),
+              'Oneday Spend：${_onedaySpend.toString()}',
+              style: TextStyle(
+                fontFamily: 'Loboto',
+                fontSize: 12.0,
+              ),
             ),
-            const Divider(
-              color: Colors.indigo,
-              height: 20.0,
-              indent: 20.0,
-              endIndent: 20.0,
-            ),
-            Text(_onedaySpend.toString()),
             const Divider(
               color: Colors.indigo,
               height: 20.0,
@@ -318,16 +398,27 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
    * リーディングマーク取得
    */
   Widget _getLeading(String mark) {
-    if (int.parse(mark) == 1) {
-      return const Icon(
-        Icons.business,
-        color: Colors.blueAccent,
-      );
-    } else {
-      return const Icon(
-        Icons.check_box_outline_blank,
-        color: Color(0xFF2e2e2e),
-      );
+    switch (mark) {
+      case '1':
+        return const Icon(
+          Icons.business,
+          color: Colors.blueAccent,
+        );
+        break;
+
+      case '2':
+        return const Icon(
+          Icons.beenhere,
+          color: Colors.orangeAccent,
+        );
+        break;
+
+      default:
+        return const Icon(
+          Icons.check_box_outline_blank,
+          color: Color(0xFF2e2e2e),
+        );
+        break;
     }
   }
 
