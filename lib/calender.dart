@@ -108,8 +108,8 @@ class _CalenderState extends State<Calender> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xFf2e2e2e),
         child: Icon(
-          Icons.add,
-          color: Colors.white,
+          Icons.input,
+          color: Colors.greenAccent,
         ),
         onPressed: () => _goOnedayInputScreen(),
       ),

@@ -53,6 +53,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
 
   TextEditingController _teContPayA = TextEditingController();
   TextEditingController _teContPayB = TextEditingController();
+  TextEditingController _teContPayC = TextEditingController();
 
   bool _updateFlag = false;
 
@@ -107,6 +108,12 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
       _teContPayA = new TextEditingController(text: _monieData[0].strPayA);
       _teContPayB = new TextEditingController(text: _monieData[0].strPayB);
 
+      if (_monieData[0].strPayC != null) {
+        _teContPayC = new TextEditingController(text: _monieData[0].strPayC);
+      } else {
+        _teContPayC = new TextEditingController(text: '0');
+      }
+
       _updateFlag = true;
     } else {
       _teCont10000 = new TextEditingController(text: '0');
@@ -127,6 +134,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
 
       _teContPayA = new TextEditingController(text: '0');
       _teContPayB = new TextEditingController(text: '0');
+      _teContPayC = new TextEditingController(text: '0');
     }
 
     setState(() {});
@@ -195,18 +203,6 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
                         _getTextField('5', _teCont5),
                         _getTextField('1', _teCont1),
                         const Align(),
-                        const Align(),
-                      ]),
-                      TableRow(children: [
-                        _getTextField('BankA', _teContBankA),
-                        _getTextField('BankB', _teContBankB),
-                        _getTextField('BankC', _teContBankC),
-                        _getTextField('BankD', _teContBankD),
-                      ]),
-                      TableRow(children: [
-                        _getTextField('PayA', _teContPayA),
-                        _getTextField('PayB', _teContPayB),
-                        const Align(),
                         Padding(
                           padding: const EdgeInsets.only(
                             right: 10.0,
@@ -226,6 +222,18 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
                             ],
                           ),
                         ),
+                      ]),
+                      TableRow(children: [
+                        _getTextField('みずほ', _teContBankA),
+                        _getTextField('住友547', _teContBankB),
+                        _getTextField('住友259', _teContBankC),
+                        _getTextField('UFJ', _teContBankD),
+                      ]),
+                      TableRow(children: [
+                        _getTextField('Suica', _teContPayA),
+                        _getTextField('paypay', _teContPayB),
+                        _getTextField('PASUMO', _teContPayC),
+                        const Align(),
                       ]),
                     ],
                   ),
@@ -333,6 +341,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
 
       _teContPayA = new TextEditingController(text: _monieData[0].strPayA);
       _teContPayB = new TextEditingController(text: _monieData[0].strPayB);
+      _teContPayC = new TextEditingController(text: _monieData[0].strPayC);
     }
 
     setState(() {});
@@ -416,23 +425,25 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
    */
   _insertRecord(BuildContext context) async {
     var monie = Monie(
-        strDate: _date,
-        strYen10000: _teCont10000.text != "" ? _teCont10000.text : '0',
-        strYen5000: _teCont5000.text != "" ? _teCont5000.text : '0',
-        strYen2000: _teCont2000.text != "" ? _teCont2000.text : '0',
-        strYen1000: _teCont1000.text != "" ? _teCont1000.text : '0',
-        strYen500: _teCont500.text != "" ? _teCont500.text : '0',
-        strYen100: _teCont100.text != "" ? _teCont100.text : '0',
-        strYen50: _teCont50.text != "" ? _teCont50.text : '0',
-        strYen10: _teCont10.text != "" ? _teCont10.text : '0',
-        strYen5: _teCont5.text != "" ? _teCont5.text : '0',
-        strYen1: _teCont1.text != "" ? _teCont1.text : '0',
-        strBankA: _teContBankA.text != "" ? _teContBankA.text : '0',
-        strBankB: _teContBankB.text != "" ? _teContBankB.text : '0',
-        strBankC: _teContBankC.text != "" ? _teContBankC.text : '0',
-        strBankD: _teContBankD.text != "" ? _teContBankD.text : '0',
-        strPayA: _teContPayA.text != "" ? _teContPayA.text : '0',
-        strPayB: _teContPayB.text != "" ? _teContPayB.text : '0');
+      strDate: _date,
+      strYen10000: _teCont10000.text != "" ? _teCont10000.text : '0',
+      strYen5000: _teCont5000.text != "" ? _teCont5000.text : '0',
+      strYen2000: _teCont2000.text != "" ? _teCont2000.text : '0',
+      strYen1000: _teCont1000.text != "" ? _teCont1000.text : '0',
+      strYen500: _teCont500.text != "" ? _teCont500.text : '0',
+      strYen100: _teCont100.text != "" ? _teCont100.text : '0',
+      strYen50: _teCont50.text != "" ? _teCont50.text : '0',
+      strYen10: _teCont10.text != "" ? _teCont10.text : '0',
+      strYen5: _teCont5.text != "" ? _teCont5.text : '0',
+      strYen1: _teCont1.text != "" ? _teCont1.text : '0',
+      strBankA: _teContBankA.text != "" ? _teContBankA.text : '0',
+      strBankB: _teContBankB.text != "" ? _teContBankB.text : '0',
+      strBankC: _teContBankC.text != "" ? _teContBankC.text : '0',
+      strBankD: _teContBankD.text != "" ? _teContBankD.text : '0',
+      strPayA: _teContPayA.text != "" ? _teContPayA.text : '0',
+      strPayB: _teContPayB.text != "" ? _teContPayB.text : '0',
+      strPayC: _teContPayC.text != "" ? _teContPayC.text : '0',
+    );
 
     if (_updateFlag == false) {
       await database.insertRecord(monie);
@@ -503,6 +514,10 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
 
     _totalValue2.add(['1', prevDayData[0].strPayA]);
     _totalValue2.add(['1', prevDayData[0].strPayB]);
+
+    if (prevDayData[0].strPayC != null) {
+      _totalValue2.add(['1', prevDayData[0].strPayC]);
+    }
 
     for (int i = 0; i < _totalValue2.length; i++) {
       _prevDayTotal +=

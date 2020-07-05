@@ -111,6 +111,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
 
         _totalValue.add(['1', _monieData[0].strPayA]);
         _totalValue.add(['1', _monieData[0].strPayB]);
+        _totalValue.add(['1', _monieData[0].strPayC]);
 
         for (int i = 0; i < _totalValue.length; i++) {
           _thisDayTotal +=

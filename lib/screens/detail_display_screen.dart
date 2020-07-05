@@ -54,6 +54,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
 
   String _payA = '0';
   String _payB = '0';
+  String _payC = '0';
 
   List<Monie> _monieData = List();
 
@@ -95,6 +96,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
     //本日分のレコードを取得
     _monieData = await database.selectRecord(_date);
 
+    print(_monieData);
+
     if (_monieData.length > 0) {
       _yen10000 = _monieData[0].strYen10000;
       _yen5000 = _monieData[0].strYen5000;
@@ -114,6 +117,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
 
       _payA = _monieData[0].strPayA;
       _payB = _monieData[0].strPayB;
+      _payC = _monieData[0].strPayC;
 
       _utility.makeTotal(_monieData);
       _total = _utility.total;
@@ -150,6 +154,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
 
         _totalValue.add(['1', _yesterdayData[0].strPayA]);
         _totalValue.add(['1', _yesterdayData[0].strPayB]);
+        _totalValue.add(['1', _yesterdayData[0].strPayC]);
 
         var _yesterdayTotal = 0;
         for (int i = 0; i < _totalValue.length; i++) {
@@ -188,6 +193,10 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
 
       _totalValue.add(['1', _lastMonthEndData[0].strPayA]);
       _totalValue.add(['1', _lastMonthEndData[0].strPayB]);
+
+      if (_lastMonthEndData[0].strPayC != null) {
+        _totalValue.add(['1', _lastMonthEndData[0].strPayC]);
+      }
 
       for (int i = 0; i < _totalValue.length; i++) {
         _lastMonthTotal +=
@@ -334,22 +343,22 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                       Table(
                         children: [
                           TableRow(children: [
-                            _getTextDispWidget('bank_a'),
+                            _getTextDispWidget('みずほ'),
                             _getTextDispWidget(_bankA),
                             const Align(),
                           ]),
                           TableRow(children: [
-                            _getTextDispWidget('bank_b'),
+                            _getTextDispWidget('住友547'),
                             _getTextDispWidget(_bankB),
                             const Align(),
                           ]),
                           TableRow(children: [
-                            _getTextDispWidget('bank_c'),
+                            _getTextDispWidget('住友259'),
                             _getTextDispWidget(_bankC),
                             const Align(),
                           ]),
                           TableRow(children: [
-                            _getTextDispWidget('bank_d'),
+                            _getTextDispWidget('UFJ'),
                             _getTextDispWidget(_bankD),
                             const Align(),
                           ]),
@@ -364,13 +373,18 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                       Table(
                         children: [
                           TableRow(children: [
-                            _getTextDispWidget('pay_a'),
+                            _getTextDispWidget('Suica'),
                             _getTextDispWidget(_payA),
                             const Align(),
                           ]),
                           TableRow(children: [
-                            _getTextDispWidget('pay_b'),
+                            _getTextDispWidget('paypay'),
                             _getTextDispWidget(_payB),
+                            const Align(),
+                          ]),
+                          TableRow(children: [
+                            _getTextDispWidget('PASMO'),
+                            _getTextDispWidget(_payC),
                             const Align(),
                           ]),
                         ],

@@ -58,6 +58,7 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
 
         _totalValue.add(['1', _monieData[i].strPayA]);
         _totalValue.add(['1', _monieData[i].strPayB]);
+        _totalValue.add(['1', _monieData[i].strPayC]);
 
         var total = 0;
         for (int j = 0; j < _totalValue.length; j++) {

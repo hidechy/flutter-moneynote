@@ -70,23 +70,27 @@ class _BankInputScreenState extends State<BankInputScreen> {
       _bankData = List();
       for (int i = 0; i < _monieData.length; i++) {
         switch (_chipValue) {
-          case 'bank_a':
+          case 'みずほ':
             _value = int.parse(_monieData[i].strBankA);
             break;
-          case 'bank_b':
+          case '住友547':
             _value = int.parse(_monieData[i].strBankB);
             break;
-          case 'bank_c':
+          case '住友259':
             _value = int.parse(_monieData[i].strBankC);
             break;
-          case 'bank_d':
+          case 'UFJ':
             _value = int.parse(_monieData[i].strBankD);
             break;
-          case 'pay_a':
+          case 'Suica':
             _value = int.parse(_monieData[i].strPayA);
             break;
-          case 'pay_b':
+          case 'paypay':
             _value = int.parse(_monieData[i].strPayB);
+            break;
+
+          case 'PASUMO':
+            _value = int.parse(_monieData[i].strPayC);
             break;
         }
 
@@ -135,16 +139,17 @@ class _BankInputScreenState extends State<BankInputScreen> {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        _getChoiceChip('bank_a'),
-                        _getChoiceChip('bank_b'),
-                        _getChoiceChip('bank_c'),
-                        _getChoiceChip('bank_d'),
+                        _getChoiceChip('みずほ'),
+                        _getChoiceChip('住友547'),
+                        _getChoiceChip('住友259'),
+                        _getChoiceChip('UFJ'),
                       ],
                     ),
                     Row(
                       children: <Widget>[
-                        _getChoiceChip('pay_a'),
-                        _getChoiceChip('pay_b'),
+                        _getChoiceChip('Suica'),
+                        _getChoiceChip('paypay'),
+                        _getChoiceChip('PASUMO'),
                       ],
                     ),
                     Padding(
@@ -331,34 +336,32 @@ class _BankInputScreenState extends State<BankInputScreen> {
 
       if (record.length > 0) {
         var monie = Monie(
-            strDate: _upDates[i],
-            strYen10000: record[0].strYen10000,
-            strYen5000: record[0].strYen5000,
-            strYen2000: record[0].strYen2000,
-            strYen1000: record[0].strYen1000,
-            strYen500: record[0].strYen500,
-            strYen100: record[0].strYen100,
-            strYen50: record[0].strYen50,
-            strYen10: record[0].strYen10,
-            strYen5: record[0].strYen5,
-            strYen1: record[0].strYen1,
-            strBankA: (_chipValue == 'bank_a')
-                ? _teContPrice.text
-                : record[0].strBankA,
-            strBankB: (_chipValue == 'bank_b')
-                ? _teContPrice.text
-                : record[0].strBankB,
-            strBankC: (_chipValue == 'bank_c')
-                ? _teContPrice.text
-                : record[0].strBankC,
-            strBankD: (_chipValue == 'bank_d')
-                ? _teContPrice.text
-                : record[0].strBankD,
-            strPayA:
-                (_chipValue == 'pay_a') ? _teContPrice.text : record[0].strPayA,
-            strPayB: (_chipValue == 'pay_b')
-                ? _teContPrice.text
-                : record[0].strPayB);
+          strDate: _upDates[i],
+          strYen10000: record[0].strYen10000,
+          strYen5000: record[0].strYen5000,
+          strYen2000: record[0].strYen2000,
+          strYen1000: record[0].strYen1000,
+          strYen500: record[0].strYen500,
+          strYen100: record[0].strYen100,
+          strYen50: record[0].strYen50,
+          strYen10: record[0].strYen10,
+          strYen5: record[0].strYen5,
+          strYen1: record[0].strYen1,
+          strBankA:
+              (_chipValue == 'bank_a') ? _teContPrice.text : record[0].strBankA,
+          strBankB:
+              (_chipValue == 'bank_b') ? _teContPrice.text : record[0].strBankB,
+          strBankC:
+              (_chipValue == 'bank_c') ? _teContPrice.text : record[0].strBankC,
+          strBankD:
+              (_chipValue == 'bank_d') ? _teContPrice.text : record[0].strBankD,
+          strPayA:
+              (_chipValue == 'pay_a') ? _teContPrice.text : record[0].strPayA,
+          strPayB:
+              (_chipValue == 'pay_b') ? _teContPrice.text : record[0].strPayB,
+          strPayC:
+              (_chipValue == 'pay_c') ? _teContPrice.text : record[0].strPayC,
+        );
 
         await database.updateRecord(monie);
       }

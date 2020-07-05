@@ -98,6 +98,7 @@ class Utility {
 
     _totalValue.add(['1', _monieData[0].strPayA]);
     _totalValue.add(['1', _monieData[0].strPayB]);
+    _totalValue.add(['1', _monieData[0].strPayC]);
 
     total = 0;
     for (int i = 0; i < _totalValue.length; i++) {

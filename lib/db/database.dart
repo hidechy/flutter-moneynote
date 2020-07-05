@@ -27,6 +27,7 @@ class Monies extends Table {
 
   TextColumn get strPayA => text()();
   TextColumn get strPayB => text()();
+  TextColumn get strPayC => text()();
 
   @override
   Set<Column> get primaryKey => {strDate};
@@ -69,6 +70,10 @@ class MyDatabase extends _$MyDatabase {
 
         if (from == 2) {
           await m.createTable(credits);
+        }
+
+        if (from == 3) {
+          await m.addColumn(monies, monies.strPayC);
         }
       });
 

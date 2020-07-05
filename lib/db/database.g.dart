@@ -25,6 +25,7 @@ class Monie extends DataClass implements Insertable<Monie> {
   final String strBankD;
   final String strPayA;
   final String strPayB;
+  final String strPayC;
   Monie(
       {@required this.strDate,
       @required this.strYen10000,
@@ -42,7 +43,8 @@ class Monie extends DataClass implements Insertable<Monie> {
       @required this.strBankC,
       @required this.strBankD,
       @required this.strPayA,
-      @required this.strPayB});
+      @required this.strPayB,
+      @required this.strPayC});
   factory Monie.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -82,6 +84,8 @@ class Monie extends DataClass implements Insertable<Monie> {
           .mapFromDatabaseResponse(data['${effectivePrefix}str_pay_a']),
       strPayB: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}str_pay_b']),
+      strPayC: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}str_pay_c']),
     );
   }
   @override
@@ -137,6 +141,9 @@ class Monie extends DataClass implements Insertable<Monie> {
     }
     if (!nullToAbsent || strPayB != null) {
       map['str_pay_b'] = Variable<String>(strPayB);
+    }
+    if (!nullToAbsent || strPayC != null) {
+      map['str_pay_c'] = Variable<String>(strPayC);
     }
     return map;
   }
@@ -194,6 +201,9 @@ class Monie extends DataClass implements Insertable<Monie> {
       strPayB: strPayB == null && nullToAbsent
           ? const Value.absent()
           : Value(strPayB),
+      strPayC: strPayC == null && nullToAbsent
+          ? const Value.absent()
+          : Value(strPayC),
     );
   }
 
@@ -218,6 +228,7 @@ class Monie extends DataClass implements Insertable<Monie> {
       strBankD: serializer.fromJson<String>(json['strBankD']),
       strPayA: serializer.fromJson<String>(json['strPayA']),
       strPayB: serializer.fromJson<String>(json['strPayB']),
+      strPayC: serializer.fromJson<String>(json['strPayC']),
     );
   }
   @override
@@ -241,6 +252,7 @@ class Monie extends DataClass implements Insertable<Monie> {
       'strBankD': serializer.toJson<String>(strBankD),
       'strPayA': serializer.toJson<String>(strPayA),
       'strPayB': serializer.toJson<String>(strPayB),
+      'strPayC': serializer.toJson<String>(strPayC),
     };
   }
 
@@ -261,7 +273,8 @@ class Monie extends DataClass implements Insertable<Monie> {
           String strBankC,
           String strBankD,
           String strPayA,
-          String strPayB}) =>
+          String strPayB,
+          String strPayC}) =>
       Monie(
         strDate: strDate ?? this.strDate,
         strYen10000: strYen10000 ?? this.strYen10000,
@@ -280,6 +293,7 @@ class Monie extends DataClass implements Insertable<Monie> {
         strBankD: strBankD ?? this.strBankD,
         strPayA: strPayA ?? this.strPayA,
         strPayB: strPayB ?? this.strPayB,
+        strPayC: strPayC ?? this.strPayC,
       );
   @override
   String toString() {
@@ -300,7 +314,8 @@ class Monie extends DataClass implements Insertable<Monie> {
           ..write('strBankC: $strBankC, ')
           ..write('strBankD: $strBankD, ')
           ..write('strPayA: $strPayA, ')
-          ..write('strPayB: $strPayB')
+          ..write('strPayB: $strPayB, ')
+          ..write('strPayC: $strPayC')
           ..write(')'))
         .toString();
   }
@@ -339,8 +354,11 @@ class Monie extends DataClass implements Insertable<Monie> {
                                                               $mrjc(
                                                                   strPayA
                                                                       .hashCode,
-                                                                  strPayB
-                                                                      .hashCode)))))))))))))))));
+                                                                  $mrjc(
+                                                                      strPayB
+                                                                          .hashCode,
+                                                                      strPayC
+                                                                          .hashCode))))))))))))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -361,7 +379,8 @@ class Monie extends DataClass implements Insertable<Monie> {
           other.strBankC == this.strBankC &&
           other.strBankD == this.strBankD &&
           other.strPayA == this.strPayA &&
-          other.strPayB == this.strPayB);
+          other.strPayB == this.strPayB &&
+          other.strPayC == this.strPayC);
 }
 
 class MoniesCompanion extends UpdateCompanion<Monie> {
@@ -382,6 +401,7 @@ class MoniesCompanion extends UpdateCompanion<Monie> {
   final Value<String> strBankD;
   final Value<String> strPayA;
   final Value<String> strPayB;
+  final Value<String> strPayC;
   const MoniesCompanion({
     this.strDate = const Value.absent(),
     this.strYen10000 = const Value.absent(),
@@ -400,6 +420,7 @@ class MoniesCompanion extends UpdateCompanion<Monie> {
     this.strBankD = const Value.absent(),
     this.strPayA = const Value.absent(),
     this.strPayB = const Value.absent(),
+    this.strPayC = const Value.absent(),
   });
   MoniesCompanion.insert({
     @required String strDate,
@@ -419,6 +440,7 @@ class MoniesCompanion extends UpdateCompanion<Monie> {
     @required String strBankD,
     @required String strPayA,
     @required String strPayB,
+    @required String strPayC,
   })  : strDate = Value(strDate),
         strYen10000 = Value(strYen10000),
         strYen5000 = Value(strYen5000),
@@ -435,7 +457,8 @@ class MoniesCompanion extends UpdateCompanion<Monie> {
         strBankC = Value(strBankC),
         strBankD = Value(strBankD),
         strPayA = Value(strPayA),
-        strPayB = Value(strPayB);
+        strPayB = Value(strPayB),
+        strPayC = Value(strPayC);
   static Insertable<Monie> custom({
     Expression<String> strDate,
     Expression<String> strYen10000,
@@ -454,6 +477,7 @@ class MoniesCompanion extends UpdateCompanion<Monie> {
     Expression<String> strBankD,
     Expression<String> strPayA,
     Expression<String> strPayB,
+    Expression<String> strPayC,
   }) {
     return RawValuesInsertable({
       if (strDate != null) 'str_date': strDate,
@@ -473,6 +497,7 @@ class MoniesCompanion extends UpdateCompanion<Monie> {
       if (strBankD != null) 'str_bank_d': strBankD,
       if (strPayA != null) 'str_pay_a': strPayA,
       if (strPayB != null) 'str_pay_b': strPayB,
+      if (strPayC != null) 'str_pay_c': strPayC,
     });
   }
 
@@ -493,7 +518,8 @@ class MoniesCompanion extends UpdateCompanion<Monie> {
       Value<String> strBankC,
       Value<String> strBankD,
       Value<String> strPayA,
-      Value<String> strPayB}) {
+      Value<String> strPayB,
+      Value<String> strPayC}) {
     return MoniesCompanion(
       strDate: strDate ?? this.strDate,
       strYen10000: strYen10000 ?? this.strYen10000,
@@ -512,6 +538,7 @@ class MoniesCompanion extends UpdateCompanion<Monie> {
       strBankD: strBankD ?? this.strBankD,
       strPayA: strPayA ?? this.strPayA,
       strPayB: strPayB ?? this.strPayB,
+      strPayC: strPayC ?? this.strPayC,
     );
   }
 
@@ -568,6 +595,9 @@ class MoniesCompanion extends UpdateCompanion<Monie> {
     }
     if (strPayB.present) {
       map['str_pay_b'] = Variable<String>(strPayB.value);
+    }
+    if (strPayC.present) {
+      map['str_pay_c'] = Variable<String>(strPayC.value);
     }
     return map;
   }
@@ -783,6 +813,18 @@ class $MoniesTable extends Monies with TableInfo<$MoniesTable, Monie> {
     );
   }
 
+  final VerificationMeta _strPayCMeta = const VerificationMeta('strPayC');
+  GeneratedTextColumn _strPayC;
+  @override
+  GeneratedTextColumn get strPayC => _strPayC ??= _constructStrPayC();
+  GeneratedTextColumn _constructStrPayC() {
+    return GeneratedTextColumn(
+      'str_pay_c',
+      $tableName,
+      false,
+    );
+  }
+
   @override
   List<GeneratedColumn> get $columns => [
         strDate,
@@ -801,7 +843,8 @@ class $MoniesTable extends Monies with TableInfo<$MoniesTable, Monie> {
         strBankC,
         strBankD,
         strPayA,
-        strPayB
+        strPayB,
+        strPayC
       ];
   @override
   $MoniesTable get asDslTable => this;
@@ -923,6 +966,12 @@ class $MoniesTable extends Monies with TableInfo<$MoniesTable, Monie> {
           strPayB.isAcceptableOrUnknown(data['str_pay_b'], _strPayBMeta));
     } else if (isInserting) {
       context.missing(_strPayBMeta);
+    }
+    if (data.containsKey('str_pay_c')) {
+      context.handle(_strPayCMeta,
+          strPayC.isAcceptableOrUnknown(data['str_pay_c'], _strPayCMeta));
+    } else if (isInserting) {
+      context.missing(_strPayCMeta);
     }
     return context;
   }
