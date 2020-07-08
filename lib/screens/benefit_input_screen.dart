@@ -32,8 +32,8 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   List<List<String>> _benefitData = List();
 
   /**
-   * 初期動作
-   */
+  * 初期動作
+  */
   @override
   void initState() {
     super.initState();
@@ -42,8 +42,8 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   }
 
   /**
-   * 初期データ作成
-   */
+  * 初期データ作成
+  */
   _makeDefaultDisplayData() async {
     _utility.makeYMDYData(widget.date, 0);
     _dialogSelectedDate =
@@ -77,8 +77,8 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   }
 
   /**
-   * 画面描画
-   */
+  * 画面描画
+  */
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,8 +153,8 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   }
 
   /**
-   * リスト表示
-   */
+  * リスト表示
+  */
   _benefitList() {
     return ListView.builder(
       itemCount: _benefitData.length,
@@ -163,8 +163,8 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   }
 
   /**
-   * リストアイテム表示
-   */
+  * リストアイテム表示
+  */
   Widget _listItem(int position) {
     return InkWell(
       child: Slidable(
@@ -205,8 +205,8 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   }
 
   /**
-   * データコンテナ表示
-   */
+  * データコンテナ表示
+  */
   Widget _getDisplayContainer(int position, int column) {
     if (column == 0) {
       _utility.makeYMDYData(_benefitData[position][0], 0);
@@ -222,8 +222,8 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   }
 
   /**
-   * テキストフィールド部分表示
-   */
+  * テキストフィールド部分表示
+  */
   Widget _getTextField(
       String text, TextEditingController con, String valueAlign) {
     return Padding(
@@ -246,8 +246,8 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   }
 
   /**
-   * デートピッカー表示
-   */
+  * デートピッカー表示
+  */
   _showDatepicker(BuildContext context) async {
     final selectedDate = await showDatePicker(
       context: context,
@@ -277,8 +277,8 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   }
 
   /**
-   * データ作成/更新
-   */
+  * データ作成/更新
+  */
   _insertRecord(BuildContext context) async {
     if (_teContCompany.text == '') {
       Toast.show('companyが入力されていないため登録できません。', context,
@@ -310,8 +310,8 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   }
 
   /**
-   * データ削除
-   */
+  * データ削除
+  */
   _deleteRecord(int position) async {
     var benefit = Benefit(
       strDate: _benefitData[position][0],
@@ -325,8 +325,8 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   }
 
   /**
-   * 画面遷移（BenefitInputScreen）
-   */
+  * 画面遷移（BenefitInputScreen）
+  */
   _goBenefitInputScreen() {
     Navigator.pushReplacement(
       context,
@@ -339,8 +339,8 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   }
 
   /**
-   * 画面遷移（DetailDisplayScreen）
-   */
+  * 画面遷移（DetailDisplayScreen）
+  */
   _goDetailDisplayScreen() {
     Navigator.pushReplacement(
       context,

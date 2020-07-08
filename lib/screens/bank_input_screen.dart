@@ -35,8 +35,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
   String _lastRecordDate;
 
   /**
-   * 初期動作
-   */
+  * 初期動作
+  */
   @override
   void initState() {
     super.initState();
@@ -45,8 +45,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
   }
 
   /**
-   * 初期データ作成
-   */
+  * 初期データ作成
+  */
   _makeDefaultDisplayData() async {
     _utility.makeYMDYData(widget.date, 0);
     year = _utility.year;
@@ -60,8 +60,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
   }
 
   /**
-   * 表示データ作成
-   */
+  * 表示データ作成
+  */
   _getBankValue() async {
     var _monieData = await database.selectSortedAllRecord;
     int _value = 0;
@@ -70,26 +70,25 @@ class _BankInputScreenState extends State<BankInputScreen> {
       _bankData = List();
       for (int i = 0; i < _monieData.length; i++) {
         switch (_chipValue) {
-          case 'みずほ':
+          case 'bank_a':
             _value = int.parse(_monieData[i].strBankA);
             break;
-          case '住友547':
+          case 'bank_b':
             _value = int.parse(_monieData[i].strBankB);
             break;
-          case '住友259':
+          case 'bank_c':
             _value = int.parse(_monieData[i].strBankC);
             break;
-          case 'UFJ':
+          case 'bank_d':
             _value = int.parse(_monieData[i].strBankD);
             break;
-          case 'Suica':
+          case 'pay_a':
             _value = int.parse(_monieData[i].strPayA);
             break;
-          case 'paypay':
+          case 'pay_b':
             _value = int.parse(_monieData[i].strPayB);
             break;
-
-          case 'PASUMO':
+          case 'pay_c':
             _value = int.parse(_monieData[i].strPayC);
             break;
         }
@@ -107,8 +106,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
   }
 
   /**
-   * 画面描画
-   */
+  * 画面描画
+  */
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -139,17 +138,17 @@ class _BankInputScreenState extends State<BankInputScreen> {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        _getChoiceChip('みずほ'),
-                        _getChoiceChip('住友547'),
-                        _getChoiceChip('住友259'),
-                        _getChoiceChip('UFJ'),
+                        _getChoiceChip('bank_a'),
+                        _getChoiceChip('bank_b'),
+                        _getChoiceChip('bank_c'),
+                        _getChoiceChip('bank_d'),
                       ],
                     ),
                     Row(
                       children: <Widget>[
-                        _getChoiceChip('Suica'),
-                        _getChoiceChip('paypay'),
-                        _getChoiceChip('PASUMO'),
+                        _getChoiceChip('pay_a'),
+                        _getChoiceChip('pay_b'),
+                        _getChoiceChip('pay_c'),
                       ],
                     ),
                     Padding(
@@ -205,8 +204,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
   }
 
   /**
-   * リストアイテム表示
-   */
+  * リストアイテム表示
+  */
   Widget _listItem(int position) {
     return InkWell(
       child: Slidable(
@@ -245,8 +244,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
   }
 
   /**
-   * リーディングマーク取得
-   */
+  * リーディングマーク取得
+  */
   Widget _getLeading(String mark) {
     if (int.parse(mark) == 1) {
       return const Icon(
@@ -262,8 +261,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
   }
 
   /**
-   * チョイスチップ作成
-   */
+  * チョイスチップ作成
+  */
   Widget _getChoiceChip(String _selectedChip) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -283,8 +282,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
   }
 
   /**
-   * デートピッカー表示
-   */
+  * デートピッカー表示
+  */
   _showDatepicker(BuildContext context) async {
     final selectedDate = await showDatePicker(
       context: context,
@@ -303,8 +302,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
   }
 
   /**
-   * レコード更新
-   */
+  * レコード更新
+  */
   _updateRecord(BuildContext context) async {
     if (_teContPrice.text == '0') {
       Toast.show('金額が入力されていません', context, duration: Toast.LENGTH_LONG);
@@ -373,8 +372,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
   }
 
   /**
-   * リストからの日付選択
-   */
+  * リストからの日付選択
+  */
   _dayPickup(int position) {
     _dialogSelectedDate = _bankData[position][0];
     setState(() {});

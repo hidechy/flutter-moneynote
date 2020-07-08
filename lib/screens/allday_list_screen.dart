@@ -19,8 +19,8 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   String youbiStr;
 
   /**
-   * 初期動作
-   */
+  * 初期動作
+  */
   @override
   void initState() {
     super.initState();
@@ -29,43 +29,16 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   }
 
   /**
-   * 初期データ作成
-   */
+  * 初期データ作成
+  */
   _makeDefaultDisplayData() async {
     //全データ取得
     var _monieData = await database.selectSortedAllRecord;
     if (_monieData.length > 0) {
       int _keepTotal = 0;
       for (int i = 0; i < _monieData.length; i++) {
-        //--------------------------------------------//total
-        List<List<String>> _totalValue = List();
-
-        _totalValue.add(['10000', _monieData[i].strYen10000]);
-        _totalValue.add(['5000', _monieData[i].strYen5000]);
-        _totalValue.add(['2000', _monieData[i].strYen2000]);
-        _totalValue.add(['1000', _monieData[i].strYen1000]);
-        _totalValue.add(['500', _monieData[i].strYen500]);
-        _totalValue.add(['100', _monieData[i].strYen100]);
-        _totalValue.add(['50', _monieData[i].strYen50]);
-        _totalValue.add(['10', _monieData[i].strYen10]);
-        _totalValue.add(['5', _monieData[i].strYen5]);
-        _totalValue.add(['1', _monieData[i].strYen1]);
-
-        _totalValue.add(['1', _monieData[i].strBankA]);
-        _totalValue.add(['1', _monieData[i].strBankB]);
-        _totalValue.add(['1', _monieData[i].strBankC]);
-        _totalValue.add(['1', _monieData[i].strBankD]);
-
-        _totalValue.add(['1', _monieData[i].strPayA]);
-        _totalValue.add(['1', _monieData[i].strPayB]);
-        _totalValue.add(['1', _monieData[i].strPayC]);
-
-        var total = 0;
-        for (int j = 0; j < _totalValue.length; j++) {
-          total +=
-              (int.parse(_totalValue[j][0]) * int.parse(_totalValue[j][1]));
-        }
-        //--------------------------------------------//total
+        _utility.makeTotal(_monieData);
+        var total = _utility.total;
 
         _alldayData.add([
           _monieData[i].strDate,
@@ -81,8 +54,8 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   }
 
   /**
-   * 画面描画
-   */
+  * 画面描画
+  */
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,8 +82,8 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   }
 
   /**
-   * リスト表示
-   */
+  * リスト表示
+  */
   _alldayList() {
     return ListView.builder(
       itemCount: _alldayData.length,
@@ -119,8 +92,8 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   }
 
   /**
-   * リストアイテム表示
-   */
+  * リストアイテム表示
+  */
   _listItem(int position) {
     return InkWell(
       child: Card(
@@ -149,8 +122,8 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   }
 
   /**
-   * 背景色取得
-   */
+  * 背景色取得
+  */
   getBgColor(int position) {
     _utility.makeYMDYData(_alldayData[position][0], 0);
     switch (_utility.youbiNo) {
@@ -169,8 +142,8 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   }
 
   /**
-   * データコンテナ表示
-   */
+  * データコンテナ表示
+  */
   Widget _getDisplayContainer(int position, int column) {
     if (column == 0) {
       _utility.makeYMDYData(_alldayData[position][0], 0);

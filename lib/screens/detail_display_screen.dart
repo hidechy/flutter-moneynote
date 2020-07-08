@@ -64,8 +64,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   int _monthSpend = 0;
 
   /**
-   * 初期動作
-   */
+  * 初期動作
+  */
   @override
   void initState() {
     super.initState();
@@ -74,8 +74,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-   * 初期データ作成
-   */
+  * 初期データ作成
+  */
   _makeDefaultDisplayData() async {
     _utility.makeYMDYData(widget.date, 0);
     year = _utility.year;
@@ -134,38 +134,13 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
           await database.selectRecord(yYear + "-" + yMonth + "-" + yDay);
 
       if (_yesterdayData.length > 0) {
-        List<List<String>> _totalValue = List();
-
-        _totalValue.add(['10000', _yesterdayData[0].strYen10000]);
-        _totalValue.add(['5000', _yesterdayData[0].strYen5000]);
-        _totalValue.add(['2000', _yesterdayData[0].strYen2000]);
-        _totalValue.add(['1000', _yesterdayData[0].strYen1000]);
-        _totalValue.add(['500', _yesterdayData[0].strYen500]);
-        _totalValue.add(['100', _yesterdayData[0].strYen100]);
-        _totalValue.add(['50', _yesterdayData[0].strYen50]);
-        _totalValue.add(['10', _yesterdayData[0].strYen10]);
-        _totalValue.add(['5', _yesterdayData[0].strYen5]);
-        _totalValue.add(['1', _yesterdayData[0].strYen1]);
-
-        _totalValue.add(['1', _yesterdayData[0].strBankA]);
-        _totalValue.add(['1', _yesterdayData[0].strBankB]);
-        _totalValue.add(['1', _yesterdayData[0].strBankC]);
-        _totalValue.add(['1', _yesterdayData[0].strBankD]);
-
-        _totalValue.add(['1', _yesterdayData[0].strPayA]);
-        _totalValue.add(['1', _yesterdayData[0].strPayB]);
-        _totalValue.add(['1', _yesterdayData[0].strPayC]);
-
-        var _yesterdayTotal = 0;
-        for (int i = 0; i < _totalValue.length; i++) {
-          _yesterdayTotal +=
-              (int.parse(_totalValue[i][0]) * int.parse(_totalValue[i][1]));
-        }
-
+        _utility.makeTotal(_yesterdayData);
+        var _yesterdayTotal = _utility.total;
         _spend = (_yesterdayTotal - _total) * -1;
       }
     }
 
+    ////////////////////////////////////////////////
     //当月の使用金額
     _utility.makeYMDYData(_prevMonthEndDate.toString(), 0);
     var _lastMonthEndData = await database.selectRecord(
@@ -173,35 +148,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
 
     var _lastMonthTotal = 0;
     if (_lastMonthEndData.length > 0) {
-      List<List<String>> _totalValue = List();
-
-      _totalValue.add(['10000', _lastMonthEndData[0].strYen10000]);
-      _totalValue.add(['5000', _lastMonthEndData[0].strYen5000]);
-      _totalValue.add(['2000', _lastMonthEndData[0].strYen2000]);
-      _totalValue.add(['1000', _lastMonthEndData[0].strYen1000]);
-      _totalValue.add(['500', _lastMonthEndData[0].strYen500]);
-      _totalValue.add(['100', _lastMonthEndData[0].strYen100]);
-      _totalValue.add(['50', _lastMonthEndData[0].strYen50]);
-      _totalValue.add(['10', _lastMonthEndData[0].strYen10]);
-      _totalValue.add(['5', _lastMonthEndData[0].strYen5]);
-      _totalValue.add(['1', _lastMonthEndData[0].strYen1]);
-
-      _totalValue.add(['1', _lastMonthEndData[0].strBankA]);
-      _totalValue.add(['1', _lastMonthEndData[0].strBankB]);
-      _totalValue.add(['1', _lastMonthEndData[0].strBankC]);
-      _totalValue.add(['1', _lastMonthEndData[0].strBankD]);
-
-      _totalValue.add(['1', _lastMonthEndData[0].strPayA]);
-      _totalValue.add(['1', _lastMonthEndData[0].strPayB]);
-
-      if (_lastMonthEndData[0].strPayC != null) {
-        _totalValue.add(['1', _lastMonthEndData[0].strPayC]);
-      }
-
-      for (int i = 0; i < _totalValue.length; i++) {
-        _lastMonthTotal +=
-            (int.parse(_totalValue[i][0]) * int.parse(_totalValue[i][1]));
-      }
+      _utility.makeTotal(_lastMonthEndData);
+      _lastMonthTotal = _utility.total;
     }
 
     _monthSpend = (_lastMonthTotal - _total) * -1;
@@ -210,8 +158,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-   * 画面描画
-   */
+  * 画面描画
+  */
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -343,22 +291,22 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                       Table(
                         children: [
                           TableRow(children: [
-                            _getTextDispWidget('みずほ'),
+                            _getTextDispWidget('bank_a'),
                             _getTextDispWidget(_bankA),
                             const Align(),
                           ]),
                           TableRow(children: [
-                            _getTextDispWidget('住友547'),
+                            _getTextDispWidget('bank_b'),
                             _getTextDispWidget(_bankB),
                             const Align(),
                           ]),
                           TableRow(children: [
-                            _getTextDispWidget('住友259'),
+                            _getTextDispWidget('bank_c'),
                             _getTextDispWidget(_bankC),
                             const Align(),
                           ]),
                           TableRow(children: [
-                            _getTextDispWidget('UFJ'),
+                            _getTextDispWidget('bank_d'),
                             _getTextDispWidget(_bankD),
                             const Align(),
                           ]),
@@ -373,17 +321,17 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                       Table(
                         children: [
                           TableRow(children: [
-                            _getTextDispWidget('Suica'),
+                            _getTextDispWidget('pay_a'),
                             _getTextDispWidget(_payA),
                             const Align(),
                           ]),
                           TableRow(children: [
-                            _getTextDispWidget('paypay'),
+                            _getTextDispWidget('pay_b'),
                             _getTextDispWidget(_payB),
                             const Align(),
                           ]),
                           TableRow(children: [
-                            _getTextDispWidget('PASMO'),
+                            _getTextDispWidget('pay_c'),
                             _getTextDispWidget(_payC),
                             const Align(),
                           ]),
@@ -426,8 +374,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-   * テキスト部分表示
-   */
+  * テキスト部分表示
+  */
   Widget _getTextDispWidget(String text) {
     return Center(
       child: Text(text),
@@ -435,8 +383,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-   * デートピッカー表示
-   */
+  * デートピッカー表示
+  */
   _showDatepicker(BuildContext context) async {
     final selectedDate = await showDatePicker(
       context: context,
@@ -452,22 +400,22 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-   * 画面遷移（前日）
-   */
+  * 画面遷移（前日）
+  */
   _goPrevDate(BuildContext context) {
     _goAnotherDate(context, prevDate.toString());
   }
 
   /**
-   * 画面遷移（翌日）
-   */
+  * 画面遷移（翌日）
+  */
   _goNextDate(BuildContext context) {
     _goAnotherDate(context, nextDate.toString());
   }
 
   /**
-   * 画面遷移（指定日）
-   */
+  * 画面遷移（指定日）
+  */
   _goAnotherDate(BuildContext context, String date) {
     Navigator.pushReplacement(
       context,
@@ -480,8 +428,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-   * 下部メニュー表示
-   */
+  * 下部メニュー表示
+  */
   Future<Widget> _showUnderMenu() {
     return showModalBottomSheet(
       context: context,
@@ -553,8 +501,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-   * 画面遷移（DetailDisplayScreen）
-   */
+  * 画面遷移（DetailDisplayScreen）
+  */
   _goDetailDisplayScreen() {
     Navigator.pushReplacement(
       context,
@@ -567,8 +515,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-   * 画面遷移（OnedayInputScreen）
-   */
+  * 画面遷移（OnedayInputScreen）
+  */
   _goOnedayInputScreen() {
     Navigator.pushReplacement(
       context,
@@ -581,8 +529,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-   * 画面遷移（ScoreListScreen）
-   */
+  * 画面遷移（ScoreListScreen）
+  */
   _goScoreListScreen() {
     Navigator.pushReplacement(
       context,
@@ -595,8 +543,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-   * 画面遷移（MonthlyListScreen）
-   */
+  * 画面遷移（MonthlyListScreen）
+  */
   _goMonthlyListScreen() {
     Navigator.pushReplacement(
       context,
@@ -609,8 +557,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-   * 画面遷移（BankInputScreen）
-   */
+  * 画面遷移（BankInputScreen）
+  */
   _goBankInputScreen() {
     Navigator.pushReplacement(
       context,
@@ -623,8 +571,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-   * 画面遷移（SamedayDisplayScreen）
-   */
+  * 画面遷移（SamedayDisplayScreen）
+  */
   _goSamedayListScreen() {
     Navigator.pushReplacement(
       context,
@@ -637,8 +585,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-   * 画面遷移（BenefitInputScreen）
-   */
+  * 画面遷移（BenefitInputScreen）
+  */
   _goBenefitInputScreen() {
     Navigator.pushReplacement(
       context,
@@ -651,8 +599,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-   * 画面遷移（AlldayListScreen）
-   */
+  * 画面遷移（AlldayListScreen）
+  */
   _goAlldayListScreen() {
     Navigator.pushReplacement(
       context,
@@ -665,8 +613,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-   * 画面遷移（CreditRecordInputScreen）
-   */
+  * 画面遷移（CreditRecordInputScreen）
+  */
   _goCreditRecordInputScreen() {
     Navigator.pushReplacement(
       context,

@@ -9,11 +9,11 @@ import 'calender.dart';
 MyDatabase database;
 
 /**
- * メイン関数
- */
+* メイン関数
+*/
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  //向き指定
+//画面向き指定
   SystemChrome.setPreferredOrientations(
     [
       DeviceOrientation.portraitUp, //縦固定
@@ -26,9 +26,9 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  /**
-   * 画面描画
-   */
+/**
+* 画面描画
+*/
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

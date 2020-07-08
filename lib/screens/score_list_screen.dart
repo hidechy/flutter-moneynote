@@ -18,8 +18,8 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
   List<List<String>> _scoreData = List();
 
   /**
-   * 初期動作
-   */
+  * 初期動作
+  */
   @override
   void initState() {
     super.initState();
@@ -28,8 +28,8 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
   }
 
   /**
-   * 初期データ作成
-   */
+  * 初期データ作成
+  */
   _makeDefaultDisplayData() async {
     ///////////////////////////////////benefit
     var val2 = await database.selectBenefitSortedAllRecord;
@@ -57,7 +57,6 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
       });
       _beneSum[key] = sum;
     });
-    //print(_beneSum);
     ///////////////////////////////////benefit
 
     //-----------------------------------//
@@ -86,8 +85,6 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
         }
       }
     }
-
-//    print(_scoreDayInfo);
     //-----------------------------------//
 
     _scoreData = List();
@@ -140,8 +137,8 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
   }
 
   /**
-   * 画面描画
-   */
+  * 画面描画
+  */
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -168,8 +165,8 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
   }
 
   /**
-   * リスト表示
-   */
+  * リスト表示
+  */
   _scoreList() {
     return ListView.builder(
       itemCount: _scoreData.length,
@@ -178,8 +175,8 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
   }
 
   /**
-   * リストアイテム表示
-   */
+  * リストアイテム表示
+  */
   Widget _listItem(int position) {
     return Card(
       color: Colors.black.withOpacity(0.3),
@@ -228,8 +225,8 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
   }
 
   /**
-   * データコンテナ表示
-   */
+  * データコンテナ表示
+  */
   Widget _getDisplayContainer(
       String align, String text, int position, int column) {
     return Container(

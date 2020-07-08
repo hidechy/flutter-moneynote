@@ -6,6 +6,9 @@ import 'package:path_provider/path_provider.dart';
 
 part 'database.g.dart';
 
+/**
+ * 金種クラス
+ */
 class Monies extends Table {
   TextColumn get strDate => text()();
 
@@ -33,6 +36,9 @@ class Monies extends Table {
   Set<Column> get primaryKey => {strDate};
 }
 
+/**
+ * 収入クラス
+ */
 class Benefits extends Table {
   TextColumn get strDate => text()();
   TextColumn get strCompany => text()();
@@ -42,6 +48,9 @@ class Benefits extends Table {
   Set<Column> get primaryKey => {strDate};
 }
 
+/**
+ * 通帳履歴クラス
+ */
 class Credits extends Table {
   IntColumn get intId => integer().autoIncrement()();
 
@@ -54,6 +63,9 @@ class Credits extends Table {
   Set<Column> get primaryKey => {intId};
 }
 
+/**
+ * データベース操作クラス
+ */
 @UseMoor(tables: [Monies, Benefits, Credits])
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(_openConnection());
@@ -165,6 +177,9 @@ class MyDatabase extends _$MyDatabase {
       .get();
 }
 
+/**
+ * データベースコネクション
+ */
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();

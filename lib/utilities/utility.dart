@@ -2,8 +2,8 @@ import 'package:intl/intl.dart';
 
 class Utility {
   /**
-   * 日付データ作成
-   */
+  * 日付データ作成
+  */
   String year;
   String month;
   String day;
@@ -60,16 +60,16 @@ class Utility {
   }
 
   /**
-   * 月末日取得
-   */
+  * 月末日取得
+  */
   String monthEndDateTime;
   makeMonthEnd(int year, int month, int day) {
     monthEndDateTime = new DateTime(year, month, day).toString();
   }
 
   /**
-   * 合計金額取得
-   */
+  * 合計金額取得
+  */
   int total = 0;
   int temochi = 0;
   makeTotal(_monieData) {

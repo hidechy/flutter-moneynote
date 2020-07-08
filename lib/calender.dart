@@ -28,9 +28,9 @@ class _CalenderState extends State<Calender> {
 
   String _date;
 
-  /**
-   * 画面描画
-   */
+/**
+* 画面描画
+*/
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -116,9 +116,9 @@ class _CalenderState extends State<Calender> {
     );
   }
 
-  /**
-   * 画面遷移（DetailDisplayScreen）
-   */
+/**
+* 画面遷移（DetailDisplayScreen）
+*/
   void onDayPressed(DateTime date, List<Event> events) {
     this.setState(() => _currentDate = date);
 
@@ -132,9 +132,9 @@ class _CalenderState extends State<Calender> {
     );
   }
 
-  /**
-   * 画面遷移（ScoreListScreen）
-   */
+/**
+* 画面遷移（ScoreListScreen）
+*/
   _goScoreDisplayScreen() {
     _utility.makeYMDYData(_currentDate.toString(), 0);
     year = _utility.year;
@@ -152,9 +152,9 @@ class _CalenderState extends State<Calender> {
     );
   }
 
-  /**
-   * 画面遷移（MonthlyListScreen）
-   */
+/**
+* 画面遷移（MonthlyListScreen）
+*/
   _goMonthlyScreen() {
     _utility.makeYMDYData(_currentDate.toString(), 0);
     year = _utility.year;
@@ -172,11 +172,11 @@ class _CalenderState extends State<Calender> {
     );
   }
 
-  /**
-   * 画面遷移（OnedayInputScreen）
-   */
+/**
+* 画面遷移（OnedayInputScreen）
+*/
   _goOnedayInputScreen() {
-    //print(DateTime.now());
+//print(DateTime.now());
 
     var _inputDate = DateTime.now().toString().substring(0, 10);
     print(_inputDate);

@@ -34,8 +34,8 @@ class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
   TextEditingController _teContPrice = TextEditingController();
 
   /**
-   * 初期動作
-   */
+  * 初期動作
+  */
   @override
   void initState() {
     super.initState();
@@ -44,12 +44,12 @@ class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
   }
 
   /**
-   * 初期データ作成
-   */
+  * 初期データ作成
+  */
   _makeDefaultDisplayData() async {
     _dialogSelectedDate = widget.date;
 
-    //------------------------------------//プルダウンデータ取得
+//------------------------------------//プルダウンデータ取得
     var _items;
     await loadAsset('assets/file/bankitems.txt').then((dynamic output) {
       _items = output;
@@ -105,15 +105,15 @@ class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
   }
 
   /**
-   * ファイル読み込み
-   */
+  * ファイル読み込み
+  */
   Future<String> loadAsset(String path) async {
     return await rootBundle.loadString(path);
   }
 
   /**
-   * チョイスチップ作成
-   */
+  * チョイスチップ作成
+  */
   Widget _getChoiceChip(String _selectedChip) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -133,8 +133,8 @@ class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
   }
 
   /**
-   * 画面描画
-   */
+  * 画面描画
+  */
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -260,8 +260,8 @@ class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
   }
 
   /**
-   * プルダウン変更処理
-   */
+  * プルダウン変更処理
+  */
   _makeCreditItemList(value) async {
     //プルダウンに選択された日付を表示する
     _numberOfMenu = value;
@@ -270,8 +270,8 @@ class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
   }
 
   /**
-   * リスト表示
-   */
+  * リスト表示
+  */
   _creditList() {
     return ListView.builder(
       itemCount: _creditData.length,
@@ -280,8 +280,8 @@ class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
   }
 
   /**
-   * リストアイテム表示
-   */
+  * リストアイテム表示
+  */
   Widget _listItem(int position) {
     return InkWell(
       child: Slidable(
@@ -323,8 +323,8 @@ class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
   }
 
   /**
-   * データコンテナ表示
-   */
+  * データコンテナ表示
+  */
   Widget _getDisplayContainer(int position, int column) {
     return Container(
       alignment:
@@ -334,8 +334,8 @@ class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
   }
 
   /**
-   * デートピッカー表示
-   */
+  * デートピッカー表示
+  */
   _showDatepicker(BuildContext context) async {
     final selectedDate = await showDatePicker(
       context: context,
@@ -355,8 +355,8 @@ class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
   }
 
   /**
-   * データ作成/更新
-   */
+  * データ作成/更新
+  */
   _insertRecord(BuildContext context) async {
     if (_teContPrice.text == '0') {
       Toast.show('金額が入力されていません', context, duration: Toast.LENGTH_LONG);
@@ -380,8 +380,8 @@ class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
   }
 
   /**
-   * データ削除
-   */
+  * データ削除
+  */
   _deleteRecord(int position) async {
     var credit = Credit(
         intId: int.parse(_creditData[position][0]),
@@ -396,8 +396,8 @@ class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
   }
 
   /**
-   * データ検索
-   */
+  * データ検索
+  */
   _searchRecord() {
     if (_numberOfMenu == '') {
       Toast.show('勘定科目が入力されていません', context, duration: Toast.LENGTH_LONG);
@@ -416,8 +416,8 @@ class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
   }
 
   /**
-   * 画面遷移（CreditRecordInputScreen）
-   */
+  * 画面遷移（CreditRecordInputScreen）
+  */
   _goCreditRecordInputScreen() {
     Navigator.pushReplacement(
       context,
