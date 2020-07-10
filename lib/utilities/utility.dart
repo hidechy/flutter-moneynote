@@ -95,10 +95,19 @@ class Utility {
     _totalValue.add(['1', _monieData[0].strBankB]);
     _totalValue.add(['1', _monieData[0].strBankC]);
     _totalValue.add(['1', _monieData[0].strBankD]);
+    _totalValue.add(['1', _monieData[0].strBankE]);
+    _totalValue.add(['1', _monieData[0].strBankF]);
+    _totalValue.add(['1', _monieData[0].strBankG]);
+    _totalValue.add(['1', _monieData[0].strBankH]);
 
     _totalValue.add(['1', _monieData[0].strPayA]);
     _totalValue.add(['1', _monieData[0].strPayB]);
     _totalValue.add(['1', _monieData[0].strPayC]);
+    _totalValue.add(['1', _monieData[0].strPayD]);
+    _totalValue.add(['1', _monieData[0].strPayE]);
+    _totalValue.add(['1', _monieData[0].strPayF]);
+    _totalValue.add(['1', _monieData[0].strPayG]);
+    _totalValue.add(['1', _monieData[0].strPayH]);
 
     total = 0;
     for (int i = 0; i < _totalValue.length; i++) {

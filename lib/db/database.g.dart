@@ -23,9 +23,18 @@ class Monie extends DataClass implements Insertable<Monie> {
   final String strBankB;
   final String strBankC;
   final String strBankD;
+  final String strBankE;
+  final String strBankF;
+  final String strBankG;
+  final String strBankH;
   final String strPayA;
   final String strPayB;
   final String strPayC;
+  final String strPayD;
+  final String strPayE;
+  final String strPayF;
+  final String strPayG;
+  final String strPayH;
   Monie(
       {@required this.strDate,
       @required this.strYen10000,
@@ -42,9 +51,18 @@ class Monie extends DataClass implements Insertable<Monie> {
       @required this.strBankB,
       @required this.strBankC,
       @required this.strBankD,
+      @required this.strBankE,
+      @required this.strBankF,
+      @required this.strBankG,
+      @required this.strBankH,
       @required this.strPayA,
       @required this.strPayB,
-      @required this.strPayC});
+      @required this.strPayC,
+      @required this.strPayD,
+      @required this.strPayE,
+      @required this.strPayF,
+      @required this.strPayG,
+      @required this.strPayH});
   factory Monie.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -80,12 +98,30 @@ class Monie extends DataClass implements Insertable<Monie> {
           .mapFromDatabaseResponse(data['${effectivePrefix}str_bank_c']),
       strBankD: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}str_bank_d']),
+      strBankE: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}str_bank_e']),
+      strBankF: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}str_bank_f']),
+      strBankG: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}str_bank_g']),
+      strBankH: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}str_bank_h']),
       strPayA: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}str_pay_a']),
       strPayB: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}str_pay_b']),
       strPayC: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}str_pay_c']),
+      strPayD: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}str_pay_d']),
+      strPayE: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}str_pay_e']),
+      strPayF: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}str_pay_f']),
+      strPayG: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}str_pay_g']),
+      strPayH: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}str_pay_h']),
     );
   }
   @override
@@ -136,6 +172,18 @@ class Monie extends DataClass implements Insertable<Monie> {
     if (!nullToAbsent || strBankD != null) {
       map['str_bank_d'] = Variable<String>(strBankD);
     }
+    if (!nullToAbsent || strBankE != null) {
+      map['str_bank_e'] = Variable<String>(strBankE);
+    }
+    if (!nullToAbsent || strBankF != null) {
+      map['str_bank_f'] = Variable<String>(strBankF);
+    }
+    if (!nullToAbsent || strBankG != null) {
+      map['str_bank_g'] = Variable<String>(strBankG);
+    }
+    if (!nullToAbsent || strBankH != null) {
+      map['str_bank_h'] = Variable<String>(strBankH);
+    }
     if (!nullToAbsent || strPayA != null) {
       map['str_pay_a'] = Variable<String>(strPayA);
     }
@@ -144,6 +192,21 @@ class Monie extends DataClass implements Insertable<Monie> {
     }
     if (!nullToAbsent || strPayC != null) {
       map['str_pay_c'] = Variable<String>(strPayC);
+    }
+    if (!nullToAbsent || strPayD != null) {
+      map['str_pay_d'] = Variable<String>(strPayD);
+    }
+    if (!nullToAbsent || strPayE != null) {
+      map['str_pay_e'] = Variable<String>(strPayE);
+    }
+    if (!nullToAbsent || strPayF != null) {
+      map['str_pay_f'] = Variable<String>(strPayF);
+    }
+    if (!nullToAbsent || strPayG != null) {
+      map['str_pay_g'] = Variable<String>(strPayG);
+    }
+    if (!nullToAbsent || strPayH != null) {
+      map['str_pay_h'] = Variable<String>(strPayH);
     }
     return map;
   }
@@ -195,6 +258,18 @@ class Monie extends DataClass implements Insertable<Monie> {
       strBankD: strBankD == null && nullToAbsent
           ? const Value.absent()
           : Value(strBankD),
+      strBankE: strBankE == null && nullToAbsent
+          ? const Value.absent()
+          : Value(strBankE),
+      strBankF: strBankF == null && nullToAbsent
+          ? const Value.absent()
+          : Value(strBankF),
+      strBankG: strBankG == null && nullToAbsent
+          ? const Value.absent()
+          : Value(strBankG),
+      strBankH: strBankH == null && nullToAbsent
+          ? const Value.absent()
+          : Value(strBankH),
       strPayA: strPayA == null && nullToAbsent
           ? const Value.absent()
           : Value(strPayA),
@@ -204,6 +279,21 @@ class Monie extends DataClass implements Insertable<Monie> {
       strPayC: strPayC == null && nullToAbsent
           ? const Value.absent()
           : Value(strPayC),
+      strPayD: strPayD == null && nullToAbsent
+          ? const Value.absent()
+          : Value(strPayD),
+      strPayE: strPayE == null && nullToAbsent
+          ? const Value.absent()
+          : Value(strPayE),
+      strPayF: strPayF == null && nullToAbsent
+          ? const Value.absent()
+          : Value(strPayF),
+      strPayG: strPayG == null && nullToAbsent
+          ? const Value.absent()
+          : Value(strPayG),
+      strPayH: strPayH == null && nullToAbsent
+          ? const Value.absent()
+          : Value(strPayH),
     );
   }
 
@@ -226,9 +316,18 @@ class Monie extends DataClass implements Insertable<Monie> {
       strBankB: serializer.fromJson<String>(json['strBankB']),
       strBankC: serializer.fromJson<String>(json['strBankC']),
       strBankD: serializer.fromJson<String>(json['strBankD']),
+      strBankE: serializer.fromJson<String>(json['strBankE']),
+      strBankF: serializer.fromJson<String>(json['strBankF']),
+      strBankG: serializer.fromJson<String>(json['strBankG']),
+      strBankH: serializer.fromJson<String>(json['strBankH']),
       strPayA: serializer.fromJson<String>(json['strPayA']),
       strPayB: serializer.fromJson<String>(json['strPayB']),
       strPayC: serializer.fromJson<String>(json['strPayC']),
+      strPayD: serializer.fromJson<String>(json['strPayD']),
+      strPayE: serializer.fromJson<String>(json['strPayE']),
+      strPayF: serializer.fromJson<String>(json['strPayF']),
+      strPayG: serializer.fromJson<String>(json['strPayG']),
+      strPayH: serializer.fromJson<String>(json['strPayH']),
     );
   }
   @override
@@ -250,9 +349,18 @@ class Monie extends DataClass implements Insertable<Monie> {
       'strBankB': serializer.toJson<String>(strBankB),
       'strBankC': serializer.toJson<String>(strBankC),
       'strBankD': serializer.toJson<String>(strBankD),
+      'strBankE': serializer.toJson<String>(strBankE),
+      'strBankF': serializer.toJson<String>(strBankF),
+      'strBankG': serializer.toJson<String>(strBankG),
+      'strBankH': serializer.toJson<String>(strBankH),
       'strPayA': serializer.toJson<String>(strPayA),
       'strPayB': serializer.toJson<String>(strPayB),
       'strPayC': serializer.toJson<String>(strPayC),
+      'strPayD': serializer.toJson<String>(strPayD),
+      'strPayE': serializer.toJson<String>(strPayE),
+      'strPayF': serializer.toJson<String>(strPayF),
+      'strPayG': serializer.toJson<String>(strPayG),
+      'strPayH': serializer.toJson<String>(strPayH),
     };
   }
 
@@ -272,9 +380,18 @@ class Monie extends DataClass implements Insertable<Monie> {
           String strBankB,
           String strBankC,
           String strBankD,
+          String strBankE,
+          String strBankF,
+          String strBankG,
+          String strBankH,
           String strPayA,
           String strPayB,
-          String strPayC}) =>
+          String strPayC,
+          String strPayD,
+          String strPayE,
+          String strPayF,
+          String strPayG,
+          String strPayH}) =>
       Monie(
         strDate: strDate ?? this.strDate,
         strYen10000: strYen10000 ?? this.strYen10000,
@@ -291,9 +408,18 @@ class Monie extends DataClass implements Insertable<Monie> {
         strBankB: strBankB ?? this.strBankB,
         strBankC: strBankC ?? this.strBankC,
         strBankD: strBankD ?? this.strBankD,
+        strBankE: strBankE ?? this.strBankE,
+        strBankF: strBankF ?? this.strBankF,
+        strBankG: strBankG ?? this.strBankG,
+        strBankH: strBankH ?? this.strBankH,
         strPayA: strPayA ?? this.strPayA,
         strPayB: strPayB ?? this.strPayB,
         strPayC: strPayC ?? this.strPayC,
+        strPayD: strPayD ?? this.strPayD,
+        strPayE: strPayE ?? this.strPayE,
+        strPayF: strPayF ?? this.strPayF,
+        strPayG: strPayG ?? this.strPayG,
+        strPayH: strPayH ?? this.strPayH,
       );
   @override
   String toString() {
@@ -313,9 +439,18 @@ class Monie extends DataClass implements Insertable<Monie> {
           ..write('strBankB: $strBankB, ')
           ..write('strBankC: $strBankC, ')
           ..write('strBankD: $strBankD, ')
+          ..write('strBankE: $strBankE, ')
+          ..write('strBankF: $strBankF, ')
+          ..write('strBankG: $strBankG, ')
+          ..write('strBankH: $strBankH, ')
           ..write('strPayA: $strPayA, ')
           ..write('strPayB: $strPayB, ')
-          ..write('strPayC: $strPayC')
+          ..write('strPayC: $strPayC, ')
+          ..write('strPayD: $strPayD, ')
+          ..write('strPayE: $strPayE, ')
+          ..write('strPayF: $strPayF, ')
+          ..write('strPayG: $strPayG, ')
+          ..write('strPayH: $strPayH')
           ..write(')'))
         .toString();
   }
@@ -352,13 +487,17 @@ class Monie extends DataClass implements Insertable<Monie> {
                                                           $mrjc(
                                                               strBankD.hashCode,
                                                               $mrjc(
-                                                                  strPayA
+                                                                  strBankE
                                                                       .hashCode,
                                                                   $mrjc(
-                                                                      strPayB
+                                                                      strBankF
                                                                           .hashCode,
-                                                                      strPayC
-                                                                          .hashCode))))))))))))))))));
+                                                                      $mrjc(
+                                                                          strBankG
+                                                                              .hashCode,
+                                                                          $mrjc(
+                                                                              strBankH.hashCode,
+                                                                              $mrjc(strPayA.hashCode, $mrjc(strPayB.hashCode, $mrjc(strPayC.hashCode, $mrjc(strPayD.hashCode, $mrjc(strPayE.hashCode, $mrjc(strPayF.hashCode, $mrjc(strPayG.hashCode, strPayH.hashCode)))))))))))))))))))))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -378,9 +517,18 @@ class Monie extends DataClass implements Insertable<Monie> {
           other.strBankB == this.strBankB &&
           other.strBankC == this.strBankC &&
           other.strBankD == this.strBankD &&
+          other.strBankE == this.strBankE &&
+          other.strBankF == this.strBankF &&
+          other.strBankG == this.strBankG &&
+          other.strBankH == this.strBankH &&
           other.strPayA == this.strPayA &&
           other.strPayB == this.strPayB &&
-          other.strPayC == this.strPayC);
+          other.strPayC == this.strPayC &&
+          other.strPayD == this.strPayD &&
+          other.strPayE == this.strPayE &&
+          other.strPayF == this.strPayF &&
+          other.strPayG == this.strPayG &&
+          other.strPayH == this.strPayH);
 }
 
 class MoniesCompanion extends UpdateCompanion<Monie> {
@@ -399,9 +547,18 @@ class MoniesCompanion extends UpdateCompanion<Monie> {
   final Value<String> strBankB;
   final Value<String> strBankC;
   final Value<String> strBankD;
+  final Value<String> strBankE;
+  final Value<String> strBankF;
+  final Value<String> strBankG;
+  final Value<String> strBankH;
   final Value<String> strPayA;
   final Value<String> strPayB;
   final Value<String> strPayC;
+  final Value<String> strPayD;
+  final Value<String> strPayE;
+  final Value<String> strPayF;
+  final Value<String> strPayG;
+  final Value<String> strPayH;
   const MoniesCompanion({
     this.strDate = const Value.absent(),
     this.strYen10000 = const Value.absent(),
@@ -418,9 +575,18 @@ class MoniesCompanion extends UpdateCompanion<Monie> {
     this.strBankB = const Value.absent(),
     this.strBankC = const Value.absent(),
     this.strBankD = const Value.absent(),
+    this.strBankE = const Value.absent(),
+    this.strBankF = const Value.absent(),
+    this.strBankG = const Value.absent(),
+    this.strBankH = const Value.absent(),
     this.strPayA = const Value.absent(),
     this.strPayB = const Value.absent(),
     this.strPayC = const Value.absent(),
+    this.strPayD = const Value.absent(),
+    this.strPayE = const Value.absent(),
+    this.strPayF = const Value.absent(),
+    this.strPayG = const Value.absent(),
+    this.strPayH = const Value.absent(),
   });
   MoniesCompanion.insert({
     @required String strDate,
@@ -438,9 +604,18 @@ class MoniesCompanion extends UpdateCompanion<Monie> {
     @required String strBankB,
     @required String strBankC,
     @required String strBankD,
+    @required String strBankE,
+    @required String strBankF,
+    @required String strBankG,
+    @required String strBankH,
     @required String strPayA,
     @required String strPayB,
     @required String strPayC,
+    @required String strPayD,
+    @required String strPayE,
+    @required String strPayF,
+    @required String strPayG,
+    @required String strPayH,
   })  : strDate = Value(strDate),
         strYen10000 = Value(strYen10000),
         strYen5000 = Value(strYen5000),
@@ -456,9 +631,18 @@ class MoniesCompanion extends UpdateCompanion<Monie> {
         strBankB = Value(strBankB),
         strBankC = Value(strBankC),
         strBankD = Value(strBankD),
+        strBankE = Value(strBankE),
+        strBankF = Value(strBankF),
+        strBankG = Value(strBankG),
+        strBankH = Value(strBankH),
         strPayA = Value(strPayA),
         strPayB = Value(strPayB),
-        strPayC = Value(strPayC);
+        strPayC = Value(strPayC),
+        strPayD = Value(strPayD),
+        strPayE = Value(strPayE),
+        strPayF = Value(strPayF),
+        strPayG = Value(strPayG),
+        strPayH = Value(strPayH);
   static Insertable<Monie> custom({
     Expression<String> strDate,
     Expression<String> strYen10000,
@@ -475,9 +659,18 @@ class MoniesCompanion extends UpdateCompanion<Monie> {
     Expression<String> strBankB,
     Expression<String> strBankC,
     Expression<String> strBankD,
+    Expression<String> strBankE,
+    Expression<String> strBankF,
+    Expression<String> strBankG,
+    Expression<String> strBankH,
     Expression<String> strPayA,
     Expression<String> strPayB,
     Expression<String> strPayC,
+    Expression<String> strPayD,
+    Expression<String> strPayE,
+    Expression<String> strPayF,
+    Expression<String> strPayG,
+    Expression<String> strPayH,
   }) {
     return RawValuesInsertable({
       if (strDate != null) 'str_date': strDate,
@@ -495,9 +688,18 @@ class MoniesCompanion extends UpdateCompanion<Monie> {
       if (strBankB != null) 'str_bank_b': strBankB,
       if (strBankC != null) 'str_bank_c': strBankC,
       if (strBankD != null) 'str_bank_d': strBankD,
+      if (strBankE != null) 'str_bank_e': strBankE,
+      if (strBankF != null) 'str_bank_f': strBankF,
+      if (strBankG != null) 'str_bank_g': strBankG,
+      if (strBankH != null) 'str_bank_h': strBankH,
       if (strPayA != null) 'str_pay_a': strPayA,
       if (strPayB != null) 'str_pay_b': strPayB,
       if (strPayC != null) 'str_pay_c': strPayC,
+      if (strPayD != null) 'str_pay_d': strPayD,
+      if (strPayE != null) 'str_pay_e': strPayE,
+      if (strPayF != null) 'str_pay_f': strPayF,
+      if (strPayG != null) 'str_pay_g': strPayG,
+      if (strPayH != null) 'str_pay_h': strPayH,
     });
   }
 
@@ -517,9 +719,18 @@ class MoniesCompanion extends UpdateCompanion<Monie> {
       Value<String> strBankB,
       Value<String> strBankC,
       Value<String> strBankD,
+      Value<String> strBankE,
+      Value<String> strBankF,
+      Value<String> strBankG,
+      Value<String> strBankH,
       Value<String> strPayA,
       Value<String> strPayB,
-      Value<String> strPayC}) {
+      Value<String> strPayC,
+      Value<String> strPayD,
+      Value<String> strPayE,
+      Value<String> strPayF,
+      Value<String> strPayG,
+      Value<String> strPayH}) {
     return MoniesCompanion(
       strDate: strDate ?? this.strDate,
       strYen10000: strYen10000 ?? this.strYen10000,
@@ -536,9 +747,18 @@ class MoniesCompanion extends UpdateCompanion<Monie> {
       strBankB: strBankB ?? this.strBankB,
       strBankC: strBankC ?? this.strBankC,
       strBankD: strBankD ?? this.strBankD,
+      strBankE: strBankE ?? this.strBankE,
+      strBankF: strBankF ?? this.strBankF,
+      strBankG: strBankG ?? this.strBankG,
+      strBankH: strBankH ?? this.strBankH,
       strPayA: strPayA ?? this.strPayA,
       strPayB: strPayB ?? this.strPayB,
       strPayC: strPayC ?? this.strPayC,
+      strPayD: strPayD ?? this.strPayD,
+      strPayE: strPayE ?? this.strPayE,
+      strPayF: strPayF ?? this.strPayF,
+      strPayG: strPayG ?? this.strPayG,
+      strPayH: strPayH ?? this.strPayH,
     );
   }
 
@@ -590,6 +810,18 @@ class MoniesCompanion extends UpdateCompanion<Monie> {
     if (strBankD.present) {
       map['str_bank_d'] = Variable<String>(strBankD.value);
     }
+    if (strBankE.present) {
+      map['str_bank_e'] = Variable<String>(strBankE.value);
+    }
+    if (strBankF.present) {
+      map['str_bank_f'] = Variable<String>(strBankF.value);
+    }
+    if (strBankG.present) {
+      map['str_bank_g'] = Variable<String>(strBankG.value);
+    }
+    if (strBankH.present) {
+      map['str_bank_h'] = Variable<String>(strBankH.value);
+    }
     if (strPayA.present) {
       map['str_pay_a'] = Variable<String>(strPayA.value);
     }
@@ -598,6 +830,21 @@ class MoniesCompanion extends UpdateCompanion<Monie> {
     }
     if (strPayC.present) {
       map['str_pay_c'] = Variable<String>(strPayC.value);
+    }
+    if (strPayD.present) {
+      map['str_pay_d'] = Variable<String>(strPayD.value);
+    }
+    if (strPayE.present) {
+      map['str_pay_e'] = Variable<String>(strPayE.value);
+    }
+    if (strPayF.present) {
+      map['str_pay_f'] = Variable<String>(strPayF.value);
+    }
+    if (strPayG.present) {
+      map['str_pay_g'] = Variable<String>(strPayG.value);
+    }
+    if (strPayH.present) {
+      map['str_pay_h'] = Variable<String>(strPayH.value);
     }
     return map;
   }
@@ -789,6 +1036,54 @@ class $MoniesTable extends Monies with TableInfo<$MoniesTable, Monie> {
     );
   }
 
+  final VerificationMeta _strBankEMeta = const VerificationMeta('strBankE');
+  GeneratedTextColumn _strBankE;
+  @override
+  GeneratedTextColumn get strBankE => _strBankE ??= _constructStrBankE();
+  GeneratedTextColumn _constructStrBankE() {
+    return GeneratedTextColumn(
+      'str_bank_e',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _strBankFMeta = const VerificationMeta('strBankF');
+  GeneratedTextColumn _strBankF;
+  @override
+  GeneratedTextColumn get strBankF => _strBankF ??= _constructStrBankF();
+  GeneratedTextColumn _constructStrBankF() {
+    return GeneratedTextColumn(
+      'str_bank_f',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _strBankGMeta = const VerificationMeta('strBankG');
+  GeneratedTextColumn _strBankG;
+  @override
+  GeneratedTextColumn get strBankG => _strBankG ??= _constructStrBankG();
+  GeneratedTextColumn _constructStrBankG() {
+    return GeneratedTextColumn(
+      'str_bank_g',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _strBankHMeta = const VerificationMeta('strBankH');
+  GeneratedTextColumn _strBankH;
+  @override
+  GeneratedTextColumn get strBankH => _strBankH ??= _constructStrBankH();
+  GeneratedTextColumn _constructStrBankH() {
+    return GeneratedTextColumn(
+      'str_bank_h',
+      $tableName,
+      false,
+    );
+  }
+
   final VerificationMeta _strPayAMeta = const VerificationMeta('strPayA');
   GeneratedTextColumn _strPayA;
   @override
@@ -825,6 +1120,66 @@ class $MoniesTable extends Monies with TableInfo<$MoniesTable, Monie> {
     );
   }
 
+  final VerificationMeta _strPayDMeta = const VerificationMeta('strPayD');
+  GeneratedTextColumn _strPayD;
+  @override
+  GeneratedTextColumn get strPayD => _strPayD ??= _constructStrPayD();
+  GeneratedTextColumn _constructStrPayD() {
+    return GeneratedTextColumn(
+      'str_pay_d',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _strPayEMeta = const VerificationMeta('strPayE');
+  GeneratedTextColumn _strPayE;
+  @override
+  GeneratedTextColumn get strPayE => _strPayE ??= _constructStrPayE();
+  GeneratedTextColumn _constructStrPayE() {
+    return GeneratedTextColumn(
+      'str_pay_e',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _strPayFMeta = const VerificationMeta('strPayF');
+  GeneratedTextColumn _strPayF;
+  @override
+  GeneratedTextColumn get strPayF => _strPayF ??= _constructStrPayF();
+  GeneratedTextColumn _constructStrPayF() {
+    return GeneratedTextColumn(
+      'str_pay_f',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _strPayGMeta = const VerificationMeta('strPayG');
+  GeneratedTextColumn _strPayG;
+  @override
+  GeneratedTextColumn get strPayG => _strPayG ??= _constructStrPayG();
+  GeneratedTextColumn _constructStrPayG() {
+    return GeneratedTextColumn(
+      'str_pay_g',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _strPayHMeta = const VerificationMeta('strPayH');
+  GeneratedTextColumn _strPayH;
+  @override
+  GeneratedTextColumn get strPayH => _strPayH ??= _constructStrPayH();
+  GeneratedTextColumn _constructStrPayH() {
+    return GeneratedTextColumn(
+      'str_pay_h',
+      $tableName,
+      false,
+    );
+  }
+
   @override
   List<GeneratedColumn> get $columns => [
         strDate,
@@ -842,9 +1197,18 @@ class $MoniesTable extends Monies with TableInfo<$MoniesTable, Monie> {
         strBankB,
         strBankC,
         strBankD,
+        strBankE,
+        strBankF,
+        strBankG,
+        strBankH,
         strPayA,
         strPayB,
-        strPayC
+        strPayC,
+        strPayD,
+        strPayE,
+        strPayF,
+        strPayG,
+        strPayH
       ];
   @override
   $MoniesTable get asDslTable => this;
@@ -955,6 +1319,30 @@ class $MoniesTable extends Monies with TableInfo<$MoniesTable, Monie> {
     } else if (isInserting) {
       context.missing(_strBankDMeta);
     }
+    if (data.containsKey('str_bank_e')) {
+      context.handle(_strBankEMeta,
+          strBankE.isAcceptableOrUnknown(data['str_bank_e'], _strBankEMeta));
+    } else if (isInserting) {
+      context.missing(_strBankEMeta);
+    }
+    if (data.containsKey('str_bank_f')) {
+      context.handle(_strBankFMeta,
+          strBankF.isAcceptableOrUnknown(data['str_bank_f'], _strBankFMeta));
+    } else if (isInserting) {
+      context.missing(_strBankFMeta);
+    }
+    if (data.containsKey('str_bank_g')) {
+      context.handle(_strBankGMeta,
+          strBankG.isAcceptableOrUnknown(data['str_bank_g'], _strBankGMeta));
+    } else if (isInserting) {
+      context.missing(_strBankGMeta);
+    }
+    if (data.containsKey('str_bank_h')) {
+      context.handle(_strBankHMeta,
+          strBankH.isAcceptableOrUnknown(data['str_bank_h'], _strBankHMeta));
+    } else if (isInserting) {
+      context.missing(_strBankHMeta);
+    }
     if (data.containsKey('str_pay_a')) {
       context.handle(_strPayAMeta,
           strPayA.isAcceptableOrUnknown(data['str_pay_a'], _strPayAMeta));
@@ -972,6 +1360,36 @@ class $MoniesTable extends Monies with TableInfo<$MoniesTable, Monie> {
           strPayC.isAcceptableOrUnknown(data['str_pay_c'], _strPayCMeta));
     } else if (isInserting) {
       context.missing(_strPayCMeta);
+    }
+    if (data.containsKey('str_pay_d')) {
+      context.handle(_strPayDMeta,
+          strPayD.isAcceptableOrUnknown(data['str_pay_d'], _strPayDMeta));
+    } else if (isInserting) {
+      context.missing(_strPayDMeta);
+    }
+    if (data.containsKey('str_pay_e')) {
+      context.handle(_strPayEMeta,
+          strPayE.isAcceptableOrUnknown(data['str_pay_e'], _strPayEMeta));
+    } else if (isInserting) {
+      context.missing(_strPayEMeta);
+    }
+    if (data.containsKey('str_pay_f')) {
+      context.handle(_strPayFMeta,
+          strPayF.isAcceptableOrUnknown(data['str_pay_f'], _strPayFMeta));
+    } else if (isInserting) {
+      context.missing(_strPayFMeta);
+    }
+    if (data.containsKey('str_pay_g')) {
+      context.handle(_strPayGMeta,
+          strPayG.isAcceptableOrUnknown(data['str_pay_g'], _strPayGMeta));
+    } else if (isInserting) {
+      context.missing(_strPayGMeta);
+    }
+    if (data.containsKey('str_pay_h')) {
+      context.handle(_strPayHMeta,
+          strPayH.isAcceptableOrUnknown(data['str_pay_h'], _strPayHMeta));
+    } else if (isInserting) {
+      context.missing(_strPayHMeta);
     }
     return context;
   }

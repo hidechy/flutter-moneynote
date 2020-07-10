@@ -51,10 +51,19 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   String _bankB = '0';
   String _bankC = '0';
   String _bankD = '0';
+  String _bankE = '0';
+  String _bankF = '0';
+  String _bankG = '0';
+  String _bankH = '0';
 
   String _payA = '0';
   String _payB = '0';
   String _payC = '0';
+  String _payD = '0';
+  String _payE = '0';
+  String _payF = '0';
+  String _payG = '0';
+  String _payH = '0';
 
   List<Monie> _monieData = List();
 
@@ -114,10 +123,19 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
       _bankB = _monieData[0].strBankB;
       _bankC = _monieData[0].strBankC;
       _bankD = _monieData[0].strBankD;
+      _bankE = _monieData[0].strBankE;
+      _bankF = _monieData[0].strBankF;
+      _bankG = _monieData[0].strBankG;
+      _bankH = _monieData[0].strBankH;
 
       _payA = _monieData[0].strPayA;
       _payB = _monieData[0].strPayB;
       _payC = _monieData[0].strPayC;
+      _payD = _monieData[0].strPayD;
+      _payE = _monieData[0].strPayE;
+      _payF = _monieData[0].strPayF;
+      _payG = _monieData[0].strPayG;
+      _payH = _monieData[0].strPayH;
 
       _utility.makeTotal(_monieData);
       _total = _utility.total;
@@ -288,29 +306,36 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                           child: Text(_temochi.toString()),
                         ),
                       ),
-                      Table(
-                        children: [
-                          TableRow(children: [
-                            _getTextDispWidget('bank_a'),
-                            _getTextDispWidget(_bankA),
-                            const Align(),
-                          ]),
-                          TableRow(children: [
-                            _getTextDispWidget('bank_b'),
-                            _getTextDispWidget(_bankB),
-                            const Align(),
-                          ]),
-                          TableRow(children: [
-                            _getTextDispWidget('bank_c'),
-                            _getTextDispWidget(_bankC),
-                            const Align(),
-                          ]),
-                          TableRow(children: [
-                            _getTextDispWidget('bank_d'),
-                            _getTextDispWidget(_bankD),
-                            const Align(),
-                          ]),
-                        ],
+                      DefaultTextStyle(
+                        style: TextStyle(fontSize: 10, fontFamily: "Yomogi"),
+                        child: Table(
+                          children: [
+                            TableRow(children: [
+                              _getTextDispWidget('bank_a'),
+                              _getTextDispWidget(_bankA),
+                              _getTextDispWidget('bank_e'),
+                              _getTextDispWidget(_bankE),
+                            ]),
+                            TableRow(children: [
+                              _getTextDispWidget('bank_b'),
+                              _getTextDispWidget(_bankB),
+                              _getTextDispWidget('bank_f'),
+                              _getTextDispWidget(_bankF),
+                            ]),
+                            TableRow(children: [
+                              _getTextDispWidget('bank_c'),
+                              _getTextDispWidget(_bankC),
+                              _getTextDispWidget('bank_g'),
+                              _getTextDispWidget(_bankG),
+                            ]),
+                            TableRow(children: [
+                              _getTextDispWidget('bank_d'),
+                              _getTextDispWidget(_bankD),
+                              _getTextDispWidget('bank_h'),
+                              _getTextDispWidget(_bankH),
+                            ]),
+                          ],
+                        ),
                       ),
                       const Divider(
                         color: Colors.indigo,
@@ -318,24 +343,36 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                         indent: 20.0,
                         endIndent: 20.0,
                       ),
-                      Table(
-                        children: [
-                          TableRow(children: [
-                            _getTextDispWidget('pay_a'),
-                            _getTextDispWidget(_payA),
-                            const Align(),
-                          ]),
-                          TableRow(children: [
-                            _getTextDispWidget('pay_b'),
-                            _getTextDispWidget(_payB),
-                            const Align(),
-                          ]),
-                          TableRow(children: [
-                            _getTextDispWidget('pay_c'),
-                            _getTextDispWidget(_payC),
-                            const Align(),
-                          ]),
-                        ],
+                      DefaultTextStyle(
+                        style: TextStyle(fontSize: 10, fontFamily: "Yomogi"),
+                        child: Table(
+                          children: [
+                            TableRow(children: [
+                              _getTextDispWidget('pay_a'),
+                              _getTextDispWidget(_payA),
+                              _getTextDispWidget('pay_e'),
+                              _getTextDispWidget(_payE),
+                            ]),
+                            TableRow(children: [
+                              _getTextDispWidget('pay_b'),
+                              _getTextDispWidget(_payB),
+                              _getTextDispWidget('pay_f'),
+                              _getTextDispWidget(_payF),
+                            ]),
+                            TableRow(children: [
+                              _getTextDispWidget('pay_c'),
+                              _getTextDispWidget(_payC),
+                              _getTextDispWidget('pay_g'),
+                              _getTextDispWidget(_payG),
+                            ]),
+                            TableRow(children: [
+                              _getTextDispWidget('pay_d'),
+                              _getTextDispWidget(_payD),
+                              _getTextDispWidget('pay_h'),
+                              _getTextDispWidget(_payH),
+                            ]),
+                          ],
+                        ),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,

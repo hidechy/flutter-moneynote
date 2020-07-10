@@ -146,9 +146,26 @@ class _BankInputScreenState extends State<BankInputScreen> {
                     ),
                     Row(
                       children: <Widget>[
+                        _getChoiceChip('bank_e'),
+                        _getChoiceChip('bank_f'),
+                        _getChoiceChip('bank_g'),
+                        _getChoiceChip('bank_h'),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
                         _getChoiceChip('pay_a'),
                         _getChoiceChip('pay_b'),
                         _getChoiceChip('pay_c'),
+                        _getChoiceChip('pay_d'),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        _getChoiceChip('pay_e'),
+                        _getChoiceChip('pay_f'),
+                        _getChoiceChip('pay_g'),
+                        _getChoiceChip('pay_h'),
                       ],
                     ),
                     Padding(
@@ -354,12 +371,30 @@ class _BankInputScreenState extends State<BankInputScreen> {
               (_chipValue == 'bank_c') ? _teContPrice.text : record[0].strBankC,
           strBankD:
               (_chipValue == 'bank_d') ? _teContPrice.text : record[0].strBankD,
+          strBankE:
+              (_chipValue == 'bank_e') ? _teContPrice.text : record[0].strBankE,
+          strBankF:
+              (_chipValue == 'bank_f') ? _teContPrice.text : record[0].strBankF,
+          strBankG:
+              (_chipValue == 'bank_g') ? _teContPrice.text : record[0].strBankG,
+          strBankH:
+              (_chipValue == 'bank_h') ? _teContPrice.text : record[0].strBankH,
           strPayA:
               (_chipValue == 'pay_a') ? _teContPrice.text : record[0].strPayA,
           strPayB:
               (_chipValue == 'pay_b') ? _teContPrice.text : record[0].strPayB,
           strPayC:
               (_chipValue == 'pay_c') ? _teContPrice.text : record[0].strPayC,
+          strPayD:
+              (_chipValue == 'pay_d') ? _teContPrice.text : record[0].strPayD,
+          strPayE:
+              (_chipValue == 'pay_e') ? _teContPrice.text : record[0].strPayE,
+          strPayF:
+              (_chipValue == 'pay_f') ? _teContPrice.text : record[0].strPayF,
+          strPayG:
+              (_chipValue == 'pay_g') ? _teContPrice.text : record[0].strPayG,
+          strPayH:
+              (_chipValue == 'pay_h') ? _teContPrice.text : record[0].strPayH,
         );
 
         await database.updateRecord(monie);

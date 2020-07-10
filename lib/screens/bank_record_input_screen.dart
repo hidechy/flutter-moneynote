@@ -171,6 +171,14 @@ class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
                         _getChoiceChip('bank_d'),
                       ],
                     ),
+                    Row(
+                      children: <Widget>[
+                        _getChoiceChip('bank_e'),
+                        _getChoiceChip('bank_f'),
+                        _getChoiceChip('bank_g'),
+                        _getChoiceChip('bank_h'),
+                      ],
+                    ),
                     Container(
                       decoration: BoxDecoration(
                           border: Border.all(

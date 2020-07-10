@@ -27,10 +27,19 @@ class Monies extends Table {
   TextColumn get strBankB => text()();
   TextColumn get strBankC => text()();
   TextColumn get strBankD => text()();
+  TextColumn get strBankE => text()();
+  TextColumn get strBankF => text()();
+  TextColumn get strBankG => text()();
+  TextColumn get strBankH => text()();
 
   TextColumn get strPayA => text()();
   TextColumn get strPayB => text()();
   TextColumn get strPayC => text()();
+  TextColumn get strPayD => text()();
+  TextColumn get strPayE => text()();
+  TextColumn get strPayF => text()();
+  TextColumn get strPayG => text()();
+  TextColumn get strPayH => text()();
 
   @override
   Set<Column> get primaryKey => {strDate};

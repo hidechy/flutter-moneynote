@@ -50,10 +50,19 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   TextEditingController _teContBankB = TextEditingController();
   TextEditingController _teContBankC = TextEditingController();
   TextEditingController _teContBankD = TextEditingController();
+  TextEditingController _teContBankE = TextEditingController();
+  TextEditingController _teContBankF = TextEditingController();
+  TextEditingController _teContBankG = TextEditingController();
+  TextEditingController _teContBankH = TextEditingController();
 
   TextEditingController _teContPayA = TextEditingController();
   TextEditingController _teContPayB = TextEditingController();
   TextEditingController _teContPayC = TextEditingController();
+  TextEditingController _teContPayD = TextEditingController();
+  TextEditingController _teContPayE = TextEditingController();
+  TextEditingController _teContPayF = TextEditingController();
+  TextEditingController _teContPayG = TextEditingController();
+  TextEditingController _teContPayH = TextEditingController();
 
   bool _updateFlag = false;
 
@@ -104,10 +113,19 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
       _teContBankB = new TextEditingController(text: _monieData[0].strBankB);
       _teContBankC = new TextEditingController(text: _monieData[0].strBankC);
       _teContBankD = new TextEditingController(text: _monieData[0].strBankD);
+      _teContBankE = new TextEditingController(text: _monieData[0].strBankE);
+      _teContBankF = new TextEditingController(text: _monieData[0].strBankF);
+      _teContBankG = new TextEditingController(text: _monieData[0].strBankG);
+      _teContBankH = new TextEditingController(text: _monieData[0].strBankH);
 
       _teContPayA = new TextEditingController(text: _monieData[0].strPayA);
       _teContPayB = new TextEditingController(text: _monieData[0].strPayB);
       _teContPayC = new TextEditingController(text: _monieData[0].strPayC);
+      _teContPayD = new TextEditingController(text: _monieData[0].strPayD);
+      _teContPayE = new TextEditingController(text: _monieData[0].strPayE);
+      _teContPayF = new TextEditingController(text: _monieData[0].strPayF);
+      _teContPayG = new TextEditingController(text: _monieData[0].strPayG);
+      _teContPayH = new TextEditingController(text: _monieData[0].strPayH);
 
       _updateFlag = true;
     } else {
@@ -126,10 +144,19 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
       _teContBankB = new TextEditingController(text: '0');
       _teContBankC = new TextEditingController(text: '0');
       _teContBankD = new TextEditingController(text: '0');
+      _teContBankE = new TextEditingController(text: '0');
+      _teContBankF = new TextEditingController(text: '0');
+      _teContBankG = new TextEditingController(text: '0');
+      _teContBankH = new TextEditingController(text: '0');
 
       _teContPayA = new TextEditingController(text: '0');
       _teContPayB = new TextEditingController(text: '0');
       _teContPayC = new TextEditingController(text: '0');
+      _teContPayD = new TextEditingController(text: '0');
+      _teContPayE = new TextEditingController(text: '0');
+      _teContPayF = new TextEditingController(text: '0');
+      _teContPayG = new TextEditingController(text: '0');
+      _teContPayH = new TextEditingController(text: '0');
     }
 
     setState(() {});
@@ -170,111 +197,150 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
             colorBlendMode: BlendMode.darken,
           ),
           SingleChildScrollView(
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              color: Colors.black.withOpacity(0.3),
-              child: Column(
-                children: <Widget>[
-                  const SizedBox(
-                    height: 10.0,
+            child: Column(
+              children: <Widget>[
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
-                  Table(
-                    children: [
-                      TableRow(children: [
-                        _getTextField('10000', _teCont10000),
-                        _getTextField('5000', _teCont5000),
-                        _getTextField('2000', _teCont2000),
-                        _getTextField('1000', _teCont1000),
-                      ]),
-                      TableRow(children: [
-                        _getTextField('500', _teCont500),
-                        _getTextField('100', _teCont100),
-                        _getTextField('50', _teCont50),
-                        _getTextField('10', _teCont10),
-                      ]),
-                      TableRow(children: [
-                        _getTextField('5', _teCont5),
-                        _getTextField('1', _teCont1),
-                        const Align(),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            right: 10.0,
-                            top: 20.0,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: <Widget>[
-                              Text(
-                                '${_onedayTotal}',
-                                style: TextStyle(color: Colors.greenAccent),
-                              ),
-                              Text(
-                                '${_onedaySpend}',
-                                style: TextStyle(color: Colors.greenAccent),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ]),
-                      TableRow(children: [
-                        _getTextField('bank_a', _teContBankA),
-                        _getTextField('bank_b', _teContBankB),
-                        _getTextField('bank_c', _teContBankC),
-                        _getTextField('bank_d', _teContBankD),
-                      ]),
-                      TableRow(children: [
-                        _getTextField('pay_a', _teContPayA),
-                        _getTextField('pay_b', _teContPayB),
-                        _getTextField('pay_c', _teContPayC),
-                        const Align(),
-                      ]),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                  color: Colors.black.withOpacity(0.3),
+                  child: Column(
                     children: <Widget>[
-                      IconButton(
-                        icon: const Icon(Icons.content_copy),
-                        tooltip: 'copy',
-                        onPressed: () => _dataCopy(),
-                        color: Colors.blueAccent,
+                      const SizedBox(
+                        height: 10.0,
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.list),
-                        tooltip: 'list',
-                        onPressed: () => _goMonthlyListScreen(),
-                        color: Colors.blueAccent,
+                      Table(
+                        children: [
+                          TableRow(children: [
+                            _getTextField('10000', _teCont10000),
+                            _getTextField('5000', _teCont5000),
+                            _getTextField('2000', _teCont2000),
+                            _getTextField('1000', _teCont1000),
+                          ]),
+                          TableRow(children: [
+                            _getTextField('500', _teCont500),
+                            _getTextField('100', _teCont100),
+                            _getTextField('50', _teCont50),
+                            _getTextField('10', _teCont10),
+                          ]),
+                          TableRow(children: [
+                            _getTextField('5', _teCont5),
+                            _getTextField('1', _teCont1),
+                            const Align(),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                right: 10.0,
+                                top: 20.0,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: <Widget>[
+                                  Text(
+                                    '${_onedayTotal}',
+                                    style: TextStyle(color: Colors.greenAccent),
+                                  ),
+                                  Text(
+                                    '${_onedaySpend}',
+                                    style: TextStyle(color: Colors.greenAccent),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ]),
+                        ],
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.details),
-                        tooltip: 'detail',
-                        onPressed: () => _goDetailDisplayScreen(),
-                        color: Colors.blueAccent,
+                      const Divider(
+                        color: Colors.indigo,
+                        height: 20.0,
+                        indent: 20.0,
+                        endIndent: 20.0,
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.calendar_today),
-                        tooltip: 'jump',
-                        onPressed: () => _showDatepicker(context),
-                        color: Colors.blueAccent,
+                      Table(
+                        children: [
+                          TableRow(children: [
+                            _getTextField('bank_a', _teContBankA),
+                            _getTextField('bank_b', _teContBankB),
+                            _getTextField('bank_c', _teContBankC),
+                            _getTextField('bank_d', _teContBankD),
+                          ]),
+                          TableRow(children: [
+                            _getTextField('bank_e', _teContBankE),
+                            _getTextField('bank_f', _teContBankF),
+                            _getTextField('bank_g', _teContBankG),
+                            _getTextField('bank_h', _teContBankH),
+                          ]),
+                        ],
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.check_box),
-                        tooltip: 'total',
-                        onPressed: () => _displayTotal(),
-                        color: Colors.greenAccent,
+                      const Divider(
+                        color: Colors.indigo,
+                        height: 20.0,
+                        indent: 20.0,
+                        endIndent: 20.0,
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.input),
-                        tooltip: 'input',
-                        onPressed: () => _insertRecord(context),
-                        color: Colors.greenAccent,
+                      Table(
+                        children: [
+                          TableRow(children: [
+                            _getTextField('pay_a', _teContPayA),
+                            _getTextField('pay_b', _teContPayB),
+                            _getTextField('pay_c', _teContPayC),
+                            _getTextField('pay_d', _teContPayD),
+                          ]),
+                          TableRow(children: [
+                            _getTextField('pay_e', _teContPayE),
+                            _getTextField('pay_f', _teContPayF),
+                            _getTextField('pay_g', _teContPayG),
+                            _getTextField('pay_h', _teContPayH),
+                          ]),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          IconButton(
+                            icon: const Icon(Icons.content_copy),
+                            tooltip: 'copy',
+                            onPressed: () => _dataCopy(),
+                            color: Colors.blueAccent,
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.list),
+                            tooltip: 'list',
+                            onPressed: () => _goMonthlyListScreen(),
+                            color: Colors.blueAccent,
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.details),
+                            tooltip: 'detail',
+                            onPressed: () => _goDetailDisplayScreen(),
+                            color: Colors.blueAccent,
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.calendar_today),
+                            tooltip: 'jump',
+                            onPressed: () => _showDatepicker(context),
+                            color: Colors.blueAccent,
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.check_box),
+                            tooltip: 'total',
+                            onPressed: () => _displayTotal(),
+                            color: Colors.greenAccent,
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.input),
+                            tooltip: 'input',
+                            onPressed: () => _insertRecord(context),
+                            color: Colors.greenAccent,
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+                Container(
+                  height: 300,
+                ),
+              ],
             ),
           ),
         ],
@@ -333,10 +399,19 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
       _teContBankB = new TextEditingController(text: _monieData[0].strBankB);
       _teContBankC = new TextEditingController(text: _monieData[0].strBankC);
       _teContBankD = new TextEditingController(text: _monieData[0].strBankD);
+      _teContBankE = new TextEditingController(text: _monieData[0].strBankE);
+      _teContBankF = new TextEditingController(text: _monieData[0].strBankF);
+      _teContBankG = new TextEditingController(text: _monieData[0].strBankG);
+      _teContBankH = new TextEditingController(text: _monieData[0].strBankH);
 
       _teContPayA = new TextEditingController(text: _monieData[0].strPayA);
       _teContPayB = new TextEditingController(text: _monieData[0].strPayB);
       _teContPayC = new TextEditingController(text: _monieData[0].strPayC);
+      _teContPayD = new TextEditingController(text: _monieData[0].strPayD);
+      _teContPayE = new TextEditingController(text: _monieData[0].strPayE);
+      _teContPayF = new TextEditingController(text: _monieData[0].strPayF);
+      _teContPayG = new TextEditingController(text: _monieData[0].strPayG);
+      _teContPayH = new TextEditingController(text: _monieData[0].strPayH);
     }
 
     setState(() {});
@@ -431,13 +506,24 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
       strYen10: _teCont10.text != "" ? _teCont10.text : '0',
       strYen5: _teCont5.text != "" ? _teCont5.text : '0',
       strYen1: _teCont1.text != "" ? _teCont1.text : '0',
+      //
       strBankA: _teContBankA.text != "" ? _teContBankA.text : '0',
       strBankB: _teContBankB.text != "" ? _teContBankB.text : '0',
       strBankC: _teContBankC.text != "" ? _teContBankC.text : '0',
       strBankD: _teContBankD.text != "" ? _teContBankD.text : '0',
+      strBankE: _teContBankE.text != "" ? _teContBankE.text : '0',
+      strBankF: _teContBankF.text != "" ? _teContBankF.text : '0',
+      strBankG: _teContBankG.text != "" ? _teContBankG.text : '0',
+      strBankH: _teContBankH.text != "" ? _teContBankH.text : '0',
+      //
       strPayA: _teContPayA.text != "" ? _teContPayA.text : '0',
       strPayB: _teContPayB.text != "" ? _teContPayB.text : '0',
       strPayC: _teContPayC.text != "" ? _teContPayC.text : '0',
+      strPayD: _teContPayD.text != "" ? _teContPayD.text : '0',
+      strPayE: _teContPayE.text != "" ? _teContPayE.text : '0',
+      strPayF: _teContPayF.text != "" ? _teContPayF.text : '0',
+      strPayG: _teContPayG.text != "" ? _teContPayG.text : '0',
+      strPayH: _teContPayH.text != "" ? _teContPayH.text : '0',
     );
 
     if (_updateFlag == false) {
@@ -474,10 +560,19 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
     _totalValue.add(['1', _teContBankB.text]);
     _totalValue.add(['1', _teContBankC.text]);
     _totalValue.add(['1', _teContBankD.text]);
+    _totalValue.add(['1', _teContBankE.text]);
+    _totalValue.add(['1', _teContBankF.text]);
+    _totalValue.add(['1', _teContBankG.text]);
+    _totalValue.add(['1', _teContBankH.text]);
 
     _totalValue.add(['1', _teContPayA.text]);
     _totalValue.add(['1', _teContPayB.text]);
     _totalValue.add(['1', _teContPayC.text]);
+    _totalValue.add(['1', _teContPayD.text]);
+    _totalValue.add(['1', _teContPayE.text]);
+    _totalValue.add(['1', _teContPayF.text]);
+    _totalValue.add(['1', _teContPayG.text]);
+    _totalValue.add(['1', _teContPayH.text]);
 
     for (int i = 0; i < _totalValue.length; i++) {
       _onedayTotal +=
