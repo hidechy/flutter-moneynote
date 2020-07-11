@@ -293,6 +293,12 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
                           ]),
                         ],
                       ),
+                      const Divider(
+                        color: Colors.indigo,
+                        height: 20.0,
+                        indent: 20.0,
+                        endIndent: 20.0,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
