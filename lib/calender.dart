@@ -76,7 +76,7 @@ class _CalenderState extends State<Calender> {
               weekendTextStyle: TextStyle(
                   fontSize: 16.0, color: Colors.red, fontFamily: 'Yomogi'),
               weekdayTextStyle: TextStyle(color: Colors.grey),
-              dayButtonColor: Colors.grey[900],
+              dayButtonColor: Colors.black.withOpacity(0.3),
 
               onDayPressed: onDayPressed,
               weekFormat: false,

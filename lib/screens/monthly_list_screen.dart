@@ -338,9 +338,14 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
+        backgroundColor: Colors.black.withOpacity(0.3),
         title: Text(
           _title,
-          style: TextStyle(color: Colors.white, fontFamily: 'Loboto'),
+          style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Loboto',
+            fontSize: 14,
+          ),
         ),
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -396,7 +401,10 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
         ),
         actions: <Widget>[
           FlatButton(
-            child: Text('閉じる'),
+            child: Text(
+              '閉じる',
+              style: TextStyle(fontSize: 12),
+            ),
             onPressed: () => Navigator.pop(context),
           ),
         ],

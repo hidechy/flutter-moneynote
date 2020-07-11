@@ -513,62 +513,84 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
       context: context,
       builder: (BuildContext context) {
         return SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              ListTile(
-                leading: const Icon(Icons.trending_up),
-                title: const Text('Score List'),
-                onTap: () => _goScoreListScreen(),
-              ),
-              ListTile(
-                leading: const Icon(Icons.list),
-                title: const Text('Monthly List'),
-                onTap: () => _goMonthlyListScreen(),
-              ),
-              ListTile(
-                leading: const Icon(Icons.all_out),
-                title: const Text('AllDay List'),
-                onTap: () => _goAlldayListScreen(),
-              ),
-              ListTile(
-                leading: const Icon(Icons.all_inclusive),
-                title: const Text('SameDay List'),
-                onTap: () => _goSamedayListScreen(),
-              ),
-              Container(
-                color: Colors.grey[900],
-                child: ListTile(
-                  leading: const Icon(Icons.input),
-                  title: const Text('Oneday Input'),
-                  onTap: () => _goOnedayInputScreen(),
+          child: Container(
+            color: Colors.grey[900],
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListTile(
+                  leading: const Icon(Icons.trending_up),
+                  title: const Text(
+                    'Score List',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  onTap: () => _goScoreListScreen(),
                 ),
-              ),
-              Container(
-                color: Colors.grey[900],
-                child: ListTile(
-                  leading: const Icon(Icons.business),
-                  title: const Text('Bank Input'),
-                  onTap: () => _goBankInputScreen(),
+                ListTile(
+                  leading: const Icon(Icons.list),
+                  title: const Text(
+                    'Monthly List',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  onTap: () => _goMonthlyListScreen(),
                 ),
-              ),
-              Container(
-                color: Colors.grey[900],
-                child: ListTile(
-                  leading: const Icon(Icons.category),
-                  title: const Text('Bank Record Input'),
-                  onTap: () => _goCreditRecordInputScreen(),
+                ListTile(
+                  leading: const Icon(Icons.all_out),
+                  title: const Text(
+                    'AllDay List',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  onTap: () => _goAlldayListScreen(),
                 ),
-              ),
-              Container(
-                color: Colors.grey[900],
-                child: ListTile(
-                  leading: const Icon(Icons.beenhere),
-                  title: const Text('Benefit Input'),
-                  onTap: () => _goBenefitInputScreen(),
+                ListTile(
+                  leading: const Icon(Icons.all_inclusive),
+                  title: const Text(
+                    'SameDay List',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  onTap: () => _goSamedayListScreen(),
                 ),
-              ),
-            ],
+                Container(
+                  color: Colors.black,
+                  child: Column(
+                    children: <Widget>[
+                      ListTile(
+                        leading: const Icon(Icons.input),
+                        title: const Text(
+                          'Oneday Input',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        onTap: () => _goOnedayInputScreen(),
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.business),
+                        title: const Text(
+                          'Bank Input',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        onTap: () => _goBankInputScreen(),
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.category),
+                        title: const Text(
+                          'Bank Record Input',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        onTap: () => _goCreditRecordInputScreen(),
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.beenhere),
+                        title: const Text(
+                          'Benefit Input',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        onTap: () => _goBenefitInputScreen(),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },
