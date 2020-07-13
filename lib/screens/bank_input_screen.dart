@@ -34,6 +34,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
 
   String _lastRecordDate;
 
+  Map _dispFlag = Map();
+
   /**
   * 初期動作
   */
@@ -69,6 +71,40 @@ class _BankInputScreenState extends State<BankInputScreen> {
     if (_monieData.length > 0) {
       _bankData = List();
       for (int i = 0; i < _monieData.length; i++) {
+        _dispFlag['bank_a'] =
+            _makeDispFlag(_monieData[i].strBankA, _dispFlag['bank_a']);
+        _dispFlag['bank_b'] =
+            _makeDispFlag(_monieData[i].strBankB, _dispFlag['bank_b']);
+        _dispFlag['bank_c'] =
+            _makeDispFlag(_monieData[i].strBankC, _dispFlag['bank_c']);
+        _dispFlag['bank_d'] =
+            _makeDispFlag(_monieData[i].strBankD, _dispFlag['bank_d']);
+        _dispFlag['bank_e'] =
+            _makeDispFlag(_monieData[i].strBankE, _dispFlag['bank_e']);
+        _dispFlag['bank_f'] =
+            _makeDispFlag(_monieData[i].strBankF, _dispFlag['bank_f']);
+        _dispFlag['bank_g'] =
+            _makeDispFlag(_monieData[i].strBankG, _dispFlag['bank_g']);
+        _dispFlag['bank_h'] =
+            _makeDispFlag(_monieData[i].strBankH, _dispFlag['bank_h']);
+
+        _dispFlag['pay_a'] =
+            _makeDispFlag(_monieData[i].strPayA, _dispFlag['pay_a']);
+        _dispFlag['pay_b'] =
+            _makeDispFlag(_monieData[i].strPayB, _dispFlag['pay_b']);
+        _dispFlag['pay_c'] =
+            _makeDispFlag(_monieData[i].strPayC, _dispFlag['pay_c']);
+        _dispFlag['pay_d'] =
+            _makeDispFlag(_monieData[i].strPayD, _dispFlag['pay_d']);
+        _dispFlag['pay_e'] =
+            _makeDispFlag(_monieData[i].strPayE, _dispFlag['pay_e']);
+        _dispFlag['pay_f'] =
+            _makeDispFlag(_monieData[i].strPayF, _dispFlag['pay_f']);
+        _dispFlag['pay_g'] =
+            _makeDispFlag(_monieData[i].strPayG, _dispFlag['pay_g']);
+        _dispFlag['pay_h'] =
+            _makeDispFlag(_monieData[i].strPayH, _dispFlag['pay_h']);
+
         switch (_chipValue) {
           case 'bank_a':
             _value = int.parse(_monieData[i].strBankA);
@@ -82,6 +118,19 @@ class _BankInputScreenState extends State<BankInputScreen> {
           case 'bank_d':
             _value = int.parse(_monieData[i].strBankD);
             break;
+          case 'bank_e':
+            _value = int.parse(_monieData[i].strBankE);
+            break;
+          case 'bank_f':
+            _value = int.parse(_monieData[i].strBankF);
+            break;
+          case 'bank_g':
+            _value = int.parse(_monieData[i].strBankG);
+            break;
+          case 'bank_h':
+            _value = int.parse(_monieData[i].strBankH);
+            break;
+
           case 'pay_a':
             _value = int.parse(_monieData[i].strPayA);
             break;
@@ -91,11 +140,32 @@ class _BankInputScreenState extends State<BankInputScreen> {
           case 'pay_c':
             _value = int.parse(_monieData[i].strPayC);
             break;
+          case 'pay_d':
+            _value = int.parse(_monieData[i].strPayD);
+            break;
+          case 'pay_e':
+            _value = int.parse(_monieData[i].strPayE);
+            break;
+          case 'pay_f':
+            _value = int.parse(_monieData[i].strPayF);
+            break;
+          case 'pay_g':
+            _value = int.parse(_monieData[i].strPayG);
+            break;
+          case 'pay_h':
+            _value = int.parse(_monieData[i].strPayH);
+            break;
         }
 
+        _utility.makeYMDYData(_monieData[i].strDate, 0);
+
         var _diffMark = (_prevValue != _value) ? 1 : 0;
-        _bankData.add(
-            [_monieData[i].strDate, _value.toString(), _diffMark.toString()]);
+        _bankData.add([
+          _monieData[i].strDate,
+          _value.toString(),
+          _diffMark.toString(),
+          _utility.youbiNo.toString()
+        ]);
         _prevValue = _value;
 
         _lastRecordDate = _monieData[i].strDate;
@@ -103,6 +173,21 @@ class _BankInputScreenState extends State<BankInputScreen> {
     }
 
     setState(() {});
+  }
+
+  /**
+   * 表示フラグ作成
+   */
+  int _makeDispFlag(String value, int nowFlag) {
+    if (nowFlag == 1) {
+      return 1;
+    }
+
+    if (value == null) {
+      return 0;
+    } else {
+      return (int.parse(value) > 0) ? 1 : 0;
+    }
   }
 
   /**
@@ -225,39 +310,44 @@ class _BankInputScreenState extends State<BankInputScreen> {
   */
   Widget _listItem(int position) {
     return InkWell(
-      child: Slidable(
-        actionPane: const SlidableDrawerActionPane(),
-        actionExtentRatio: 0.15,
-        child: Card(
-          color: Colors.black.withOpacity(0.3),
-          elevation: 10.0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          child: ListTile(
-            leading: _getLeading(_bankData[position][2]),
-            title: Text(
-              '${_bankData[position][0]}　${_bankData[position][1]}',
-              style: const TextStyle(
-                color: Colors.white,
-                fontFamily: 'Yomogi',
-                fontSize: 12.0,
-              ),
+      child: Card(
+        color: _getBgColor(int.parse(_bankData[position][3])),
+        elevation: 10.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: ListTile(
+          leading: _getLeading(_bankData[position][2]),
+          title: Text(
+            '${_bankData[position][0]}　${_bankData[position][1]}',
+            style: const TextStyle(
+              color: Colors.white,
+              fontFamily: 'Yomogi',
+              fontSize: 12.0,
             ),
           ),
         ),
-
-        //actions: <Widget>[],
-        secondaryActions: <Widget>[
-          IconSlideAction(
-            color: Colors.black.withOpacity(0.3),
-            foregroundColor: Colors.blueAccent,
-            icon: Icons.check,
-            onTap: () => _dayPickup(position),
-          ),
-        ],
       ),
     );
+  }
+
+  /**
+   * 背景色取得
+   */
+  _getBgColor(int youbiNo) {
+    switch (youbiNo) {
+      case 0:
+        return Colors.redAccent[700].withOpacity(0.3);
+        break;
+
+      case 6:
+        return Colors.blueAccent[700].withOpacity(0.3);
+        break;
+
+      default:
+        return Colors.black.withOpacity(0.3);
+        break;
+    }
   }
 
   /**
@@ -281,21 +371,23 @@ class _BankInputScreenState extends State<BankInputScreen> {
   * チョイスチップ作成
   */
   Widget _getChoiceChip(String _selectedChip) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5.0),
-      child: ChoiceChip(
-        backgroundColor: Colors.blueAccent.withOpacity(0.5),
-        label: Text(
-          _selectedChip,
-          style: const TextStyle(color: Colors.white),
-        ),
-        selected: _chipValue == _selectedChip,
-        onSelected: (bool isSelected) {
-          _chipValue = _selectedChip;
-          _getBankValue();
-        },
-      ),
-    );
+    return (_dispFlag[_selectedChip] == 0)
+        ? Container()
+        : Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            child: ChoiceChip(
+              backgroundColor: Colors.blueAccent.withOpacity(0.5),
+              label: Text(
+                _selectedChip,
+                style: const TextStyle(color: Colors.white),
+              ),
+              selected: _chipValue == _selectedChip,
+              onSelected: (bool isSelected) {
+                _chipValue = _selectedChip;
+                _getBankValue();
+              },
+            ),
+          );
   }
 
   /**
