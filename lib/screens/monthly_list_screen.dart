@@ -397,6 +397,16 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
               indent: 20.0,
               endIndent: 20.0,
             ),
+            Align(
+              alignment: Alignment.topRight,
+              child: Text(
+                (int.parse(_monthData[position][2]) * -1).toString(),
+                style: TextStyle(
+                  color: Colors.greenAccent,
+                  fontSize: 12.0,
+                ),
+              ),
+            ),
           ],
         ),
         actions: <Widget>[

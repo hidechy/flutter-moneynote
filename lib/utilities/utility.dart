@@ -72,6 +72,7 @@ class Utility {
   */
   int total = 0;
   int temochi = 0;
+  int undercoin = 0;
   makeTotal(_monieData) {
     List<List<String>> _totalValue = List();
 
@@ -112,6 +113,15 @@ class Utility {
     total = 0;
     for (int i = 0; i < _totalValue.length; i++) {
       total += (int.parse(_totalValue[i][0]) * int.parse(_totalValue[i][1]));
+    }
+
+    undercoin = 0;
+    List<List<String>> _uc = List();
+    _uc.add(['10', _monieData[0].strYen10]);
+    _uc.add(['5', _monieData[0].strYen5]);
+    _uc.add(['1', _monieData[0].strYen1]);
+    for (int i = 0; i < _uc.length; i++) {
+      undercoin += (int.parse(_uc[i][0]) * int.parse(_uc[i][1]));
     }
   }
 }
