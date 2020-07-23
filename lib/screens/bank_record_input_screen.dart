@@ -337,7 +337,9 @@ class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
     return Container(
       alignment:
           (column == 4 || column == 2) ? Alignment.topRight : Alignment.topLeft,
-      child: Text(_creditData[position][column]),
+      child: (column == 4)
+          ? Text(_utility.makeCurrencyDisplay(_creditData[position][column]))
+          : Text(_creditData[position][column]),
     );
   }
 

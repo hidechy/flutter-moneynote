@@ -37,8 +37,34 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
     if (_monieData.length > 0) {
       int _keepTotal = 0;
       for (int i = 0; i < _monieData.length; i++) {
-        _utility.makeTotal(_monieData);
-        var total = _utility.total;
+        //--------------------------------------------//total
+        List<List<String>> _totalValue = List();
+
+        _totalValue.add(['10000', _monieData[i].strYen10000]);
+        _totalValue.add(['5000', _monieData[i].strYen5000]);
+        _totalValue.add(['2000', _monieData[i].strYen2000]);
+        _totalValue.add(['1000', _monieData[i].strYen1000]);
+        _totalValue.add(['500', _monieData[i].strYen500]);
+        _totalValue.add(['100', _monieData[i].strYen100]);
+        _totalValue.add(['50', _monieData[i].strYen50]);
+        _totalValue.add(['10', _monieData[i].strYen10]);
+        _totalValue.add(['5', _monieData[i].strYen5]);
+        _totalValue.add(['1', _monieData[i].strYen1]);
+
+        _totalValue.add(['1', _monieData[i].strBankA]);
+        _totalValue.add(['1', _monieData[i].strBankB]);
+        _totalValue.add(['1', _monieData[i].strBankC]);
+        _totalValue.add(['1', _monieData[i].strBankD]);
+
+        _totalValue.add(['1', _monieData[i].strPayA]);
+        _totalValue.add(['1', _monieData[i].strPayB]);
+
+        var total = 0;
+        for (int j = 0; j < _totalValue.length; j++) {
+          total +=
+              (int.parse(_totalValue[j][0]) * int.parse(_totalValue[j][1]));
+        }
+        //--------------------------------------------//total
 
         _alldayData.add([
           _monieData[i].strDate,
@@ -145,16 +171,27 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   * データコンテナ表示
   */
   Widget _getDisplayContainer(int position, int column) {
-    if (column == 0) {
-      _utility.makeYMDYData(_alldayData[position][0], 0);
-      youbiStr = _utility.youbiStr;
-    }
-
     return Container(
       alignment: (column == 1) ? Alignment.topCenter : Alignment.topLeft,
-      child: (column == 0)
-          ? Text(_alldayData[position][column] + '（' + youbiStr + '）')
-          : Text(_alldayData[position][column]),
+      child: Text(getDisplayText(_alldayData[position][column], column)),
     );
+  }
+
+  /**
+   * 表示テキスト取得
+   */
+  String getDisplayText(String text, int column) {
+    switch (column) {
+      case 0:
+        _utility.makeYMDYData(text, 0);
+        return text + '（' + _utility.youbiStr + '）';
+        break;
+      case 1:
+        return _utility.makeCurrencyDisplay(text);
+        break;
+      case 2:
+        return text;
+        break;
+    }
   }
 }

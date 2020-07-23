@@ -124,4 +124,12 @@ class Utility {
       undercoin += (int.parse(_uc[i][0]) * int.parse(_uc[i][1]));
     }
   }
+
+  /**
+   * 金額を3桁区切りで表示する
+   */
+  final formatter = NumberFormat("#,###");
+  makeCurrencyDisplay(String text) {
+    return formatter.format(int.parse(text));
+  }
 }

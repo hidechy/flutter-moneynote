@@ -319,7 +319,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
         child: ListTile(
           leading: _getLeading(_bankData[position][2]),
           title: Text(
-            '${_bankData[position][0]}　${_bankData[position][1]}',
+            '${_bankData[position][0]}　${_utility.makeCurrencyDisplay(_bankData[position][1])}',
             style: const TextStyle(
               color: Colors.white,
               fontFamily: 'Yomogi',

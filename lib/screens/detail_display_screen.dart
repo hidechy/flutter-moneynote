@@ -248,21 +248,24 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                       child: Table(
                         children: [
                           TableRow(children: [
-                            _getTextDispWidget('total', false, '', false),
                             _getTextDispWidget(
-                                _total.toString(), false, '', false),
+                                'total', false, '', false, false),
+                            _getTextDispWidget(
+                                _total.toString(), false, '', false, true),
                             const Align(),
                           ]),
                           TableRow(children: [
-                            _getTextDispWidget('spend', false, '', false),
                             _getTextDispWidget(
-                                _spend.toString(), false, '', false),
+                                'spend', false, '', false, false),
+                            _getTextDispWidget(
+                                _spend.toString(), false, '', false, false),
                             const Align(),
                           ]),
                           TableRow(children: [
-                            _getTextDispWidget('month spend', false, '', false),
                             _getTextDispWidget(
-                                _monthSpend.toString(), false, '', false),
+                                'month spend', false, '', false, false),
+                            _getTextDispWidget(_monthSpend.toString(), false,
+                                '', false, false),
                             const Align(),
                           ]),
                         ],
@@ -282,34 +285,41 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                       child: Table(
                         children: [
                           TableRow(children: [
-                            _getTextDispWidget('10000', false, '', false),
-                            _getTextDispWidget(_yen10000, false, '', false),
-                            _getTextDispWidget('100', false, '', false),
-                            _getTextDispWidget(_yen100, false, '', false),
+                            _getTextDispWidget(
+                                '10000', false, '', false, false),
+                            _getTextDispWidget(
+                                _yen10000, false, '', false, false),
+                            _getTextDispWidget('100', false, '', false, false),
+                            _getTextDispWidget(
+                                _yen100, false, '', false, false),
                           ]),
                           TableRow(children: [
-                            _getTextDispWidget('5000', false, '', false),
-                            _getTextDispWidget(_yen5000, false, '', false),
-                            _getTextDispWidget('50', false, '', false),
-                            _getTextDispWidget(_yen50, false, '', false),
+                            _getTextDispWidget('5000', false, '', false, false),
+                            _getTextDispWidget(
+                                _yen5000, false, '', false, false),
+                            _getTextDispWidget('50', false, '', false, false),
+                            _getTextDispWidget(_yen50, false, '', false, false),
                           ]),
                           TableRow(children: [
-                            _getTextDispWidget('2000', false, '', false),
-                            _getTextDispWidget(_yen2000, false, '', false),
-                            _getTextDispWidget('10', false, '', true),
-                            _getTextDispWidget(_yen10, false, '', true),
+                            _getTextDispWidget('2000', false, '', false, false),
+                            _getTextDispWidget(
+                                _yen2000, false, '', false, false),
+                            _getTextDispWidget('10', false, '', true, false),
+                            _getTextDispWidget(_yen10, false, '', true, false),
                           ]),
                           TableRow(children: [
-                            _getTextDispWidget('1000', false, '', false),
-                            _getTextDispWidget(_yen1000, false, '', false),
-                            _getTextDispWidget('5', false, '', true),
-                            _getTextDispWidget(_yen5, false, '', true),
+                            _getTextDispWidget('1000', false, '', false, false),
+                            _getTextDispWidget(
+                                _yen1000, false, '', false, false),
+                            _getTextDispWidget('5', false, '', true, false),
+                            _getTextDispWidget(_yen5, false, '', true, false),
                           ]),
                           TableRow(children: [
-                            _getTextDispWidget('500', false, '', false),
-                            _getTextDispWidget(_yen500, false, '', false),
-                            _getTextDispWidget('1', false, '', true),
-                            _getTextDispWidget(_yen1, false, '', true),
+                            _getTextDispWidget('500', false, '', false, false),
+                            _getTextDispWidget(
+                                _yen500, false, '', false, false),
+                            _getTextDispWidget('1', false, '', true, false),
+                            _getTextDispWidget(_yen1, false, '', true, false),
                           ]),
                         ],
                       ),
@@ -325,7 +335,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                       child: Padding(
                         padding: const EdgeInsets.only(right: 45.0),
                         child: Text(
-                          _temochi.toString(),
+                          _utility.makeCurrencyDisplay(_temochi.toString()),
                           style: const TextStyle(
                             color: Colors.greenAccent,
                             fontSize: 12,
@@ -339,7 +349,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                       child: Padding(
                         padding: const EdgeInsets.only(right: 45.0),
                         child: Text(
-                          _undercoin.toString(),
+                          _utility.makeCurrencyDisplay(_undercoin.toString()),
                           style: const TextStyle(
                             color: Colors.orangeAccent,
                             fontSize: 12,
@@ -356,28 +366,44 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                       child: Table(
                         children: [
                           TableRow(children: [
-                            _getTextDispWidget('bank_a', true, _bankA, false),
-                            _getTextDispWidget(_bankA, true, _bankA, false),
-                            _getTextDispWidget('bank_e', true, _bankE, false),
-                            _getTextDispWidget(_bankE, true, _bankE, false),
+                            _getTextDispWidget(
+                                'bank_a', true, _bankA, false, false),
+                            _getTextDispWidget(
+                                _bankA, true, _bankA, false, true),
+                            _getTextDispWidget(
+                                'bank_e', true, _bankE, false, false),
+                            _getTextDispWidget(
+                                _bankE, true, _bankE, false, true),
                           ]),
                           TableRow(children: [
-                            _getTextDispWidget('bank_b', true, _bankD, false),
-                            _getTextDispWidget(_bankB, true, _bankD, false),
-                            _getTextDispWidget('bank_f', true, _bankF, false),
-                            _getTextDispWidget(_bankF, true, _bankF, false),
+                            _getTextDispWidget(
+                                'bank_b', true, _bankD, false, false),
+                            _getTextDispWidget(
+                                _bankB, true, _bankD, false, true),
+                            _getTextDispWidget(
+                                'bank_f', true, _bankF, false, false),
+                            _getTextDispWidget(
+                                _bankF, true, _bankF, false, true),
                           ]),
                           TableRow(children: [
-                            _getTextDispWidget('bank_c', true, _bankC, false),
-                            _getTextDispWidget(_bankC, true, _bankC, false),
-                            _getTextDispWidget('bank_g', true, _bankG, false),
-                            _getTextDispWidget(_bankG, true, _bankG, false),
+                            _getTextDispWidget(
+                                'bank_c', true, _bankC, false, false),
+                            _getTextDispWidget(
+                                _bankC, true, _bankC, false, true),
+                            _getTextDispWidget(
+                                'bank_g', true, _bankG, false, false),
+                            _getTextDispWidget(
+                                _bankG, true, _bankG, false, true),
                           ]),
                           TableRow(children: [
-                            _getTextDispWidget('bank_d', true, _bankD, false),
-                            _getTextDispWidget(_bankD, true, _bankD, false),
-                            _getTextDispWidget('bank_h', true, _bankH, false),
-                            _getTextDispWidget(_bankH, true, _bankH, false),
+                            _getTextDispWidget(
+                                'bank_d', true, _bankD, false, false),
+                            _getTextDispWidget(
+                                _bankD, true, _bankD, false, true),
+                            _getTextDispWidget(
+                                'bank_h', true, _bankH, false, false),
+                            _getTextDispWidget(
+                                _bankH, true, _bankH, false, true),
                           ]),
                         ],
                       ),
@@ -396,28 +422,36 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                       child: Table(
                         children: [
                           TableRow(children: [
-                            _getTextDispWidget('pay_a', true, _payA, false),
-                            _getTextDispWidget(_payA, true, _payA, false),
-                            _getTextDispWidget('pay_e', true, _payE, false),
-                            _getTextDispWidget(_payE, true, _payE, false),
+                            _getTextDispWidget(
+                                'pay_a', true, _payA, false, false),
+                            _getTextDispWidget(_payA, true, _payA, false, true),
+                            _getTextDispWidget(
+                                'pay_e', true, _payE, false, false),
+                            _getTextDispWidget(_payE, true, _payE, false, true),
                           ]),
                           TableRow(children: [
-                            _getTextDispWidget('pay_b', true, _payB, false),
-                            _getTextDispWidget(_payB, true, _payB, false),
-                            _getTextDispWidget('pay_f', true, _payF, false),
-                            _getTextDispWidget(_payF, true, _payF, false),
+                            _getTextDispWidget(
+                                'pay_b', true, _payB, false, false),
+                            _getTextDispWidget(_payB, true, _payB, false, true),
+                            _getTextDispWidget(
+                                'pay_f', true, _payF, false, false),
+                            _getTextDispWidget(_payF, true, _payF, false, true),
                           ]),
                           TableRow(children: [
-                            _getTextDispWidget('pay_c', true, _payC, false),
-                            _getTextDispWidget(_payC, true, _payC, false),
-                            _getTextDispWidget('pay_g', true, _payG, false),
-                            _getTextDispWidget(_payG, true, _payG, false),
+                            _getTextDispWidget(
+                                'pay_c', true, _payC, false, false),
+                            _getTextDispWidget(_payC, true, _payC, false, true),
+                            _getTextDispWidget(
+                                'pay_g', true, _payG, false, false),
+                            _getTextDispWidget(_payG, true, _payG, false, true),
                           ]),
                           TableRow(children: [
-                            _getTextDispWidget('pay_d', true, _payD, false),
-                            _getTextDispWidget(_payD, true, _payD, false),
-                            _getTextDispWidget('pay_h', true, _payH, false),
-                            _getTextDispWidget(_payH, true, _payH, false),
+                            _getTextDispWidget(
+                                'pay_d', true, _payD, false, false),
+                            _getTextDispWidget(_payD, true, _payD, false, true),
+                            _getTextDispWidget(
+                                'pay_h', true, _payH, false, false),
+                            _getTextDispWidget(_payH, true, _payH, false, true),
                           ]),
                         ],
                       ),
@@ -460,32 +494,44 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
   * テキスト部分表示
   */
-  Widget _getTextDispWidget(
-      String text, bool greyDisp, String value, bool undercoin) {
+  Widget _getTextDispWidget(String text, bool greyDisp, String value,
+      bool undercoin, bool currencyDisp) {
     if (greyDisp == true && value == '0') {
       return Center(
         child: DefaultTextStyle(
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.3),
-              fontSize: 12,
-              fontFamily: "Yomogi",
-            ),
-            child: Text(text)),
+          style: TextStyle(
+            color: Colors.white.withOpacity(0.3),
+            fontSize: 12,
+            fontFamily: "Yomogi",
+          ),
+          child: Text(
+            getDisplayText(text, currencyDisp),
+          ),
+        ),
       );
     } else {
       if (undercoin == true) {
         return Center(
           child: Text(
-            text,
+            getDisplayText(text, currencyDisp),
             style: TextStyle(color: Colors.orangeAccent),
           ),
         );
       } else {
         return Center(
-          child: Text(text),
+          child: Text(
+            getDisplayText(text, currencyDisp),
+          ),
         );
       }
     }
+  }
+
+  /**
+   * 表示テキスト取得
+   */
+  String getDisplayText(String text, bool currencyDisp) {
+    return (currencyDisp) ? _utility.makeCurrencyDisplay(text) : text;
   }
 
   /**

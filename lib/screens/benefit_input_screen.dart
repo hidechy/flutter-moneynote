@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -208,17 +210,28 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   * データコンテナ表示
   */
   Widget _getDisplayContainer(int position, int column) {
-    if (column == 0) {
-      _utility.makeYMDYData(_benefitData[position][0], 0);
-      youbiStr = _utility.youbiStr;
-    }
-
     return Container(
       alignment: Alignment.topLeft,
-      child: (column == 0)
-          ? Text(_benefitData[position][column] + '（' + youbiStr + '）')
-          : Text(_benefitData[position][column]),
+      child: Text(getDisplayText(_benefitData[position][column], column)),
     );
+  }
+
+  /**
+   * 表示テキスト取得
+   */
+  String getDisplayText(String text, int column) {
+    switch (column) {
+      case 0:
+        _utility.makeYMDYData(text, 0);
+        return text + '（' + _utility.youbiStr + '）';
+        break;
+      case 1:
+        return text;
+        break;
+      case 2:
+        return _utility.makeCurrencyDisplay(text);
+        break;
+    }
   }
 
   /**

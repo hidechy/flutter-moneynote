@@ -335,6 +335,9 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
       }
     }
 
+    _utility.makeYMDYData(_title, 0);
+    _title += "（" + _utility.youbiStr + "）";
+
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -474,17 +477,38 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   * データコンテナ表示
   */
   Widget _getDisplayContainer(int position, int column) {
-    if (column == 0) {
-      _utility.makeYMDYData(_monthData[position][0], 0);
-      youbiStr = _utility.youbiStr;
-    }
-
     return Container(
       alignment: (column == 1) ? Alignment.topCenter : Alignment.topLeft,
-      child: (column == 0)
-          ? Text(_monthData[position][column] + ' : ' + youbiStr)
-          : Text(_monthData[position][column]),
+      child: getDisplayText(column, _monthData[position][column]),
     );
+  }
+
+  /**
+   * 表示文言取得
+   */
+  Widget getDisplayText(int column, String text) {
+    switch (column) {
+      case 0:
+        _utility.makeYMDYData(text, 0);
+
+        return Text(
+          text + '(' + _utility.youbiStr + ')',
+          style: TextStyle(fontSize: 10),
+        );
+        break;
+      case 1:
+        return Text(
+          _utility.makeCurrencyDisplay(text),
+          style: TextStyle(fontSize: 10),
+        );
+        break;
+      case 2:
+        return Text(
+          text,
+          style: TextStyle(fontSize: 10),
+        );
+        break;
+    }
   }
 
   /**

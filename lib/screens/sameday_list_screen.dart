@@ -149,7 +149,7 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
       ),
       child: ListTile(
         title: Text(
-          '${_samedayData[position][0]}　${_samedayData[position][1]}',
+          '${_samedayData[position][0]}　${_utility.makeCurrencyDisplay(_samedayData[position][1])}',
           style: const TextStyle(
             color: Colors.white,
             fontFamily: 'Yomogi',
