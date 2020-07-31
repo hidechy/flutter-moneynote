@@ -478,9 +478,26 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   */
   Widget _getDisplayContainer(int position, int column) {
     return Container(
-      alignment: (column == 1) ? Alignment.topCenter : Alignment.topLeft,
+      alignment: _getDisplayAlign(column),
       child: getDisplayText(column, _monthData[position][column]),
     );
+  }
+
+  /**
+   * データ表示位置取得
+   */
+  _getDisplayAlign(int column) {
+    switch (column) {
+      case 0:
+        return Alignment.topLeft;
+        break;
+      case 1:
+        return Alignment.topRight;
+        break;
+      case 2:
+        return Alignment.topRight;
+        break;
+    }
   }
 
   /**

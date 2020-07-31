@@ -148,16 +148,51 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: ListTile(
-        title: Text(
-          '${_samedayData[position][0]}　${_utility.makeCurrencyDisplay(_samedayData[position][1])}',
-          style: const TextStyle(
-            color: Colors.white,
-            fontFamily: 'Yomogi',
-            fontSize: 12.0,
+        title: DefaultTextStyle(
+          style: TextStyle(fontSize: 10.0),
+          child: Table(
+            children: [
+              TableRow(children: [
+                _getDisplayContainer(position, 0),
+                _getDisplayContainer(position, 2),
+                _getDisplayContainer(position, 1),
+                _getDisplayContainer(position, 3),
+              ]),
+            ],
           ),
         ),
       ),
     );
+  }
+
+  /**
+   * データコンテナ表示
+   */
+  Widget _getDisplayContainer(int position, int column) {
+    return Container(
+      alignment: _getDisplayAlign(column),
+      child: Text(_samedayData[position][column]),
+    );
+  }
+
+  /**
+   * データ表示位置取得
+   */
+  _getDisplayAlign(int column) {
+    switch (column) {
+      case 0:
+        return Alignment.topLeft;
+        break;
+      case 1:
+        return Alignment.center;
+        break;
+      case 2:
+        return Alignment.center;
+        break;
+      case 3:
+        return Alignment.topRight;
+        break;
+    }
   }
 
   /**
@@ -178,12 +213,34 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
           var samedata = await database.selectRecord(_monieData[i].strDate);
           _utility.makeTotal(samedata);
           var total = _utility.total;
-          _samedayData.add([_monieData[i].strDate, total.toString()]);
+
+          var firstDayData = await getFirstDayData(_monieData[i].strDate);
+
+          _samedayData.add([
+            _monieData[i].strDate,
+            total.toString(),
+            firstDayData.toString(),
+            ((firstDayData - total) * -1).toString()
+          ]);
         } //if (int.parse(_utility.day) == int.parse(value))
       } //for[i]
     }
 
     setState(() {});
+  }
+
+  Future<int> getFirstDayData(String dayDate) async {
+    var ex_dayDate = (dayDate).split('-');
+    var lastMonthLastDay =
+        DateTime(int.parse(ex_dayDate[0]), int.parse(ex_dayDate[1]), 0);
+    var ex_lmld = (lastMonthLastDay.toString()).split(' ');
+    var value = await database.selectRecord(ex_lmld[0]);
+    if (value.length == 0) {
+      return 0;
+    } else {
+      _utility.makeTotal(value);
+      return _utility.total;
+    }
   }
 
   /**
