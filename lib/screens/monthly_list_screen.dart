@@ -34,6 +34,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
 
   List<List<String>> _monthData = List();
 
+  Map<String, dynamic> _holidayList = Map();
+
   /**
   * 初期動作
   */
@@ -147,6 +149,14 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
 
       _yesterdaySpend = _thisDayTotal;
     }
+
+    //holiday
+    await _utility.load('HolidaySetting.txt').then((String value) {
+      var ex_value = (value).split('\n');
+      for (int i = 0; i < ex_value.length; i++) {
+        _holidayList[ex_value[i]] = '';
+      }
+    });
 
     setState(() {});
   }
@@ -458,19 +468,28 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   */
   getBgColor(int position) {
     _utility.makeYMDYData(_monthData[position][0], 0);
+
+    Color _color = null;
+
     switch (_utility.youbiNo) {
       case 0:
-        return Colors.redAccent[700].withOpacity(0.3);
+        _color = Colors.redAccent[700].withOpacity(0.3);
         break;
 
       case 6:
-        return Colors.blueAccent[700].withOpacity(0.3);
+        _color = Colors.blueAccent[700].withOpacity(0.3);
         break;
 
       default:
-        return Colors.black.withOpacity(0.3);
+        _color = Colors.black.withOpacity(0.3);
         break;
     }
+
+    if (_holidayList[_monthData[position][0]] != null) {
+      _color = Colors.greenAccent[700].withOpacity(0.3);
+    }
+
+    return _color;
   }
 
   /**

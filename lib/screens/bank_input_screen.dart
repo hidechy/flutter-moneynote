@@ -36,6 +36,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
 
   Map _dispFlag = Map();
 
+  Map<String, dynamic> _holidayList = Map();
+
   /**
   * 初期動作
   */
@@ -171,6 +173,14 @@ class _BankInputScreenState extends State<BankInputScreen> {
         _lastRecordDate = _monieData[i].strDate;
       }
     }
+
+    //holiday
+    await _utility.load('HolidaySetting.txt').then((String value) {
+      var ex_value = (value).split('\n');
+      for (int i = 0; i < ex_value.length; i++) {
+        _holidayList[ex_value[i]] = '';
+      }
+    });
 
     setState(() {});
   }
@@ -311,7 +321,10 @@ class _BankInputScreenState extends State<BankInputScreen> {
   Widget _listItem(int position) {
     return InkWell(
       child: Card(
-        color: _getBgColor(int.parse(_bankData[position][3])),
+        color: _getBgColor(
+          int.parse(_bankData[position][3]),
+          _bankData[position][0],
+        ),
         elevation: 10.0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
@@ -334,20 +347,28 @@ class _BankInputScreenState extends State<BankInputScreen> {
   /**
    * 背景色取得
    */
-  _getBgColor(int youbiNo) {
+  _getBgColor(int youbiNo, String date) {
+    Color _color = null;
+
     switch (youbiNo) {
       case 0:
-        return Colors.redAccent[700].withOpacity(0.3);
+        _color = Colors.redAccent[700].withOpacity(0.3);
         break;
 
       case 6:
-        return Colors.blueAccent[700].withOpacity(0.3);
+        _color = Colors.blueAccent[700].withOpacity(0.3);
         break;
 
       default:
-        return Colors.black.withOpacity(0.3);
+        _color = Colors.black.withOpacity(0.3);
         break;
     }
+
+    if (_holidayList[date] != null) {
+      _color = Colors.greenAccent[700].withOpacity(0.3);
+    }
+
+    return _color;
   }
 
   /**

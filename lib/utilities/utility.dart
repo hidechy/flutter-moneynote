@@ -1,5 +1,10 @@
 import 'package:intl/intl.dart';
 
+import 'package:path_provider/path_provider.dart';
+
+import 'dart:async';
+import 'dart:io';
+
 class Utility {
   /**
   * 日付データ作成
@@ -131,5 +136,21 @@ class Utility {
   final formatter = NumberFormat("#,###");
   makeCurrencyDisplay(String text) {
     return formatter.format(int.parse(text));
+  }
+
+  /**
+   * 設定ファイル取得
+   */
+  Future<File> getFilePath(String _fileName) async {
+    final directory = await getTemporaryDirectory();
+    return File(directory.path + '/' + _fileName);
+  }
+
+  /**
+   * テキストファイル読み込み
+   */
+  Future<String> load(String _fileName) async {
+    final file = await getFilePath(_fileName);
+    return file.readAsString();
   }
 }
