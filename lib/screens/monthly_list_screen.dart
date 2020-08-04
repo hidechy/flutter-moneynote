@@ -36,6 +36,10 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
 
   Map<String, dynamic> _holidayList = Map();
 
+  int _monthTotal = 0;
+
+  int _prevMonthEndTotal = 0;
+
   /**
   * 初期動作
   */
@@ -77,7 +81,6 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
     _thisMonthEndDay = _utility.day;
 
     ///////////////////////////
-    var _prevMonthEndTotal = 0;
     var val = await database.selectRecord(_prevMonthEndDate);
     if (val.length > 0) {
       _utility.makeTotal(val);
@@ -85,6 +88,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
     }
     ///////////////////////////
 
+    int _monthSum = 0;
     var _yesterdaySpend = 0;
     _monthData = List();
     for (int i = 1; i <= int.parse(_thisMonthEndDay); i++) {
@@ -144,6 +148,10 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
         _flag = '2';
       }
 
+      if (_thisDayTotal > 0) {
+        _monthSum += onedaySpend;
+      }
+
       _monthData.add(
           [_thisDay, _thisDayTotal.toString(), onedaySpend.toString(), _flag]);
 
@@ -157,6 +165,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
         _holidayList[ex_value[i]] = '';
       }
     });
+
+    _monthTotal = _monthSum;
 
     setState(() {});
   }
@@ -195,7 +205,39 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
             color: Colors.black.withOpacity(0.7),
             colorBlendMode: BlendMode.darken,
           ),
-          _monthlyList()
+          Column(
+            children: <Widget>[
+              Container(
+                color: Colors.yellow,
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        'start　${_utility.makeCurrencyDisplay(_prevMonthEndTotal.toString())}',
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 12,
+                        ),
+                      ),
+                      Text(
+                        'total　${_monthTotal}',
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: _monthlyList(),
+              ),
+            ],
+          ),
         ],
       ),
     );
