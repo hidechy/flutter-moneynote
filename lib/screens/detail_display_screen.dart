@@ -107,8 +107,6 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
     //本日分のレコードを取得
     _monieData = await database.selectRecord(_date);
 
-    print(_monieData);
-
     if (_monieData.length > 0) {
       _yen10000 = _monieData[0].strYen10000;
       _yen5000 = _monieData[0].strYen5000;

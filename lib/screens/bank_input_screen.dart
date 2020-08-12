@@ -39,8 +39,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
   Map<String, dynamic> _holidayList = Map();
 
   /**
-  * 初期動作
-  */
+   * 初期動作
+   */
   @override
   void initState() {
     super.initState();
@@ -49,8 +49,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
   }
 
   /**
-  * 初期データ作成
-  */
+   * 初期データ作成
+   */
   _makeDefaultDisplayData() async {
     _utility.makeYMDYData(widget.date, 0);
     year = _utility.year;
@@ -64,8 +64,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
   }
 
   /**
-  * 表示データ作成
-  */
+   * 表示データ作成
+   */
   _getBankValue() async {
     var _monieData = await database.selectSortedAllRecord;
     int _value = 0;
@@ -175,14 +175,12 @@ class _BankInputScreenState extends State<BankInputScreen> {
     }
 
     //holiday
-    if (_utility.getFileExists('HolidaySetting.txt') == true) {
-      await _utility.load('HolidaySetting.txt').then((String value) {
-        var ex_value = (value).split('\n');
-        for (int i = 0; i < ex_value.length; i++) {
-          _holidayList[ex_value[i]] = '';
-        }
-      });
-    }
+    await _utility.load('HolidaySetting.txt').then((String value) {
+      var ex_value = (value).split('\n');
+      for (int i = 0; i < ex_value.length; i++) {
+        _holidayList[ex_value[i]] = '';
+      }
+    });
 
     setState(() {});
   }
@@ -203,8 +201,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
   }
 
   /**
-  * 画面描画
-  */
+   * 画面描画
+   */
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -318,8 +316,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
   }
 
   /**
-  * リストアイテム表示
-  */
+   * リストアイテム表示
+   */
   Widget _listItem(int position) {
     return InkWell(
       child: Card(
@@ -374,8 +372,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
   }
 
   /**
-  * リーディングマーク取得
-  */
+   * リーディングマーク取得
+   */
   Widget _getLeading(String mark) {
     if (int.parse(mark) == 1) {
       return const Icon(
@@ -391,8 +389,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
   }
 
   /**
-  * チョイスチップ作成
-  */
+   * チョイスチップ作成
+   */
   Widget _getChoiceChip(String _selectedChip) {
     return (_dispFlag[_selectedChip] == 0)
         ? Container()
@@ -414,8 +412,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
   }
 
   /**
-  * デートピッカー表示
-  */
+   * デートピッカー表示
+   */
   _showDatepicker(BuildContext context) async {
     final selectedDate = await showDatePicker(
       context: context,
@@ -434,8 +432,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
   }
 
   /**
-  * レコード更新
-  */
+   * レコード更新
+   */
   _updateRecord(BuildContext context) async {
     if (_teContPrice.text == '0') {
       Toast.show('金額が入力されていません', context, duration: Toast.LENGTH_LONG);
@@ -522,8 +520,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
   }
 
   /**
-  * リストからの日付選択
-  */
+   * リストからの日付選択
+   */
   _dayPickup(int position) {
     _dialogSelectedDate = _bankData[position][0];
     setState(() {});

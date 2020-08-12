@@ -7,8 +7,8 @@ import 'dart:io';
 
 class Utility {
   /**
-  * 日付データ作成
-  */
+   * 日付データ作成
+   */
   String year;
   String month;
   String day;
@@ -65,16 +65,16 @@ class Utility {
   }
 
   /**
-  * 月末日取得
-  */
+   * 月末日取得
+   */
   String monthEndDateTime;
   makeMonthEnd(int year, int month, int day) {
     monthEndDateTime = new DateTime(year, month, day).toString();
   }
 
   /**
-  * 合計金額取得
-  */
+   * 合計金額取得
+   */
   int total = 0;
   int temochi = 0;
   int undercoin = 0;
@@ -138,35 +138,19 @@ class Utility {
     return formatter.format(int.parse(text));
   }
 
-/**
- * 設定ファイルパス取得
- */
-  Future<String> getFilePath(String _fileName) async {
-    final directory = await getTemporaryDirectory();
-    return directory.path + '/' + _fileName;
-  }
-
   /**
-   * 設定ファイルの存在取得
+   * 設定ファイル取得
    */
-  Future<bool> getFileExists(String _fileName) async {
-    String filepath = await getFilePath(_fileName);
-    return File(filepath).exists();
+  Future<File> getFilePath(String _fileName) async {
+    final directory = await getTemporaryDirectory();
+    return File(directory.path + '/' + _fileName);
   }
 
   /**
- * 設定ファイル取得
- */
-  Future<File> getFile(String _fileName) async {
-    String filepath = await getFilePath(_fileName);
-    return File(filepath);
-  }
-
-/**
- * テキストファイル読み込み
- */
+   * テキストファイル読み込み
+   */
   Future<String> load(String _fileName) async {
-    final file = await getFile(_fileName);
+    final file = await getFilePath(_fileName);
     return file.readAsString();
   }
 }

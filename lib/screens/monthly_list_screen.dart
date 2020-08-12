@@ -41,8 +41,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   int _prevMonthEndTotal = 0;
 
   /**
-  * 初期動作
-  */
+   * 初期動作
+   */
   @override
   void initState() {
     super.initState();
@@ -51,8 +51,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   }
 
   /**
-  * 初期データ作成
-  */
+   * 初期データ作成
+   */
   _makeDefaultDisplayData() async {
     _utility.makeYMDYData(widget.date, 0);
     year = _utility.year;
@@ -87,7 +87,6 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
       _prevMonthEndTotal = _utility.total;
     }
     ///////////////////////////
-
     int _monthSum = 0;
     var _yesterdaySpend = 0;
     _monthData = List();
@@ -159,14 +158,12 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
     }
 
     //holiday
-    if (_utility.getFileExists('HolidaySetting.txt') == true) {
-      await _utility.load('HolidaySetting.txt').then((String value) {
-        var ex_value = (value).split('\n');
-        for (int i = 0; i < ex_value.length; i++) {
-          _holidayList[ex_value[i]] = '';
-        }
-      });
-    }
+    await _utility.load('HolidaySetting.txt').then((String value) {
+      var ex_value = (value).split('\n');
+      for (int i = 0; i < ex_value.length; i++) {
+        _holidayList[ex_value[i]] = '';
+      }
+    });
 
     _monthTotal = _monthSum;
 
@@ -174,8 +171,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   }
 
   /**
-  * 画面描画
-  */
+   * 画面描画
+   */
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -246,8 +243,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   }
 
   /**
-  * リスト表示
-  */
+   * リスト表示
+   */
   _monthlyList() {
     return ListView.builder(
       itemCount: _monthData.length,
@@ -256,8 +253,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   }
 
   /**
-  * リストアイテム表示
-  */
+   * リストアイテム表示
+   */
   Widget _listItem(int position) {
     return InkWell(
       child: Slidable(
@@ -307,8 +304,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   }
 
   /**
-  * ダイアログボタン表示
-  */
+   * ダイアログボタン表示
+   */
   _getDetailDialogButton(int position) {
     switch (_monthData[position][3]) {
       case '1':
@@ -340,8 +337,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   }
 
   /**
-  * ダイアログ表示
-  */
+   * ダイアログ表示
+   */
   _displayDialog(int position) async {
     String _title = '';
     int _onedaySpend = 0;
@@ -480,8 +477,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   }
 
   /**
-  * リーディングマーク取得
-  */
+   * リーディングマーク取得
+   */
   Widget _getLeading(String mark) {
     switch (mark) {
       case '1':
@@ -508,8 +505,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   }
 
   /**
-  * 背景色取得
-  */
+   * 背景色取得
+   */
   getBgColor(int position) {
     _utility.makeYMDYData(_monthData[position][0], 0);
 
@@ -537,8 +534,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   }
 
   /**
-  * データコンテナ表示
-  */
+   * データコンテナ表示
+   */
   Widget _getDisplayContainer(int position, int column) {
     return Container(
       alignment: _getDisplayAlign(column),
@@ -592,8 +589,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   }
 
   /**
-  * 画面遷移（前月）
-  */
+   * 画面遷移（前月）
+   */
   _goPrevMonth(BuildContext context) {
     Navigator.pushReplacement(
       context,
@@ -606,8 +603,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   }
 
   /**
-  * 画面遷移（翌月）
-  */
+   * 画面遷移（翌月）
+   */
   _goNextMonth(BuildContext context) {
     Navigator.pushReplacement(
       context,
@@ -620,8 +617,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   }
 
   /**
-  * 画面遷移（OnedayInputScreen）
-  */
+   * 画面遷移（OnedayInputScreen）
+   */
   _goOnedayInputScreen(int position) {
     Navigator.pushReplacement(
       context,
@@ -634,8 +631,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   }
 
   /**
-  * 画面遷移（DetailDisplayScreen）
-  */
+   * 画面遷移（DetailDisplayScreen）
+   */
   _goDetailDisplayScreen(int position) {
     Navigator.pushReplacement(
       context,

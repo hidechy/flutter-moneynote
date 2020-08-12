@@ -21,8 +21,8 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   Map<String, dynamic> _holidayList = Map();
 
   /**
-  * 初期動作
-  */
+   * 初期動作
+   */
   @override
   void initState() {
     super.initState();
@@ -31,8 +31,8 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   }
 
   /**
-  * 初期データ作成
-  */
+   * 初期データ作成
+   */
   _makeDefaultDisplayData() async {
     //全データ取得
     var _monieData = await database.selectSortedAllRecord;
@@ -79,21 +79,19 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
     }
 
     //holiday
-    if (_utility.getFileExists('HolidaySetting.txt') == true) {
-      await _utility.load('HolidaySetting.txt').then((String value) {
-        var ex_value = (value).split('\n');
-        for (int i = 0; i < ex_value.length; i++) {
-          _holidayList[ex_value[i]] = '';
-        }
-      });
-    }
+    await _utility.load('HolidaySetting.txt').then((String value) {
+      var ex_value = (value).split('\n');
+      for (int i = 0; i < ex_value.length; i++) {
+        _holidayList[ex_value[i]] = '';
+      }
+    });
 
     setState(() {});
   }
 
   /**
-  * 画面描画
-  */
+   * 画面描画
+   */
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,8 +118,8 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   }
 
   /**
-  * リスト表示
-  */
+   * リスト表示
+   */
   _alldayList() {
     return ListView.builder(
       itemCount: _alldayData.length,
@@ -130,8 +128,8 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   }
 
   /**
-  * リストアイテム表示
-  */
+   * リストアイテム表示
+   */
   _listItem(int position) {
     return InkWell(
       child: Card(
@@ -160,8 +158,8 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   }
 
   /**
-  * 背景色取得
-  */
+   * 背景色取得
+   */
   getBgColor(int position) {
     _utility.makeYMDYData(_alldayData[position][0], 0);
 
@@ -189,8 +187,8 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   }
 
   /**
-  * データコンテナ表示
-  */
+   * データコンテナ表示
+   */
   Widget _getDisplayContainer(int position, int column) {
     return Container(
       alignment: (column == 1) ? Alignment.topCenter : Alignment.topLeft,
