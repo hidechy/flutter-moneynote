@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:moneynote/utilities/utility.dart';
+import '../utilities/utility.dart';
 
 import 'package:path_provider/path_provider.dart';
 
@@ -32,10 +32,12 @@ class _HolidaySettingScreenState extends State<HolidaySettingScreen> {
    * 初期データ作成
    */
   _makeDefaultDisplayData() async {
-    _utility.load('HolidaySetting.txt').then((String value) {
-      _textController.text = value;
-      setState(() {});
-    });
+    if (_utility.getFileExists('HolidaySetting.txt') == true) {
+      _utility.load('HolidaySetting.txt').then((String value) {
+        _textController.text = value;
+        setState(() {});
+      });
+    }
   }
 
   /**
@@ -119,9 +121,11 @@ class _HolidaySettingScreenState extends State<HolidaySettingScreen> {
       return;
     }
 
-    _utility.getFilePath('HolidaySetting.txt').then((File file) {
-      file.writeAsString(_textController.text);
-      Toast.show('登録が完了しました', context, duration: Toast.LENGTH_LONG);
-    });
+    if (_utility.getFileExists('HolidaySetting.txt') == true) {
+      _utility.getFile('HolidaySetting.txt').then((File file) {
+        file.writeAsString(_textController.text);
+        Toast.show('登録が完了しました', context, duration: Toast.LENGTH_LONG);
+      });
+    }
   }
 }
