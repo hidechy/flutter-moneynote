@@ -80,12 +80,7 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          Image.asset(
-            'assets/image/bg.png',
-            fit: BoxFit.cover,
-            color: Colors.black.withOpacity(0.7),
-            colorBlendMode: BlendMode.darken,
-          ),
+          _utility.getBackGround(),
           DefaultTextStyle(
             style: const TextStyle(fontSize: 16.0, fontFamily: "Yomogi"),
             child: Column(

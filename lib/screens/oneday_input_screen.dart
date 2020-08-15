@@ -167,6 +167,8 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   */
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -190,12 +192,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          Image.asset(
-            'assets/image/bg.png',
-            fit: BoxFit.cover,
-            color: Colors.black.withOpacity(0.7),
-            colorBlendMode: BlendMode.darken,
-          ),
+          _utility.getBackGround(),
           SingleChildScrollView(
             child: Column(
               children: <Widget>[
@@ -227,25 +224,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
                             _getTextField('5', _teCont5),
                             _getTextField('1', _teCont1),
                             const Align(),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                right: 10.0,
-                                top: 20.0,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: <Widget>[
-                                  Text(
-                                    '${_onedayTotal}',
-                                    style: TextStyle(color: Colors.greenAccent),
-                                  ),
-                                  Text(
-                                    '${_onedaySpend}',
-                                    style: TextStyle(color: Colors.greenAccent),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            const Align(),
                           ]),
                         ],
                       ),
@@ -340,11 +319,53 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
                           ),
                         ],
                       ),
+                      const Divider(
+                        color: Colors.indigo,
+                        height: 20.0,
+                        indent: 20.0,
+                        endIndent: 20.0,
+                      ),
+                      DefaultTextStyle(
+                        style: TextStyle(
+                          color: Colors.greenAccent,
+                          fontSize: 11,
+                        ),
+                        child: Table(
+                          children: [
+                            TableRow(children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text('onedayTotal'),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  alignment: Alignment.topRight,
+                                  child: Text(
+                                      '${_utility.makeCurrencyDisplay(_onedayTotal.toString())}'),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text('onedaySpend'),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  alignment: Alignment.topRight,
+                                  child: Text(
+                                      '${_utility.makeCurrencyDisplay(_onedaySpend.toString())}'),
+                                ),
+                              ),
+                            ]),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
                 Container(
-                  height: 300,
+                  height: size.height / 2,
                 ),
               ],
             ),

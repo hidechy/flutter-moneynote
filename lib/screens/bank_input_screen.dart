@@ -216,12 +216,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          Image.asset(
-            'assets/image/bg.png',
-            fit: BoxFit.cover,
-            color: Colors.black.withOpacity(0.7),
-            colorBlendMode: BlendMode.darken,
-          ),
+          _utility.getBackGround(),
           Column(
             children: <Widget>[
               Card(

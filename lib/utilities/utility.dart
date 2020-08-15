@@ -1,11 +1,23 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'package:path_provider/path_provider.dart';
 
 import 'dart:async';
 import 'dart:io';
 
 class Utility {
+  /**
+   * 背景取得
+   */
+  getBackGround() {
+    return Image.asset(
+      'assets/image/bg.png',
+      fit: BoxFit.cover,
+      color: Colors.black.withOpacity(0.7),
+      colorBlendMode: BlendMode.darken,
+    );
+  }
+
   /**
    * 日付データ作成
    */

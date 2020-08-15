@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'holiday_setting_screen.dart';
+import '../utilities/utility.dart';
 
 class SettingBaseScreen extends StatefulWidget {
   @override
@@ -8,6 +9,8 @@ class SettingBaseScreen extends StatefulWidget {
 }
 
 class _SettingBaseScreenState extends State<SettingBaseScreen> {
+  Utility _utility = Utility();
+
   /**
    * 画面描画
    */
@@ -24,12 +27,7 @@ class _SettingBaseScreenState extends State<SettingBaseScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          Image.asset(
-            'assets/image/bg.png',
-            fit: BoxFit.cover,
-            color: Colors.black.withOpacity(0.7),
-            colorBlendMode: BlendMode.darken,
-          ),
+          _utility.getBackGround(),
           Column(
             children: <Widget>[
               Card(
