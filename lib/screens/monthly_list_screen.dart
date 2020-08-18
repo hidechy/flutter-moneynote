@@ -157,13 +157,15 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
       _yesterdaySpend = _thisDayTotal;
     }
 
-    //holiday
-    await _utility.load('HolidaySetting.txt').then((String value) {
-      var ex_value = (value).split('\n');
-      for (int i = 0; i < ex_value.length; i++) {
-        _holidayList[ex_value[i]] = '';
-      }
-    });
+//    //holiday
+//    if (_utility.getFileExists('HolidaySetting.txt') == true) {
+//      await _utility.load('HolidaySetting.txt').then((String value) {
+//        var ex_value = (value).split('\n');
+//        for (int i = 0; i < ex_value.length; i++) {
+//          _holidayList[ex_value[i]] = '';
+//        }
+//      });
+//    }
 
     _monthTotal = _monthSum;
 

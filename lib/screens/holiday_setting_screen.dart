@@ -32,10 +32,10 @@ class _HolidaySettingScreenState extends State<HolidaySettingScreen> {
    * 初期データ作成
    */
   _makeDefaultDisplayData() async {
-    _utility.load('HolidaySetting.txt').then((String value) {
-      _textController.text = value;
-      setState(() {});
-    });
+//    _utility.load('HolidaySetting.txt').then((String value) {
+//      _textController.text = value;
+//      setState(() {});
+//    });
   }
 
   /**
@@ -114,9 +114,9 @@ class _HolidaySettingScreenState extends State<HolidaySettingScreen> {
       return;
     }
 
-    _utility.getFilePath('HolidaySetting.txt').then((File file) {
-      file.writeAsString(_textController.text);
-      Toast.show('登録が完了しました', context, duration: Toast.LENGTH_LONG);
-    });
+//    _utility.getFilePath('HolidaySetting.txt').then((File file) {
+//      file.writeAsString(_textController.text);
+//      Toast.show('登録が完了しました', context, duration: Toast.LENGTH_LONG);
+//    });
   }
 }

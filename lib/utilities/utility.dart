@@ -153,16 +153,28 @@ class Utility {
   /**
    * 設定ファイル取得
    */
-  Future<File> getFilePath(String _fileName) async {
-    final directory = await getTemporaryDirectory();
-    return File(directory.path + '/' + _fileName);
-  }
 
   /**
    * テキストファイル読み込み
    */
-  Future<String> load(String _fileName) async {
-    final file = await getFilePath(_fileName);
-    return file.readAsString();
-  }
+
+  /**
+   * 設定ファイルの存在取得
+   */
+
+//  Future<File> getFilePath(String _fileName) async {
+//    final directory = await getTemporaryDirectory();
+//    return File(directory.path + '/' + _fileName);
+//  }
+//
+//  Future<String> load(String _fileName) async {
+//    final file = await getFilePath(_fileName);
+//    return file.readAsString();
+//  }
+//
+//  Future<bool> getFileExists(String _fileName) async {
+//    final directory = await getTemporaryDirectory();
+//    String filepath = directory.path + '/' + _fileName;
+//    return File(filepath).exists();
+//  }
 }

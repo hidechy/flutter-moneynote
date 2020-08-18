@@ -218,12 +218,12 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
                             _getTextField('500', _teCont500),
                             _getTextField('100', _teCont100),
                             _getTextField('50', _teCont50),
-                            _getTextField('10', _teCont10),
+                            const Align(),
                           ]),
                           TableRow(children: [
+                            _getTextField('10', _teCont10),
                             _getTextField('5', _teCont5),
                             _getTextField('1', _teCont1),
-                            const Align(),
                             const Align(),
                           ]),
                         ],
@@ -342,7 +342,9 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
                                 child: Container(
                                   alignment: Alignment.topRight,
                                   child: Text(
-                                      '${_utility.makeCurrencyDisplay(_onedayTotal.toString())}'),
+                                    '${_utility.makeCurrencyDisplay(_onedayTotal.toString())}',
+                                    style: TextStyle(fontSize: 13),
+                                  ),
                                 ),
                               ),
                               Padding(
@@ -354,7 +356,9 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
                                 child: Container(
                                   alignment: Alignment.topRight,
                                   child: Text(
-                                      '${_utility.makeCurrencyDisplay(_onedaySpend.toString())}'),
+                                    '${_utility.makeCurrencyDisplay(_onedaySpend.toString())}',
+                                    style: TextStyle(fontSize: 13),
+                                  ),
                                 ),
                               ),
                             ]),

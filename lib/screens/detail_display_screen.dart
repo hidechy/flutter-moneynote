@@ -657,21 +657,21 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     ],
                   ),
                 ),
-                Container(
-                  color: Colors.greenAccent.withOpacity(0.1),
-                  child: Column(
-                    children: <Widget>[
-                      ListTile(
-                        leading: const Icon(Icons.settings),
-                        title: const Text(
-                          'Settings',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        onTap: () => _goSettingBaseScreen(),
-                      ),
-                    ],
-                  ),
-                ),
+//                Container(
+//                  color: Colors.greenAccent.withOpacity(0.1),
+//                  child: Column(
+//                    children: <Widget>[
+//                      ListTile(
+//                        leading: const Icon(Icons.settings),
+//                        title: const Text(
+//                          'Settings',
+//                          style: TextStyle(fontSize: 14),
+//                        ),
+//                        onTap: () => _goSettingBaseScreen(),
+//                      ),
+//                    ],
+//                  ),
+//                ),
               ],
             ),
           ),
