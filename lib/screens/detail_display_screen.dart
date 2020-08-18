@@ -183,10 +183,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          '所持金額',
-          style: TextStyle(fontFamily: "Yomogi"),
-        ),
+        title: const Text('所持金額'),
         centerTitle: true,
         actions: <Widget>[
           IconButton(
@@ -333,7 +330,6 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                           style: const TextStyle(
                             color: Colors.greenAccent,
                             fontSize: 12,
-                            fontFamily: "Yomogi",
                           ),
                         ),
                       ),
@@ -347,7 +343,6 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                           style: const TextStyle(
                             color: Colors.orangeAccent,
                             fontSize: 12,
-                            fontFamily: "Yomogi",
                           ),
                         ),
                       ),
@@ -496,7 +491,6 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
           style: TextStyle(
             color: Colors.white.withOpacity(0.3),
             fontSize: 12,
-            fontFamily: "Yomogi",
           ),
           child: Text(
             getDisplayText(text, currencyDisp),

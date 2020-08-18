@@ -139,10 +139,7 @@ class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          '通帳履歴',
-          style: const TextStyle(fontFamily: "Yomogi"),
-        ),
+        title: Text('通帳履歴'),
         centerTitle: true,
       ),
       body: Stack(

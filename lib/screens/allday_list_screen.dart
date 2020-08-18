@@ -40,6 +40,7 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
       int _keepTotal = 0;
       for (int i = 0; i < _monieData.length; i++) {
         //--------------------------------------------//total
+        //これは変更できない（2020.08.18）
         List<List<String>> _totalValue = List();
 
         _totalValue.add(['10000', _monieData[i].strYen10000]);
@@ -98,10 +99,7 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'All Day List',
-          style: const TextStyle(fontFamily: "Yomogi"),
-        ),
+        title: Text('All Day List'),
         centerTitle: true,
       ),
       body: Stack(

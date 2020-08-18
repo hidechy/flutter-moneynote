@@ -71,10 +71,7 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Same Day List',
-          style: TextStyle(fontFamily: "Yomogi"),
-        ),
+        title: const Text('Same Day List'),
         centerTitle: true,
       ),
       body: Stack(
@@ -82,7 +79,7 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
         children: <Widget>[
           _utility.getBackGround(),
           DefaultTextStyle(
-            style: const TextStyle(fontSize: 16.0, fontFamily: "Yomogi"),
+            style: const TextStyle(fontSize: 16.0),
             child: Column(
               children: <Widget>[
                 SizedBox(

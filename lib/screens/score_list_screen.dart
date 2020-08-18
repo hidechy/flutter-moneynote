@@ -143,10 +143,7 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Score List',
-          style: TextStyle(fontFamily: "Yomogi"),
-        ),
+        title: const Text('Score List'),
         centerTitle: true,
       ),
       body: Stack(

@@ -171,10 +171,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          _date + '(' + youbiStr + ')',
-          style: const TextStyle(fontFamily: "Yomogi"),
-        ),
+        title: Text(_date + '(' + youbiStr + ')'),
         centerTitle: true,
         actions: <Widget>[
           IconButton(

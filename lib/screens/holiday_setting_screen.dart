@@ -45,10 +45,7 @@ class _HolidaySettingScreenState extends State<HolidaySettingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Holiday Setting',
-          style: const TextStyle(fontFamily: "Yomogi"),
-        ),
+        title: Text('Holiday Setting'),
         centerTitle: true,
         actions: <Widget>[
           IconButton(

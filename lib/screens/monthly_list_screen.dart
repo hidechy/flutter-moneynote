@@ -179,10 +179,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          _month,
-          style: const TextStyle(fontFamily: "Yomogi"),
-        ),
+        title: Text(_month),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.skip_previous),

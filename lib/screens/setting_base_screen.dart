@@ -18,10 +18,7 @@ class _SettingBaseScreenState extends State<SettingBaseScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Settings',
-          style: const TextStyle(fontFamily: "Yomogi"),
-        ),
+        title: Text('Settings'),
         centerTitle: true,
       ),
       body: Stack(

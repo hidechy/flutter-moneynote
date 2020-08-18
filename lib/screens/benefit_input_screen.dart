@@ -85,10 +85,7 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Benefit',
-          style: const TextStyle(fontFamily: "Yomogi"),
-        ),
+        title: const Text('Benefit'),
         centerTitle: true,
       ),
       body: Stack(

@@ -19,9 +19,9 @@ class _BankInputScreenState extends State<BankInputScreen> {
   String _chipValue = 'bank_a';
 
   Utility _utility = Utility();
-  String year;
-  String month;
-  String day;
+//  String year;
+//  String month;
+//  String day;
 
   String _date;
 
@@ -53,10 +53,10 @@ class _BankInputScreenState extends State<BankInputScreen> {
    */
   _makeDefaultDisplayData() async {
     _utility.makeYMDYData(widget.date, 0);
-    year = _utility.year;
-    month = _utility.month;
+//    year = _utility.year;
+//    month = _utility.month;
 
-    _dialogSelectedDate = year + "-" + month + "-01";
+    _dialogSelectedDate = _utility.year + "-" + _utility.month + "-01";
 
     _teContPrice.text = '0';
 
@@ -209,10 +209,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          '銀行預金',
-          style: const TextStyle(fontFamily: "Yomogi"),
-        ),
+        title: Text('銀行預金'),
         centerTitle: true,
       ),
       body: Stack(
@@ -332,7 +329,6 @@ class _BankInputScreenState extends State<BankInputScreen> {
             '${_bankData[position][0]}　${_utility.makeCurrencyDisplay(_bankData[position][1])}',
             style: const TextStyle(
               color: Colors.white,
-              fontFamily: 'Yomogi',
               fontSize: 12.0,
             ),
           ),
