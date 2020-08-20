@@ -13,7 +13,6 @@ import 'score_list_screen.dart';
 import 'benefit_input_screen.dart';
 import 'sameday_list_screen.dart';
 import 'allday_list_screen.dart';
-import 'setting_base_screen.dart';
 
 class DetailDisplayScreen extends StatefulWidget {
   final String date;
@@ -797,18 +796,6 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
           date: _date,
           searchitem: null,
         ),
-      ),
-    );
-  }
-
-  /**
-   * 画面遷移（SettingBaseScreen）
-   */
-  _goSettingBaseScreen() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SettingBaseScreen(),
       ),
     );
   }
