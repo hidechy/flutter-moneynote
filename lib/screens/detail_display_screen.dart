@@ -75,8 +75,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   int _undercoin = 0;
 
   /**
-  * 初期動作
-  */
+   * 初期動作
+   */
   @override
   void initState() {
     super.initState();
@@ -85,8 +85,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-  * 初期データ作成
-  */
+   * 初期データ作成
+   */
   _makeDefaultDisplayData() async {
     _utility.makeYMDYData(widget.date, 0);
     year = _utility.year;
@@ -177,8 +177,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-  * 画面描画
-  */
+   * 画面描画
+   */
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -481,8 +481,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-  * テキスト部分表示
-  */
+   * テキスト部分表示
+   */
   Widget _getTextDispWidget(String text, bool greyDisp, String value,
       bool undercoin, bool currencyDisp) {
     if (greyDisp == true && value == '0') {
@@ -523,8 +523,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-  * デートピッカー表示
-  */
+   * デートピッカー表示
+   */
   _showDatepicker(BuildContext context) async {
     final selectedDate = await showDatePicker(
       context: context,
@@ -540,22 +540,22 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-  * 画面遷移（前日）
-  */
+   * 画面遷移（前日）
+   */
   _goPrevDate(BuildContext context) {
     _goAnotherDate(context, prevDate.toString());
   }
 
   /**
-  * 画面遷移（翌日）
-  */
+   * 画面遷移（翌日）
+   */
   _goNextDate(BuildContext context) {
     _goAnotherDate(context, nextDate.toString());
   }
 
   /**
-  * 画面遷移（指定日）
-  */
+   * 画面遷移（指定日）
+   */
   _goAnotherDate(BuildContext context, String date) {
     Navigator.pushReplacement(
       context,
@@ -568,8 +568,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-  * 下部メニュー表示
-  */
+   * 下部メニュー表示
+   */
   Future<Widget> _showUnderMenu() {
     return showModalBottomSheet(
       context: context,
@@ -675,8 +675,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-  * 画面遷移（DetailDisplayScreen）
-  */
+   * 画面遷移（DetailDisplayScreen）
+   */
   _goDetailDisplayScreen() {
     Navigator.pushReplacement(
       context,
@@ -689,8 +689,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-  * 画面遷移（OnedayInputScreen）
-  */
+   * 画面遷移（OnedayInputScreen）
+   */
   _goOnedayInputScreen() {
     Navigator.pushReplacement(
       context,
@@ -703,8 +703,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-  * 画面遷移（ScoreListScreen）
-  */
+   * 画面遷移（ScoreListScreen）
+   */
   _goScoreListScreen() {
     Navigator.pushReplacement(
       context,
@@ -717,8 +717,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-  * 画面遷移（MonthlyListScreen）
-  */
+   * 画面遷移（MonthlyListScreen）
+   */
   _goMonthlyListScreen() {
     Navigator.pushReplacement(
       context,
@@ -731,8 +731,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-  * 画面遷移（BankInputScreen）
-  */
+   * 画面遷移（BankInputScreen）
+   */
   _goBankInputScreen() {
     Navigator.pushReplacement(
       context,
@@ -745,8 +745,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-  * 画面遷移（SamedayDisplayScreen）
-  */
+   * 画面遷移（SamedayDisplayScreen）
+   */
   _goSamedayListScreen() {
     Navigator.pushReplacement(
       context,
@@ -759,8 +759,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-  * 画面遷移（BenefitInputScreen）
-  */
+   * 画面遷移（BenefitInputScreen）
+   */
   _goBenefitInputScreen() {
     Navigator.pushReplacement(
       context,
@@ -773,8 +773,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-  * 画面遷移（AlldayListScreen）
-  */
+   * 画面遷移（AlldayListScreen）
+   */
   _goAlldayListScreen() {
     Navigator.pushReplacement(
       context,
@@ -787,8 +787,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-  * 画面遷移（CreditRecordInputScreen）
-  */
+   * 画面遷移（CreditRecordInputScreen）
+   */
   _goCreditRecordInputScreen() {
     Navigator.pushReplacement(
       context,

@@ -58,9 +58,19 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
         _totalValue.add(['1', _monieData[i].strBankB]);
         _totalValue.add(['1', _monieData[i].strBankC]);
         _totalValue.add(['1', _monieData[i].strBankD]);
+        _totalValue.add(['1', _monieData[i].strBankE]);
+        _totalValue.add(['1', _monieData[i].strBankF]);
+        _totalValue.add(['1', _monieData[i].strBankG]);
+        _totalValue.add(['1', _monieData[i].strBankH]);
 
         _totalValue.add(['1', _monieData[i].strPayA]);
         _totalValue.add(['1', _monieData[i].strPayB]);
+        _totalValue.add(['1', _monieData[i].strPayC]);
+        _totalValue.add(['1', _monieData[i].strPayD]);
+        _totalValue.add(['1', _monieData[i].strPayE]);
+        _totalValue.add(['1', _monieData[i].strPayF]);
+        _totalValue.add(['1', _monieData[i].strPayG]);
+        _totalValue.add(['1', _monieData[i].strPayH]);
 
         var total = 0;
         for (int j = 0; j < _totalValue.length; j++) {
