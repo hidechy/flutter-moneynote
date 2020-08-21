@@ -73,6 +73,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   int _monthSpend = 0;
   int _undercoin = 0;
 
+  List<String> _monthDays = List();
+
   /**
    * 初期動作
    */
@@ -101,6 +103,16 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
         new DateTime(int.parse(year), int.parse(month), int.parse(day) + 1);
 
     _prevMonthEndDate = new DateTime(int.parse(year), int.parse(month), 0);
+
+    ////////////////////////////////////////////////
+    _utility.makeMonthEnd(
+        int.parse(_utility.year), int.parse(_utility.month) + 1, 0);
+    _utility.makeYMDYData(_utility.monthEndDateTime, 0);
+
+    for (int i = 1; i <= int.parse(_utility.day); i++) {
+      var value = (i < 10) ? '0${i.toString()}' : i.toString();
+      _monthDays.add(value);
+    }
 
     ////////////////////////////////////////////////
     //本日分のレコードを取得
@@ -201,282 +213,459 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           _utility.getBackGround(),
-          Column(
+          DetailDisplayBox(context),
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.black.withOpacity(0.1),
+        child: Icon(
+          Icons.keyboard_arrow_up,
+          color: Colors.greenAccent,
+        ),
+        onPressed: () => _showUnderMenu(),
+      ),
+    );
+  }
+
+  Row DetailDisplayBox(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: Column(
             children: <Widget>[
               Card(
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(20.0),
                 ),
                 color: Colors.black.withOpacity(0.3),
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10.0),
-                      child: Center(
-                        child: DefaultTextStyle(
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontFamily: "Yomogi",
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 30),
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: Center(
+                          child: DefaultTextStyle(
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontFamily: "Yomogi",
+                            ),
+                            child: Text(
+                              _date + '（' + youbiStr + '）',
+                            ),
                           ),
+                        ),
+                      ),
+                      const Divider(
+                        color: Colors.indigo,
+                        height: 20.0,
+                        indent: 20.0,
+                        endIndent: 20.0,
+                      ),
+                      DefaultTextStyle(
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontFamily: "Yomogi",
+                        ),
+                        child: Table(
+                          children: [
+                            TableRow(children: [
+                              _getTextDispWidget(
+                                  'total', false, '', false, false),
+                              _getTextDispWidget(
+                                  _total.toString(), false, '', false, true),
+                              const Align(),
+                            ]),
+                            TableRow(children: [
+                              _getTextDispWidget(
+                                  'spend', false, '', false, false),
+                              _getTextDispWidget(
+                                  _spend.toString(), false, '', false, false),
+                              const Align(),
+                            ]),
+                            TableRow(children: [
+                              _getTextDispWidget(
+                                  'month spend', false, '', false, false),
+                              _getTextDispWidget(_monthSpend.toString(), false,
+                                  '', false, false),
+                              const Align(),
+                            ]),
+                          ],
+                        ),
+                      ),
+                      const Divider(
+                        color: Colors.indigo,
+                        height: 20.0,
+                        indent: 20.0,
+                        endIndent: 20.0,
+                      ),
+                      DefaultTextStyle(
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontFamily: "Yomogi",
+                        ),
+                        child: Table(
+                          children: [
+                            TableRow(children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 10),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  color: Colors.green[900].withOpacity(0.5),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 2,
+                                    ),
+                                    child: Text('currency'),
+                                  ),
+                                ),
+                              ),
+                              Container(),
+                              Container(),
+                              Container(),
+                            ]),
+                            TableRow(children: [
+                              _getTextDispWidget(
+                                  '10000', false, '', false, false),
+                              _getTextDispWidget(
+                                  _yen10000, false, '', false, false),
+                              _getTextDispWidget(
+                                  '100', false, '', false, false),
+                              _getTextDispWidget(
+                                  _yen100, false, '', false, false),
+                            ]),
+                            TableRow(children: [
+                              _getTextDispWidget(
+                                  '5000', false, '', false, false),
+                              _getTextDispWidget(
+                                  _yen5000, false, '', false, false),
+                              _getTextDispWidget('50', false, '', false, false),
+                              _getTextDispWidget(
+                                  _yen50, false, '', false, false),
+                            ]),
+                            TableRow(children: [
+                              _getTextDispWidget(
+                                  '2000', false, '', false, false),
+                              _getTextDispWidget(
+                                  _yen2000, false, '', false, false),
+                              _getTextDispWidget('10', false, '', true, false),
+                              _getTextDispWidget(
+                                  _yen10, false, '', true, false),
+                            ]),
+                            TableRow(children: [
+                              _getTextDispWidget(
+                                  '1000', false, '', false, false),
+                              _getTextDispWidget(
+                                  _yen1000, false, '', false, false),
+                              _getTextDispWidget('5', false, '', true, false),
+                              _getTextDispWidget(_yen5, false, '', true, false),
+                            ]),
+                            TableRow(children: [
+                              _getTextDispWidget(
+                                  '500', false, '', false, false),
+                              _getTextDispWidget(
+                                  _yen500, false, '', false, false),
+                              _getTextDispWidget('1', false, '', true, false),
+                              _getTextDispWidget(_yen1, false, '', true, false),
+                            ]),
+                          ],
+                        ),
+                      ),
+                      const Divider(
+                        color: Colors.indigo,
+                        height: 20.0,
+                        indent: 20.0,
+                        endIndent: 20.0,
+                      ),
+                      Container(
+                        alignment: Alignment.centerRight,
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 45.0),
                           child: Text(
-                            _date + '（' + youbiStr + '）',
+                            _utility.makeCurrencyDisplay(_temochi.toString()),
+                            style: const TextStyle(
+                              color: Colors.greenAccent,
+                              fontSize: 12,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const Divider(
-                      color: Colors.indigo,
-                      height: 20.0,
-                      indent: 20.0,
-                      endIndent: 20.0,
-                    ),
-                    DefaultTextStyle(
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontFamily: "Yomogi",
-                      ),
-                      child: Table(
-                        children: [
-                          TableRow(children: [
-                            _getTextDispWidget(
-                                'total', false, '', false, false),
-                            _getTextDispWidget(
-                                _total.toString(), false, '', false, true),
-                            const Align(),
-                          ]),
-                          TableRow(children: [
-                            _getTextDispWidget(
-                                'spend', false, '', false, false),
-                            _getTextDispWidget(
-                                _spend.toString(), false, '', false, false),
-                            const Align(),
-                          ]),
-                          TableRow(children: [
-                            _getTextDispWidget(
-                                'month spend', false, '', false, false),
-                            _getTextDispWidget(_monthSpend.toString(), false,
-                                '', false, false),
-                            const Align(),
-                          ]),
-                        ],
-                      ),
-                    ),
-                    const Divider(
-                      color: Colors.indigo,
-                      height: 20.0,
-                      indent: 20.0,
-                      endIndent: 20.0,
-                    ),
-                    DefaultTextStyle(
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontFamily: "Yomogi",
-                      ),
-                      child: Table(
-                        children: [
-                          TableRow(children: [
-                            _getTextDispWidget(
-                                '10000', false, '', false, false),
-                            _getTextDispWidget(
-                                _yen10000, false, '', false, false),
-                            _getTextDispWidget('100', false, '', false, false),
-                            _getTextDispWidget(
-                                _yen100, false, '', false, false),
-                          ]),
-                          TableRow(children: [
-                            _getTextDispWidget('5000', false, '', false, false),
-                            _getTextDispWidget(
-                                _yen5000, false, '', false, false),
-                            _getTextDispWidget('50', false, '', false, false),
-                            _getTextDispWidget(_yen50, false, '', false, false),
-                          ]),
-                          TableRow(children: [
-                            _getTextDispWidget('2000', false, '', false, false),
-                            _getTextDispWidget(
-                                _yen2000, false, '', false, false),
-                            _getTextDispWidget('10', false, '', true, false),
-                            _getTextDispWidget(_yen10, false, '', true, false),
-                          ]),
-                          TableRow(children: [
-                            _getTextDispWidget('1000', false, '', false, false),
-                            _getTextDispWidget(
-                                _yen1000, false, '', false, false),
-                            _getTextDispWidget('5', false, '', true, false),
-                            _getTextDispWidget(_yen5, false, '', true, false),
-                          ]),
-                          TableRow(children: [
-                            _getTextDispWidget('500', false, '', false, false),
-                            _getTextDispWidget(
-                                _yen500, false, '', false, false),
-                            _getTextDispWidget('1', false, '', true, false),
-                            _getTextDispWidget(_yen1, false, '', true, false),
-                          ]),
-                        ],
-                      ),
-                    ),
-                    const Divider(
-                      color: Colors.indigo,
-                      height: 20.0,
-                      indent: 20.0,
-                      endIndent: 20.0,
-                    ),
-                    Container(
-                      alignment: Alignment.centerRight,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 45.0),
-                        child: Text(
-                          _utility.makeCurrencyDisplay(_temochi.toString()),
-                          style: const TextStyle(
-                            color: Colors.greenAccent,
-                            fontSize: 12,
+                      Container(
+                        alignment: Alignment.centerRight,
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 45.0),
+                          child: Text(
+                            _utility.makeCurrencyDisplay(_undercoin.toString()),
+                            style: const TextStyle(
+                              color: Colors.orangeAccent,
+                              fontSize: 12,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Container(
-                      alignment: Alignment.centerRight,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 45.0),
-                        child: Text(
-                          _utility.makeCurrencyDisplay(_undercoin.toString()),
-                          style: const TextStyle(
-                            color: Colors.orangeAccent,
-                            fontSize: 12,
-                          ),
+                      DefaultTextStyle(
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontFamily: "Yomogi",
+                        ),
+                        child: Table(
+                          children: [
+                            TableRow(children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 10),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  color: Colors.green[900].withOpacity(0.5),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 2,
+                                    ),
+                                    child: Text('deposit'),
+                                  ),
+                                ),
+                              ),
+                              Container(),
+                              Container(),
+                              Container(),
+                            ]),
+                            TableRow(children: [
+                              _getTextDispWidget(
+                                  'bank_a', true, _bankA, false, false),
+                              _getTextDispWidget(
+                                  _bankA, true, _bankA, false, true),
+                              _getTextDispWidget(
+                                  'bank_e', true, _bankE, false, false),
+                              _getTextDispWidget(
+                                  _bankE, true, _bankE, false, true),
+                            ]),
+                            TableRow(children: [
+                              _getTextDispWidget(
+                                  'bank_b', true, _bankD, false, false),
+                              _getTextDispWidget(
+                                  _bankB, true, _bankD, false, true),
+                              _getTextDispWidget(
+                                  'bank_f', true, _bankF, false, false),
+                              _getTextDispWidget(
+                                  _bankF, true, _bankF, false, true),
+                            ]),
+                            TableRow(children: [
+                              _getTextDispWidget(
+                                  'bank_c', true, _bankC, false, false),
+                              _getTextDispWidget(
+                                  _bankC, true, _bankC, false, true),
+                              _getTextDispWidget(
+                                  'bank_g', true, _bankG, false, false),
+                              _getTextDispWidget(
+                                  _bankG, true, _bankG, false, true),
+                            ]),
+                            TableRow(children: [
+                              _getTextDispWidget(
+                                  'bank_d', true, _bankD, false, false),
+                              _getTextDispWidget(
+                                  _bankD, true, _bankD, false, true),
+                              _getTextDispWidget(
+                                  'bank_h', true, _bankH, false, false),
+                              _getTextDispWidget(
+                                  _bankH, true, _bankH, false, true),
+                            ]),
+                          ],
                         ),
                       ),
-                    ),
-                    DefaultTextStyle(
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontFamily: "Yomogi",
+                      const Divider(
+                        color: Colors.indigo,
+                        height: 20.0,
+                        indent: 20.0,
+                        endIndent: 20.0,
                       ),
-                      child: Table(
-                        children: [
-                          TableRow(children: [
-                            _getTextDispWidget(
-                                'bank_a', true, _bankA, false, false),
-                            _getTextDispWidget(
-                                _bankA, true, _bankA, false, true),
-                            _getTextDispWidget(
-                                'bank_e', true, _bankE, false, false),
-                            _getTextDispWidget(
-                                _bankE, true, _bankE, false, true),
-                          ]),
-                          TableRow(children: [
-                            _getTextDispWidget(
-                                'bank_b', true, _bankD, false, false),
-                            _getTextDispWidget(
-                                _bankB, true, _bankD, false, true),
-                            _getTextDispWidget(
-                                'bank_f', true, _bankF, false, false),
-                            _getTextDispWidget(
-                                _bankF, true, _bankF, false, true),
-                          ]),
-                          TableRow(children: [
-                            _getTextDispWidget(
-                                'bank_c', true, _bankC, false, false),
-                            _getTextDispWidget(
-                                _bankC, true, _bankC, false, true),
-                            _getTextDispWidget(
-                                'bank_g', true, _bankG, false, false),
-                            _getTextDispWidget(
-                                _bankG, true, _bankG, false, true),
-                          ]),
-                          TableRow(children: [
-                            _getTextDispWidget(
-                                'bank_d', true, _bankD, false, false),
-                            _getTextDispWidget(
-                                _bankD, true, _bankD, false, true),
-                            _getTextDispWidget(
-                                'bank_h', true, _bankH, false, false),
-                            _getTextDispWidget(
-                                _bankH, true, _bankH, false, true),
-                          ]),
-                        ],
-                      ),
-                    ),
-                    const Divider(
-                      color: Colors.indigo,
-                      height: 20.0,
-                      indent: 20.0,
-                      endIndent: 20.0,
-                    ),
-                    DefaultTextStyle(
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontFamily: "Yomogi",
-                      ),
-                      child: Table(
-                        children: [
-                          TableRow(children: [
-                            _getTextDispWidget(
-                                'pay_a', true, _payA, false, false),
-                            _getTextDispWidget(_payA, true, _payA, false, true),
-                            _getTextDispWidget(
-                                'pay_e', true, _payE, false, false),
-                            _getTextDispWidget(_payE, true, _payE, false, true),
-                          ]),
-                          TableRow(children: [
-                            _getTextDispWidget(
-                                'pay_b', true, _payB, false, false),
-                            _getTextDispWidget(_payB, true, _payB, false, true),
-                            _getTextDispWidget(
-                                'pay_f', true, _payF, false, false),
-                            _getTextDispWidget(_payF, true, _payF, false, true),
-                          ]),
-                          TableRow(children: [
-                            _getTextDispWidget(
-                                'pay_c', true, _payC, false, false),
-                            _getTextDispWidget(_payC, true, _payC, false, true),
-                            _getTextDispWidget(
-                                'pay_g', true, _payG, false, false),
-                            _getTextDispWidget(_payG, true, _payG, false, true),
-                          ]),
-                          TableRow(children: [
-                            _getTextDispWidget(
-                                'pay_d', true, _payD, false, false),
-                            _getTextDispWidget(_payD, true, _payD, false, true),
-                            _getTextDispWidget(
-                                'pay_h', true, _payH, false, false),
-                            _getTextDispWidget(_payH, true, _payH, false, true),
-                          ]),
-                        ],
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        IconButton(
-                          icon: const Icon(Icons.calendar_today),
-                          onPressed: () => _showDatepicker(context),
-                          color: Colors.blueAccent,
+                      DefaultTextStyle(
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontFamily: "Yomogi",
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.refresh),
-                          onPressed: () => _goDetailDisplayScreen(),
-                          color: Colors.blueAccent,
+                        child: Table(
+                          children: [
+                            TableRow(children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 10),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  color: Colors.green[900].withOpacity(0.5),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 2,
+                                    ),
+                                    child: Text('e-money'),
+                                  ),
+                                ),
+                              ),
+                              Container(),
+                              Container(),
+                              Container(),
+                            ]),
+                            TableRow(children: [
+                              _getTextDispWidget(
+                                  'pay_a', true, _payA, false, false),
+                              _getTextDispWidget(
+                                  _payA, true, _payA, false, true),
+                              _getTextDispWidget(
+                                  'pay_e', true, _payE, false, false),
+                              _getTextDispWidget(
+                                  _payE, true, _payE, false, true),
+                            ]),
+                            TableRow(children: [
+                              _getTextDispWidget(
+                                  'pay_b', true, _payB, false, false),
+                              _getTextDispWidget(
+                                  _payB, true, _payB, false, true),
+                              _getTextDispWidget(
+                                  'pay_f', true, _payF, false, false),
+                              _getTextDispWidget(
+                                  _payF, true, _payF, false, true),
+                            ]),
+                            TableRow(children: [
+                              _getTextDispWidget(
+                                  'pay_c', true, _payC, false, false),
+                              _getTextDispWidget(
+                                  _payC, true, _payC, false, true),
+                              _getTextDispWidget(
+                                  'pay_g', true, _payG, false, false),
+                              _getTextDispWidget(
+                                  _payG, true, _payG, false, true),
+                            ]),
+                            TableRow(children: [
+                              _getTextDispWidget(
+                                  'pay_d', true, _payD, false, false),
+                              _getTextDispWidget(
+                                  _payD, true, _payD, false, true),
+                              _getTextDispWidget(
+                                  'pay_h', true, _payH, false, false),
+                              _getTextDispWidget(
+                                  _payH, true, _payH, false, true),
+                            ]),
+                          ],
                         ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Center(
-                  child: IconButton(
-                    icon: const Icon(Icons.keyboard_arrow_up),
-                    tooltip: 'menu',
-                    color: Colors.blue,
-                    onPressed: () => _showUnderMenu(),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ],
           ),
-        ],
-      ),
+        ),
+        ///////////////////////////////
+        Container(
+          width: 60,
+          child: Column(
+            children: <Widget>[
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                margin: EdgeInsets.only(top: 5),
+                color: Colors.black.withOpacity(0.3),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    IconButton(
+                      icon: const Icon(Icons.refresh),
+                      onPressed: () => _goDetailDisplayScreen(),
+                      color: Colors.blueAccent,
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.calendar_today),
+                      onPressed: () => _showDatepicker(context),
+                      color: Colors.blueAccent,
+                    ),
+                  ],
+                ),
+              ),
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                margin: EdgeInsets.only(top: 5),
+                color: Colors.black.withOpacity(0.1),
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text('${year}'),
+                      Text('${month}'),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: _monthDaysList(),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
+  }
+
+  /**
+   * リスト表示
+   */
+  _monthDaysList() {
+    return ListView.builder(
+      itemCount: _monthDays.length,
+      itemBuilder: (context, int position) => _listItem(position),
+    );
+  }
+
+  /**
+   * リストアイテム表示
+   */
+  _listItem(int position) {
+    return InkWell(
+      child: Card(
+        color: getBgColor(position),
+        elevation: 10.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: ListTile(
+          title: DefaultTextStyle(
+            style: TextStyle(fontSize: 10.0),
+            child: Center(
+              child: Text(
+                _monthDays[position],
+              ),
+            ),
+          ),
+          onTap: () => _goMonthDay(context, position),
+        ),
+      ),
+      //actions: <Widget>[],
+    );
+  }
+
+  /**
+   * 背景色取得
+   */
+  getBgColor(int position) {
+    _utility.makeYMDYData('${year}-${month}-${_monthDays[position]}', 0);
+
+    Color _color = null;
+    switch (_utility.youbiNo) {
+      case 0:
+        _color = Colors.redAccent[700].withOpacity(0.3);
+        break;
+
+      case 6:
+        _color = Colors.blueAccent[700].withOpacity(0.3);
+        break;
+
+      default:
+        _color = Colors.black.withOpacity(0.3);
+        break;
+    }
+
+    return _color;
   }
 
   /**
@@ -564,6 +753,13 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
         ),
       ),
     );
+  }
+
+  /**
+   * 画面遷移（月内指定日）
+   */
+  _goMonthDay(BuildContext context, int position) {
+    _goAnotherDate(context, '${year}-${month}-${_monthDays[position]}');
   }
 
   /**

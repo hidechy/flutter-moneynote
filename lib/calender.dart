@@ -106,7 +106,7 @@ class _CalenderState extends State<Calender> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xFf2e2e2e),
+        backgroundColor: Colors.black.withOpacity(0.1),
         child: Icon(
           Icons.input,
           color: Colors.greenAccent,
