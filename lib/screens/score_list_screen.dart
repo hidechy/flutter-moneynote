@@ -39,13 +39,13 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
       int j = 0;
       for (int i = 0; i < val2.length; i++) {
         var _exDate = val2[i].strDate.split(('-'));
-        if (_strDate != _exDate[0] + '-' + _exDate[1]) {
+        if (_strDate != '${_exDate[0]}-${_exDate[1]}') {
           j = 0;
         }
-        _beneInfo[_exDate[0] + '-' + _exDate[1]] = Map();
-        _beneInfo[_exDate[0] + '-' + _exDate[1]][j] = val2[i].strPrice;
+        _beneInfo['${_exDate[0]}-${_exDate[1]}'] = Map();
+        _beneInfo['${_exDate[0]}-${_exDate[1]}'][j] = val2[i].strPrice;
         j++;
-        _strDate = _exDate[0] + '-' + _exDate[1];
+        _strDate = '${_exDate[0]}-${_exDate[1]}';
       }
     }
 
@@ -71,7 +71,7 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
               int.parse(_utility.year), int.parse(_utility.month), 0);
           _utility.makeYMDYData(_utility.monthEndDateTime, 0);
           var prevMonthEnd =
-              _utility.year + "-" + _utility.month + "-" + _utility.day;
+              '${_utility.year}-${_utility.month}-${_utility.day}';
 
           //今月末の日付
           _utility.makeYMDYData(val[i].strDate, 0);
@@ -79,7 +79,7 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
               int.parse(_utility.year), int.parse(_utility.month) + 1, 0);
           _utility.makeYMDYData(_utility.monthEndDateTime, 0);
           var thisMonthEnd =
-              _utility.year + "-" + _utility.month + "-" + _utility.day;
+              '${_utility.year}-${_utility.month}-${_utility.day}';
 
           _scoreDayInfo.add([val[i].strDate, prevMonthEnd, thisMonthEnd]);
         }
@@ -95,7 +95,7 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
       for (int j = 0; j < _scoreDayInfo[i].length; j++) {
         if (j == 0) {
           _utility.makeYMDYData(_scoreDayInfo[i][0], 0);
-          dispMonth = _utility.year + "-" + _utility.month;
+          dispMonth = "${_utility.year}-${_utility.month}";
           continue;
         }
 

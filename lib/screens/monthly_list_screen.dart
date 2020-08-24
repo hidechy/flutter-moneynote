@@ -59,7 +59,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
     month = _utility.month;
     day = _utility.day;
 
-    _month = year + "-" + month;
+    _month = '${year}-${month}';
 
     youbiStr = _utility.youbiStr;
 
@@ -71,8 +71,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
     _prevMonthEndDateTime = _utility.monthEndDateTime;
 
     _utility.makeYMDYData(_prevMonthEndDateTime, 0);
-    _prevMonthEndDate =
-        _utility.year + "-" + _utility.month + "-" + _utility.day;
+    _prevMonthEndDate = '${_utility.year}-${_utility.month}-${_utility.day}';
 
     _utility.makeMonthEnd(int.parse(year), int.parse(month) + 1, 0);
     _thisMonthEndDateTime = _utility.monthEndDateTime;
@@ -91,7 +90,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
     var _yesterdaySpend = 0;
     _monthData = List();
     for (int i = 1; i <= int.parse(_thisMonthEndDay); i++) {
-      var _thisDay = year + "-" + month + "-" + i.toString().padLeft(2, "0");
+      var _thisDay = '${year}-${month}-${i.toString().padLeft(2, '0')}';
 
       var _thisDayTotal = 0;
       var _monieData = await database.selectRecord(_thisDay);
@@ -360,8 +359,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
       for (var i = 0; i < value.length; i++) {
         _title = value[i].strDate;
 
-        _cre.add("□" + value[i].strItem);
-        _cre.add(value[i].strBank + "　" + value[i].strPrice);
+        _cre.add("□${value[i].strItem}");
+        _cre.add("${value[i].strBank}　${value[i].strPrice}");
 
         _bankPrice += int.parse(value[i].strPrice);
       }
@@ -379,7 +378,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
           _title = value2[0].strDate;
         }
 //
-        _bene.add(value2[i].strCompany + "　" + value2[i].strPrice);
+        _bene.add("${value2[i].strCompany}　${value2[i].strPrice}");
 //
         _bankPrice += int.parse(value2[i].strPrice) * -1;
       }
@@ -395,7 +394,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
     }
 
     _utility.makeYMDYData(_title, 0);
-    _title += "（" + _utility.youbiStr + "）";
+    _title += "（${_utility.youbiStr}）";
 
     showDialog(
       context: context,
@@ -577,7 +576,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
         _utility.makeYMDYData(text, 0);
 
         return Text(
-          text + '(' + _utility.youbiStr + ')',
+          text + '(${_utility.youbiStr})',
           style: TextStyle(fontSize: 10),
         );
         break;

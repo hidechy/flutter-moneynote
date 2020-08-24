@@ -48,8 +48,7 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   */
   _makeDefaultDisplayData() async {
     _utility.makeYMDYData(widget.date, 0);
-    _dialogSelectedDate =
-        _utility.year + "-" + _utility.month + "-" + _utility.day;
+    _dialogSelectedDate = '${_utility.year}-${_utility.month}-${_utility.day}';
 
     //レコード取得
     var _benefit = await database.selectBenefitRecord(_dialogSelectedDate);
@@ -217,7 +216,7 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
     switch (column) {
       case 0:
         _utility.makeYMDYData(text, 0);
-        return text + '（' + _utility.youbiStr + '）';
+        return '${text}（${_utility.youbiStr}）';
         break;
       case 1:
         return text;
@@ -267,7 +266,7 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
     if (selectedDate != null) {
       _utility.makeYMDYData(selectedDate.toString(), 0);
       _dialogSelectedDate =
-          _utility.year + "-" + _utility.month + "-" + _utility.day;
+          '${_utility.year}-${_utility.month}-${_utility.day}';
 
       //レコード取得
       var _benefit = await database.selectBenefitRecord(_dialogSelectedDate);

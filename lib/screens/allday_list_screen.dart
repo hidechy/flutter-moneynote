@@ -205,7 +205,7 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
     switch (column) {
       case 0:
         _utility.makeYMDYData(text, 0);
-        return text + '（' + _utility.youbiStr + '）';
+        return '${text}（${_utility.youbiStr}）';
         break;
       case 1:
       case 2:

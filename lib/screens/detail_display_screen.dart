@@ -18,7 +18,8 @@ import 'allday_list_screen.dart';
 
 class DetailDisplayScreen extends StatefulWidget {
   final String date;
-  DetailDisplayScreen({@required this.date});
+  final Map moneyArgs;
+  DetailDisplayScreen({@required this.date, this.moneyArgs});
 
   @override
   _DetailDisplayScreenState createState() => _DetailDisplayScreenState();
@@ -29,6 +30,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   String year;
   String month;
   String day;
+
   String youbiStr;
 
   String _date;
@@ -97,7 +99,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
     day = _utility.day;
     youbiStr = _utility.youbiStr;
 
-    _date = year + "-" + month + "-" + day;
+    _date = '${year}-${month}-${day}';
 
     prevDate =
         new DateTime(int.parse(year), int.parse(month), int.parse(day) - 1);
@@ -166,7 +168,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
 
       //マネーレコード②　前日日付で検索
       var _yesterdayData =
-          await database.selectRecord(yYear + "-" + yMonth + "-" + yDay);
+          await database.selectRecord('${yYear}-${yMonth}-${yDay}');
 
       if (_yesterdayData.length > 0) {
         _utility.makeTotal(_yesterdayData);
@@ -180,8 +182,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
     _utility.makeYMDYData(_prevMonthEndDate.toString(), 0);
 
     //マネーレコード③　先月末日付で検索
-    var _lastMonthEndData = await database.selectRecord(
-        _utility.year + "-" + _utility.month + "-" + _utility.day);
+    var _lastMonthEndData = await database
+        .selectRecord('${_utility.year}-${_utility.month}-${_utility.day}');
 
     var _lastMonthTotal = 0;
     if (_lastMonthEndData.length > 0) {
@@ -249,9 +251,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                               fontSize: 14,
                               fontFamily: "Yomogi",
                             ),
-                            child: Text(
-                              _date + '（' + youbiStr + '）',
-                            ),
+                            child: Text('${_date}（${youbiStr}）'),
                           ),
                         ),
                       ),

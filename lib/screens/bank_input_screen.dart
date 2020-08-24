@@ -51,7 +51,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
   _makeDefaultDisplayData() async {
     _utility.makeYMDYData(widget.date, 0);
 
-    _dialogSelectedDate = _utility.year + "-" + _utility.month + "-01";
+    _dialogSelectedDate = '${_utility.year}-${_utility.month}-01';
 
     _teContPrice.text = '0';
 
@@ -411,7 +411,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
     if (selectedDate != null) {
       _utility.makeYMDYData(selectedDate.toString(), 0);
       _dialogSelectedDate =
-          _utility.year + "-" + _utility.month + "-" + _utility.day;
+          '${_utility.year}-${_utility.month}-${_utility.day}';
       setState(() {});
     }
   }
@@ -441,7 +441,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
       var genDate = new DateTime(
           int.parse(baseYear), int.parse(baseMonth), (int.parse(baseDay) + i));
       _utility.makeYMDYData(genDate.toString(), 0);
-      _upDates.add(_utility.year + "-" + _utility.month + "-" + _utility.day);
+      _upDates.add('${_utility.year}-${_utility.month}-${_utility.day}');
     }
     //----------------------------------//更新日付リスト作成
 

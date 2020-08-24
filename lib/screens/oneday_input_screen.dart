@@ -88,7 +88,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
     month = _utility.month;
     day = _utility.day;
     youbiStr = _utility.youbiStr;
-    _date = year + "-" + month + "-" + day;
+    _date = '${year}-${month}-${day}';
 
     prevDate =
         new DateTime(int.parse(year), int.parse(month), int.parse(day) - 1);
@@ -171,7 +171,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_date + '(' + youbiStr + ')'),
+        title: Text('${_date}(${youbiStr})'),
         centerTitle: true,
         actions: <Widget>[
           IconButton(
@@ -410,8 +410,8 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   */
   _dataCopy() async {
     _utility.makeYMDYData(prevDate.toString(), 0);
-    _monieData = await database.selectRecord(
-        _utility.year + "-" + _utility.month + "-" + _utility.day);
+    _monieData = await database
+        .selectRecord('${_utility.year}-${_utility.month}-${_utility.day}');
 
     if (_monieData.length > 0) {
       _teCont10000 = new TextEditingController(text: _monieData[0].strYen10000);
@@ -570,8 +570,8 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
 
     //-------------------------------//前日の合計値
     _utility.makeYMDYData(prevDate.toString(), 0);
-    var prevDayData = await database.selectRecord(
-        _utility.year + "-" + _utility.month + "-" + _utility.day);
+    var prevDayData = await database
+        .selectRecord('${_utility.year}-${_utility.month}-${_utility.day}');
     _utility.makeTotal(prevDayData);
     var _prevDayTotal = _utility.total;
     _onedaySpend = (_prevDayTotal - _onedayTotal);

@@ -152,6 +152,9 @@ class Utility {
     return formatter.format(int.parse(text));
   }
 
+  /**
+   * 休業日情報を取得する
+   */
   Map<String, dynamic> _holidayList = Map();
   getHolidayList() async {
     var holidays = await database.selectHolidaySortedAllRecord;
@@ -190,5 +193,35 @@ class Utility {
     }
 
     return _color;
+  }
+
+  /**
+   * 詳細画面表示情報を取得する
+   */
+  getMoneyArgs(String date) async {
+    Map _monieArgs = Map();
+
+    makeYMDYData(date, 0);
+    var yesterday =
+        new DateTime(int.parse(year), int.parse(month), int.parse(day) - 1);
+    var lastMonthEnd = new DateTime(int.parse(year), int.parse(month), 0);
+
+    //①　当日データ
+    var todayData = await database.selectRecord('${year}-${month}-${day}');
+    _monieArgs['today'] = (todayData.length > 0) ? todayData : null;
+
+    //②　前日データ
+    makeYMDYData(yesterday.toString(), 0);
+    var yesterdayData = await database.selectRecord('${year}-${month}-${day}');
+    _monieArgs['yesterday'] = (yesterdayData.length > 0) ? yesterdayData : null;
+
+    //③　先月末データ
+    makeYMDYData(lastMonthEnd.toString(), 0);
+    var lastMonthEndData =
+        await database.selectRecord('${year}-${month}-${day}');
+    _monieArgs['lastMonthEnd'] =
+        (lastMonthEndData.length > 0) ? lastMonthEndData : null;
+
+    return _monieArgs;
   }
 }

@@ -352,7 +352,7 @@ class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
     if (selectedDate != null) {
       _utility.makeYMDYData(selectedDate.toString(), 0);
       _dialogSelectedDate =
-          _utility.year + "-" + _utility.month + "-" + _utility.day;
+          '${_utility.year}-${_utility.month}-${_utility.day}';
 
       setState(() {});
     }
