@@ -1,4 +1,6 @@
+import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
+import 'package:moneynote/screens/setting_base_screen.dart';
 
 import '../main.dart';
 
@@ -116,6 +118,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
 
     ////////////////////////////////////////////////
     //本日分のレコードを取得
+
+    //マネーレコード①　当日日付で検索
     _monieData = await database.selectRecord(_date);
 
     if (_monieData.length > 0) {
@@ -160,6 +164,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
       var yMonth = _utility.month;
       var yDay = _utility.day;
 
+      //マネーレコード②　前日日付で検索
       var _yesterdayData =
           await database.selectRecord(yYear + "-" + yMonth + "-" + yDay);
 
@@ -173,6 +178,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
     ////////////////////////////////////////////////
     //当月の使用金額
     _utility.makeYMDYData(_prevMonthEndDate.toString(), 0);
+
+    //マネーレコード③　先月末日付で検索
     var _lastMonthEndData = await database.selectRecord(
         _utility.year + "-" + _utility.month + "-" + _utility.day);
 
@@ -215,15 +222,6 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
           _utility.getBackGround(),
           DetailDisplayBox(context),
         ],
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.black.withOpacity(0.1),
-        child: Icon(
-          Icons.keyboard_arrow_up,
-          color: Colors.greenAccent,
-        ),
-        onPressed: () => _showUnderMenu(),
       ),
     );
   }
@@ -281,14 +279,14 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                               _getTextDispWidget(
                                   'spend', false, '', false, false),
                               _getTextDispWidget(
-                                  _spend.toString(), false, '', false, false),
+                                  _spend.toString(), false, '', false, true),
                               const Align(),
                             ]),
                             TableRow(children: [
                               _getTextDispWidget(
                                   'month spend', false, '', false, false),
                               _getTextDispWidget(_monthSpend.toString(), false,
-                                  '', false, false),
+                                  '', false, true),
                               const Align(),
                             ]),
                           ],
@@ -550,6 +548,23 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                   ),
                 ),
               ),
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.all(5),
+                  width: double.infinity,
+                  child: RaisedButton(
+                    color: Colors.black.withOpacity(0.3),
+                    onPressed: () => _showUnderMenu(),
+                    child: Icon(
+                      Icons.keyboard_arrow_up,
+                      color: Colors.greenAccent,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -569,7 +584,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                   children: <Widget>[
                     IconButton(
                       icon: const Icon(Icons.refresh),
-                      onPressed: () => _goDetailDisplayScreen(),
+                      onPressed: () => _goDetailDisplayScreen(context, _date),
                       color: Colors.blueAccent,
                     ),
                     IconButton(
@@ -711,6 +726,114 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
+   * 下部メニュー表示
+   */
+  Future<Widget> _showUnderMenu() {
+    return showModalBottomSheet(
+      backgroundColor: Colors.black.withOpacity(0.1),
+      context: context,
+      builder: (BuildContext context) {
+        return SingleChildScrollView(
+          child: Container(
+            color: Colors.black.withOpacity(0.1),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListTile(
+                  leading: const Icon(Icons.trending_up),
+                  title: const Text(
+                    'Score List',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  onTap: () => _goScoreListScreen(context, _date),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.list),
+                  title: const Text(
+                    'Monthly List',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  onTap: () => _goMonthlyListScreen(context, _date),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.all_out),
+                  title: const Text(
+                    'AllDay List',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  onTap: () => _goAlldayListScreen(context, _date),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.all_inclusive),
+                  title: const Text(
+                    'SameDay List',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  onTap: () => _goSamedayListScreen(context, _date),
+                ),
+                Container(
+                  color: Colors.blueAccent.withOpacity(0.1),
+                  child: Column(
+                    children: <Widget>[
+                      ListTile(
+                        leading: const Icon(Icons.input),
+                        title: const Text(
+                          'Oneday Input',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        onTap: () => _goOnedayInputScreen(context, _date),
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.business),
+                        title: const Text(
+                          'Bank Input',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        onTap: () => _goBankInputScreen(context, _date),
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.category),
+                        title: const Text(
+                          'Bank Record Input',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        onTap: () => _goCreditRecordInputScreen(context, _date),
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.beenhere),
+                        title: const Text(
+                          'Benefit Input',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        onTap: () => _goBenefitInputScreen(context, _date),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  color: Colors.greenAccent.withOpacity(0.1),
+                  child: Column(
+                    children: <Widget>[
+                      ListTile(
+                        leading: const Icon(Icons.settings),
+                        title: const Text(
+                          'Settings',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        onTap: () => _goSettingBaseScreen(),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  /**
    * デートピッカー表示
    */
   _showDatepicker(BuildContext context) async {
@@ -723,7 +846,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
     );
 
     if (selectedDate != null) {
-      _goAnotherDate(context, selectedDate.toString());
+      _goDetailDisplayScreen(context, selectedDate.toString());
     }
   }
 
@@ -731,20 +854,37 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
    * 画面遷移（前日）
    */
   _goPrevDate(BuildContext context) {
-    _goAnotherDate(context, prevDate.toString());
+    _goDetailDisplayScreen(context, prevDate.toString());
   }
 
   /**
    * 画面遷移（翌日）
    */
   _goNextDate(BuildContext context) {
-    _goAnotherDate(context, nextDate.toString());
+    _goDetailDisplayScreen(context, nextDate.toString());
   }
 
   /**
-   * 画面遷移（指定日）
+   * 画面遷移（月内指定日）
    */
-  _goAnotherDate(BuildContext context, String date) {
+  _goMonthDay(BuildContext context, int position) {
+    _goDetailDisplayScreen(context, '${year}-${month}-${_monthDays[position]}');
+  }
+
+  ///////////////////////////////////////////////////////////////////// 画面遷移
+
+  /**
+   * 画面遷移（DetailDisplayScreen）
+   */
+  _goDetailDisplayScreen(BuildContext context, String date) async {
+    //①　当日データ
+    //②　前日データ
+    _utility.makeYMDYData(date, 0);
+    var zenjitsu = new DateTime(int.parse(_utility.year),
+        int.parse(_utility.month), int.parse(_utility.day) - 1);
+
+    //③　先月末データ
+
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -756,142 +896,14 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-   * 画面遷移（月内指定日）
-   */
-  _goMonthDay(BuildContext context, int position) {
-    _goAnotherDate(context, '${year}-${month}-${_monthDays[position]}');
-  }
-
-  /**
-   * 下部メニュー表示
-   */
-  Future<Widget> _showUnderMenu() {
-    return showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return SingleChildScrollView(
-          child: Container(
-            color: Colors.grey[900],
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                ListTile(
-                  leading: const Icon(Icons.trending_up),
-                  title: const Text(
-                    'Score List',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  onTap: () => _goScoreListScreen(),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.list),
-                  title: const Text(
-                    'Monthly List',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  onTap: () => _goMonthlyListScreen(),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.all_out),
-                  title: const Text(
-                    'AllDay List',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  onTap: () => _goAlldayListScreen(),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.all_inclusive),
-                  title: const Text(
-                    'SameDay List',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  onTap: () => _goSamedayListScreen(),
-                ),
-                Container(
-                  color: Colors.black,
-                  child: Column(
-                    children: <Widget>[
-                      ListTile(
-                        leading: const Icon(Icons.input),
-                        title: const Text(
-                          'Oneday Input',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        onTap: () => _goOnedayInputScreen(),
-                      ),
-                      ListTile(
-                        leading: const Icon(Icons.business),
-                        title: const Text(
-                          'Bank Input',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        onTap: () => _goBankInputScreen(),
-                      ),
-                      ListTile(
-                        leading: const Icon(Icons.category),
-                        title: const Text(
-                          'Bank Record Input',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        onTap: () => _goCreditRecordInputScreen(),
-                      ),
-                      ListTile(
-                        leading: const Icon(Icons.beenhere),
-                        title: const Text(
-                          'Benefit Input',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        onTap: () => _goBenefitInputScreen(),
-                      ),
-                    ],
-                  ),
-                ),
-//                Container(
-//                  color: Colors.greenAccent.withOpacity(0.1),
-//                  child: Column(
-//                    children: <Widget>[
-//                      ListTile(
-//                        leading: const Icon(Icons.settings),
-//                        title: const Text(
-//                          'Settings',
-//                          style: TextStyle(fontSize: 14),
-//                        ),
-//                        onTap: () => _goSettingBaseScreen(),
-//                      ),
-//                    ],
-//                  ),
-//                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  /**
-   * 画面遷移（DetailDisplayScreen）
-   */
-  _goDetailDisplayScreen() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => DetailDisplayScreen(
-          date: _date,
-        ),
-      ),
-    );
-  }
-
-  /**
    * 画面遷移（OnedayInputScreen）
    */
-  _goOnedayInputScreen() {
+  _goOnedayInputScreen(BuildContext context, String date) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => OnedayInputScreen(
-          date: _date,
+          date: date,
         ),
       ),
     );
@@ -900,12 +912,12 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（ScoreListScreen）
    */
-  _goScoreListScreen() {
+  _goScoreListScreen(BuildContext context, String date) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => ScoreListScreen(
-          date: _date,
+          date: date,
         ),
       ),
     );
@@ -914,12 +926,12 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（MonthlyListScreen）
    */
-  _goMonthlyListScreen() {
+  _goMonthlyListScreen(BuildContext context, String date) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => MonthlyListScreen(
-          date: _date,
+          date: date,
         ),
       ),
     );
@@ -928,12 +940,12 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（BankInputScreen）
    */
-  _goBankInputScreen() {
+  _goBankInputScreen(BuildContext context, String date) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => BankInputScreen(
-          date: _date,
+          date: date,
         ),
       ),
     );
@@ -942,12 +954,12 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（SamedayDisplayScreen）
    */
-  _goSamedayListScreen() {
+  _goSamedayListScreen(BuildContext context, String date) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => SamedayListScreen(
-          date: _date,
+          date: date,
         ),
       ),
     );
@@ -956,12 +968,12 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（BenefitInputScreen）
    */
-  _goBenefitInputScreen() {
+  _goBenefitInputScreen(BuildContext context, String date) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => BenefitInputScreen(
-          date: _date,
+          date: date,
         ),
       ),
     );
@@ -970,12 +982,12 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（AlldayListScreen）
    */
-  _goAlldayListScreen() {
+  _goAlldayListScreen(BuildContext context, String date) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => AlldayListScreen(
-          date: _date,
+          date: date,
         ),
       ),
     );
@@ -984,14 +996,26 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（CreditRecordInputScreen）
    */
-  _goCreditRecordInputScreen() {
+  _goCreditRecordInputScreen(BuildContext context, String date) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => CreditRecordInputScreen(
-          date: _date,
+          date: date,
           searchitem: null,
         ),
+      ),
+    );
+  }
+
+  /**
+   * 画面遷移（SettingBaseScreen）
+   */
+  _goSettingBaseScreen() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SettingBaseScreen(),
       ),
     );
   }

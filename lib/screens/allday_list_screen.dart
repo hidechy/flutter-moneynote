@@ -16,7 +16,6 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   List<List<String>> _alldayData = List();
 
   Utility _utility = Utility();
-  String youbiStr;
 
   Map<String, dynamic> _holidayList = Map();
 
@@ -89,15 +88,13 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
       }
     }
 
-//    //holiday
-//    if (_utility.getFileExists('HolidaySetting.txt') == true) {
-//      await _utility.load('HolidaySetting.txt').then((String value) {
-//        var ex_value = (value).split('\n');
-//        for (int i = 0; i < ex_value.length; i++) {
-//          _holidayList[ex_value[i]] = '';
-//        }
-//      });
-//    }
+    //holiday
+    var holidays = await database.selectHolidaySortedAllRecord;
+    if (holidays.length > 0) {
+      for (int i = 0; i < holidays.length; i++) {
+        _holidayList[holidays[i].strDate] = '';
+      }
+    }
 
     setState(() {});
   }
@@ -138,7 +135,7 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   _listItem(int position) {
     return InkWell(
       child: Card(
-        color: getBgColor(position),
+        color: getBgColor(_alldayData[position][0]),
         elevation: 10.0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
@@ -165,8 +162,8 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   /**
    * 背景色取得
    */
-  getBgColor(int position) {
-    _utility.makeYMDYData(_alldayData[position][0], 0);
+  getBgColor(String date) {
+    _utility.makeYMDYData(date, 0);
 
     Color _color = null;
 
@@ -184,7 +181,7 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
         break;
     }
 
-    if (_holidayList[_alldayData[position][0]] != null) {
+    if (_holidayList[date] != null) {
       _color = Colors.greenAccent[700].withOpacity(0.3);
     }
 
@@ -211,10 +208,8 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
         return text + '（' + _utility.youbiStr + '）';
         break;
       case 1:
-        return _utility.makeCurrencyDisplay(text);
-        break;
       case 2:
-        return text;
+        return _utility.makeCurrencyDisplay(text);
         break;
     }
   }

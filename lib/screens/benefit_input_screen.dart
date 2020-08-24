@@ -109,13 +109,15 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
                         IconButton(
                           icon: const Icon(Icons.refresh),
                           tooltip: 'reload',
-                          onPressed: () => _goBenefitInputScreen(),
+                          onPressed: () =>
+                              _goBenefitInputScreen(context, widget.date),
                           color: Colors.blueAccent,
                         ),
                         IconButton(
                           icon: const Icon(Icons.details),
                           tooltip: 'detail',
-                          onPressed: () => _goDetailDisplayScreen(),
+                          onPressed: () =>
+                              _goDetailDisplayScreen(context, widget.date),
                           color: Colors.blueAccent,
                         ),
                         IconButton(
@@ -311,7 +313,7 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
       Toast.show('更新が完了しました', context, duration: Toast.LENGTH_LONG);
     }
 
-    _goBenefitInputScreen();
+    _goBenefitInputScreen(context, widget.date);
   }
 
   /**
@@ -326,18 +328,20 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
 
     await database.deleteBenefitRecord(benefit);
     Toast.show('データを削除しました', context, duration: Toast.LENGTH_LONG);
-    _goBenefitInputScreen();
+    _goBenefitInputScreen(context, widget.date);
   }
+
+  ///////////////////////////////////////////////////////////////////// 画面遷移
 
   /**
   * 画面遷移（BenefitInputScreen）
   */
-  _goBenefitInputScreen() {
+  _goBenefitInputScreen(BuildContext context, String date) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => BenefitInputScreen(
-          date: widget.date,
+          date: date,
         ),
       ),
     );
@@ -346,12 +350,16 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   /**
   * 画面遷移（DetailDisplayScreen）
   */
-  _goDetailDisplayScreen() {
+  _goDetailDisplayScreen(BuildContext context, String date) async {
+    //①　当日データ
+    //②　前日データ
+    //③　先月末データ
+
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => DetailDisplayScreen(
-          date: widget.date,
+          date: date,
         ),
       ),
     );

@@ -19,9 +19,6 @@ class _BankInputScreenState extends State<BankInputScreen> {
   String _chipValue = 'bank_a';
 
   Utility _utility = Utility();
-//  String year;
-//  String month;
-//  String day;
 
   String _date;
 
@@ -53,8 +50,6 @@ class _BankInputScreenState extends State<BankInputScreen> {
    */
   _makeDefaultDisplayData() async {
     _utility.makeYMDYData(widget.date, 0);
-//    year = _utility.year;
-//    month = _utility.month;
 
     _dialogSelectedDate = _utility.year + "-" + _utility.month + "-01";
 
@@ -174,15 +169,13 @@ class _BankInputScreenState extends State<BankInputScreen> {
       }
     }
 
-//    //holiday
-//    if (_utility.getFileExists('HolidaySetting.txt') == true) {
-//      await _utility.load('HolidaySetting.txt').then((String value) {
-//        var ex_value = (value).split('\n');
-//        for (int i = 0; i < ex_value.length; i++) {
-//          _holidayList[ex_value[i]] = '';
-//        }
-//      });
-//    }
+    //holiday
+    var holidays = await database.selectHolidaySortedAllRecord;
+    if (holidays.length > 0) {
+      for (int i = 0; i < holidays.length; i++) {
+        _holidayList[holidays[i].strDate] = '';
+      }
+    }
 
     setState(() {});
   }
@@ -315,10 +308,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
   Widget _listItem(int position) {
     return InkWell(
       child: Card(
-        color: _getBgColor(
-          int.parse(_bankData[position][3]),
-          _bankData[position][0],
-        ),
+        color: _getBgColor(_bankData[position][0]),
         elevation: 10.0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
@@ -340,10 +330,12 @@ class _BankInputScreenState extends State<BankInputScreen> {
   /**
    * 背景色取得
    */
-  _getBgColor(int youbiNo, String date) {
+  _getBgColor(String date) {
+    _utility.makeYMDYData(date, 0);
+
     Color _color = null;
 
-    switch (youbiNo) {
+    switch (_utility.youbiNo) {
       case 0:
         _color = Colors.redAccent[700].withOpacity(0.3);
         break;

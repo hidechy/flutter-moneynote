@@ -55,12 +55,7 @@ class _CalenderState extends State<Calender> {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          Image.asset(
-            'assets/image/bg.png',
-            fit: BoxFit.cover,
-            color: Colors.black.withOpacity(0.7),
-            colorBlendMode: BlendMode.darken,
-          ),
+          _utility.getBackGround(),
           Container(
             child: CalendarCarousel<Event>(
               locale: 'JA',
@@ -103,30 +98,60 @@ class _CalenderState extends State<Calender> {
 //inactiveWeekendTextStyle: TextStyle(fontFamily: 'Yomogi'),
             ),
           ),
+          //////////////////////////////////
+          Column(
+            children: <Widget>[
+              Expanded(child: Container()),
+              Container(
+                padding: EdgeInsets.all(5),
+                width: double.infinity,
+                child: RaisedButton(
+                  color: Colors.black.withOpacity(0.1),
+                  onPressed: () => _goOnedayInputScreen(),
+                  child: Icon(
+                    Icons.input,
+                    color: Colors.greenAccent,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.black.withOpacity(0.1),
-        child: Icon(
-          Icons.input,
-          color: Colors.greenAccent,
-        ),
-        onPressed: () => _goOnedayInputScreen(),
       ),
     );
   }
 
   /**
+   * カレンダー日付クリック
+   */
+  void onDayPressed(DateTime date, List<Event> events) async {
+    this.setState(() => _currentDate = date);
+
+    //画面遷移
+    _goDetailDisplayScreen(
+      context,
+      _currentDate.toString(),
+    );
+  }
+
+  ///////////////////////////////////////////////////////////////////// 画面遷移
+
+  /**
    * 画面遷移（DetailDisplayScreen）
    */
-  void onDayPressed(DateTime date, List<Event> events) {
-    this.setState(() => _currentDate = date);
+  _goDetailDisplayScreen(BuildContext context, String date) async {
+    //①　当日データ
+    //②　前日データ
+    //③　先月末データ
 
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => DetailDisplayScreen(
-          date: _currentDate.toString(),
+          date: date,
         ),
       ),
     );
@@ -137,16 +162,12 @@ class _CalenderState extends State<Calender> {
    */
   _goScoreDisplayScreen() {
     _utility.makeYMDYData(_currentDate.toString(), 0);
-    year = _utility.year;
-    month = _utility.month;
-    day = _utility.day;
-    _date = year + "-" + month + "-" + day;
 
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ScoreListScreen(
-          date: _date,
+          date: _utility.year + "-" + _utility.month + "-" + _utility.day,
         ),
       ),
     );
@@ -157,16 +178,12 @@ class _CalenderState extends State<Calender> {
    */
   _goMonthlyScreen() {
     _utility.makeYMDYData(_currentDate.toString(), 0);
-    year = _utility.year;
-    month = _utility.month;
-    day = _utility.day;
-    _date = year + "-" + month + "-" + day;
 
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => MonthlyListScreen(
-          date: _date,
+          date: _utility.year + "-" + _utility.month + "-" + _utility.day,
         ),
       ),
     );
@@ -176,16 +193,13 @@ class _CalenderState extends State<Calender> {
    * 画面遷移（OnedayInputScreen）
    */
   _goOnedayInputScreen() {
-//print(DateTime.now());
-
-    var _inputDate = DateTime.now().toString().substring(0, 10);
-    print(_inputDate);
+    _utility.makeYMDYData(_currentDate.toString(), 0);
 
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => OnedayInputScreen(
-          date: _inputDate,
+          date: _utility.year + "-" + _utility.month + "-" + _utility.day,
         ),
       ),
     );

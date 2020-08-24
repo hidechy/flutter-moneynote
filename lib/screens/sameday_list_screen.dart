@@ -163,7 +163,9 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
   Widget _getDisplayContainer(int position, int column) {
     return Container(
       alignment: _getDisplayAlign(column),
-      child: Text(_samedayData[position][column]),
+      child: (column == 0)
+          ? Text(_samedayData[position][column])
+          : Text(_utility.makeCurrencyDisplay(_samedayData[position][column])),
     );
   }
 

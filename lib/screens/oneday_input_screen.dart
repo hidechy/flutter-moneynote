@@ -287,13 +287,15 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
                           IconButton(
                             icon: const Icon(Icons.list),
                             tooltip: 'list',
-                            onPressed: () => _goMonthlyListScreen(),
+                            onPressed: () =>
+                                _goMonthlyListScreen(context, _date),
                             color: Colors.blueAccent,
                           ),
                           IconButton(
                             icon: const Icon(Icons.details),
                             tooltip: 'detail',
-                            onPressed: () => _goDetailDisplayScreen(),
+                            onPressed: () =>
+                                _goDetailDisplayScreen(context, _date),
                             color: Colors.blueAccent,
                           ),
                           IconButton(
@@ -460,48 +462,6 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   }
 
   /**
-  * 画面遷移（指定日）
-  */
-  _goAnotherDate(BuildContext context, String date) {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => OnedayInputScreen(
-          date: date,
-        ),
-      ),
-    );
-  }
-
-  /**
-  * 画面遷移（MonthlyListScreen）
-  */
-  _goMonthlyListScreen() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => MonthlyListScreen(
-          date: _date,
-        ),
-      ),
-    );
-  }
-
-  /**
-  * 画面遷移（DetailDisplayScreen）
-  */
-  _goDetailDisplayScreen() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => DetailDisplayScreen(
-          date: _date,
-        ),
-      ),
-    );
-  }
-
-  /**
   * デートピッカー表示
   */
   _showDatepicker(BuildContext context) async {
@@ -618,5 +578,53 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
     //-------------------------------//前日の合計値
 
     setState(() {});
+  }
+
+  ///////////////////////////////////////////////////////////////////// 画面遷移
+
+  /**
+  * 画面遷移（指定日）
+  */
+  _goAnotherDate(BuildContext context, String date) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => OnedayInputScreen(
+          date: date,
+        ),
+      ),
+    );
+  }
+
+  /**
+  * 画面遷移（MonthlyListScreen）
+  */
+  _goMonthlyListScreen(BuildContext context, String date) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MonthlyListScreen(
+          date: date,
+        ),
+      ),
+    );
+  }
+
+  /**
+  * 画面遷移（DetailDisplayScreen）
+  */
+  _goDetailDisplayScreen(BuildContext context, String date) async {
+    //①　当日データ
+    //②　前日データ
+    //③　先月末データ
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DetailDisplayScreen(
+          date: date,
+        ),
+      ),
+    );
   }
 }

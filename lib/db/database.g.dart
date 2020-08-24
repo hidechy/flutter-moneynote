@@ -1981,6 +1981,151 @@ class $CreditsTable extends Credits with TableInfo<$CreditsTable, Credit> {
   }
 }
 
+class Holiday extends DataClass implements Insertable<Holiday> {
+  final String strDate;
+  Holiday({@required this.strDate});
+  factory Holiday.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final stringType = db.typeSystem.forDartType<String>();
+    return Holiday(
+      strDate: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}str_date']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || strDate != null) {
+      map['str_date'] = Variable<String>(strDate);
+    }
+    return map;
+  }
+
+  HolidaysCompanion toCompanion(bool nullToAbsent) {
+    return HolidaysCompanion(
+      strDate: strDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(strDate),
+    );
+  }
+
+  factory Holiday.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return Holiday(
+      strDate: serializer.fromJson<String>(json['strDate']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'strDate': serializer.toJson<String>(strDate),
+    };
+  }
+
+  Holiday copyWith({String strDate}) => Holiday(
+        strDate: strDate ?? this.strDate,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Holiday(')..write('strDate: $strDate')..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf(strDate.hashCode);
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is Holiday && other.strDate == this.strDate);
+}
+
+class HolidaysCompanion extends UpdateCompanion<Holiday> {
+  final Value<String> strDate;
+  const HolidaysCompanion({
+    this.strDate = const Value.absent(),
+  });
+  HolidaysCompanion.insert({
+    @required String strDate,
+  }) : strDate = Value(strDate);
+  static Insertable<Holiday> custom({
+    Expression<String> strDate,
+  }) {
+    return RawValuesInsertable({
+      if (strDate != null) 'str_date': strDate,
+    });
+  }
+
+  HolidaysCompanion copyWith({Value<String> strDate}) {
+    return HolidaysCompanion(
+      strDate: strDate ?? this.strDate,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (strDate.present) {
+      map['str_date'] = Variable<String>(strDate.value);
+    }
+    return map;
+  }
+}
+
+class $HolidaysTable extends Holidays with TableInfo<$HolidaysTable, Holiday> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $HolidaysTable(this._db, [this._alias]);
+  final VerificationMeta _strDateMeta = const VerificationMeta('strDate');
+  GeneratedTextColumn _strDate;
+  @override
+  GeneratedTextColumn get strDate => _strDate ??= _constructStrDate();
+  GeneratedTextColumn _constructStrDate() {
+    return GeneratedTextColumn(
+      'str_date',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [strDate];
+  @override
+  $HolidaysTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'holidays';
+  @override
+  final String actualTableName = 'holidays';
+  @override
+  VerificationContext validateIntegrity(Insertable<Holiday> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('str_date')) {
+      context.handle(_strDateMeta,
+          strDate.isAcceptableOrUnknown(data['str_date'], _strDateMeta));
+    } else if (isInserting) {
+      context.missing(_strDateMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {strDate};
+  @override
+  Holiday map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return Holiday.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  $HolidaysTable createAlias(String alias) {
+    return $HolidaysTable(_db, alias);
+  }
+}
+
 abstract class _$MyDatabase extends GeneratedDatabase {
   _$MyDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $MoniesTable _monies;
@@ -1989,9 +2134,11 @@ abstract class _$MyDatabase extends GeneratedDatabase {
   $BenefitsTable get benefits => _benefits ??= $BenefitsTable(this);
   $CreditsTable _credits;
   $CreditsTable get credits => _credits ??= $CreditsTable(this);
+  $HolidaysTable _holidays;
+  $HolidaysTable get holidays => _holidays ??= $HolidaysTable(this);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [monies, benefits, credits];
+      [monies, benefits, credits, holidays];
 }

@@ -5,6 +5,8 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'dart:io';
 
+import '../main.dart';
+
 class Utility {
   /**
    * 背景取得
@@ -150,31 +152,43 @@ class Utility {
     return formatter.format(int.parse(text));
   }
 
-  /**
-   * 設定ファイル取得
-   */
+  Map<String, dynamic> _holidayList = Map();
+  getHolidayList() async {
+    var holidays = await database.selectHolidaySortedAllRecord;
+    if (holidays.length > 0) {
+      for (int i = 0; i < holidays.length; i++) {
+        _holidayList[holidays[i].strDate] = '';
+      }
+    }
+  }
 
   /**
-   * テキストファイル読み込み
+   * リストの背景色を取得する
    */
+  getListBgColor(String date) {
+    makeYMDYData(date, 0);
 
-  /**
-   * 設定ファイルの存在取得
-   */
+    Color _color = null;
 
-//  Future<File> getFilePath(String _fileName) async {
-//    final directory = await getTemporaryDirectory();
-//    return File(directory.path + '/' + _fileName);
-//  }
-//
-//  Future<String> load(String _fileName) async {
-//    final file = await getFilePath(_fileName);
-//    return file.readAsString();
-//  }
-//
-//  Future<bool> getFileExists(String _fileName) async {
-//    final directory = await getTemporaryDirectory();
-//    String filepath = directory.path + '/' + _fileName;
-//    return File(filepath).exists();
-//  }
+    switch (youbiNo) {
+      case 0:
+        _color = Colors.redAccent[700].withOpacity(0.3);
+        break;
+
+      case 6:
+        _color = Colors.blueAccent[700].withOpacity(0.3);
+        break;
+
+      default:
+        _color = Colors.black.withOpacity(0.3);
+        break;
+    }
+
+    getHolidayList();
+    if (_holidayList[date] != null) {
+      _color = Colors.greenAccent[700].withOpacity(0.3);
+    }
+
+    return _color;
+  }
 }

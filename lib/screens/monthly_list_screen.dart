@@ -157,17 +157,15 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
       _yesterdaySpend = _thisDayTotal;
     }
 
-//    //holiday
-//    if (_utility.getFileExists('HolidaySetting.txt') == true) {
-//      await _utility.load('HolidaySetting.txt').then((String value) {
-//        var ex_value = (value).split('\n');
-//        for (int i = 0; i < ex_value.length; i++) {
-//          _holidayList[ex_value[i]] = '';
-//        }
-//      });
-//    }
-
     _monthTotal = _monthSum;
+
+    //holiday
+    var holidays = await database.selectHolidaySortedAllRecord;
+    if (holidays.length > 0) {
+      for (int i = 0; i < holidays.length; i++) {
+        _holidayList[holidays[i].strDate] = '';
+      }
+    }
 
     setState(() {});
   }
@@ -184,12 +182,18 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
           IconButton(
             icon: const Icon(Icons.skip_previous),
             tooltip: '前日',
-            onPressed: () => _goPrevMonth(context),
+            onPressed: () => _goPrevMonth(
+              context,
+              prevMonth.toString(),
+            ),
           ),
           IconButton(
             icon: const Icon(Icons.skip_next),
             tooltip: '翌日',
-            onPressed: () => _goNextMonth(context),
+            onPressed: () => _goNextMonth(
+              context,
+              nextMonth.toString(),
+            ),
           ),
         ],
         centerTitle: true,
@@ -255,7 +259,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
         actionPane: const SlidableDrawerActionPane(),
         actionExtentRatio: 0.15,
         child: Card(
-          color: getBgColor(position),
+          color: getBgColor(_monthData[position][0]),
           elevation: 10.0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
@@ -274,23 +278,32 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
                 ],
               ),
             ),
-            onLongPress: () => _goOnedayInputScreen(position),
+            onLongPress: () => _goOnedayInputScreen(
+              context,
+              _monthData[position][0],
+            ),
           ),
         ),
         //actions: <Widget>[],
         secondaryActions: <Widget>[
           _getDetailDialogButton(position),
           IconSlideAction(
-            color: getBgColor(position),
+            color: getBgColor(_monthData[position][0]),
             foregroundColor: Colors.blueAccent,
             icon: Icons.details,
-            onTap: () => _goDetailDisplayScreen(position),
+            onTap: () => _goDetailDisplayScreen(
+              context,
+              _monthData[position][0],
+            ),
           ),
           IconSlideAction(
-            color: getBgColor(position),
+            color: getBgColor(_monthData[position][0]),
             foregroundColor: Colors.blueAccent,
             icon: Icons.input,
-            onTap: () => _goOnedayInputScreen(position),
+            onTap: () => _goOnedayInputScreen(
+              context,
+              _monthData[position][0],
+            ),
           ),
         ],
       ),
@@ -301,10 +314,11 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
    * ダイアログボタン表示
    */
   _getDetailDialogButton(int position) {
+    var date = _monthData[position][0];
     switch (_monthData[position][3]) {
       case '1':
         return IconSlideAction(
-          color: getBgColor(position),
+          color: getBgColor(date),
           foregroundColor: Colors.blueAccent,
           icon: Icons.business,
           onTap: () => _displayDialog(position),
@@ -313,7 +327,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
 
       case '2':
         return IconSlideAction(
-          color: getBgColor(position),
+          color: getBgColor(date),
           foregroundColor: Colors.orangeAccent,
           icon: Icons.beenhere,
           onTap: () => _displayDialog(position),
@@ -322,7 +336,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
 
       default:
         return IconSlideAction(
-          color: getBgColor(position),
+          color: getBgColor(date),
           foregroundColor: Color(0xFF2e2e2e),
           icon: Icons.check_box_outline_blank,
         );
@@ -501,8 +515,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   /**
    * 背景色取得
    */
-  getBgColor(int position) {
-    _utility.makeYMDYData(_monthData[position][0], 0);
+  getBgColor(String date) {
+    _utility.makeYMDYData(date, 0);
 
     Color _color = null;
 
@@ -520,7 +534,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
         break;
     }
 
-    if (_holidayList[_monthData[position][0]] != null) {
+    if (_holidayList[date] != null) {
       _color = Colors.greenAccent[700].withOpacity(0.3);
     }
 
@@ -568,29 +582,26 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
         );
         break;
       case 1:
-        return Text(
-          _utility.makeCurrencyDisplay(text),
-          style: TextStyle(fontSize: 10),
-        );
-        break;
       case 2:
         return Text(
-          text,
+          _utility.makeCurrencyDisplay(text),
           style: TextStyle(fontSize: 10),
         );
         break;
     }
   }
 
+  ///////////////////////////////////////////////////////////////////// 画面遷移
+
   /**
    * 画面遷移（前月）
    */
-  _goPrevMonth(BuildContext context) {
+  _goPrevMonth(BuildContext context, String date) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => MonthlyListScreen(
-          date: prevMonth.toString(),
+          date: date,
         ),
       ),
     );
@@ -599,12 +610,12 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   /**
    * 画面遷移（翌月）
    */
-  _goNextMonth(BuildContext context) {
+  _goNextMonth(BuildContext context, String date) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => MonthlyListScreen(
-          date: nextMonth.toString(),
+          date: date,
         ),
       ),
     );
@@ -613,12 +624,12 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   /**
    * 画面遷移（OnedayInputScreen）
    */
-  _goOnedayInputScreen(int position) {
+  _goOnedayInputScreen(BuildContext context, String date) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => OnedayInputScreen(
-          date: _monthData[position][0],
+          date: date,
         ),
       ),
     );
@@ -627,12 +638,16 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   /**
    * 画面遷移（DetailDisplayScreen）
    */
-  _goDetailDisplayScreen(int position) {
+  _goDetailDisplayScreen(BuildContext context, String date) async {
+    //①　当日データ
+    //②　前日データ
+    //③　先月末データ
+
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => DetailDisplayScreen(
-          date: _monthData[position][0],
+          date: date,
         ),
       ),
     );

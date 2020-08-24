@@ -199,7 +199,8 @@ class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
                                 ),
                               ],
                             ),
-                            onPressed: () => _searchRecord(),
+                            onPressed: () =>
+                                _searchRecord(context, widget.date),
                           ),
                         ],
                       ),
@@ -228,7 +229,8 @@ class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
                         IconButton(
                           icon: const Icon(Icons.refresh),
                           tooltip: 'reload',
-                          onPressed: () => _goCreditRecordInputScreen(),
+                          onPressed: () =>
+                              _goCreditRecordInputScreen(context, widget.date),
                           color: Colors.blueAccent,
                         ),
                         IconButton(
@@ -378,7 +380,7 @@ class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
 
     await database.insertCreditRecord(_credit);
     Toast.show('登録が完了しました', context, duration: Toast.LENGTH_LONG);
-    _goCreditRecordInputScreen();
+    _goCreditRecordInputScreen(context, widget.date);
   }
 
   /**
@@ -394,13 +396,15 @@ class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
 
     await database.deleteCreditIdRecord(credit);
     Toast.show('データを削除しました', context, duration: Toast.LENGTH_LONG);
-    _goCreditRecordInputScreen();
+    _goCreditRecordInputScreen(context, widget.date);
   }
+
+  ///////////////////////////////////////////////////////////////////// 画面遷移
 
   /**
   * データ検索
   */
-  _searchRecord() {
+  _searchRecord(BuildContext context, String date) {
     if (_numberOfMenu == '') {
       Toast.show('勘定科目が入力されていません', context, duration: Toast.LENGTH_LONG);
       return false;
@@ -410,7 +414,7 @@ class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => CreditRecordInputScreen(
-          date: widget.date,
+          date: date,
           searchitem: _numberOfMenu,
         ),
       ),
@@ -420,12 +424,12 @@ class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
   /**
   * 画面遷移（CreditRecordInputScreen）
   */
-  _goCreditRecordInputScreen() {
+  _goCreditRecordInputScreen(BuildContext context, String date) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => CreditRecordInputScreen(
-          date: widget.date,
+          date: date,
           searchitem: null,
         ),
       ),

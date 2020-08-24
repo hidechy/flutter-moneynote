@@ -73,9 +73,19 @@ class Credits extends Table {
 }
 
 /**
+ * 休業日クラス
+ */
+class Holidays extends Table {
+  TextColumn get strDate => text()();
+
+  @override
+  Set<Column> get primaryKey => {strDate};
+}
+
+/**
  * データベース操作クラス
  */
-@UseMoor(tables: [Monies, Benefits, Credits])
+@UseMoor(tables: [Monies, Benefits, Credits, Holidays])
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(_openConnection());
 
@@ -95,6 +105,10 @@ class MyDatabase extends _$MyDatabase {
 
         if (from == 3) {
           await m.addColumn(monies, monies.strPayC);
+        }
+
+        if (from == 4) {
+          await m.createTable(holidays);
         }
       });
 
@@ -183,6 +197,24 @@ class MyDatabase extends _$MyDatabase {
           (tbl) => OrderingTerm(expression: tbl.strDate),
           (tbl) => OrderingTerm(expression: tbl.intId)
         ]))
+      .get();
+
+  ////////////////////////////////////////////////////////////Holidays
+  //追加
+  Future insertHolidayRecord(Holiday holiday) => into(holidays).insert(holiday);
+
+  //削除
+  Future deleteHolidayRecord(Holiday holiday) =>
+      (delete(holidays)..where((tbl) => tbl.strDate.equals(holiday.strDate)))
+          .go();
+
+  //選択
+  Future selectHolidayRecord(String date) =>
+      (select(holidays)..where((tbl) => tbl.strDate.equals(date))).get();
+
+  //全選択（日付順）
+  Future<List<Holiday>> get selectHolidaySortedAllRecord => (select(holidays)
+        ..orderBy([(tbl) => OrderingTerm(expression: tbl.strDate)]))
       .get();
 }
 
