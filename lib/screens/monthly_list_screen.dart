@@ -606,15 +606,15 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
    * 画面遷移（DetailDisplayScreen）
    */
   _goDetailDisplayScreen(BuildContext context, String date) async {
-    //①　当日データ
-    //②　前日データ
-    //③　先月末データ
+    var detailDisplayArgs = await _utility.getDetailDisplayArgs(date);
 
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => DetailDisplayScreen(
           date: date,
+          index: 1,
+          detailDisplayArgs: detailDisplayArgs,
         ),
       ),
     );

@@ -18,8 +18,10 @@ import 'allday_list_screen.dart';
 
 class DetailDisplayScreen extends StatefulWidget {
   final String date;
-  final Map moneyArgs;
-  DetailDisplayScreen({@required this.date, this.moneyArgs});
+  final int index;
+  final Map detailDisplayArgs;
+  DetailDisplayScreen(
+      {@required this.date, this.index, this.detailDisplayArgs});
 
   @override
   _DetailDisplayScreenState createState() => _DetailDisplayScreenState();
@@ -243,6 +245,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                   padding: const EdgeInsets.only(bottom: 30),
                   child: Column(
                     children: <Widget>[
+                      //------------------------------------------------------------------------//
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10.0),
                         child: Center(
@@ -544,10 +547,12 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                           ],
                         ),
                       ),
+                      //------------------------------------------------------------------------//
                     ],
                   ),
                 ),
               ),
+              //------------------------------------------------------------------------//
               Expanded(
                 child: Container(
                   padding: EdgeInsets.all(5),
@@ -565,6 +570,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                   ),
                 ),
               ),
+              //------------------------------------------------------------------------//
             ],
           ),
         ),
@@ -584,7 +590,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                   children: <Widget>[
                     IconButton(
                       icon: const Icon(Icons.refresh),
-                      onPressed: () => _goDetailDisplayScreen(context, _date),
+                      onPressed: () =>
+                          _goDetailDisplayScreen(context, _date, 1),
                       color: Colors.blueAccent,
                     ),
                     IconButton(
@@ -846,7 +853,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
     );
 
     if (selectedDate != null) {
-      _goDetailDisplayScreen(context, selectedDate.toString());
+      _goDetailDisplayScreen(context, selectedDate.toString(), 1);
     }
   }
 
@@ -854,21 +861,22 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
    * 画面遷移（前日）
    */
   _goPrevDate(BuildContext context) {
-    _goDetailDisplayScreen(context, prevDate.toString());
+    _goDetailDisplayScreen(context, prevDate.toString(), 1);
   }
 
   /**
    * 画面遷移（翌日）
    */
   _goNextDate(BuildContext context) {
-    _goDetailDisplayScreen(context, nextDate.toString());
+    _goDetailDisplayScreen(context, nextDate.toString(), 1);
   }
 
   /**
    * 画面遷移（月内指定日）
    */
   _goMonthDay(BuildContext context, int position) {
-    _goDetailDisplayScreen(context, '${year}-${month}-${_monthDays[position]}');
+    _goDetailDisplayScreen(
+        context, '${year}-${month}-${_monthDays[position]}', 1);
   }
 
   ///////////////////////////////////////////////////////////////////// 画面遷移
@@ -876,20 +884,16 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（DetailDisplayScreen）
    */
-  _goDetailDisplayScreen(BuildContext context, String date) async {
-    //①　当日データ
-    //②　前日データ
-    _utility.makeYMDYData(date, 0);
-    var zenjitsu = new DateTime(int.parse(_utility.year),
-        int.parse(_utility.month), int.parse(_utility.day) - 1);
-
-    //③　先月末データ
+  _goDetailDisplayScreen(BuildContext context, String date, int index) async {
+    var detailDisplayArgs = await _utility.getDetailDisplayArgs(date);
 
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => DetailDisplayScreen(
           date: date,
+          index: index,
+          detailDisplayArgs: detailDisplayArgs,
         ),
       ),
     );

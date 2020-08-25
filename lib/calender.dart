@@ -143,14 +143,15 @@ class _CalenderState extends State<Calender> {
    * 画面遷移（DetailDisplayScreen）
    */
   _goDetailDisplayScreen(BuildContext context, String date) async {
-    var moneyArgs = await _utility.getDetailDisplayArgs(date);
+    var detailDisplayArgs = await _utility.getDetailDisplayArgs(date);
 
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => DetailDisplayScreen(
           date: date,
-          moneyArgs: moneyArgs,
+          index: 1,
+          detailDisplayArgs: detailDisplayArgs,
         ),
       ),
     );
