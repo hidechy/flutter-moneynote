@@ -205,7 +205,7 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
         //プルダウンと同日の場合のみリストに追加する
         if (int.parse(_utility.day) == int.parse(value)) {
           var samedata = await database.selectRecord(_monieData[i].strDate);
-          _utility.makeTotal(samedata);
+          _utility.makeTotal(samedata[0]);
           var total = _utility.total;
 
           var firstDayData = await getFirstDayData(_monieData[i].strDate);
@@ -232,7 +232,7 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
     if (value.length == 0) {
       return 0;
     } else {
-      _utility.makeTotal(value);
+      _utility.makeTotal(value[0]);
       return _utility.total;
     }
   }

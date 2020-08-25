@@ -154,7 +154,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
       _payG = _monieData[0].strPayG;
       _payH = _monieData[0].strPayH;
 
-      _utility.makeTotal(_monieData);
+      _utility.makeTotal(_monieData[0]);
       _total = _utility.total;
       _temochi = _utility.temochi;
       _undercoin = _utility.undercoin;
@@ -171,7 +171,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
           await database.selectRecord('${yYear}-${yMonth}-${yDay}');
 
       if (_yesterdayData.length > 0) {
-        _utility.makeTotal(_yesterdayData);
+        _utility.makeTotal(_yesterdayData[0]);
         var _yesterdayTotal = _utility.total;
         _spend = (_yesterdayTotal - _total) * -1;
       }
@@ -187,7 +187,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
 
     var _lastMonthTotal = 0;
     if (_lastMonthEndData.length > 0) {
-      _utility.makeTotal(_lastMonthEndData);
+      _utility.makeTotal(_lastMonthEndData[0]);
       _lastMonthTotal = _utility.total;
     }
 

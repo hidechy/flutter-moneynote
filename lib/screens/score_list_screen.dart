@@ -105,14 +105,14 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
           case 1: //先月末の日付
             prevTotal = 0;
             if (monie.length > 0) {
-              _utility.makeTotal(monie);
+              _utility.makeTotal(monie[0]);
               prevTotal = _utility.total;
             }
             break;
           case 2: //今月末の日付
             thisTotal = 0;
             if (monie.length > 0) {
-              _utility.makeTotal(monie);
+              _utility.makeTotal(monie[0]);
               thisTotal = _utility.total;
             }
             break;

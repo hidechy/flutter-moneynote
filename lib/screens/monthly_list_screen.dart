@@ -82,7 +82,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
     ///////////////////////////
     var val = await database.selectRecord(_prevMonthEndDate);
     if (val.length > 0) {
-      _utility.makeTotal(val);
+      _utility.makeTotal(val[0]);
       _prevMonthEndTotal = _utility.total;
     }
     ///////////////////////////
@@ -96,40 +96,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
       var _monieData = await database.selectRecord(_thisDay);
 
       if (_monieData.length > 0) {
-        List<List<String>> _totalValue = List();
-        _totalValue.add(['10000', _monieData[0].strYen10000]);
-        _totalValue.add(['5000', _monieData[0].strYen5000]);
-        _totalValue.add(['2000', _monieData[0].strYen2000]);
-        _totalValue.add(['1000', _monieData[0].strYen1000]);
-        _totalValue.add(['500', _monieData[0].strYen500]);
-        _totalValue.add(['100', _monieData[0].strYen100]);
-        _totalValue.add(['50', _monieData[0].strYen50]);
-        _totalValue.add(['10', _monieData[0].strYen10]);
-        _totalValue.add(['5', _monieData[0].strYen5]);
-        _totalValue.add(['1', _monieData[0].strYen1]);
-
-        _totalValue.add(['1', _monieData[0].strBankA]);
-        _totalValue.add(['1', _monieData[0].strBankB]);
-        _totalValue.add(['1', _monieData[0].strBankC]);
-        _totalValue.add(['1', _monieData[0].strBankD]);
-        _totalValue.add(['1', _monieData[0].strBankE]);
-        _totalValue.add(['1', _monieData[0].strBankF]);
-        _totalValue.add(['1', _monieData[0].strBankG]);
-        _totalValue.add(['1', _monieData[0].strBankH]);
-
-        _totalValue.add(['1', _monieData[0].strPayA]);
-        _totalValue.add(['1', _monieData[0].strPayB]);
-        _totalValue.add(['1', _monieData[0].strPayC]);
-        _totalValue.add(['1', _monieData[0].strPayD]);
-        _totalValue.add(['1', _monieData[0].strPayE]);
-        _totalValue.add(['1', _monieData[0].strPayF]);
-        _totalValue.add(['1', _monieData[0].strPayG]);
-        _totalValue.add(['1', _monieData[0].strPayH]);
-
-        for (int i = 0; i < _totalValue.length; i++) {
-          _thisDayTotal +=
-              (int.parse(_totalValue[i][0]) * int.parse(_totalValue[i][1]));
-        }
+        _utility.makeTotal(_monieData[0]);
+        _thisDayTotal = _utility.total;
       }
 
       var onedaySpend = (i == 1)

@@ -572,7 +572,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
     _utility.makeYMDYData(prevDate.toString(), 0);
     var prevDayData = await database
         .selectRecord('${_utility.year}-${_utility.month}-${_utility.day}');
-    _utility.makeTotal(prevDayData);
+    _utility.makeTotal(prevDayData[0]);
     var _prevDayTotal = _utility.total;
     _onedaySpend = (_prevDayTotal - _onedayTotal);
     //-------------------------------//前日の合計値

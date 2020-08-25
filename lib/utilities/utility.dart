@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:moneynote/db/database.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'dart:async';
@@ -92,55 +93,50 @@ class Utility {
   int total = 0;
   int temochi = 0;
   int undercoin = 0;
-  makeTotal(_monieData) {
-    List<List<String>> _totalValue = List();
-
-    _totalValue.add(['10000', _monieData[0].strYen10000]);
-    _totalValue.add(['5000', _monieData[0].strYen5000]);
-    _totalValue.add(['2000', _monieData[0].strYen2000]);
-    _totalValue.add(['1000', _monieData[0].strYen1000]);
-    _totalValue.add(['500', _monieData[0].strYen500]);
-    _totalValue.add(['100', _monieData[0].strYen100]);
-    _totalValue.add(['50', _monieData[0].strYen50]);
-    _totalValue.add(['10', _monieData[0].strYen10]);
-    _totalValue.add(['5', _monieData[0].strYen5]);
-    _totalValue.add(['1', _monieData[0].strYen1]);
-
+  makeTotal(Monie money) {
+    List<List<int>> _totalValue = List();
+    _totalValue.add([10000, int.parse(money.strYen10000)]);
+    _totalValue.add([5000, int.parse(money.strYen5000)]);
+    _totalValue.add([2000, int.parse(money.strYen2000)]);
+    _totalValue.add([1000, int.parse(money.strYen1000)]);
+    _totalValue.add([500, int.parse(money.strYen500)]);
+    _totalValue.add([100, int.parse(money.strYen100)]);
+    _totalValue.add([50, int.parse(money.strYen50)]);
+    _totalValue.add([10, int.parse(money.strYen10)]);
+    _totalValue.add([5, int.parse(money.strYen5)]);
+    _totalValue.add([1, int.parse(money.strYen1)]);
     temochi = 0;
     for (int i = 0; i < _totalValue.length; i++) {
-      temochi += (int.parse(_totalValue[i][0]) * int.parse(_totalValue[i][1]));
+      temochi += (_totalValue[i][0] * _totalValue[i][1]);
     }
+    _totalValue.add([1, int.parse(money.strBankA)]);
+    _totalValue.add([1, int.parse(money.strBankB)]);
+    _totalValue.add([1, int.parse(money.strBankC)]);
+    _totalValue.add([1, int.parse(money.strBankD)]);
+    _totalValue.add([1, int.parse(money.strBankE)]);
+    _totalValue.add([1, int.parse(money.strBankF)]);
+    _totalValue.add([1, int.parse(money.strBankG)]);
+    _totalValue.add([1, int.parse(money.strBankH)]);
 
-    _totalValue.add(['1', _monieData[0].strBankA]);
-    _totalValue.add(['1', _monieData[0].strBankB]);
-    _totalValue.add(['1', _monieData[0].strBankC]);
-    _totalValue.add(['1', _monieData[0].strBankD]);
-    _totalValue.add(['1', _monieData[0].strBankE]);
-    _totalValue.add(['1', _monieData[0].strBankF]);
-    _totalValue.add(['1', _monieData[0].strBankG]);
-    _totalValue.add(['1', _monieData[0].strBankH]);
-
-    _totalValue.add(['1', _monieData[0].strPayA]);
-    _totalValue.add(['1', _monieData[0].strPayB]);
-    _totalValue.add(['1', _monieData[0].strPayC]);
-    _totalValue.add(['1', _monieData[0].strPayD]);
-    _totalValue.add(['1', _monieData[0].strPayE]);
-    _totalValue.add(['1', _monieData[0].strPayF]);
-    _totalValue.add(['1', _monieData[0].strPayG]);
-    _totalValue.add(['1', _monieData[0].strPayH]);
-
+    _totalValue.add([1, int.parse(money.strPayA)]);
+    _totalValue.add([1, int.parse(money.strPayB)]);
+    _totalValue.add([1, int.parse(money.strPayC)]);
+    _totalValue.add([1, int.parse(money.strPayD)]);
+    _totalValue.add([1, int.parse(money.strPayE)]);
+    _totalValue.add([1, int.parse(money.strPayF)]);
+    _totalValue.add([1, int.parse(money.strPayG)]);
+    _totalValue.add([1, int.parse(money.strPayH)]);
     total = 0;
     for (int i = 0; i < _totalValue.length; i++) {
-      total += (int.parse(_totalValue[i][0]) * int.parse(_totalValue[i][1]));
+      total += (_totalValue[i][0] * _totalValue[i][1]);
     }
-
     undercoin = 0;
-    List<List<String>> _uc = List();
-    _uc.add(['10', _monieData[0].strYen10]);
-    _uc.add(['5', _monieData[0].strYen5]);
-    _uc.add(['1', _monieData[0].strYen1]);
+    List<List<int>> _uc = List();
+    _uc.add([10, int.parse(money.strYen10)]);
+    _uc.add([5, int.parse(money.strYen5)]);
+    _uc.add([1, int.parse(money.strYen1)]);
     for (int i = 0; i < _uc.length; i++) {
-      undercoin += (int.parse(_uc[i][0]) * int.parse(_uc[i][1]));
+      undercoin += (_uc[i][0] * _uc[i][1]);
     }
   }
 
@@ -198,7 +194,7 @@ class Utility {
   /**
    * 詳細画面表示情報を取得する
    */
-  getMoneyArgs(String date) async {
+  getDetailDisplayArgs(String date) async {
     Map _monieArgs = Map();
 
     makeYMDYData(date, 0);

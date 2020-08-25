@@ -37,46 +37,10 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
     var _monieData = await database.selectSortedAllRecord;
     if (_monieData.length > 0) {
       int _keepTotal = 0;
+      int total = 0;
       for (int i = 0; i < _monieData.length; i++) {
-        //--------------------------------------------//total
-        //これは変更できない（2020.08.18）
-        List<List<String>> _totalValue = List();
-
-        _totalValue.add(['10000', _monieData[i].strYen10000]);
-        _totalValue.add(['5000', _monieData[i].strYen5000]);
-        _totalValue.add(['2000', _monieData[i].strYen2000]);
-        _totalValue.add(['1000', _monieData[i].strYen1000]);
-        _totalValue.add(['500', _monieData[i].strYen500]);
-        _totalValue.add(['100', _monieData[i].strYen100]);
-        _totalValue.add(['50', _monieData[i].strYen50]);
-        _totalValue.add(['10', _monieData[i].strYen10]);
-        _totalValue.add(['5', _monieData[i].strYen5]);
-        _totalValue.add(['1', _monieData[i].strYen1]);
-
-        _totalValue.add(['1', _monieData[i].strBankA]);
-        _totalValue.add(['1', _monieData[i].strBankB]);
-        _totalValue.add(['1', _monieData[i].strBankC]);
-        _totalValue.add(['1', _monieData[i].strBankD]);
-        _totalValue.add(['1', _monieData[i].strBankE]);
-        _totalValue.add(['1', _monieData[i].strBankF]);
-        _totalValue.add(['1', _monieData[i].strBankG]);
-        _totalValue.add(['1', _monieData[i].strBankH]);
-
-        _totalValue.add(['1', _monieData[i].strPayA]);
-        _totalValue.add(['1', _monieData[i].strPayB]);
-        _totalValue.add(['1', _monieData[i].strPayC]);
-        _totalValue.add(['1', _monieData[i].strPayD]);
-        _totalValue.add(['1', _monieData[i].strPayE]);
-        _totalValue.add(['1', _monieData[i].strPayF]);
-        _totalValue.add(['1', _monieData[i].strPayG]);
-        _totalValue.add(['1', _monieData[i].strPayH]);
-
-        var total = 0;
-        for (int j = 0; j < _totalValue.length; j++) {
-          total +=
-              (int.parse(_totalValue[j][0]) * int.parse(_totalValue[j][1]));
-        }
-        //--------------------------------------------//total
+        _utility.makeTotal(_monieData[i]);
+        total = _utility.total;
 
         _alldayData.add([
           _monieData[i].strDate,
