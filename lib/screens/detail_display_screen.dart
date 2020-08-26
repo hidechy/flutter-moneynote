@@ -1,12 +1,7 @@
-import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
-import 'package:moneynote/screens/setting_base_screen.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
-import '../main.dart';
-
 import '../utilities/utility.dart';
-import '../db/database.dart';
 
 import 'bank_input_screen.dart';
 import 'bank_record_input_screen.dart';
@@ -16,6 +11,7 @@ import 'score_list_screen.dart';
 import 'benefit_input_screen.dart';
 import 'sameday_list_screen.dart';
 import 'allday_list_screen.dart';
+import 'setting_base_screen.dart';
 
 class DetailDisplayScreen extends StatefulWidget {
   final String date;
@@ -787,20 +783,20 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                   onTap: () => _goScoreListScreen(context, displayDate),
                 ),
                 ListTile(
-                  leading: const Icon(Icons.all_out),
-                  title: const Text(
-                    'AllDay List',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  onTap: () => _goAlldayListScreen(context, displayDate),
-                ),
-                ListTile(
                   leading: const Icon(Icons.all_inclusive),
                   title: const Text(
                     'SameDay List',
                     style: TextStyle(fontSize: 14),
                   ),
                   onTap: () => _goSamedayListScreen(context, displayDate),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.all_out),
+                  title: const Text(
+                    'AllDay List',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  onTap: () => _goAlldayListScreen(context, displayDate),
                 ),
                 const Divider(
                   color: Colors.indigo,

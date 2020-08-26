@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:moneynote/utilities/utility.dart';
+
+import '../utilities/utility.dart';
 
 import 'holiday_setting_screen.dart';
 

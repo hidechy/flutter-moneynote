@@ -14,10 +14,10 @@ class SamedayListScreen extends StatefulWidget {
 }
 
 class _SamedayListScreenState extends State<SamedayListScreen> {
+  Utility _utility = Utility();
+
   List<DropdownMenuItem<String>> _menuItems = List();
   String _numberOfMenu = '';
-
-  Utility _utility = Utility();
 
   //全データ取得用
   List<Monie> _monieData = List();

@@ -13,9 +13,9 @@ class AlldayListScreen extends StatefulWidget {
 }
 
 class _AlldayListScreenState extends State<AlldayListScreen> {
-  List<List<String>> _alldayData = List();
-
   Utility _utility = Utility();
+
+  List<List<String>> _alldayData = List();
 
   Map<String, dynamic> _holidayList = Map();
 

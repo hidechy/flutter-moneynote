@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -8,7 +6,6 @@ import '../main.dart';
 
 import '../db/database.dart';
 import '../utilities/utility.dart';
-import 'detail_display_screen.dart';
 
 class BenefitInputScreen extends StatefulWidget {
   final String date;
@@ -19,11 +16,11 @@ class BenefitInputScreen extends StatefulWidget {
 }
 
 class _BenefitInputScreenState extends State<BenefitInputScreen> {
+  Utility _utility = Utility();
+
   String _text = '';
   TextEditingController _teContCompany = TextEditingController();
   TextEditingController _teContPrice = TextEditingController();
-
-  Utility _utility = Utility();
 
   String youbiStr;
 

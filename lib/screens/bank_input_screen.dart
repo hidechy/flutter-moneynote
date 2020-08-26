@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../main.dart';
 
@@ -16,11 +15,9 @@ class BankInputScreen extends StatefulWidget {
 }
 
 class _BankInputScreenState extends State<BankInputScreen> {
-  String _chipValue = 'bank_a';
-
   Utility _utility = Utility();
 
-  String _date;
+  String _chipValue = 'bank_a';
 
   String _dialogSelectedDate = "";
 

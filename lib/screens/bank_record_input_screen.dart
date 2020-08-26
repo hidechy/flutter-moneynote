@@ -18,9 +18,10 @@ class BankRecordInputScreen extends StatefulWidget {
 }
 
 class _BankRecordInputScreenState extends State<BankRecordInputScreen> {
+  Utility _utility = Utility();
+
   List<List<String>> _creditData = List();
 
-  Utility _utility = Utility();
   String _dialogSelectedDate = "";
 
   List<DropdownMenuItem<String>> _bankItems = List();

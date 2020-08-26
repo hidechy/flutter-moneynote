@@ -20,6 +20,7 @@ class OnedayInputScreen extends StatefulWidget {
 
 class _OnedayInputScreenState extends State<OnedayInputScreen> {
   Utility _utility = Utility();
+
   String year;
   String month;
   String day;

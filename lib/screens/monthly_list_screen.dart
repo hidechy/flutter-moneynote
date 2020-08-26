@@ -18,6 +18,7 @@ class MonthlyListScreen extends StatefulWidget {
 
 class _MonthlyListScreenState extends State<MonthlyListScreen> {
   Utility _utility = Utility();
+
   String year;
   String month;
   String day;

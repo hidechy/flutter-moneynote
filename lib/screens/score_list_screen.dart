@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../main.dart';
-
 import '../utilities/utility.dart';
+
 import 'monthly_list_screen.dart';
 
 class ScoreListScreen extends StatefulWidget {
