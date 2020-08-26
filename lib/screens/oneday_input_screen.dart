@@ -615,13 +615,14 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   */
   _goDetailDisplayScreen(BuildContext context, String date) async {
     var detailDisplayArgs = await _utility.getDetailDisplayArgs(date);
+    _utility.makeYMDYData(date, 0);
 
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => DetailDisplayScreen(
           date: date,
-          index: 1,
+          index: int.parse(_utility.day),
           detailDisplayArgs: detailDisplayArgs,
         ),
       ),

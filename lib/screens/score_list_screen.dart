@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 
 import '../utilities/utility.dart';
+import 'monthly_list_screen.dart';
 
 class ScoreListScreen extends StatefulWidget {
   final String date;
@@ -176,41 +177,45 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
-      child: ListTile(
-        title: DefaultTextStyle(
-          style: TextStyle(fontSize: 10.0),
-          child: Table(
-            children: [
-              TableRow(children: [
-                _getDisplayContainer('left', '', position, 0),
-                Container(),
-                Container(),
-                Container(),
-                Container(),
-              ]),
-              TableRow(children: [
-                _getDisplayContainer('right', 'start : ', null, null),
-                _getDisplayContainer('right', '', position, 1),
-                _getDisplayContainer('right', 'end : ', null, null),
-                _getDisplayContainer('right', '', position, 2),
-                Container(),
-              ]),
-              TableRow(children: [
-                _getDisplayContainer('right', 'score : ', null, null),
-                _getDisplayContainer('right', '', position, 3),
-                _getDisplayContainer('right', 'spend : ', null, null),
-                _getDisplayContainer('right', '', position, 5),
-                Container(),
-              ]),
-              TableRow(children: [
-                _getDisplayContainer('right', 'benefit : ', null, null),
-                _getDisplayContainer('right', '', position, 4),
-                Container(),
-                Container(),
-                Container(),
-              ]),
-            ],
+      child: InkWell(
+        child: ListTile(
+          title: DefaultTextStyle(
+            style: TextStyle(fontSize: 10.0),
+            child: Table(
+              children: [
+                TableRow(children: [
+                  _getDisplayContainer('left', '', position, 0),
+                  Container(),
+                  Container(),
+                  Container(),
+                  Container(),
+                ]),
+                TableRow(children: [
+                  _getDisplayContainer('right', 'start : ', null, null),
+                  _getDisplayContainer('right', '', position, 1),
+                  _getDisplayContainer('right', 'end : ', null, null),
+                  _getDisplayContainer('right', '', position, 2),
+                  Container(),
+                ]),
+                TableRow(children: [
+                  _getDisplayContainer('right', 'score : ', null, null),
+                  _getDisplayContainer('right', '', position, 3),
+                  _getDisplayContainer('right', 'spend : ', null, null),
+                  _getDisplayContainer('right', '', position, 5),
+                  Container(),
+                ]),
+                TableRow(children: [
+                  _getDisplayContainer('right', 'benefit : ', null, null),
+                  _getDisplayContainer('right', '', position, 4),
+                  Container(),
+                  Container(),
+                  Container(),
+                ]),
+              ],
+            ),
           ),
+          onLongPress: () =>
+              _goMonthlyListScreen(context, '${_scoreData[position][0]}-01'),
         ),
       ),
     );
@@ -224,6 +229,20 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
     return Container(
       alignment: (align == 'left') ? Alignment.topLeft : Alignment.topRight,
       child: (text != '') ? Text(text) : Text(_scoreData[position][column]),
+    );
+  }
+
+  /**
+   * 画面遷移（MonthlyListScreen）
+   */
+  _goMonthlyListScreen(BuildContext context, String date) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MonthlyListScreen(
+          date: date,
+        ),
+      ),
     );
   }
 }

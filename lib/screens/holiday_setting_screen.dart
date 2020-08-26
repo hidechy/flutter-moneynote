@@ -111,13 +111,15 @@ class _HolidaySettingScreenState extends State<HolidaySettingScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
-          child: ListTile(
-            onTap: () => _holidaySetting(data[0], data[1]),
-            title: AutoScrollTag(
-              index: data[0],
-              child: Text('${data[1]}'),
-              key: ValueKey(data[0]),
-              controller: controller,
+          child: InkWell(
+            child: ListTile(
+              onTap: () => _holidaySetting(data[0], data[1]),
+              title: AutoScrollTag(
+                index: data[0],
+                child: Text('${data[1]}'),
+                key: ValueKey(data[0]),
+                controller: controller,
+              ),
             ),
           ),
         );
@@ -129,7 +131,6 @@ class _HolidaySettingScreenState extends State<HolidaySettingScreen> {
    * 休業日設定
    */
   _holidaySetting(int counter, String date) async {
-
     var holiday = await database.selectHolidayRecord(date);
 
     var value = Holiday(strDate: date);

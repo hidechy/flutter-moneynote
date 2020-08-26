@@ -1,6 +1,7 @@
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:moneynote/screens/setting_base_screen.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 
 import '../main.dart';
 
@@ -29,18 +30,22 @@ class DetailDisplayScreen extends StatefulWidget {
 
 class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   Utility _utility = Utility();
-  String year;
-  String month;
-  String day;
 
-  String youbiStr;
+  String displayYear;
+  String displayMonth;
 
-  String _date;
+  String displayDate;
 
   DateTime prevDate;
   DateTime nextDate;
 
-  DateTime _prevMonthEndDate;
+  List<List<dynamic>> _monthDays = List();
+
+  AutoScrollController controller;
+
+  int thisMonthEndDate;
+
+  String youbiStr;
 
   String _yen10000 = '0';
   String _yen5000 = '0';
@@ -71,15 +76,12 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   String _payG = '0';
   String _payH = '0';
 
-  List<Monie> _monieData = List();
-
   int _total = 0;
-  int _spend = 0;
   int _temochi = 0;
-  int _monthSpend = 0;
   int _undercoin = 0;
 
-  List<String> _monthDays = List();
+  int _spend = 0;
+  int _monthSpend = 0;
 
   /**
    * 初期動作
@@ -96,100 +98,95 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
    */
   _makeDefaultDisplayData() async {
     _utility.makeYMDYData(widget.date, 0);
-    year = _utility.year;
-    month = _utility.month;
-    day = _utility.day;
+
+    displayYear = _utility.year;
+    displayMonth = _utility.month;
+
     youbiStr = _utility.youbiStr;
 
-    _date = '${year}-${month}-${day}';
+    displayDate =
+        '${_utility.year}-${_utility.month}-${_utility.day.padLeft(2, '0')}';
 
-    prevDate =
-        new DateTime(int.parse(year), int.parse(month), int.parse(day) - 1);
-    nextDate =
-        new DateTime(int.parse(year), int.parse(month), int.parse(day) + 1);
-
-    _prevMonthEndDate = new DateTime(int.parse(year), int.parse(month), 0);
+    prevDate = new DateTime(int.parse(_utility.year), int.parse(_utility.month),
+        int.parse(_utility.day) - 1);
+    nextDate = new DateTime(int.parse(_utility.year), int.parse(_utility.month),
+        int.parse(_utility.day) + 1);
 
     ////////////////////////////////////////////////
     _utility.makeMonthEnd(
         int.parse(_utility.year), int.parse(_utility.month) + 1, 0);
     _utility.makeYMDYData(_utility.monthEndDateTime, 0);
 
-    for (int i = 1; i <= int.parse(_utility.day); i++) {
-      var value = (i < 10) ? '0${i.toString()}' : i.toString();
-      _monthDays.add(value);
+    thisMonthEndDate = int.parse(_utility.day);
+
+    for (int i = 0; i <= int.parse(_utility.day); i++) {
+      _monthDays.add([
+        i,
+        i.toString().padLeft(2, '0'),
+      ]);
     }
-
     ////////////////////////////////////////////////
-    //本日分のレコードを取得
 
-    //マネーレコード①　当日日付で検索
-    _monieData = await database.selectRecord(_date);
+    /////////////////////////////////////////////////////
+    controller = AutoScrollController(
+      viewportBoundaryGetter: () => Rect.fromLTRB(
+        0,
+        0,
+        0,
+        MediaQuery.of(context).padding.bottom,
+      ),
+      axis: Axis.vertical,
+    );
 
-    if (_monieData.length > 0) {
-      _yen10000 = _monieData[0].strYen10000;
-      _yen5000 = _monieData[0].strYen5000;
-      _yen2000 = _monieData[0].strYen2000;
-      _yen1000 = _monieData[0].strYen1000;
-      _yen500 = _monieData[0].strYen500;
-      _yen100 = _monieData[0].strYen100;
-      _yen50 = _monieData[0].strYen50;
-      _yen10 = _monieData[0].strYen10;
-      _yen5 = _monieData[0].strYen5;
-      _yen1 = _monieData[0].strYen1;
+    await controller.scrollToIndex(widget.index,
+        preferPosition: AutoScrollPosition.begin);
+    /////////////////////////////////////////////////////
 
-      _bankA = _monieData[0].strBankA;
-      _bankB = _monieData[0].strBankB;
-      _bankC = _monieData[0].strBankC;
-      _bankD = _monieData[0].strBankD;
-      _bankE = _monieData[0].strBankE;
-      _bankF = _monieData[0].strBankF;
-      _bankG = _monieData[0].strBankG;
-      _bankH = _monieData[0].strBankH;
+    if (widget.detailDisplayArgs['today'] != null) {
+      _yen10000 = widget.detailDisplayArgs['today'][0].strYen10000;
+      _yen5000 = widget.detailDisplayArgs['today'][0].strYen5000;
+      _yen2000 = widget.detailDisplayArgs['today'][0].strYen2000;
+      _yen1000 = widget.detailDisplayArgs['today'][0].strYen1000;
+      _yen500 = widget.detailDisplayArgs['today'][0].strYen500;
+      _yen100 = widget.detailDisplayArgs['today'][0].strYen100;
+      _yen50 = widget.detailDisplayArgs['today'][0].strYen50;
+      _yen10 = widget.detailDisplayArgs['today'][0].strYen10;
+      _yen5 = widget.detailDisplayArgs['today'][0].strYen5;
+      _yen1 = widget.detailDisplayArgs['today'][0].strYen1;
 
-      _payA = _monieData[0].strPayA;
-      _payB = _monieData[0].strPayB;
-      _payC = _monieData[0].strPayC;
-      _payD = _monieData[0].strPayD;
-      _payE = _monieData[0].strPayE;
-      _payF = _monieData[0].strPayF;
-      _payG = _monieData[0].strPayG;
-      _payH = _monieData[0].strPayH;
+      _bankA = widget.detailDisplayArgs['today'][0].strBankA;
+      _bankB = widget.detailDisplayArgs['today'][0].strBankB;
+      _bankC = widget.detailDisplayArgs['today'][0].strBankC;
+      _bankD = widget.detailDisplayArgs['today'][0].strBankD;
+      _bankE = widget.detailDisplayArgs['today'][0].strBankE;
+      _bankF = widget.detailDisplayArgs['today'][0].strBankF;
+      _bankG = widget.detailDisplayArgs['today'][0].strBankG;
+      _bankH = widget.detailDisplayArgs['today'][0].strBankH;
 
-      _utility.makeTotal(_monieData[0]);
+      _payA = widget.detailDisplayArgs['today'][0].strPayA;
+      _payB = widget.detailDisplayArgs['today'][0].strPayB;
+      _payC = widget.detailDisplayArgs['today'][0].strPayC;
+      _payD = widget.detailDisplayArgs['today'][0].strPayD;
+      _payE = widget.detailDisplayArgs['today'][0].strPayE;
+      _payF = widget.detailDisplayArgs['today'][0].strPayF;
+      _payG = widget.detailDisplayArgs['today'][0].strPayG;
+      _payH = widget.detailDisplayArgs['today'][0].strPayH;
+
+      _utility.makeTotal(widget.detailDisplayArgs['today'][0]);
       _total = _utility.total;
       _temochi = _utility.temochi;
       _undercoin = _utility.undercoin;
-
-      ////////////////////////////////////////////////
-      //昨日分のレコードを取得
-      _utility.makeYMDYData(prevDate.toString(), 0);
-      var yYear = _utility.year;
-      var yMonth = _utility.month;
-      var yDay = _utility.day;
-
-      //マネーレコード②　前日日付で検索
-      var _yesterdayData =
-          await database.selectRecord('${yYear}-${yMonth}-${yDay}');
-
-      if (_yesterdayData.length > 0) {
-        _utility.makeTotal(_yesterdayData[0]);
-        var _yesterdayTotal = _utility.total;
-        _spend = (_yesterdayTotal - _total) * -1;
-      }
     }
 
-    ////////////////////////////////////////////////
-    //当月の使用金額
-    _utility.makeYMDYData(_prevMonthEndDate.toString(), 0);
-
-    //マネーレコード③　先月末日付で検索
-    var _lastMonthEndData = await database
-        .selectRecord('${_utility.year}-${_utility.month}-${_utility.day}');
+    if (widget.detailDisplayArgs['yesterday'] != null) {
+      _utility.makeTotal(widget.detailDisplayArgs['yesterday'][0]);
+      var _yesterdayTotal = _utility.total;
+      _spend = (_yesterdayTotal - _total) * -1;
+    }
 
     var _lastMonthTotal = 0;
-    if (_lastMonthEndData.length > 0) {
-      _utility.makeTotal(_lastMonthEndData[0]);
+    if (widget.detailDisplayArgs['lastMonthEnd'] != null) {
+      _utility.makeTotal(widget.detailDisplayArgs['lastMonthEnd'][0]);
       _lastMonthTotal = _utility.total;
     }
 
@@ -254,7 +251,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                               fontSize: 14,
                               fontFamily: "Yomogi",
                             ),
-                            child: Text('${_date}（${youbiStr}）'),
+                            child: Text('${displayDate}（${youbiStr}）'),
                           ),
                         ),
                       ),
@@ -382,7 +379,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                       Container(
                         alignment: Alignment.centerRight,
                         child: Padding(
-                          padding: const EdgeInsets.only(right: 45.0),
+                          padding: const EdgeInsets.only(right: 30.0),
                           child: Text(
                             _utility.makeCurrencyDisplay(_temochi.toString()),
                             style: const TextStyle(
@@ -395,7 +392,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                       Container(
                         alignment: Alignment.centerRight,
                         child: Padding(
-                          padding: const EdgeInsets.only(right: 45.0),
+                          padding: const EdgeInsets.only(right: 30.0),
                           child: Text(
                             _utility.makeCurrencyDisplay(_undercoin.toString()),
                             style: const TextStyle(
@@ -590,8 +587,11 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                   children: <Widget>[
                     IconButton(
                       icon: const Icon(Icons.refresh),
-                      onPressed: () =>
-                          _goDetailDisplayScreen(context, _date, 1),
+                      onPressed: () => _goDetailDisplayScreen(
+                        context,
+                        displayDate,
+                        widget.index,
+                      ),
                       color: Colors.blueAccent,
                     ),
                     IconButton(
@@ -613,8 +613,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Text('${year}'),
-                      Text('${month}'),
+                      Text('${displayYear}'),
+                      Text('${displayMonth}'),
                     ],
                   ),
                 ),
@@ -633,61 +633,41 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
    * リスト表示
    */
   _monthDaysList() {
-    return ListView.builder(
-      itemCount: _monthDays.length,
-      itemBuilder: (context, int position) => _listItem(position),
+    return ListView(
+      scrollDirection: Axis.vertical,
+      controller: controller,
+      children: _monthDays.map<Widget>((data) {
+        return (data[0] == 0)
+            ? Container()
+            : Card(
+                color: _utility.getListBgColor(
+                    '${displayYear}-${displayMonth}-${data[1]}'),
+                elevation: 10.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: InkWell(
+                  child: ListTile(
+                    onTap: () => _goMonthDay(context, data[0]),
+                    title: AutoScrollTag(
+                      index: data[0],
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          '${data[1]}',
+                          style: TextStyle(
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      key: ValueKey(data[0]),
+                      controller: controller,
+                    ),
+                  ),
+                ),
+              );
+      }).toList(),
     );
-  }
-
-  /**
-   * リストアイテム表示
-   */
-  _listItem(int position) {
-    return InkWell(
-      child: Card(
-        color: getBgColor(position),
-        elevation: 10.0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: ListTile(
-          title: DefaultTextStyle(
-            style: TextStyle(fontSize: 10.0),
-            child: Center(
-              child: Text(
-                _monthDays[position],
-              ),
-            ),
-          ),
-          onTap: () => _goMonthDay(context, position),
-        ),
-      ),
-      //actions: <Widget>[],
-    );
-  }
-
-  /**
-   * 背景色取得
-   */
-  getBgColor(int position) {
-    _utility.makeYMDYData('${year}-${month}-${_monthDays[position]}', 0);
-
-    Color _color = null;
-    switch (_utility.youbiNo) {
-      case 0:
-        _color = Colors.redAccent[700].withOpacity(0.3);
-        break;
-
-      case 6:
-        _color = Colors.blueAccent[700].withOpacity(0.3);
-        break;
-
-      default:
-        _color = Colors.black.withOpacity(0.3);
-        break;
-    }
-
-    return _color;
   }
 
   /**
@@ -747,12 +727,12 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 ListTile(
-                  leading: const Icon(Icons.trending_up),
+                  leading: const Icon(Icons.input),
                   title: const Text(
-                    'Score List',
+                    'Oneday Input',
                     style: TextStyle(fontSize: 14),
                   ),
-                  onTap: () => _goScoreListScreen(context, _date),
+                  onTap: () => _goOnedayInputScreen(context, displayDate),
                 ),
                 ListTile(
                   leading: const Icon(Icons.list),
@@ -760,7 +740,51 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     'Monthly List',
                     style: TextStyle(fontSize: 14),
                   ),
-                  onTap: () => _goMonthlyListScreen(context, _date),
+                  onTap: () => _goMonthlyListScreen(context, displayDate),
+                ),
+                const Divider(
+                  color: Colors.indigo,
+                  height: 20.0,
+                  indent: 20.0,
+                  endIndent: 20.0,
+                ),
+                ListTile(
+                  leading: const Icon(Icons.business),
+                  title: const Text(
+                    'Bank Input',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  onTap: () => _goBankInputScreen(context, displayDate),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.category),
+                  title: const Text(
+                    'Bank Record Input',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  onTap: () => _goBankRecordInputScreen(context, displayDate),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.beenhere),
+                  title: const Text(
+                    'Benefit Input',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  onTap: () => _goBenefitInputScreen(context, displayDate),
+                ),
+                const Divider(
+                  color: Colors.indigo,
+                  height: 20.0,
+                  indent: 20.0,
+                  endIndent: 20.0,
+                ),
+                ListTile(
+                  leading: const Icon(Icons.trending_up),
+                  title: const Text(
+                    'Score List',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  onTap: () => _goScoreListScreen(context, displayDate),
                 ),
                 ListTile(
                   leading: const Icon(Icons.all_out),
@@ -768,7 +792,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     'AllDay List',
                     style: TextStyle(fontSize: 14),
                   ),
-                  onTap: () => _goAlldayListScreen(context, _date),
+                  onTap: () => _goAlldayListScreen(context, displayDate),
                 ),
                 ListTile(
                   leading: const Icon(Icons.all_inclusive),
@@ -776,61 +800,21 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     'SameDay List',
                     style: TextStyle(fontSize: 14),
                   ),
-                  onTap: () => _goSamedayListScreen(context, _date),
+                  onTap: () => _goSamedayListScreen(context, displayDate),
                 ),
-                Container(
-                  color: Colors.blueAccent.withOpacity(0.1),
-                  child: Column(
-                    children: <Widget>[
-                      ListTile(
-                        leading: const Icon(Icons.input),
-                        title: const Text(
-                          'Oneday Input',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        onTap: () => _goOnedayInputScreen(context, _date),
-                      ),
-                      ListTile(
-                        leading: const Icon(Icons.business),
-                        title: const Text(
-                          'Bank Input',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        onTap: () => _goBankInputScreen(context, _date),
-                      ),
-                      ListTile(
-                        leading: const Icon(Icons.category),
-                        title: const Text(
-                          'Bank Record Input',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        onTap: () => _goCreditRecordInputScreen(context, _date),
-                      ),
-                      ListTile(
-                        leading: const Icon(Icons.beenhere),
-                        title: const Text(
-                          'Benefit Input',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        onTap: () => _goBenefitInputScreen(context, _date),
-                      ),
-                    ],
-                  ),
+                const Divider(
+                  color: Colors.indigo,
+                  height: 20.0,
+                  indent: 20.0,
+                  endIndent: 20.0,
                 ),
-                Container(
-                  color: Colors.greenAccent.withOpacity(0.1),
-                  child: Column(
-                    children: <Widget>[
-                      ListTile(
-                        leading: const Icon(Icons.settings),
-                        title: const Text(
-                          'Settings',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        onTap: () => _goSettingBaseScreen(),
-                      ),
-                    ],
+                ListTile(
+                  leading: const Icon(Icons.settings),
+                  title: const Text(
+                    'Settings',
+                    style: TextStyle(fontSize: 14),
                   ),
+                  onTap: () => _goSettingBaseScreen(),
                 ),
               ],
             ),
@@ -857,18 +841,32 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
     }
   }
 
+  ///////////////////////////////////////////////////////////////////// 画面遷移
+
   /**
    * 画面遷移（前日）
    */
   _goPrevDate(BuildContext context) {
-    _goDetailDisplayScreen(context, prevDate.toString(), 1);
+    _utility.makeYMDYData(prevDate.toString(), 0);
+
+    _goDetailDisplayScreen(
+      context,
+      prevDate.toString(),
+      int.parse(_utility.day),
+    );
   }
 
   /**
    * 画面遷移（翌日）
    */
   _goNextDate(BuildContext context) {
-    _goDetailDisplayScreen(context, nextDate.toString(), 1);
+    _utility.makeYMDYData(nextDate.toString(), 0);
+
+    _goDetailDisplayScreen(
+      context,
+      nextDate.toString(),
+      int.parse(_utility.day),
+    );
   }
 
   /**
@@ -876,10 +874,10 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
    */
   _goMonthDay(BuildContext context, int position) {
     _goDetailDisplayScreen(
-        context, '${year}-${month}-${_monthDays[position]}', 1);
+        context,
+        '${displayYear}-${displayMonth}-${_monthDays[position][0].toString().padLeft(2, '0')}',
+        position);
   }
-
-  ///////////////////////////////////////////////////////////////////// 画面遷移
 
   /**
    * 画面遷移（DetailDisplayScreen）
@@ -1000,11 +998,11 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（CreditRecordInputScreen）
    */
-  _goCreditRecordInputScreen(BuildContext context, String date) {
+  _goBankRecordInputScreen(BuildContext context, String date) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => CreditRecordInputScreen(
+        builder: (context) => BankRecordInputScreen(
           date: date,
           searchitem: null,
         ),

@@ -113,13 +113,6 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
                           color: Colors.blueAccent,
                         ),
                         IconButton(
-                          icon: const Icon(Icons.details),
-                          tooltip: 'detail',
-                          onPressed: () =>
-                              _goDetailDisplayScreen(context, widget.date),
-                          color: Colors.blueAccent,
-                        ),
-                        IconButton(
                           icon: const Icon(Icons.calendar_today),
                           tooltip: 'jump',
                           onPressed: () => _showDatepicker(context),
@@ -341,24 +334,6 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
       MaterialPageRoute(
         builder: (context) => BenefitInputScreen(
           date: date,
-        ),
-      ),
-    );
-  }
-
-  /**
-  * 画面遷移（DetailDisplayScreen）
-  */
-  _goDetailDisplayScreen(BuildContext context, String date) async {
-    var detailDisplayArgs = await _utility.getDetailDisplayArgs(date);
-
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => DetailDisplayScreen(
-          date: date,
-          index: 1,
-          detailDisplayArgs: detailDisplayArgs,
         ),
       ),
     );

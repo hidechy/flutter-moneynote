@@ -38,13 +38,15 @@ class _SettingBaseScreenState extends State<SettingBaseScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                child: ListTile(
-                  leading: const Icon(Icons.flag),
-                  title: const Text(
-                    'Holiday Setting',
-                    style: TextStyle(fontSize: 14),
+                child: InkWell(
+                  child: ListTile(
+                    leading: const Icon(Icons.flag),
+                    title: const Text(
+                      'Holiday Setting',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    onTap: () => _goHolidaySettingScreen(),
                   ),
-                  onTap: () => _goHolidaySettingScreen(),
                 ),
               ),
             ],

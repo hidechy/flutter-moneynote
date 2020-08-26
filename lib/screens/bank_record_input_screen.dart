@@ -8,17 +8,16 @@ import '../main.dart';
 import '../db/database.dart';
 import '../utilities/utility.dart';
 
-class CreditRecordInputScreen extends StatefulWidget {
+class BankRecordInputScreen extends StatefulWidget {
   final String date;
   final String searchitem;
-  CreditRecordInputScreen({@required this.date, this.searchitem});
+  BankRecordInputScreen({@required this.date, this.searchitem});
 
   @override
-  _CreditRecordInputScreenState createState() =>
-      _CreditRecordInputScreenState();
+  _BankRecordInputScreenState createState() => _BankRecordInputScreenState();
 }
 
-class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
+class _BankRecordInputScreenState extends State<BankRecordInputScreen> {
   List<List<String>> _creditData = List();
 
   Utility _utility = Utility();
@@ -413,7 +412,7 @@ class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => CreditRecordInputScreen(
+        builder: (context) => BankRecordInputScreen(
           date: date,
           searchitem: _numberOfMenu,
         ),
@@ -428,7 +427,7 @@ class _CreditRecordInputScreenState extends State<CreditRecordInputScreen> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => CreditRecordInputScreen(
+        builder: (context) => BankRecordInputScreen(
           date: date,
           searchitem: null,
         ),

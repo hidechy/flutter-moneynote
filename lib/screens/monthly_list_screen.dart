@@ -149,18 +149,14 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
           IconButton(
             icon: const Icon(Icons.skip_previous),
             tooltip: '前日',
-            onPressed: () => _goPrevMonth(
-              context,
-              prevMonth.toString(),
-            ),
+            onPressed: () =>
+                _goMonthlyListScreen(context, prevMonth.toString()),
           ),
           IconButton(
             icon: const Icon(Icons.skip_next),
             tooltip: '翌日',
-            onPressed: () => _goNextMonth(
-              context,
-              nextMonth.toString(),
-            ),
+            onPressed: () =>
+                _goMonthlyListScreen(context, nextMonth.toString()),
           ),
         ],
         centerTitle: true,
@@ -221,16 +217,16 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
    * リストアイテム表示
    */
   Widget _listItem(int position) {
-    return InkWell(
-      child: Slidable(
-        actionPane: const SlidableDrawerActionPane(),
-        actionExtentRatio: 0.15,
-        child: Card(
-          color: getBgColor(_monthData[position][0]),
-          elevation: 10.0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
+    return Slidable(
+      actionPane: const SlidableDrawerActionPane(),
+      actionExtentRatio: 0.15,
+      child: Card(
+        color: getBgColor(_monthData[position][0]),
+        elevation: 10.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: InkWell(
           child: ListTile(
             leading: _getLeading(_monthData[position][3]),
             title: DefaultTextStyle(
@@ -251,29 +247,29 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
             ),
           ),
         ),
-        //actions: <Widget>[],
-        secondaryActions: <Widget>[
-          _getDetailDialogButton(position),
-          IconSlideAction(
-            color: getBgColor(_monthData[position][0]),
-            foregroundColor: Colors.blueAccent,
-            icon: Icons.details,
-            onTap: () => _goDetailDisplayScreen(
-              context,
-              _monthData[position][0],
-            ),
-          ),
-          IconSlideAction(
-            color: getBgColor(_monthData[position][0]),
-            foregroundColor: Colors.blueAccent,
-            icon: Icons.input,
-            onTap: () => _goOnedayInputScreen(
-              context,
-              _monthData[position][0],
-            ),
-          ),
-        ],
       ),
+      //actions: <Widget>[],
+      secondaryActions: <Widget>[
+        _getDetailDialogButton(position),
+        IconSlideAction(
+          color: getBgColor(_monthData[position][0]),
+          foregroundColor: Colors.blueAccent,
+          icon: Icons.details,
+          onTap: () => _goDetailDisplayScreen(
+            context,
+            _monthData[position][0],
+          ),
+        ),
+        IconSlideAction(
+          color: getBgColor(_monthData[position][0]),
+          foregroundColor: Colors.blueAccent,
+          icon: Icons.input,
+          onTap: () => _goOnedayInputScreen(
+            context,
+            _monthData[position][0],
+          ),
+        ),
+      ],
     );
   }
 
@@ -561,23 +557,9 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   ///////////////////////////////////////////////////////////////////// 画面遷移
 
   /**
-   * 画面遷移（前月）
+   * 画面遷移（MonthlyListScreen）
    */
-  _goPrevMonth(BuildContext context, String date) {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => MonthlyListScreen(
-          date: date,
-        ),
-      ),
-    );
-  }
-
-  /**
-   * 画面遷移（翌月）
-   */
-  _goNextMonth(BuildContext context, String date) {
+  _goMonthlyListScreen(BuildContext context, String date) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -607,13 +589,14 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
    */
   _goDetailDisplayScreen(BuildContext context, String date) async {
     var detailDisplayArgs = await _utility.getDetailDisplayArgs(date);
+    _utility.makeYMDYData(date, 0);
 
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => DetailDisplayScreen(
           date: date,
-          index: 1,
+          index: int.parse(_utility.day),
           detailDisplayArgs: detailDisplayArgs,
         ),
       ),

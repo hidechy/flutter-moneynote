@@ -77,12 +77,14 @@ class _HolidayYearListScreenState extends State<HolidayYearListScreen> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
-        child: ListTile(
-          title: DefaultTextStyle(
-            style: TextStyle(fontSize: 10.0),
-            child: Text('${_yearData[position]}'),
+        child: InkWell(
+          child: ListTile(
+            title: DefaultTextStyle(
+              style: TextStyle(fontSize: 10.0),
+              child: Text('${_yearData[position]}'),
+            ),
+            onTap: () => _goHolidaySettingScreen(context, position),
           ),
-          onTap: () => _goHolidaySettingScreen(context, position),
         ),
       ),
       //actions: <Widget>[],

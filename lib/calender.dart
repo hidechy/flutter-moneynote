@@ -41,13 +41,14 @@ class _CalenderState extends State<Calender> {
           IconButton(
             icon: const Icon(Icons.trending_up),
             tooltip: 'score',
-            onPressed: () => _goScoreDisplayScreen(),
+            onPressed: () =>
+                _goScoreDisplayScreen(context, _currentDate.toString()),
             color: Colors.blueAccent,
           ),
           IconButton(
             icon: const Icon(Icons.list),
             tooltip: 'list',
-            onPressed: () => _goMonthlyScreen(),
+            onPressed: () => _goMonthlyScreen(context, _currentDate.toString()),
             color: Colors.blueAccent,
           ),
         ],
@@ -107,7 +108,8 @@ class _CalenderState extends State<Calender> {
                 width: double.infinity,
                 child: RaisedButton(
                   color: Colors.black.withOpacity(0.1),
-                  onPressed: () => _goOnedayInputScreen(),
+                  onPressed: () =>
+                      _goOnedayInputScreen(context, _currentDate.toString()),
                   child: Icon(
                     Icons.input,
                     color: Colors.greenAccent,
@@ -144,13 +146,14 @@ class _CalenderState extends State<Calender> {
    */
   _goDetailDisplayScreen(BuildContext context, String date) async {
     var detailDisplayArgs = await _utility.getDetailDisplayArgs(date);
+    _utility.makeYMDYData(date, 0);
 
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => DetailDisplayScreen(
           date: date,
-          index: 1,
+          index: int.parse(_utility.day),
           detailDisplayArgs: detailDisplayArgs,
         ),
       ),
@@ -160,8 +163,8 @@ class _CalenderState extends State<Calender> {
   /**
    * 画面遷移（ScoreListScreen）
    */
-  _goScoreDisplayScreen() {
-    _utility.makeYMDYData(_currentDate.toString(), 0);
+  _goScoreDisplayScreen(BuildContext context, String date) {
+    _utility.makeYMDYData(date, 0);
 
     Navigator.push(
       context,
@@ -176,8 +179,8 @@ class _CalenderState extends State<Calender> {
   /**
    * 画面遷移（MonthlyListScreen）
    */
-  _goMonthlyScreen() {
-    _utility.makeYMDYData(_currentDate.toString(), 0);
+  _goMonthlyScreen(BuildContext context, String date) {
+    _utility.makeYMDYData(date, 0);
 
     Navigator.push(
       context,
@@ -192,8 +195,8 @@ class _CalenderState extends State<Calender> {
   /**
    * 画面遷移（OnedayInputScreen）
    */
-  _goOnedayInputScreen() {
-    _utility.makeYMDYData(_currentDate.toString(), 0);
+  _goOnedayInputScreen(BuildContext context, String date) {
+    _utility.makeYMDYData(date, 0);
 
     Navigator.push(
       context,
