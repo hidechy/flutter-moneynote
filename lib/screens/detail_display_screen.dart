@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
+import '../main.dart';
 import '../utilities/utility.dart';
 
 import 'bank_input_screen.dart';
-import 'bank_record_input_screen.dart';
+import 'deposit_input_screen.dart';
 import 'monthly_list_screen.dart';
 import 'oneday_input_screen.dart';
 import 'score_list_screen.dart';
@@ -78,6 +79,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
 
   int _spend = 0;
   int _monthSpend = 0;
+
+  Map<String, String> bankNames = Map();
 
   /**
    * 初期動作
@@ -188,6 +191,15 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
 
     _monthSpend = (_lastMonthTotal - _total) * -1;
 
+    ///////////////////////////////////////////////////////////////////
+    var values = await database.selectBanknameSortedAllRecord;
+
+    if (values.length > 0) {
+      for (int i = 0; i < values.length; i++) {
+        bankNames[values[i].strBank] = values[i].strName;
+      }
+    }
+
     setState(() {});
   }
 
@@ -204,12 +216,12 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
           IconButton(
             icon: const Icon(Icons.skip_previous),
             tooltip: '前日',
-            onPressed: () => _goPrevDate(context),
+            onPressed: () => _goPrevDate(context: context),
           ),
           IconButton(
             icon: const Icon(Icons.skip_next),
             tooltip: '翌日',
-            onPressed: () => _goNextDate(context),
+            onPressed: () => _goNextDate(context: context),
           ),
         ],
       ),
@@ -266,23 +278,47 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                           children: [
                             TableRow(children: [
                               _getTextDispWidget(
-                                  'total', false, '', false, false),
+                                  text: 'total',
+                                  greyDisp: false,
+                                  value: '',
+                                  undercoin: false,
+                                  currencyDisp: false),
                               _getTextDispWidget(
-                                  _total.toString(), false, '', false, true),
+                                  text: _total.toString(),
+                                  greyDisp: false,
+                                  value: '',
+                                  undercoin: false,
+                                  currencyDisp: true),
                               const Align(),
                             ]),
                             TableRow(children: [
                               _getTextDispWidget(
-                                  'spend', false, '', false, false),
+                                  text: 'spend',
+                                  greyDisp: false,
+                                  value: '',
+                                  undercoin: false,
+                                  currencyDisp: false),
                               _getTextDispWidget(
-                                  _spend.toString(), false, '', false, true),
+                                  text: _spend.toString(),
+                                  greyDisp: false,
+                                  value: '',
+                                  undercoin: false,
+                                  currencyDisp: true),
                               const Align(),
                             ]),
                             TableRow(children: [
                               _getTextDispWidget(
-                                  'month spend', false, '', false, false),
-                              _getTextDispWidget(_monthSpend.toString(), false,
-                                  '', false, true),
+                                  text: 'month spend',
+                                  greyDisp: false,
+                                  value: '',
+                                  undercoin: false,
+                                  currencyDisp: false),
+                              _getTextDispWidget(
+                                  text: _monthSpend.toString(),
+                                  greyDisp: false,
+                                  value: '',
+                                  undercoin: false,
+                                  currencyDisp: true),
                               const Align(),
                             ]),
                           ],
@@ -321,47 +357,133 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                             ]),
                             TableRow(children: [
                               _getTextDispWidget(
-                                  '10000', false, '', false, false),
+                                  text: '10000',
+                                  greyDisp: false,
+                                  value: '',
+                                  undercoin: false,
+                                  currencyDisp: false),
                               _getTextDispWidget(
-                                  _yen10000, false, '', false, false),
+                                  text: _yen10000,
+                                  greyDisp: false,
+                                  value: '',
+                                  undercoin: false,
+                                  currencyDisp: false),
                               _getTextDispWidget(
-                                  '100', false, '', false, false),
+                                  text: '100',
+                                  greyDisp: false,
+                                  value: '',
+                                  undercoin: false,
+                                  currencyDisp: false),
                               _getTextDispWidget(
-                                  _yen100, false, '', false, false),
+                                  text: _yen100,
+                                  greyDisp: false,
+                                  value: '',
+                                  undercoin: false,
+                                  currencyDisp: false),
                             ]),
                             TableRow(children: [
                               _getTextDispWidget(
-                                  '5000', false, '', false, false),
+                                  text: '5000',
+                                  greyDisp: false,
+                                  value: '',
+                                  undercoin: false,
+                                  currencyDisp: false),
                               _getTextDispWidget(
-                                  _yen5000, false, '', false, false),
-                              _getTextDispWidget('50', false, '', false, false),
+                                  text: _yen5000,
+                                  greyDisp: false,
+                                  value: '',
+                                  undercoin: false,
+                                  currencyDisp: false),
                               _getTextDispWidget(
-                                  _yen50, false, '', false, false),
+                                  text: '50',
+                                  greyDisp: false,
+                                  value: '',
+                                  undercoin: false,
+                                  currencyDisp: false),
+                              _getTextDispWidget(
+                                  text: _yen50,
+                                  greyDisp: false,
+                                  value: '',
+                                  undercoin: false,
+                                  currencyDisp: false),
                             ]),
                             TableRow(children: [
                               _getTextDispWidget(
-                                  '2000', false, '', false, false),
+                                  text: '2000',
+                                  greyDisp: false,
+                                  value: '',
+                                  undercoin: false,
+                                  currencyDisp: false),
                               _getTextDispWidget(
-                                  _yen2000, false, '', false, false),
-                              _getTextDispWidget('10', false, '', true, false),
+                                  text: _yen2000,
+                                  greyDisp: false,
+                                  value: '',
+                                  undercoin: false,
+                                  currencyDisp: false),
                               _getTextDispWidget(
-                                  _yen10, false, '', true, false),
+                                  text: '10',
+                                  greyDisp: false,
+                                  value: '',
+                                  undercoin: true,
+                                  currencyDisp: false),
+                              _getTextDispWidget(
+                                  text: _yen10,
+                                  greyDisp: false,
+                                  value: '',
+                                  undercoin: true,
+                                  currencyDisp: false),
                             ]),
                             TableRow(children: [
                               _getTextDispWidget(
-                                  '1000', false, '', false, false),
+                                  text: '1000',
+                                  greyDisp: false,
+                                  value: '',
+                                  undercoin: false,
+                                  currencyDisp: false),
                               _getTextDispWidget(
-                                  _yen1000, false, '', false, false),
-                              _getTextDispWidget('5', false, '', true, false),
-                              _getTextDispWidget(_yen5, false, '', true, false),
+                                  text: _yen1000,
+                                  greyDisp: false,
+                                  value: '',
+                                  undercoin: false,
+                                  currencyDisp: false),
+                              _getTextDispWidget(
+                                  text: '5',
+                                  greyDisp: false,
+                                  value: '',
+                                  undercoin: true,
+                                  currencyDisp: false),
+                              _getTextDispWidget(
+                                  text: _yen5,
+                                  greyDisp: false,
+                                  value: '',
+                                  undercoin: true,
+                                  currencyDisp: false),
                             ]),
                             TableRow(children: [
                               _getTextDispWidget(
-                                  '500', false, '', false, false),
+                                  text: '500',
+                                  greyDisp: false,
+                                  value: '',
+                                  undercoin: false,
+                                  currencyDisp: false),
                               _getTextDispWidget(
-                                  _yen500, false, '', false, false),
-                              _getTextDispWidget('1', false, '', true, false),
-                              _getTextDispWidget(_yen1, false, '', true, false),
+                                  text: _yen500,
+                                  greyDisp: false,
+                                  value: '',
+                                  undercoin: false,
+                                  currencyDisp: false),
+                              _getTextDispWidget(
+                                  text: '1',
+                                  greyDisp: false,
+                                  value: '',
+                                  undercoin: true,
+                                  currencyDisp: false),
+                              _getTextDispWidget(
+                                  text: _yen1,
+                                  greyDisp: false,
+                                  value: '',
+                                  undercoin: true,
+                                  currencyDisp: false),
                             ]),
                           ],
                         ),
@@ -425,43 +547,107 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                             ]),
                             TableRow(children: [
                               _getTextDispWidget(
-                                  'bank_a', true, _bankA, false, false),
+                                  text: 'bank_a',
+                                  greyDisp: true,
+                                  value: _bankA,
+                                  undercoin: false,
+                                  currencyDisp: false),
                               _getTextDispWidget(
-                                  _bankA, true, _bankA, false, true),
+                                  text: _bankA,
+                                  greyDisp: true,
+                                  value: _bankA,
+                                  undercoin: false,
+                                  currencyDisp: true),
                               _getTextDispWidget(
-                                  'bank_e', true, _bankE, false, false),
+                                  text: 'bank_e',
+                                  greyDisp: true,
+                                  value: _bankE,
+                                  undercoin: false,
+                                  currencyDisp: false),
                               _getTextDispWidget(
-                                  _bankE, true, _bankE, false, true),
+                                  text: _bankE,
+                                  greyDisp: true,
+                                  value: _bankE,
+                                  undercoin: false,
+                                  currencyDisp: true),
                             ]),
                             TableRow(children: [
                               _getTextDispWidget(
-                                  'bank_b', true, _bankD, false, false),
+                                  text: 'bank_b',
+                                  greyDisp: true,
+                                  value: _bankD,
+                                  undercoin: false,
+                                  currencyDisp: false),
                               _getTextDispWidget(
-                                  _bankB, true, _bankD, false, true),
+                                  text: _bankB,
+                                  greyDisp: true,
+                                  value: _bankD,
+                                  undercoin: false,
+                                  currencyDisp: true),
                               _getTextDispWidget(
-                                  'bank_f', true, _bankF, false, false),
+                                  text: 'bank_f',
+                                  greyDisp: true,
+                                  value: _bankF,
+                                  undercoin: false,
+                                  currencyDisp: false),
                               _getTextDispWidget(
-                                  _bankF, true, _bankF, false, true),
+                                  text: _bankF,
+                                  greyDisp: true,
+                                  value: _bankF,
+                                  undercoin: false,
+                                  currencyDisp: true),
                             ]),
                             TableRow(children: [
                               _getTextDispWidget(
-                                  'bank_c', true, _bankC, false, false),
+                                  text: 'bank_c',
+                                  greyDisp: true,
+                                  value: _bankC,
+                                  undercoin: false,
+                                  currencyDisp: false),
                               _getTextDispWidget(
-                                  _bankC, true, _bankC, false, true),
+                                  text: _bankC,
+                                  greyDisp: true,
+                                  value: _bankC,
+                                  undercoin: false,
+                                  currencyDisp: true),
                               _getTextDispWidget(
-                                  'bank_g', true, _bankG, false, false),
+                                  text: 'bank_g',
+                                  greyDisp: true,
+                                  value: _bankG,
+                                  undercoin: false,
+                                  currencyDisp: false),
                               _getTextDispWidget(
-                                  _bankG, true, _bankG, false, true),
+                                  text: _bankG,
+                                  greyDisp: true,
+                                  value: _bankG,
+                                  undercoin: false,
+                                  currencyDisp: true),
                             ]),
                             TableRow(children: [
                               _getTextDispWidget(
-                                  'bank_d', true, _bankD, false, false),
+                                  text: 'bank_d',
+                                  greyDisp: true,
+                                  value: _bankD,
+                                  undercoin: false,
+                                  currencyDisp: false),
                               _getTextDispWidget(
-                                  _bankD, true, _bankD, false, true),
+                                  text: _bankD,
+                                  greyDisp: true,
+                                  value: _bankD,
+                                  undercoin: false,
+                                  currencyDisp: true),
                               _getTextDispWidget(
-                                  'bank_h', true, _bankH, false, false),
+                                  text: 'bank_h',
+                                  greyDisp: true,
+                                  value: _bankH,
+                                  undercoin: false,
+                                  currencyDisp: false),
                               _getTextDispWidget(
-                                  _bankH, true, _bankH, false, true),
+                                  text: _bankH,
+                                  greyDisp: true,
+                                  value: _bankH,
+                                  undercoin: false,
+                                  currencyDisp: true),
                             ]),
                           ],
                         ),
@@ -499,43 +685,107 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                             ]),
                             TableRow(children: [
                               _getTextDispWidget(
-                                  'pay_a', true, _payA, false, false),
+                                  text: 'pay_a',
+                                  greyDisp: true,
+                                  value: _payA,
+                                  undercoin: false,
+                                  currencyDisp: false),
                               _getTextDispWidget(
-                                  _payA, true, _payA, false, true),
+                                  text: _payA,
+                                  greyDisp: true,
+                                  value: _payA,
+                                  undercoin: false,
+                                  currencyDisp: true),
                               _getTextDispWidget(
-                                  'pay_e', true, _payE, false, false),
+                                  text: 'pay_e',
+                                  greyDisp: true,
+                                  value: _payE,
+                                  undercoin: false,
+                                  currencyDisp: false),
                               _getTextDispWidget(
-                                  _payE, true, _payE, false, true),
+                                  text: _payE,
+                                  greyDisp: true,
+                                  value: _payE,
+                                  undercoin: false,
+                                  currencyDisp: true),
                             ]),
                             TableRow(children: [
                               _getTextDispWidget(
-                                  'pay_b', true, _payB, false, false),
+                                  text: 'pay_b',
+                                  greyDisp: true,
+                                  value: _payB,
+                                  undercoin: false,
+                                  currencyDisp: false),
                               _getTextDispWidget(
-                                  _payB, true, _payB, false, true),
+                                  text: _payB,
+                                  greyDisp: true,
+                                  value: _payB,
+                                  undercoin: false,
+                                  currencyDisp: true),
                               _getTextDispWidget(
-                                  'pay_f', true, _payF, false, false),
+                                  text: 'pay_f',
+                                  greyDisp: true,
+                                  value: _payF,
+                                  undercoin: false,
+                                  currencyDisp: false),
                               _getTextDispWidget(
-                                  _payF, true, _payF, false, true),
+                                  text: _payF,
+                                  greyDisp: true,
+                                  value: _payF,
+                                  undercoin: false,
+                                  currencyDisp: true),
                             ]),
                             TableRow(children: [
                               _getTextDispWidget(
-                                  'pay_c', true, _payC, false, false),
+                                  text: 'pay_c',
+                                  greyDisp: true,
+                                  value: _payC,
+                                  undercoin: false,
+                                  currencyDisp: false),
                               _getTextDispWidget(
-                                  _payC, true, _payC, false, true),
+                                  text: _payC,
+                                  greyDisp: true,
+                                  value: _payC,
+                                  undercoin: false,
+                                  currencyDisp: true),
                               _getTextDispWidget(
-                                  'pay_g', true, _payG, false, false),
+                                  text: 'pay_g',
+                                  greyDisp: true,
+                                  value: _payG,
+                                  undercoin: false,
+                                  currencyDisp: false),
                               _getTextDispWidget(
-                                  _payG, true, _payG, false, true),
+                                  text: _payG,
+                                  greyDisp: true,
+                                  value: _payG,
+                                  undercoin: false,
+                                  currencyDisp: true),
                             ]),
                             TableRow(children: [
                               _getTextDispWidget(
-                                  'pay_d', true, _payD, false, false),
+                                  text: 'pay_d',
+                                  greyDisp: true,
+                                  value: _payD,
+                                  undercoin: false,
+                                  currencyDisp: false),
                               _getTextDispWidget(
-                                  _payD, true, _payD, false, true),
+                                  text: _payD,
+                                  greyDisp: true,
+                                  value: _payD,
+                                  undercoin: false,
+                                  currencyDisp: true),
                               _getTextDispWidget(
-                                  'pay_h', true, _payH, false, false),
+                                  text: 'pay_h',
+                                  greyDisp: true,
+                                  value: _payH,
+                                  undercoin: false,
+                                  currencyDisp: false),
                               _getTextDispWidget(
-                                  _payH, true, _payH, false, true),
+                                  text: _payH,
+                                  greyDisp: true,
+                                  value: _payH,
+                                  undercoin: false,
+                                  currencyDisp: true),
                             ]),
                           ],
                         ),
@@ -584,15 +834,15 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     IconButton(
                       icon: const Icon(Icons.refresh),
                       onPressed: () => _goDetailDisplayScreen(
-                        context,
-                        displayDate,
-                        widget.index,
+                        context: context,
+                        date: displayDate,
+                        index: widget.index,
                       ),
                       color: Colors.blueAccent,
                     ),
                     IconButton(
                       icon: const Icon(Icons.calendar_today),
-                      onPressed: () => _showDatepicker(context),
+                      onPressed: () => _showDatepicker(context: context),
                       color: Colors.blueAccent,
                     ),
                   ],
@@ -642,23 +892,21 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                child: InkWell(
-                  child: ListTile(
-                    onTap: () => _goMonthDay(context, data[0]),
-                    title: AutoScrollTag(
-                      index: data[0],
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          '${data[1]}',
-                          style: TextStyle(
-                            fontSize: 12,
-                          ),
+                child: ListTile(
+                  onTap: () => _goMonthDay(context: context, position: data[0]),
+                  title: AutoScrollTag(
+                    index: data[0],
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        '${data[1]}',
+                        style: TextStyle(
+                          fontSize: 12,
                         ),
                       ),
-                      key: ValueKey(data[0]),
-                      controller: controller,
                     ),
+                    key: ValueKey(data[0]),
+                    controller: controller,
                   ),
                 ),
               );
@@ -669,8 +917,12 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * テキスト部分表示
    */
-  Widget _getTextDispWidget(String text, bool greyDisp, String value,
-      bool undercoin, bool currencyDisp) {
+  Widget _getTextDispWidget(
+      {String text,
+      bool greyDisp,
+      String value,
+      bool undercoin,
+      bool currencyDisp}) {
     if (greyDisp == true && value == '0') {
       return Center(
         child: DefaultTextStyle(
@@ -679,7 +931,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
             fontSize: 12,
           ),
           child: Text(
-            getDisplayText(text, currencyDisp),
+            getDisplayText(text: text, currencyDisp: currencyDisp),
           ),
         ),
       );
@@ -687,14 +939,14 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
       if (undercoin == true) {
         return Center(
           child: Text(
-            getDisplayText(text, currencyDisp),
+            getDisplayText(text: text, currencyDisp: currencyDisp),
             style: TextStyle(color: Colors.orangeAccent),
           ),
         );
       } else {
         return Center(
           child: Text(
-            getDisplayText(text, currencyDisp),
+            getDisplayText(text: text, currencyDisp: currencyDisp),
           ),
         );
       }
@@ -704,8 +956,16 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 表示テキスト取得
    */
-  String getDisplayText(String text, bool currencyDisp) {
-    return (currencyDisp) ? _utility.makeCurrencyDisplay(text) : text;
+  String getDisplayText({String text, bool currencyDisp}) {
+    if (currencyDisp) {
+      return _utility.makeCurrencyDisplay(text);
+    } else {
+      if (bankNames[text] != "" && bankNames[text] != null) {
+        return bankNames[text];
+      } else {
+        return text;
+      }
+    }
   }
 
   /**
@@ -728,7 +988,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     'Oneday Input',
                     style: TextStyle(fontSize: 14),
                   ),
-                  onTap: () => _goOnedayInputScreen(context, displayDate),
+                  onTap: () =>
+                      _goOnedayInputScreen(context: context, date: displayDate),
                 ),
                 ListTile(
                   leading: const Icon(Icons.list),
@@ -736,7 +997,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     'Monthly List',
                     style: TextStyle(fontSize: 14),
                   ),
-                  onTap: () => _goMonthlyListScreen(context, displayDate),
+                  onTap: () =>
+                      _goMonthlyListScreen(context: context, date: displayDate),
                 ),
                 const Divider(
                   color: Colors.indigo,
@@ -750,15 +1012,17 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     'Bank Input',
                     style: TextStyle(fontSize: 14),
                   ),
-                  onTap: () => _goBankInputScreen(context, displayDate),
+                  onTap: () =>
+                      _goBankInputScreen(context: context, date: displayDate),
                 ),
                 ListTile(
                   leading: const Icon(Icons.category),
                   title: const Text(
-                    'Bank Record Input',
+                    'Deposit Input',
                     style: TextStyle(fontSize: 14),
                   ),
-                  onTap: () => _goBankRecordInputScreen(context, displayDate),
+                  onTap: () => _goDepositInputScreen(
+                      context: context, date: displayDate),
                 ),
                 ListTile(
                   leading: const Icon(Icons.beenhere),
@@ -766,7 +1030,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     'Benefit Input',
                     style: TextStyle(fontSize: 14),
                   ),
-                  onTap: () => _goBenefitInputScreen(context, displayDate),
+                  onTap: () => _goBenefitInputScreen(
+                      context: context, date: displayDate),
                 ),
                 const Divider(
                   color: Colors.indigo,
@@ -780,7 +1045,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     'Score List',
                     style: TextStyle(fontSize: 14),
                   ),
-                  onTap: () => _goScoreListScreen(context, displayDate),
+                  onTap: () =>
+                      _goScoreListScreen(context: context, date: displayDate),
                 ),
                 ListTile(
                   leading: const Icon(Icons.all_inclusive),
@@ -788,7 +1054,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     'SameDay List',
                     style: TextStyle(fontSize: 14),
                   ),
-                  onTap: () => _goSamedayListScreen(context, displayDate),
+                  onTap: () =>
+                      _goSamedayListScreen(context: context, date: displayDate),
                 ),
                 ListTile(
                   leading: const Icon(Icons.all_out),
@@ -796,7 +1063,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     'AllDay List',
                     style: TextStyle(fontSize: 14),
                   ),
-                  onTap: () => _goAlldayListScreen(context, displayDate),
+                  onTap: () =>
+                      _goAlldayListScreen(context: context, date: displayDate),
                 ),
                 const Divider(
                   color: Colors.indigo,
@@ -823,17 +1091,41 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * デートピッカー表示
    */
-  _showDatepicker(BuildContext context) async {
+  _showDatepicker({BuildContext context}) async {
     final selectedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(DateTime.now().year - 3),
       lastDate: DateTime(DateTime.now().year + 6),
       locale: const Locale('ja'),
+      builder: (BuildContext context, Widget child) {
+        return Theme(
+          data: ThemeData.dark().copyWith(
+            backgroundColor: Colors.black.withOpacity(0.1),
+            scaffoldBackgroundColor: Colors.black.withOpacity(0.1),
+            canvasColor: Colors.black.withOpacity(0.1),
+            cardColor: Colors.black.withOpacity(0.1),
+            cursorColor: Colors.white,
+            buttonColor: Colors.black.withOpacity(0.1),
+            bottomAppBarColor: Colors.black.withOpacity(0.1),
+            dividerColor: Colors.indigo,
+            primaryColor: Colors.black.withOpacity(0.1),
+            accentColor: Colors.black.withOpacity(0.1),
+            secondaryHeaderColor: Colors.black.withOpacity(0.1),
+            dialogBackgroundColor: Colors.black.withOpacity(0.1),
+            primaryColorDark: Colors.black.withOpacity(0.1),
+            textSelectionColor: Colors.black.withOpacity(0.1),
+            highlightColor: Colors.black.withOpacity(0.1),
+            selectedRowColor: Colors.black.withOpacity(0.1),
+          ),
+          child: child,
+        );
+      },
     );
 
     if (selectedDate != null) {
-      _goDetailDisplayScreen(context, selectedDate.toString(), 1);
+      _goDetailDisplayScreen(
+          context: context, date: selectedDate.toString(), index: 1);
     }
   }
 
@@ -842,43 +1134,44 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（前日）
    */
-  _goPrevDate(BuildContext context) {
+  _goPrevDate({BuildContext context}) {
     _utility.makeYMDYData(prevDate.toString(), 0);
 
     _goDetailDisplayScreen(
-      context,
-      prevDate.toString(),
-      int.parse(_utility.day),
+      context: context,
+      date: prevDate.toString(),
+      index: int.parse(_utility.day),
     );
   }
 
   /**
    * 画面遷移（翌日）
    */
-  _goNextDate(BuildContext context) {
+  _goNextDate({BuildContext context}) {
     _utility.makeYMDYData(nextDate.toString(), 0);
 
     _goDetailDisplayScreen(
-      context,
-      nextDate.toString(),
-      int.parse(_utility.day),
+      context: context,
+      date: nextDate.toString(),
+      index: int.parse(_utility.day),
     );
   }
 
   /**
    * 画面遷移（月内指定日）
    */
-  _goMonthDay(BuildContext context, int position) {
+  _goMonthDay({BuildContext context, int position}) {
     _goDetailDisplayScreen(
-        context,
-        '${displayYear}-${displayMonth}-${_monthDays[position][0].toString().padLeft(2, '0')}',
-        position);
+        context: context,
+        date:
+            '${displayYear}-${displayMonth}-${_monthDays[position][0].toString().padLeft(2, '0')}',
+        index: position);
   }
 
   /**
    * 画面遷移（DetailDisplayScreen）
    */
-  _goDetailDisplayScreen(BuildContext context, String date, int index) async {
+  _goDetailDisplayScreen({BuildContext context, String date, int index}) async {
     var detailDisplayArgs = await _utility.getDetailDisplayArgs(date);
 
     Navigator.pushReplacement(
@@ -896,7 +1189,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（OnedayInputScreen）
    */
-  _goOnedayInputScreen(BuildContext context, String date) {
+  _goOnedayInputScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -910,7 +1203,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（ScoreListScreen）
    */
-  _goScoreListScreen(BuildContext context, String date) {
+  _goScoreListScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -924,7 +1217,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（MonthlyListScreen）
    */
-  _goMonthlyListScreen(BuildContext context, String date) {
+  _goMonthlyListScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -938,7 +1231,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（BankInputScreen）
    */
-  _goBankInputScreen(BuildContext context, String date) {
+  _goBankInputScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -952,7 +1245,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（SamedayDisplayScreen）
    */
-  _goSamedayListScreen(BuildContext context, String date) {
+  _goSamedayListScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -966,7 +1259,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（BenefitInputScreen）
    */
-  _goBenefitInputScreen(BuildContext context, String date) {
+  _goBenefitInputScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -980,7 +1273,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（AlldayListScreen）
    */
-  _goAlldayListScreen(BuildContext context, String date) {
+  _goAlldayListScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -992,13 +1285,13 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   /**
-   * 画面遷移（CreditRecordInputScreen）
+   * 画面遷移（DepositInputScreen）
    */
-  _goBankRecordInputScreen(BuildContext context, String date) {
+  _goDepositInputScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => BankRecordInputScreen(
+        builder: (context) => DepositInputScreen(
           date: date,
           searchitem: null,
         ),

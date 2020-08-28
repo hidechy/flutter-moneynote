@@ -41,14 +41,15 @@ class _CalenderState extends State<Calender> {
           IconButton(
             icon: const Icon(Icons.trending_up),
             tooltip: 'score',
-            onPressed: () =>
-                _goScoreDisplayScreen(context, _currentDate.toString()),
+            onPressed: () => _goScoreDisplayScreen(
+                context: context, date: _currentDate.toString()),
             color: Colors.blueAccent,
           ),
           IconButton(
             icon: const Icon(Icons.list),
             tooltip: 'list',
-            onPressed: () => _goMonthlyScreen(context, _currentDate.toString()),
+            onPressed: () => _goMonthlyScreen(
+                context: context, date: _currentDate.toString()),
             color: Colors.blueAccent,
           ),
         ],
@@ -108,8 +109,8 @@ class _CalenderState extends State<Calender> {
                 width: double.infinity,
                 child: RaisedButton(
                   color: Colors.black.withOpacity(0.1),
-                  onPressed: () =>
-                      _goOnedayInputScreen(context, _currentDate.toString()),
+                  onPressed: () => _goOnedayInputScreen(
+                      context: context, date: _currentDate.toString()),
                   child: Icon(
                     Icons.input,
                     color: Colors.greenAccent,
@@ -133,10 +134,7 @@ class _CalenderState extends State<Calender> {
     this.setState(() => _currentDate = date);
 
     //画面遷移
-    _goDetailDisplayScreen(
-      context,
-      _currentDate.toString(),
-    );
+    _goDetailDisplayScreen(context: context, date: _currentDate.toString());
   }
 
   ///////////////////////////////////////////////////////////////////// 画面遷移
@@ -144,7 +142,7 @@ class _CalenderState extends State<Calender> {
   /**
    * 画面遷移（DetailDisplayScreen）
    */
-  _goDetailDisplayScreen(BuildContext context, String date) async {
+  _goDetailDisplayScreen({BuildContext context, String date}) async {
     var detailDisplayArgs = await _utility.getDetailDisplayArgs(date);
     _utility.makeYMDYData(date, 0);
 
@@ -163,7 +161,7 @@ class _CalenderState extends State<Calender> {
   /**
    * 画面遷移（ScoreListScreen）
    */
-  _goScoreDisplayScreen(BuildContext context, String date) {
+  _goScoreDisplayScreen({BuildContext context, String date}) {
     _utility.makeYMDYData(date, 0);
 
     Navigator.push(
@@ -179,7 +177,7 @@ class _CalenderState extends State<Calender> {
   /**
    * 画面遷移（MonthlyListScreen）
    */
-  _goMonthlyScreen(BuildContext context, String date) {
+  _goMonthlyScreen({BuildContext context, String date}) {
     _utility.makeYMDYData(date, 0);
 
     Navigator.push(
@@ -195,7 +193,7 @@ class _CalenderState extends State<Calender> {
   /**
    * 画面遷移（OnedayInputScreen）
    */
-  _goOnedayInputScreen(BuildContext context, String date) {
+  _goOnedayInputScreen({BuildContext context, String date}) {
     _utility.makeYMDYData(date, 0);
 
     Navigator.push(

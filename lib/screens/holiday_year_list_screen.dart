@@ -63,39 +63,35 @@ class _HolidayYearListScreenState extends State<HolidayYearListScreen> {
   _alldayList() {
     return ListView.builder(
       itemCount: _yearData.length,
-      itemBuilder: (context, int position) => _listItem(position),
+      itemBuilder: (context, int position) => _listItem(position: position),
     );
   }
 
   /**
    * リストアイテム表示
    */
-  _listItem(int position) {
-    return InkWell(
-      child: Card(
-        color: getBgColor(position),
-        elevation: 10.0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: InkWell(
-          child: ListTile(
-            title: DefaultTextStyle(
-              style: TextStyle(fontSize: 10.0),
-              child: Text('${_yearData[position]}'),
-            ),
-            onTap: () => _goHolidaySettingScreen(context, position),
-          ),
-        ),
+  _listItem({int position}) {
+    return Card(
+      color: getBgColor(position: position),
+      elevation: 10.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
       ),
-      //actions: <Widget>[],
+      child: ListTile(
+        title: DefaultTextStyle(
+          style: TextStyle(fontSize: 10.0),
+          child: Text('${_yearData[position]}'),
+        ),
+        onTap: () =>
+            _goHolidaySettingScreen(context: context, position: position),
+      ),
     );
   }
 
   /**
    * 背景色取得
    */
-  getBgColor(int position) {
+  getBgColor({int position}) {
     Color _color = null;
     _color = Colors.black.withOpacity(0.3);
     return _color;
@@ -106,7 +102,7 @@ class _HolidayYearListScreenState extends State<HolidayYearListScreen> {
   /**
    * 画面遷移（_goHolidaySettingScreen）
    */
-  _goHolidaySettingScreen(BuildContext context, int position) {
+  _goHolidaySettingScreen({BuildContext context, int position}) {
     var date = '${_yearData[position]}-01-01';
 
     Navigator.push(

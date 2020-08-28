@@ -60,7 +60,7 @@ class Benefits extends Table {
 /**
  * 通帳履歴クラス
  */
-class Credits extends Table {
+class Deposits extends Table {
   IntColumn get intId => integer().autoIncrement()();
 
   TextColumn get strDate => text()();
@@ -83,14 +83,27 @@ class Holidays extends Table {
 }
 
 /**
+ * 通帳履歴クラス
+ */
+class Banknames extends Table {
+  IntColumn get intId => integer().autoIncrement()();
+
+  TextColumn get strBank => text()();
+  TextColumn get strName => text()();
+
+  @override
+  Set<Column> get primaryKey => {intId};
+}
+
+/**
  * データベース操作クラス
  */
-@UseMoor(tables: [Monies, Benefits, Credits, Holidays])
+@UseMoor(tables: [Monies, Benefits, Deposits, Holidays, Banknames])
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 5;
 
   MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
         return m.createAll();
@@ -100,7 +113,7 @@ class MyDatabase extends _$MyDatabase {
         }
 
         if (from == 2) {
-          await m.createTable(credits);
+          await m.createTable(deposits);
         }
 
         if (from == 3) {
@@ -109,6 +122,10 @@ class MyDatabase extends _$MyDatabase {
 
         if (from == 4) {
           await m.createTable(holidays);
+        }
+
+        if (from == 5) {
+          await m.createTable(banknames);
         }
       });
 
@@ -160,39 +177,41 @@ class MyDatabase extends _$MyDatabase {
         ..orderBy([(tbl) => OrderingTerm(expression: tbl.strDate)]))
       .get();
 
-  ////////////////////////////////////////////////////////////Credits
+  ////////////////////////////////////////////////////////////Deposits
   //追加
-  Future insertCreditRecord(Credit credit) => into(credits).insert(credit);
+  Future insertDepositRecord(Deposit deposit) => into(deposits).insert(deposit);
 
   //更新
-  Future updateCreditRecord(Credit credit) => update(credits).replace(credit);
+  Future updateDepositRecord(Deposit deposit) =>
+      update(deposits).replace(deposit);
 
   //全削除
-  Future deleteCreditAllRecord() => delete(credits).go();
+  Future deleteDepositAllRecord() => delete(deposits).go();
 
   //削除
-  Future deleteCreditIdRecord(Credit credit) =>
-      (delete(credits)..where((tbl) => tbl.intId.equals(credit.intId))).go();
+  Future deleteDepositIdRecord(Deposit deposit) =>
+      (delete(deposits)..where((tbl) => tbl.intId.equals(deposit.intId))).go();
 
   //選択(id)
-  Future selectCreditRecord(int id) =>
-      (select(credits)..where((tbl) => tbl.intId.equals(id))).get();
+  Future selectDepositRecord(int id) =>
+      (select(deposits)..where((tbl) => tbl.intId.equals(id))).get();
 
   //選択(日付)
-  Future selectCreditDateRecord(String date) =>
-      (select(credits)..where((tbl) => tbl.strDate.equals(date))).get();
+  Future selectDepositDateRecord(String date) =>
+      (select(deposits)..where((tbl) => tbl.strDate.equals(date))).get();
 
   //選択（勘定科目）
-  Future<List<Credit>> selectCreditItemRecord(String item) => (select(credits)
-        ..where((tbl) => tbl.strItem.equals(item))
-        ..orderBy([
-          (tbl) => OrderingTerm(expression: tbl.strDate),
-          (tbl) => OrderingTerm(expression: tbl.intId)
-        ]))
-      .get();
+  Future<List<Deposit>> selectDepositItemRecord(String item) =>
+      (select(deposits)
+            ..where((tbl) => tbl.strItem.equals(item))
+            ..orderBy([
+              (tbl) => OrderingTerm(expression: tbl.strDate),
+              (tbl) => OrderingTerm(expression: tbl.intId)
+            ]))
+          .get();
 
   //全選択（日付順）
-  Future<List<Credit>> get selectCreditSortedAllRecord => (select(credits)
+  Future<List<Deposit>> get selectDepositSortedAllRecord => (select(deposits)
         ..orderBy([
           (tbl) => OrderingTerm(expression: tbl.strDate),
           (tbl) => OrderingTerm(expression: tbl.intId)
@@ -215,6 +234,25 @@ class MyDatabase extends _$MyDatabase {
   //全選択（日付順）
   Future<List<Holiday>> get selectHolidaySortedAllRecord => (select(holidays)
         ..orderBy([(tbl) => OrderingTerm(expression: tbl.strDate)]))
+      .get();
+
+  ////////////////////////////////////////////////////////////Banknames
+  //追加
+  Future insertBanknameRecord(Bankname bankname) =>
+      into(banknames).insert(bankname);
+
+  //更新
+  Future updateBanknameRecord(Bankname bankname) =>
+      update(banknames).replace(bankname);
+
+  //削除
+  Future deleteBanknameRecord(Bankname bankname) =>
+      (delete(banknames)..where((tbl) => tbl.strBank.equals(bankname.strBank)))
+          .go();
+
+  //全選択（ID順）
+  Future<List<Bankname>> get selectBanknameSortedAllRecord => (select(banknames)
+        ..orderBy([(tbl) => OrderingTerm(expression: tbl.intId)]))
       .get();
 }
 

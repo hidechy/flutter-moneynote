@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moneynote/screens/bankname_setting_screen.dart';
 
 import 'holiday_year_list_screen.dart';
 
@@ -38,15 +39,28 @@ class _SettingBaseScreenState extends State<SettingBaseScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                child: InkWell(
-                  child: ListTile(
-                    leading: const Icon(Icons.flag),
-                    title: const Text(
-                      'Holiday Setting',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                    onTap: () => _goHolidaySettingScreen(),
+                child: ListTile(
+                  leading: const Icon(Icons.flag),
+                  title: const Text(
+                    'Holiday Setting',
+                    style: TextStyle(fontSize: 14),
                   ),
+                  onTap: () => _goHolidaySettingScreen(),
+                ),
+              ),
+              Card(
+                color: Colors.black.withOpacity(0.3),
+                elevation: 10.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: ListTile(
+                  leading: const Icon(Icons.business),
+                  title: const Text(
+                    'Bankname Setting',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  onTap: () => _goBanknameSettingScreen(),
                 ),
               ),
             ],
@@ -59,13 +73,25 @@ class _SettingBaseScreenState extends State<SettingBaseScreen> {
   ///////////////////////////////////////////////////////////////////// 画面遷移
 
   /**
-   * 画面遷移（SettingBaseScreen）
+   * 画面遷移（HolidayYearListScreen）
    */
   _goHolidaySettingScreen() {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => HolidayYearListScreen(),
+      ),
+    );
+  }
+
+  /**
+   * 画面遷移（BanknameSettingScreen）
+   */
+  _goBanknameSettingScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BanknameSettingScreen(),
       ),
     );
   }

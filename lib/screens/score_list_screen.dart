@@ -163,60 +163,84 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
   _scoreList() {
     return ListView.builder(
       itemCount: _scoreData.length,
-      itemBuilder: (context, int position) => _listItem(position),
+      itemBuilder: (context, int position) => _listItem(position: position),
     );
   }
 
   /**
   * リストアイテム表示
   */
-  Widget _listItem(int position) {
+  Widget _listItem({int position}) {
     return Card(
       color: Colors.black.withOpacity(0.3),
       elevation: 10.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
-      child: InkWell(
-        child: ListTile(
-          title: DefaultTextStyle(
-            style: TextStyle(fontSize: 10.0),
-            child: Table(
-              children: [
-                TableRow(children: [
-                  _getDisplayContainer('left', '', position, 0),
-                  Container(),
-                  Container(),
-                  Container(),
-                  Container(),
-                ]),
-                TableRow(children: [
-                  _getDisplayContainer('right', 'start : ', null, null),
-                  _getDisplayContainer('right', '', position, 1),
-                  _getDisplayContainer('right', 'end : ', null, null),
-                  _getDisplayContainer('right', '', position, 2),
-                  Container(),
-                ]),
-                TableRow(children: [
-                  _getDisplayContainer('right', 'score : ', null, null),
-                  _getDisplayContainer('right', '', position, 3),
-                  _getDisplayContainer('right', 'spend : ', null, null),
-                  _getDisplayContainer('right', '', position, 5),
-                  Container(),
-                ]),
-                TableRow(children: [
-                  _getDisplayContainer('right', 'benefit : ', null, null),
-                  _getDisplayContainer('right', '', position, 4),
-                  Container(),
-                  Container(),
-                  Container(),
-                ]),
-              ],
-            ),
+      child: ListTile(
+        title: DefaultTextStyle(
+          style: TextStyle(fontSize: 10.0),
+          child: Table(
+            children: [
+              TableRow(children: [
+                _getDisplayContainer(
+                    align: 'left', text: '', position: position, column: 0),
+                Container(),
+                Container(),
+                Container(),
+                Container(),
+              ]),
+              TableRow(children: [
+                _getDisplayContainer(
+                    align: 'right',
+                    text: 'start : ',
+                    position: null,
+                    column: null),
+                _getDisplayContainer(
+                    align: 'right', text: '', position: position, column: 1),
+                _getDisplayContainer(
+                    align: 'right',
+                    text: 'end : ',
+                    position: null,
+                    column: null),
+                _getDisplayContainer(
+                    align: 'right', text: '', position: position, column: 2),
+                Container(),
+              ]),
+              TableRow(children: [
+                _getDisplayContainer(
+                    align: 'right',
+                    text: 'score : ',
+                    position: null,
+                    column: null),
+                _getDisplayContainer(
+                    align: 'right', text: '', position: position, column: 3),
+                _getDisplayContainer(
+                    align: 'right',
+                    text: 'spend : ',
+                    position: null,
+                    column: null),
+                _getDisplayContainer(
+                    align: 'right', text: '', position: position, column: 5),
+                Container(),
+              ]),
+              TableRow(children: [
+                _getDisplayContainer(
+                    align: 'right',
+                    text: 'benefit : ',
+                    position: null,
+                    column: null),
+                _getDisplayContainer(
+                    align: 'right', text: '', position: position, column: 4),
+                Container(),
+                Container(),
+                Container(),
+              ]),
+            ],
           ),
-          onLongPress: () =>
-              _goMonthlyListScreen(context, '${_scoreData[position][0]}-01'),
         ),
+        onLongPress: () => _goMonthlyListScreen(
+            context: context, date: '${_scoreData[position][0]}-01'),
       ),
     );
   }
@@ -225,7 +249,7 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
   * データコンテナ表示
   */
   Widget _getDisplayContainer(
-      String align, String text, int position, int column) {
+      {String align, String text, int position, int column}) {
     return Container(
       alignment: (align == 'left') ? Alignment.topLeft : Alignment.topRight,
       child: (text != '') ? Text(text) : Text(_scoreData[position][column]),
@@ -235,7 +259,7 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
   /**
    * 画面遷移（MonthlyListScreen）
    */
-  _goMonthlyListScreen(BuildContext context, String date) {
+  _goMonthlyListScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

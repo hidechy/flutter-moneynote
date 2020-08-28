@@ -97,29 +97,33 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
                 color: Colors.black.withOpacity(0.3),
                 child: Column(
                   children: <Widget>[
-                    _getTextField('company', _teContCompany, 'left'),
-                    _getTextField('price', _teContPrice, 'right'),
+                    _getTextField(
+                        text: 'company',
+                        con: _teContCompany,
+                        valueAlign: 'left'),
+                    _getTextField(
+                        text: 'price', con: _teContPrice, valueAlign: 'right'),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         IconButton(
                           icon: const Icon(Icons.refresh),
                           tooltip: 'reload',
-                          onPressed: () =>
-                              _goBenefitInputScreen(context, widget.date),
+                          onPressed: () => _goBenefitInputScreen(
+                              context: context, date: widget.date),
                           color: Colors.blueAccent,
                         ),
                         IconButton(
                           icon: const Icon(Icons.calendar_today),
                           tooltip: 'jump',
-                          onPressed: () => _showDatepicker(context),
+                          onPressed: () => _showDatepicker(context: context),
                           color: Colors.blueAccent,
                         ),
                         Text(_dialogSelectedDate),
                         IconButton(
                           icon: const Icon(Icons.input),
                           tooltip: 'input',
-                          onPressed: () => _insertRecord(context),
+                          onPressed: () => _insertRecord(context: context),
                           color: Colors.greenAccent,
                         ),
                       ],
@@ -143,66 +147,68 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   _benefitList() {
     return ListView.builder(
       itemCount: _benefitData.length,
-      itemBuilder: (context, int position) => _listItem(position),
+      itemBuilder: (context, int position) => _listItem(position: position),
     );
   }
 
   /**
   * リストアイテム表示
   */
-  Widget _listItem(int position) {
-    return InkWell(
-      child: Slidable(
-        actionPane: const SlidableDrawerActionPane(),
-        actionExtentRatio: 0.15,
-        child: Card(
-          color: Colors.black.withOpacity(0.3),
-          elevation: 10.0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          child: ListTile(
-            title: DefaultTextStyle(
-              style: TextStyle(fontSize: 10.0),
-              child: Table(
-                children: [
-                  TableRow(children: [
-                    _getDisplayContainer(position, 0),
-                    _getDisplayContainer(position, 1),
-                    _getDisplayContainer(position, 2),
-                  ]),
-                ],
-              ),
+  Widget _listItem({int position}) {
+    return Slidable(
+      actionPane: const SlidableDrawerActionPane(),
+      actionExtentRatio: 0.15,
+      child: Card(
+        color: Colors.black.withOpacity(0.3),
+        elevation: 10.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: ListTile(
+          title: DefaultTextStyle(
+            style: TextStyle(fontSize: 10.0),
+            child: Table(
+              children: [
+                TableRow(
+                  children: [
+                    _getDisplayContainer(position: position, column: 0),
+                    _getDisplayContainer(position: position, column: 1),
+                    _getDisplayContainer(position: position, column: 2),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
-        //actions: <Widget>[],
-        secondaryActions: <Widget>[
-          IconSlideAction(
-            color: Colors.black.withOpacity(0.3),
-            foregroundColor: Colors.blueAccent,
-            icon: Icons.delete,
-            onTap: () => _deleteRecord(position),
-          ),
-        ],
       ),
+      //actions: <Widget>[],
+      secondaryActions: <Widget>[
+        IconSlideAction(
+          color: Colors.black.withOpacity(0.3),
+          foregroundColor: Colors.blueAccent,
+          icon: Icons.delete,
+          onTap: () => _deleteRecord(position: position),
+        ),
+      ],
     );
   }
 
   /**
   * データコンテナ表示
   */
-  Widget _getDisplayContainer(int position, int column) {
+  Widget _getDisplayContainer({int position, int column}) {
     return Container(
       alignment: Alignment.topLeft,
-      child: Text(getDisplayText(_benefitData[position][column], column)),
+      child: Text(
+        getDisplayText(text: _benefitData[position][column], column: column),
+      ),
     );
   }
 
   /**
    * 表示テキスト取得
    */
-  String getDisplayText(String text, int column) {
+  String getDisplayText({String text, int column}) {
     switch (column) {
       case 0:
         _utility.makeYMDYData(text, 0);
@@ -221,7 +227,7 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   * テキストフィールド部分表示
   */
   Widget _getTextField(
-      String text, TextEditingController con, String valueAlign) {
+      {String text, TextEditingController con, String valueAlign}) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextField(
@@ -244,13 +250,36 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   /**
   * デートピッカー表示
   */
-  _showDatepicker(BuildContext context) async {
+  _showDatepicker({BuildContext context}) async {
     final selectedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(DateTime.now().year - 3),
       lastDate: DateTime(DateTime.now().year + 6),
       locale: const Locale('ja'),
+      builder: (BuildContext context, Widget child) {
+        return Theme(
+          data: ThemeData.dark().copyWith(
+            backgroundColor: Colors.black.withOpacity(0.1),
+            scaffoldBackgroundColor: Colors.black.withOpacity(0.1),
+            canvasColor: Colors.black.withOpacity(0.1),
+            cardColor: Colors.black.withOpacity(0.1),
+            cursorColor: Colors.white,
+            buttonColor: Colors.black.withOpacity(0.1),
+            bottomAppBarColor: Colors.black.withOpacity(0.1),
+            dividerColor: Colors.indigo,
+            primaryColor: Colors.black.withOpacity(0.1),
+            accentColor: Colors.black.withOpacity(0.1),
+            secondaryHeaderColor: Colors.black.withOpacity(0.1),
+            dialogBackgroundColor: Colors.black.withOpacity(0.1),
+            primaryColorDark: Colors.black.withOpacity(0.1),
+            textSelectionColor: Colors.black.withOpacity(0.1),
+            highlightColor: Colors.black.withOpacity(0.1),
+            selectedRowColor: Colors.black.withOpacity(0.1),
+          ),
+          child: child,
+        );
+      },
     );
 
     if (selectedDate != null) {
@@ -275,7 +304,7 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   /**
   * データ作成/更新
   */
-  _insertRecord(BuildContext context) async {
+  _insertRecord({BuildContext context}) async {
     if (_teContCompany.text == '') {
       Toast.show('companyが入力されていないため登録できません。', context,
           duration: Toast.LENGTH_LONG);
@@ -302,13 +331,13 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
       Toast.show('更新が完了しました', context, duration: Toast.LENGTH_LONG);
     }
 
-    _goBenefitInputScreen(context, widget.date);
+    _goBenefitInputScreen(context: context, date: widget.date);
   }
 
   /**
   * データ削除
   */
-  _deleteRecord(int position) async {
+  _deleteRecord({int position}) async {
     var benefit = Benefit(
       strDate: _benefitData[position][0],
       strCompany: _benefitData[position][1],
@@ -317,7 +346,7 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
 
     await database.deleteBenefitRecord(benefit);
     Toast.show('データを削除しました', context, duration: Toast.LENGTH_LONG);
-    _goBenefitInputScreen(context, widget.date);
+    _goBenefitInputScreen(context: context, date: widget.date);
   }
 
   ///////////////////////////////////////////////////////////////////// 画面遷移
@@ -325,7 +354,7 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   /**
   * 画面遷移（BenefitInputScreen）
   */
-  _goBenefitInputScreen(BuildContext context, String date) {
+  _goBenefitInputScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

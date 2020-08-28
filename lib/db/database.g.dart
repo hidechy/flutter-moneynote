@@ -1650,24 +1650,24 @@ class $BenefitsTable extends Benefits with TableInfo<$BenefitsTable, Benefit> {
   }
 }
 
-class Credit extends DataClass implements Insertable<Credit> {
+class Deposit extends DataClass implements Insertable<Deposit> {
   final int intId;
   final String strDate;
   final String strBank;
   final String strItem;
   final String strPrice;
-  Credit(
+  Deposit(
       {@required this.intId,
       @required this.strDate,
       @required this.strBank,
       @required this.strItem,
       @required this.strPrice});
-  factory Credit.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  factory Deposit.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
-    return Credit(
+    return Deposit(
       intId: intType.mapFromDatabaseResponse(data['${effectivePrefix}int_id']),
       strDate: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}str_date']),
@@ -1700,8 +1700,8 @@ class Credit extends DataClass implements Insertable<Credit> {
     return map;
   }
 
-  CreditsCompanion toCompanion(bool nullToAbsent) {
-    return CreditsCompanion(
+  DepositsCompanion toCompanion(bool nullToAbsent) {
+    return DepositsCompanion(
       intId:
           intId == null && nullToAbsent ? const Value.absent() : Value(intId),
       strDate: strDate == null && nullToAbsent
@@ -1719,10 +1719,10 @@ class Credit extends DataClass implements Insertable<Credit> {
     );
   }
 
-  factory Credit.fromJson(Map<String, dynamic> json,
+  factory Deposit.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return Credit(
+    return Deposit(
       intId: serializer.fromJson<int>(json['intId']),
       strDate: serializer.fromJson<String>(json['strDate']),
       strBank: serializer.fromJson<String>(json['strBank']),
@@ -1742,13 +1742,13 @@ class Credit extends DataClass implements Insertable<Credit> {
     };
   }
 
-  Credit copyWith(
+  Deposit copyWith(
           {int intId,
           String strDate,
           String strBank,
           String strItem,
           String strPrice}) =>
-      Credit(
+      Deposit(
         intId: intId ?? this.intId,
         strDate: strDate ?? this.strDate,
         strBank: strBank ?? this.strBank,
@@ -1757,7 +1757,7 @@ class Credit extends DataClass implements Insertable<Credit> {
       );
   @override
   String toString() {
-    return (StringBuffer('Credit(')
+    return (StringBuffer('Deposit(')
           ..write('intId: $intId, ')
           ..write('strDate: $strDate, ')
           ..write('strBank: $strBank, ')
@@ -1777,7 +1777,7 @@ class Credit extends DataClass implements Insertable<Credit> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is Credit &&
+      (other is Deposit &&
           other.intId == this.intId &&
           other.strDate == this.strDate &&
           other.strBank == this.strBank &&
@@ -1785,20 +1785,20 @@ class Credit extends DataClass implements Insertable<Credit> {
           other.strPrice == this.strPrice);
 }
 
-class CreditsCompanion extends UpdateCompanion<Credit> {
+class DepositsCompanion extends UpdateCompanion<Deposit> {
   final Value<int> intId;
   final Value<String> strDate;
   final Value<String> strBank;
   final Value<String> strItem;
   final Value<String> strPrice;
-  const CreditsCompanion({
+  const DepositsCompanion({
     this.intId = const Value.absent(),
     this.strDate = const Value.absent(),
     this.strBank = const Value.absent(),
     this.strItem = const Value.absent(),
     this.strPrice = const Value.absent(),
   });
-  CreditsCompanion.insert({
+  DepositsCompanion.insert({
     this.intId = const Value.absent(),
     @required String strDate,
     @required String strBank,
@@ -1808,7 +1808,7 @@ class CreditsCompanion extends UpdateCompanion<Credit> {
         strBank = Value(strBank),
         strItem = Value(strItem),
         strPrice = Value(strPrice);
-  static Insertable<Credit> custom({
+  static Insertable<Deposit> custom({
     Expression<int> intId,
     Expression<String> strDate,
     Expression<String> strBank,
@@ -1824,13 +1824,13 @@ class CreditsCompanion extends UpdateCompanion<Credit> {
     });
   }
 
-  CreditsCompanion copyWith(
+  DepositsCompanion copyWith(
       {Value<int> intId,
       Value<String> strDate,
       Value<String> strBank,
       Value<String> strItem,
       Value<String> strPrice}) {
-    return CreditsCompanion(
+    return DepositsCompanion(
       intId: intId ?? this.intId,
       strDate: strDate ?? this.strDate,
       strBank: strBank ?? this.strBank,
@@ -1861,10 +1861,10 @@ class CreditsCompanion extends UpdateCompanion<Credit> {
   }
 }
 
-class $CreditsTable extends Credits with TableInfo<$CreditsTable, Credit> {
+class $DepositsTable extends Deposits with TableInfo<$DepositsTable, Deposit> {
   final GeneratedDatabase _db;
   final String _alias;
-  $CreditsTable(this._db, [this._alias]);
+  $DepositsTable(this._db, [this._alias]);
   final VerificationMeta _intIdMeta = const VerificationMeta('intId');
   GeneratedIntColumn _intId;
   @override
@@ -1926,13 +1926,13 @@ class $CreditsTable extends Credits with TableInfo<$CreditsTable, Credit> {
   List<GeneratedColumn> get $columns =>
       [intId, strDate, strBank, strItem, strPrice];
   @override
-  $CreditsTable get asDslTable => this;
+  $DepositsTable get asDslTable => this;
   @override
-  String get $tableName => _alias ?? 'credits';
+  String get $tableName => _alias ?? 'deposits';
   @override
-  final String actualTableName = 'credits';
+  final String actualTableName = 'deposits';
   @override
-  VerificationContext validateIntegrity(Insertable<Credit> instance,
+  VerificationContext validateIntegrity(Insertable<Deposit> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -1970,14 +1970,14 @@ class $CreditsTable extends Credits with TableInfo<$CreditsTable, Credit> {
   @override
   Set<GeneratedColumn> get $primaryKey => {intId};
   @override
-  Credit map(Map<String, dynamic> data, {String tablePrefix}) {
+  Deposit map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Credit.fromData(data, _db, prefix: effectivePrefix);
+    return Deposit.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
-  $CreditsTable createAlias(String alias) {
-    return $CreditsTable(_db, alias);
+  $DepositsTable createAlias(String alias) {
+    return $DepositsTable(_db, alias);
   }
 }
 
@@ -2126,19 +2126,250 @@ class $HolidaysTable extends Holidays with TableInfo<$HolidaysTable, Holiday> {
   }
 }
 
+class Bankname extends DataClass implements Insertable<Bankname> {
+  final int intId;
+  final String strBank;
+  final String strName;
+  Bankname(
+      {@required this.intId, @required this.strBank, @required this.strName});
+  factory Bankname.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    return Bankname(
+      intId: intType.mapFromDatabaseResponse(data['${effectivePrefix}int_id']),
+      strBank: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}str_bank']),
+      strName: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}str_name']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || intId != null) {
+      map['int_id'] = Variable<int>(intId);
+    }
+    if (!nullToAbsent || strBank != null) {
+      map['str_bank'] = Variable<String>(strBank);
+    }
+    if (!nullToAbsent || strName != null) {
+      map['str_name'] = Variable<String>(strName);
+    }
+    return map;
+  }
+
+  BanknamesCompanion toCompanion(bool nullToAbsent) {
+    return BanknamesCompanion(
+      intId:
+          intId == null && nullToAbsent ? const Value.absent() : Value(intId),
+      strBank: strBank == null && nullToAbsent
+          ? const Value.absent()
+          : Value(strBank),
+      strName: strName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(strName),
+    );
+  }
+
+  factory Bankname.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return Bankname(
+      intId: serializer.fromJson<int>(json['intId']),
+      strBank: serializer.fromJson<String>(json['strBank']),
+      strName: serializer.fromJson<String>(json['strName']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'intId': serializer.toJson<int>(intId),
+      'strBank': serializer.toJson<String>(strBank),
+      'strName': serializer.toJson<String>(strName),
+    };
+  }
+
+  Bankname copyWith({int intId, String strBank, String strName}) => Bankname(
+        intId: intId ?? this.intId,
+        strBank: strBank ?? this.strBank,
+        strName: strName ?? this.strName,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Bankname(')
+          ..write('intId: $intId, ')
+          ..write('strBank: $strBank, ')
+          ..write('strName: $strName')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      $mrjf($mrjc(intId.hashCode, $mrjc(strBank.hashCode, strName.hashCode)));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is Bankname &&
+          other.intId == this.intId &&
+          other.strBank == this.strBank &&
+          other.strName == this.strName);
+}
+
+class BanknamesCompanion extends UpdateCompanion<Bankname> {
+  final Value<int> intId;
+  final Value<String> strBank;
+  final Value<String> strName;
+  const BanknamesCompanion({
+    this.intId = const Value.absent(),
+    this.strBank = const Value.absent(),
+    this.strName = const Value.absent(),
+  });
+  BanknamesCompanion.insert({
+    this.intId = const Value.absent(),
+    @required String strBank,
+    @required String strName,
+  })  : strBank = Value(strBank),
+        strName = Value(strName);
+  static Insertable<Bankname> custom({
+    Expression<int> intId,
+    Expression<String> strBank,
+    Expression<String> strName,
+  }) {
+    return RawValuesInsertable({
+      if (intId != null) 'int_id': intId,
+      if (strBank != null) 'str_bank': strBank,
+      if (strName != null) 'str_name': strName,
+    });
+  }
+
+  BanknamesCompanion copyWith(
+      {Value<int> intId, Value<String> strBank, Value<String> strName}) {
+    return BanknamesCompanion(
+      intId: intId ?? this.intId,
+      strBank: strBank ?? this.strBank,
+      strName: strName ?? this.strName,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (intId.present) {
+      map['int_id'] = Variable<int>(intId.value);
+    }
+    if (strBank.present) {
+      map['str_bank'] = Variable<String>(strBank.value);
+    }
+    if (strName.present) {
+      map['str_name'] = Variable<String>(strName.value);
+    }
+    return map;
+  }
+}
+
+class $BanknamesTable extends Banknames
+    with TableInfo<$BanknamesTable, Bankname> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $BanknamesTable(this._db, [this._alias]);
+  final VerificationMeta _intIdMeta = const VerificationMeta('intId');
+  GeneratedIntColumn _intId;
+  @override
+  GeneratedIntColumn get intId => _intId ??= _constructIntId();
+  GeneratedIntColumn _constructIntId() {
+    return GeneratedIntColumn('int_id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _strBankMeta = const VerificationMeta('strBank');
+  GeneratedTextColumn _strBank;
+  @override
+  GeneratedTextColumn get strBank => _strBank ??= _constructStrBank();
+  GeneratedTextColumn _constructStrBank() {
+    return GeneratedTextColumn(
+      'str_bank',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _strNameMeta = const VerificationMeta('strName');
+  GeneratedTextColumn _strName;
+  @override
+  GeneratedTextColumn get strName => _strName ??= _constructStrName();
+  GeneratedTextColumn _constructStrName() {
+    return GeneratedTextColumn(
+      'str_name',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [intId, strBank, strName];
+  @override
+  $BanknamesTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'banknames';
+  @override
+  final String actualTableName = 'banknames';
+  @override
+  VerificationContext validateIntegrity(Insertable<Bankname> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('int_id')) {
+      context.handle(
+          _intIdMeta, intId.isAcceptableOrUnknown(data['int_id'], _intIdMeta));
+    }
+    if (data.containsKey('str_bank')) {
+      context.handle(_strBankMeta,
+          strBank.isAcceptableOrUnknown(data['str_bank'], _strBankMeta));
+    } else if (isInserting) {
+      context.missing(_strBankMeta);
+    }
+    if (data.containsKey('str_name')) {
+      context.handle(_strNameMeta,
+          strName.isAcceptableOrUnknown(data['str_name'], _strNameMeta));
+    } else if (isInserting) {
+      context.missing(_strNameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {intId};
+  @override
+  Bankname map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return Bankname.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  $BanknamesTable createAlias(String alias) {
+    return $BanknamesTable(_db, alias);
+  }
+}
+
 abstract class _$MyDatabase extends GeneratedDatabase {
   _$MyDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $MoniesTable _monies;
   $MoniesTable get monies => _monies ??= $MoniesTable(this);
   $BenefitsTable _benefits;
   $BenefitsTable get benefits => _benefits ??= $BenefitsTable(this);
-  $CreditsTable _credits;
-  $CreditsTable get credits => _credits ??= $CreditsTable(this);
+  $DepositsTable _deposits;
+  $DepositsTable get deposits => _deposits ??= $DepositsTable(this);
   $HolidaysTable _holidays;
   $HolidaysTable get holidays => _holidays ??= $HolidaysTable(this);
+  $BanknamesTable _banknames;
+  $BanknamesTable get banknames => _banknames ??= $BanknamesTable(this);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [monies, benefits, credits, holidays];
+      [monies, benefits, deposits, holidays, banknames];
 }

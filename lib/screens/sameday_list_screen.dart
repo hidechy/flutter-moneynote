@@ -95,16 +95,16 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
                         child: DropdownButton(
                           items: _menuItems,
                           value: _numberOfMenu,
-                          onChanged: (value) => _makeSamedayList(value),
+                          onChanged: (value) => _makeSamedayList(value: value),
                         ),
                       ),
                       IconButton(
                         icon: const Icon(Icons.arrow_upward),
-                        onPressed: () => _numberUpDown(1),
+                        onPressed: () => _numberUpDown(add: 1),
                       ),
                       IconButton(
                         icon: const Icon(Icons.arrow_downward),
-                        onPressed: () => _numberUpDown(-1),
+                        onPressed: () => _numberUpDown(add: -1),
                       ),
                     ],
                   ),
@@ -118,7 +118,8 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
                 Expanded(
                   child: ListView.builder(
                     itemCount: _samedayData.length,
-                    itemBuilder: (context, int position) => _listItem(position),
+                    itemBuilder: (context, int position) =>
+                        _listItem(position: position),
                   ),
                 )
               ],
@@ -132,7 +133,7 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
   /**
   * リストアイテム表示
   */
-  Widget _listItem(int position) {
+  Widget _listItem({int position}) {
     return Card(
       color: Colors.black.withOpacity(0.3),
       elevation: 10.0,
@@ -145,10 +146,10 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
           child: Table(
             children: [
               TableRow(children: [
-                _getDisplayContainer(position, 0),
-                _getDisplayContainer(position, 2),
-                _getDisplayContainer(position, 1),
-                _getDisplayContainer(position, 3),
+                _getDisplayContainer(position: position, column: 0),
+                _getDisplayContainer(position: position, column: 2),
+                _getDisplayContainer(position: position, column: 1),
+                _getDisplayContainer(position: position, column: 3),
               ]),
             ],
           ),
@@ -160,9 +161,9 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
   /**
    * データコンテナ表示
    */
-  Widget _getDisplayContainer(int position, int column) {
+  Widget _getDisplayContainer({int position, int column}) {
     return Container(
-      alignment: _getDisplayAlign(column),
+      alignment: _getDisplayAlign(column: column),
       child: (column == 0)
           ? Text(_samedayData[position][column])
           : Text(_utility.makeCurrencyDisplay(_samedayData[position][column])),
@@ -172,7 +173,7 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
   /**
    * データ表示位置取得
    */
-  _getDisplayAlign(int column) {
+  _getDisplayAlign({int column}) {
     switch (column) {
       case 0:
         return Alignment.topLeft;
@@ -192,7 +193,7 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
   /**
   * プルダウン変更処理
   */
-  _makeSamedayList(value) async {
+  _makeSamedayList({value}) async {
     //プルダウンに選択された日付を表示する
     _numberOfMenu = value;
 
@@ -208,7 +209,8 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
           _utility.makeTotal(samedata[0]);
           var total = _utility.total;
 
-          var firstDayData = await getFirstDayData(_monieData[i].strDate);
+          var firstDayData =
+              await getFirstDayData(dayDate: _monieData[i].strDate);
 
           _samedayData.add([
             _monieData[i].strDate,
@@ -223,7 +225,7 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
     setState(() {});
   }
 
-  Future<int> getFirstDayData(String dayDate) async {
+  Future<int> getFirstDayData({String dayDate}) async {
     var ex_dayDate = (dayDate).split('-');
     var lastMonthLastDay =
         DateTime(int.parse(ex_dayDate[0]), int.parse(ex_dayDate[1]), 0);
@@ -240,9 +242,9 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
   /**
   * 日付増減ボタン挙動
   */
-  _numberUpDown(int i) {
+  _numberUpDown({int add}) {
     var number = (_numberOfMenu == '') ? 0 : int.parse(_numberOfMenu);
-    var num = number + i;
+    var num = number + add;
     if (num < 1) {
       num = 1;
     }
@@ -250,6 +252,6 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
       num = 31;
     }
 
-    _makeSamedayList(num.toString());
+    _makeSamedayList(value: num.toString());
   }
 }

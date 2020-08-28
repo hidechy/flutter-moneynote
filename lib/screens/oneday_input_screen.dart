@@ -34,41 +34,42 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   List<Monie> _monieData;
 
   String _text = '';
-  TextEditingController _teContDate = TextEditingController();
 
-  TextEditingController _teCont10000 = TextEditingController();
-  TextEditingController _teCont5000 = TextEditingController();
-  TextEditingController _teCont2000 = TextEditingController();
-  TextEditingController _teCont1000 = TextEditingController();
-  TextEditingController _teCont500 = TextEditingController();
-  TextEditingController _teCont100 = TextEditingController();
-  TextEditingController _teCont50 = TextEditingController();
-  TextEditingController _teCont10 = TextEditingController();
-  TextEditingController _teCont5 = TextEditingController();
-  TextEditingController _teCont1 = TextEditingController();
+  TextEditingController _teCont10000 = TextEditingController(text: '0');
+  TextEditingController _teCont5000 = TextEditingController(text: '0');
+  TextEditingController _teCont2000 = TextEditingController(text: '0');
+  TextEditingController _teCont1000 = TextEditingController(text: '0');
+  TextEditingController _teCont500 = TextEditingController(text: '0');
+  TextEditingController _teCont100 = TextEditingController(text: '0');
+  TextEditingController _teCont50 = TextEditingController(text: '0');
+  TextEditingController _teCont10 = TextEditingController(text: '0');
+  TextEditingController _teCont5 = TextEditingController(text: '0');
+  TextEditingController _teCont1 = TextEditingController(text: '0');
 
-  TextEditingController _teContBankA = TextEditingController();
-  TextEditingController _teContBankB = TextEditingController();
-  TextEditingController _teContBankC = TextEditingController();
-  TextEditingController _teContBankD = TextEditingController();
-  TextEditingController _teContBankE = TextEditingController();
-  TextEditingController _teContBankF = TextEditingController();
-  TextEditingController _teContBankG = TextEditingController();
-  TextEditingController _teContBankH = TextEditingController();
+  TextEditingController _teContBankA = TextEditingController(text: '0');
+  TextEditingController _teContBankB = TextEditingController(text: '0');
+  TextEditingController _teContBankC = TextEditingController(text: '0');
+  TextEditingController _teContBankD = TextEditingController(text: '0');
+  TextEditingController _teContBankE = TextEditingController(text: '0');
+  TextEditingController _teContBankF = TextEditingController(text: '0');
+  TextEditingController _teContBankG = TextEditingController(text: '0');
+  TextEditingController _teContBankH = TextEditingController(text: '0');
 
-  TextEditingController _teContPayA = TextEditingController();
-  TextEditingController _teContPayB = TextEditingController();
-  TextEditingController _teContPayC = TextEditingController();
-  TextEditingController _teContPayD = TextEditingController();
-  TextEditingController _teContPayE = TextEditingController();
-  TextEditingController _teContPayF = TextEditingController();
-  TextEditingController _teContPayG = TextEditingController();
-  TextEditingController _teContPayH = TextEditingController();
+  TextEditingController _teContPayA = TextEditingController(text: '0');
+  TextEditingController _teContPayB = TextEditingController(text: '0');
+  TextEditingController _teContPayC = TextEditingController(text: '0');
+  TextEditingController _teContPayD = TextEditingController(text: '0');
+  TextEditingController _teContPayE = TextEditingController(text: '0');
+  TextEditingController _teContPayF = TextEditingController(text: '0');
+  TextEditingController _teContPayG = TextEditingController(text: '0');
+  TextEditingController _teContPayH = TextEditingController(text: '0');
 
   bool _updateFlag = false;
 
   int _onedayTotal = 0;
   int _onedaySpend = 0;
+
+  Map<String, String> bankNames = Map();
 
   /**
   * 初期動作
@@ -129,35 +130,15 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
       _teContPayH = new TextEditingController(text: _monieData[0].strPayH);
 
       _updateFlag = true;
-    } else {
-      _teCont10000 = new TextEditingController(text: '0');
-      _teCont5000 = new TextEditingController(text: '0');
-      _teCont2000 = new TextEditingController(text: '0');
-      _teCont1000 = new TextEditingController(text: '0');
-      _teCont500 = new TextEditingController(text: '0');
-      _teCont100 = new TextEditingController(text: '0');
-      _teCont50 = new TextEditingController(text: '0');
-      _teCont10 = new TextEditingController(text: '0');
-      _teCont5 = new TextEditingController(text: '0');
-      _teCont1 = new TextEditingController(text: '0');
+    }
 
-      _teContBankA = new TextEditingController(text: '0');
-      _teContBankB = new TextEditingController(text: '0');
-      _teContBankC = new TextEditingController(text: '0');
-      _teContBankD = new TextEditingController(text: '0');
-      _teContBankE = new TextEditingController(text: '0');
-      _teContBankF = new TextEditingController(text: '0');
-      _teContBankG = new TextEditingController(text: '0');
-      _teContBankH = new TextEditingController(text: '0');
+    ///////////////////////////////////////////////////////////////////
+    var values = await database.selectBanknameSortedAllRecord;
 
-      _teContPayA = new TextEditingController(text: '0');
-      _teContPayB = new TextEditingController(text: '0');
-      _teContPayC = new TextEditingController(text: '0');
-      _teContPayD = new TextEditingController(text: '0');
-      _teContPayE = new TextEditingController(text: '0');
-      _teContPayF = new TextEditingController(text: '0');
-      _teContPayG = new TextEditingController(text: '0');
-      _teContPayH = new TextEditingController(text: '0');
+    if (values.length > 0) {
+      for (int i = 0; i < values.length; i++) {
+        bankNames[values[i].strBank] = values[i].strName;
+      }
     }
 
     setState(() {});
@@ -178,12 +159,12 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
           IconButton(
             icon: const Icon(Icons.skip_previous),
             tooltip: '前日',
-            onPressed: () => _goPrevDate(context),
+            onPressed: () => _goPrevDate(context: context),
           ),
           IconButton(
             icon: const Icon(Icons.skip_next),
             tooltip: '翌日',
-            onPressed: () => _goNextDate(context),
+            onPressed: () => _goNextDate(context: context),
           ),
         ],
       ),
@@ -207,21 +188,21 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
                       Table(
                         children: [
                           TableRow(children: [
-                            _getTextField('10000', _teCont10000),
-                            _getTextField('5000', _teCont5000),
-                            _getTextField('2000', _teCont2000),
-                            _getTextField('1000', _teCont1000),
+                            _getTextField(yen: '10000', con: _teCont10000),
+                            _getTextField(yen: '5000', con: _teCont5000),
+                            _getTextField(yen: '2000', con: _teCont2000),
+                            _getTextField(yen: '1000', con: _teCont1000),
                           ]),
                           TableRow(children: [
-                            _getTextField('500', _teCont500),
-                            _getTextField('100', _teCont100),
-                            _getTextField('50', _teCont50),
+                            _getTextField(yen: '500', con: _teCont500),
+                            _getTextField(yen: '100', con: _teCont100),
+                            _getTextField(yen: '50', con: _teCont50),
                             const Align(),
                           ]),
                           TableRow(children: [
-                            _getTextField('10', _teCont10),
-                            _getTextField('5', _teCont5),
-                            _getTextField('1', _teCont1),
+                            _getTextField(yen: '10', con: _teCont10),
+                            _getTextField(yen: '5', con: _teCont5),
+                            _getTextField(yen: '1', con: _teCont1),
                             const Align(),
                           ]),
                         ],
@@ -235,16 +216,16 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
                       Table(
                         children: [
                           TableRow(children: [
-                            _getTextField('bank_a', _teContBankA),
-                            _getTextField('bank_b', _teContBankB),
-                            _getTextField('bank_c', _teContBankC),
-                            _getTextField('bank_d', _teContBankD),
+                            _getTextField(yen: 'bank_a', con: _teContBankA),
+                            _getTextField(yen: 'bank_b', con: _teContBankB),
+                            _getTextField(yen: 'bank_c', con: _teContBankC),
+                            _getTextField(yen: 'bank_d', con: _teContBankD),
                           ]),
                           TableRow(children: [
-                            _getTextField('bank_e', _teContBankE),
-                            _getTextField('bank_f', _teContBankF),
-                            _getTextField('bank_g', _teContBankG),
-                            _getTextField('bank_h', _teContBankH),
+                            _getTextField(yen: 'bank_e', con: _teContBankE),
+                            _getTextField(yen: 'bank_f', con: _teContBankF),
+                            _getTextField(yen: 'bank_g', con: _teContBankG),
+                            _getTextField(yen: 'bank_h', con: _teContBankH),
                           ]),
                         ],
                       ),
@@ -257,16 +238,16 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
                       Table(
                         children: [
                           TableRow(children: [
-                            _getTextField('pay_a', _teContPayA),
-                            _getTextField('pay_b', _teContPayB),
-                            _getTextField('pay_c', _teContPayC),
-                            _getTextField('pay_d', _teContPayD),
+                            _getTextField(yen: 'pay_a', con: _teContPayA),
+                            _getTextField(yen: 'pay_b', con: _teContPayB),
+                            _getTextField(yen: 'pay_c', con: _teContPayC),
+                            _getTextField(yen: 'pay_d', con: _teContPayD),
                           ]),
                           TableRow(children: [
-                            _getTextField('pay_e', _teContPayE),
-                            _getTextField('pay_f', _teContPayF),
-                            _getTextField('pay_g', _teContPayG),
-                            _getTextField('pay_h', _teContPayH),
+                            _getTextField(yen: 'pay_e', con: _teContPayE),
+                            _getTextField(yen: 'pay_f', con: _teContPayF),
+                            _getTextField(yen: 'pay_g', con: _teContPayG),
+                            _getTextField(yen: 'pay_h', con: _teContPayH),
                           ]),
                         ],
                       ),
@@ -288,21 +269,21 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
                           IconButton(
                             icon: const Icon(Icons.list),
                             tooltip: 'list',
-                            onPressed: () =>
-                                _goMonthlyListScreen(context, _date),
+                            onPressed: () => _goMonthlyListScreen(
+                                context: context, date: _date),
                             color: Colors.blueAccent,
                           ),
                           IconButton(
                             icon: const Icon(Icons.details),
                             tooltip: 'detail',
-                            onPressed: () =>
-                                _goDetailDisplayScreen(context, _date),
+                            onPressed: () => _goDetailDisplayScreen(
+                                context: context, date: _date),
                             color: Colors.blueAccent,
                           ),
                           IconButton(
                             icon: const Icon(Icons.calendar_today),
                             tooltip: 'jump',
-                            onPressed: () => _showDatepicker(context),
+                            onPressed: () => _showDatepicker(context: context),
                             color: Colors.blueAccent,
                           ),
                           IconButton(
@@ -314,7 +295,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
                           IconButton(
                             icon: const Icon(Icons.input),
                             tooltip: 'input',
-                            onPressed: () => _insertRecord(context),
+                            onPressed: () => _insertRecord(context: context),
                             color: Colors.greenAccent,
                           ),
                         ],
@@ -382,7 +363,12 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   /**
   * テキストフィールド部分表示
   */
-  Widget _getTextField(String yen, TextEditingController con) {
+  Widget _getTextField({String yen, TextEditingController con}) {
+    var dispYen = yen;
+    if (bankNames[yen] != "" && bankNames[yen] != null) {
+      dispYen = bankNames[yen];
+    }
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextField(
@@ -390,10 +376,10 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
         controller: con,
         textAlign: TextAlign.end,
         decoration: InputDecoration(
-          labelText: yen,
+          labelText: dispYen,
         ),
         style: TextStyle(
-          fontSize: 12.0,
+          fontSize: 13.0,
         ),
         onChanged: (value) {
           setState(
@@ -451,38 +437,61 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   /**
   * 画面遷移（前日）
   */
-  _goPrevDate(BuildContext context) {
-    _goAnotherDate(context, prevDate.toString());
+  _goPrevDate({BuildContext context}) {
+    _goAnotherDate(context: context, date: prevDate.toString());
   }
 
   /**
   * 画面遷移（翌日）
   */
-  _goNextDate(BuildContext context) {
-    _goAnotherDate(context, nextDate.toString());
+  _goNextDate({BuildContext context}) {
+    _goAnotherDate(context: context, date: nextDate.toString());
   }
 
   /**
   * デートピッカー表示
   */
-  _showDatepicker(BuildContext context) async {
+  _showDatepicker({BuildContext context}) async {
     final selectedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(DateTime.now().year - 3),
       lastDate: DateTime(DateTime.now().year + 6),
       locale: const Locale('ja'),
+      builder: (BuildContext context, Widget child) {
+        return Theme(
+          data: ThemeData.dark().copyWith(
+            backgroundColor: Colors.black.withOpacity(0.1),
+            scaffoldBackgroundColor: Colors.black.withOpacity(0.1),
+            canvasColor: Colors.black.withOpacity(0.1),
+            cardColor: Colors.black.withOpacity(0.1),
+            cursorColor: Colors.white,
+            buttonColor: Colors.black.withOpacity(0.1),
+            bottomAppBarColor: Colors.black.withOpacity(0.1),
+            dividerColor: Colors.indigo,
+            primaryColor: Colors.black.withOpacity(0.1),
+            accentColor: Colors.black.withOpacity(0.1),
+            secondaryHeaderColor: Colors.black.withOpacity(0.1),
+            dialogBackgroundColor: Colors.black.withOpacity(0.1),
+            primaryColorDark: Colors.black.withOpacity(0.1),
+            textSelectionColor: Colors.black.withOpacity(0.1),
+            highlightColor: Colors.black.withOpacity(0.1),
+            selectedRowColor: Colors.black.withOpacity(0.1),
+          ),
+          child: child,
+        );
+      },
     );
 
     if (selectedDate != null) {
-      _goAnotherDate(context, selectedDate.toString());
+      _goAnotherDate(context: context, date: selectedDate.toString());
     }
   }
 
   /**
   * データ作成/更新
   */
-  _insertRecord(BuildContext context) async {
+  _insertRecord({BuildContext context}) async {
     var monie = Monie(
       strDate: _date,
       strYen10000: _teCont10000.text != "" ? _teCont10000.text : '0',
@@ -586,7 +595,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   /**
   * 画面遷移（指定日）
   */
-  _goAnotherDate(BuildContext context, String date) {
+  _goAnotherDate({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -600,7 +609,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   /**
   * 画面遷移（MonthlyListScreen）
   */
-  _goMonthlyListScreen(BuildContext context, String date) {
+  _goMonthlyListScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -614,7 +623,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   /**
   * 画面遷移（DetailDisplayScreen）
   */
-  _goDetailDisplayScreen(BuildContext context, String date) async {
+  _goDetailDisplayScreen({BuildContext context, String date}) async {
     var detailDisplayArgs = await _utility.getDetailDisplayArgs(date);
     _utility.makeYMDYData(date, 0);
 

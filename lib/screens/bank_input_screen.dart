@@ -32,6 +32,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
 
   Map<String, dynamic> _holidayList = Map();
 
+  Map<String, String> bankNames = Map();
+
   /**
    * 初期動作
    */
@@ -65,39 +67,39 @@ class _BankInputScreenState extends State<BankInputScreen> {
     if (_monieData.length > 0) {
       _bankData = List();
       for (int i = 0; i < _monieData.length; i++) {
-        _dispFlag['bank_a'] =
-            _makeDispFlag(_monieData[i].strBankA, _dispFlag['bank_a']);
-        _dispFlag['bank_b'] =
-            _makeDispFlag(_monieData[i].strBankB, _dispFlag['bank_b']);
-        _dispFlag['bank_c'] =
-            _makeDispFlag(_monieData[i].strBankC, _dispFlag['bank_c']);
-        _dispFlag['bank_d'] =
-            _makeDispFlag(_monieData[i].strBankD, _dispFlag['bank_d']);
-        _dispFlag['bank_e'] =
-            _makeDispFlag(_monieData[i].strBankE, _dispFlag['bank_e']);
-        _dispFlag['bank_f'] =
-            _makeDispFlag(_monieData[i].strBankF, _dispFlag['bank_f']);
-        _dispFlag['bank_g'] =
-            _makeDispFlag(_monieData[i].strBankG, _dispFlag['bank_g']);
-        _dispFlag['bank_h'] =
-            _makeDispFlag(_monieData[i].strBankH, _dispFlag['bank_h']);
+        _dispFlag['bank_a'] = _makeDispFlag(
+            value: _monieData[i].strBankA, nowFlag: _dispFlag['bank_a']);
+        _dispFlag['bank_b'] = _makeDispFlag(
+            value: _monieData[i].strBankB, nowFlag: _dispFlag['bank_b']);
+        _dispFlag['bank_c'] = _makeDispFlag(
+            value: _monieData[i].strBankC, nowFlag: _dispFlag['bank_c']);
+        _dispFlag['bank_d'] = _makeDispFlag(
+            value: _monieData[i].strBankD, nowFlag: _dispFlag['bank_d']);
+        _dispFlag['bank_e'] = _makeDispFlag(
+            value: _monieData[i].strBankE, nowFlag: _dispFlag['bank_e']);
+        _dispFlag['bank_f'] = _makeDispFlag(
+            value: _monieData[i].strBankF, nowFlag: _dispFlag['bank_f']);
+        _dispFlag['bank_g'] = _makeDispFlag(
+            value: _monieData[i].strBankG, nowFlag: _dispFlag['bank_g']);
+        _dispFlag['bank_h'] = _makeDispFlag(
+            value: _monieData[i].strBankH, nowFlag: _dispFlag['bank_h']);
 
-        _dispFlag['pay_a'] =
-            _makeDispFlag(_monieData[i].strPayA, _dispFlag['pay_a']);
-        _dispFlag['pay_b'] =
-            _makeDispFlag(_monieData[i].strPayB, _dispFlag['pay_b']);
-        _dispFlag['pay_c'] =
-            _makeDispFlag(_monieData[i].strPayC, _dispFlag['pay_c']);
-        _dispFlag['pay_d'] =
-            _makeDispFlag(_monieData[i].strPayD, _dispFlag['pay_d']);
-        _dispFlag['pay_e'] =
-            _makeDispFlag(_monieData[i].strPayE, _dispFlag['pay_e']);
-        _dispFlag['pay_f'] =
-            _makeDispFlag(_monieData[i].strPayF, _dispFlag['pay_f']);
-        _dispFlag['pay_g'] =
-            _makeDispFlag(_monieData[i].strPayG, _dispFlag['pay_g']);
-        _dispFlag['pay_h'] =
-            _makeDispFlag(_monieData[i].strPayH, _dispFlag['pay_h']);
+        _dispFlag['pay_a'] = _makeDispFlag(
+            value: _monieData[i].strPayA, nowFlag: _dispFlag['pay_a']);
+        _dispFlag['pay_b'] = _makeDispFlag(
+            value: _monieData[i].strPayB, nowFlag: _dispFlag['pay_b']);
+        _dispFlag['pay_c'] = _makeDispFlag(
+            value: _monieData[i].strPayC, nowFlag: _dispFlag['pay_c']);
+        _dispFlag['pay_d'] = _makeDispFlag(
+            value: _monieData[i].strPayD, nowFlag: _dispFlag['pay_d']);
+        _dispFlag['pay_e'] = _makeDispFlag(
+            value: _monieData[i].strPayE, nowFlag: _dispFlag['pay_e']);
+        _dispFlag['pay_f'] = _makeDispFlag(
+            value: _monieData[i].strPayF, nowFlag: _dispFlag['pay_f']);
+        _dispFlag['pay_g'] = _makeDispFlag(
+            value: _monieData[i].strPayG, nowFlag: _dispFlag['pay_g']);
+        _dispFlag['pay_h'] = _makeDispFlag(
+            value: _monieData[i].strPayH, nowFlag: _dispFlag['pay_h']);
 
         switch (_chipValue) {
           case 'bank_a':
@@ -174,13 +176,22 @@ class _BankInputScreenState extends State<BankInputScreen> {
       }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    var values = await database.selectBanknameSortedAllRecord;
+
+    if (values.length > 0) {
+      for (int i = 0; i < values.length; i++) {
+        bankNames[values[i].strBank] = values[i].strName;
+      }
+    }
+
     setState(() {});
   }
 
   /**
    * 表示フラグ作成
    */
-  int _makeDispFlag(String value, int nowFlag) {
+  int _makeDispFlag({String value, int nowFlag}) {
     if (nowFlag == 1) {
       return 1;
     }
@@ -217,34 +228,34 @@ class _BankInputScreenState extends State<BankInputScreen> {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        _getChoiceChip('bank_a'),
-                        _getChoiceChip('bank_b'),
-                        _getChoiceChip('bank_c'),
-                        _getChoiceChip('bank_d'),
+                        _getChoiceChip(selectedChip: 'bank_a'),
+                        _getChoiceChip(selectedChip: 'bank_b'),
+                        _getChoiceChip(selectedChip: 'bank_c'),
+                        _getChoiceChip(selectedChip: 'bank_d'),
                       ],
                     ),
                     Row(
                       children: <Widget>[
-                        _getChoiceChip('bank_e'),
-                        _getChoiceChip('bank_f'),
-                        _getChoiceChip('bank_g'),
-                        _getChoiceChip('bank_h'),
+                        _getChoiceChip(selectedChip: 'bank_e'),
+                        _getChoiceChip(selectedChip: 'bank_f'),
+                        _getChoiceChip(selectedChip: 'bank_g'),
+                        _getChoiceChip(selectedChip: 'bank_h'),
                       ],
                     ),
                     Row(
                       children: <Widget>[
-                        _getChoiceChip('pay_a'),
-                        _getChoiceChip('pay_b'),
-                        _getChoiceChip('pay_c'),
-                        _getChoiceChip('pay_d'),
+                        _getChoiceChip(selectedChip: 'pay_a'),
+                        _getChoiceChip(selectedChip: 'pay_b'),
+                        _getChoiceChip(selectedChip: 'pay_c'),
+                        _getChoiceChip(selectedChip: 'pay_d'),
                       ],
                     ),
                     Row(
                       children: <Widget>[
-                        _getChoiceChip('pay_e'),
-                        _getChoiceChip('pay_f'),
-                        _getChoiceChip('pay_g'),
-                        _getChoiceChip('pay_h'),
+                        _getChoiceChip(selectedChip: 'pay_e'),
+                        _getChoiceChip(selectedChip: 'pay_f'),
+                        _getChoiceChip(selectedChip: 'pay_g'),
+                        _getChoiceChip(selectedChip: 'pay_h'),
                       ],
                     ),
                     Padding(
@@ -271,14 +282,14 @@ class _BankInputScreenState extends State<BankInputScreen> {
                         IconButton(
                           icon: const Icon(Icons.calendar_today),
                           tooltip: 'jump',
-                          onPressed: () => _showDatepicker(context),
+                          onPressed: () => _showDatepicker(context: context),
                           color: Colors.blueAccent,
                         ),
                         Text('${_dialogSelectedDate}'),
                         IconButton(
                           icon: const Icon(Icons.input),
                           tooltip: 'input',
-                          onPressed: () => _updateRecord(context),
+                          onPressed: () => _updateRecord(context: context),
                           color: Colors.greenAccent,
                         ),
                       ],
@@ -289,7 +300,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
               Expanded(
                 child: ListView.builder(
                   itemCount: _bankData.length,
-                  itemBuilder: (context, int position) => _listItem(position),
+                  itemBuilder: (context, int position) =>
+                      _listItem(position: position),
                 ),
               ),
             ],
@@ -302,22 +314,20 @@ class _BankInputScreenState extends State<BankInputScreen> {
   /**
    * リストアイテム表示
    */
-  Widget _listItem(int position) {
-    return InkWell(
-      child: Card(
-        color: _getBgColor(_bankData[position][0]),
-        elevation: 10.0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: ListTile(
-          leading: _getLeading(_bankData[position][2]),
-          title: Text(
-            '${_bankData[position][0]}　${_utility.makeCurrencyDisplay(_bankData[position][1])}',
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 12.0,
-            ),
+  Widget _listItem({int position}) {
+    return Card(
+      color: _getBgColor(date: _bankData[position][0]),
+      elevation: 10.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: ListTile(
+        leading: _getLeading(mark: _bankData[position][2]),
+        title: Text(
+          '${_bankData[position][0]}　${_utility.makeCurrencyDisplay(_bankData[position][1])}',
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 12.0,
           ),
         ),
       ),
@@ -327,7 +337,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
   /**
    * 背景色取得
    */
-  _getBgColor(String date) {
+  _getBgColor({String date}) {
     _utility.makeYMDYData(date, 0);
 
     Color _color = null;
@@ -356,7 +366,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
   /**
    * リーディングマーク取得
    */
-  Widget _getLeading(String mark) {
+  Widget _getLeading({String mark}) {
     if (int.parse(mark) == 1) {
       return const Icon(
         Icons.refresh,
@@ -373,20 +383,29 @@ class _BankInputScreenState extends State<BankInputScreen> {
   /**
    * チョイスチップ作成
    */
-  Widget _getChoiceChip(String _selectedChip) {
-    return (_dispFlag[_selectedChip] == 0)
+  Widget _getChoiceChip({String selectedChip}) {
+    var dispBank = selectedChip;
+    var btnActive = false;
+    if (bankNames[selectedChip] != "" && bankNames[selectedChip] != null) {
+      dispBank = bankNames[selectedChip];
+      btnActive = true;
+    }
+
+    return (_dispFlag[selectedChip] == 0)
         ? Container()
         : Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5.0),
             child: ChoiceChip(
-              backgroundColor: Colors.blueAccent.withOpacity(0.5),
+              backgroundColor: (btnActive)
+                  ? Colors.greenAccent.withOpacity(0.5)
+                  : Colors.blueAccent.withOpacity(0.1),
               label: Text(
-                _selectedChip,
+                '${dispBank}',
                 style: const TextStyle(color: Colors.white),
               ),
-              selected: _chipValue == _selectedChip,
+              selected: _chipValue == selectedChip,
               onSelected: (bool isSelected) {
-                _chipValue = _selectedChip;
+                _chipValue = selectedChip;
                 _getBankValue();
               },
             ),
@@ -396,13 +415,36 @@ class _BankInputScreenState extends State<BankInputScreen> {
   /**
    * デートピッカー表示
    */
-  _showDatepicker(BuildContext context) async {
+  _showDatepicker({BuildContext context}) async {
     final selectedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(DateTime.now().year - 3),
       lastDate: DateTime(DateTime.now().year + 6),
       locale: const Locale('ja'),
+      builder: (BuildContext context, Widget child) {
+        return Theme(
+          data: ThemeData.dark().copyWith(
+            backgroundColor: Colors.black.withOpacity(0.1),
+            scaffoldBackgroundColor: Colors.black.withOpacity(0.1),
+            canvasColor: Colors.black.withOpacity(0.1),
+            cardColor: Colors.black.withOpacity(0.1),
+            cursorColor: Colors.white,
+            buttonColor: Colors.black.withOpacity(0.1),
+            bottomAppBarColor: Colors.black.withOpacity(0.1),
+            dividerColor: Colors.indigo,
+            primaryColor: Colors.black.withOpacity(0.1),
+            accentColor: Colors.black.withOpacity(0.1),
+            secondaryHeaderColor: Colors.black.withOpacity(0.1),
+            dialogBackgroundColor: Colors.black.withOpacity(0.1),
+            primaryColorDark: Colors.black.withOpacity(0.1),
+            textSelectionColor: Colors.black.withOpacity(0.1),
+            highlightColor: Colors.black.withOpacity(0.1),
+            selectedRowColor: Colors.black.withOpacity(0.1),
+          ),
+          child: child,
+        );
+      },
     );
 
     if (selectedDate != null) {
@@ -416,7 +458,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
   /**
    * レコード更新
    */
-  _updateRecord(BuildContext context) async {
+  _updateRecord({BuildContext context}) async {
     if (_teContPrice.text == '0') {
       Toast.show('金額が入力されていません', context, duration: Toast.LENGTH_LONG);
       return false;
@@ -499,13 +541,5 @@ class _BankInputScreenState extends State<BankInputScreen> {
     _teContPrice.text = '0';
 
     _getBankValue();
-  }
-
-  /**
-   * リストからの日付選択
-   */
-  _dayPickup(int position) {
-    _dialogSelectedDate = _bankData[position][0];
-    setState(() {});
   }
 }

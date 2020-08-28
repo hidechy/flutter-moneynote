@@ -113,15 +113,13 @@ class _HolidaySettingScreenState extends State<HolidaySettingScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
-          child: InkWell(
-            child: ListTile(
-              onTap: () => _holidaySetting(data[0], data[1]),
-              title: AutoScrollTag(
-                index: data[0],
-                child: Text('${data[1]}'),
-                key: ValueKey(data[0]),
-                controller: controller,
-              ),
+          child: ListTile(
+            onTap: () => _holidaySetting(counter: data[0], date: data[1]),
+            title: AutoScrollTag(
+              index: data[0],
+              child: Text('${data[1]}'),
+              key: ValueKey(data[0]),
+              controller: controller,
             ),
           ),
         );
@@ -132,7 +130,7 @@ class _HolidaySettingScreenState extends State<HolidaySettingScreen> {
   /**
    * 休業日設定
    */
-  _holidaySetting(int counter, String date) async {
+  _holidaySetting({int counter, String date}) async {
     var holiday = await database.selectHolidayRecord(date);
 
     var value = Holiday(strDate: date);
@@ -147,7 +145,7 @@ class _HolidaySettingScreenState extends State<HolidaySettingScreen> {
       Toast.show('登録が完了しました', context, duration: Toast.LENGTH_LONG);
     }
 
-    _goHolidaySettingScreen(counter);
+    _goHolidaySettingScreen(counter: counter);
   }
 
   ///////////////////////////////////////////////////////////////////// 画面遷移
@@ -155,7 +153,7 @@ class _HolidaySettingScreenState extends State<HolidaySettingScreen> {
   /**
    * 画面遷移（_goHolidaySettingScreen）
    */
-  _goHolidaySettingScreen(int counter) {
+  _goHolidaySettingScreen({int counter}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

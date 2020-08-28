@@ -27,6 +27,7 @@ dependencies:
   flutter_native_splash: ^0.1.9
   flutter_slidable: "^0.5.4"
   scroll_to_index: ^1.0.6
+  flutter_launcher_icons: ^0.7.5
 
 dev_dependencies:
   flutter_test:
@@ -51,3 +52,11 @@ flutter:
 flutter_native_splash:
   image: "assets/image/money.png"
   color: "2e2e2e"
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/image/launcher.png"
+
+  adaptive_icon_background: "#212121"
+  adaptive_icon_foreground: "assets/image/launcher.png"
