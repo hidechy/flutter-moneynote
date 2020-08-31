@@ -15,7 +15,7 @@ class AlldayListScreen extends StatefulWidget {
 class _AlldayListScreenState extends State<AlldayListScreen> {
   Utility _utility = Utility();
 
-  List<List<String>> _alldayData = List();
+  List<Map<dynamic, dynamic>> _alldayData = List();
 
   Map<String, dynamic> _holidayList = Map();
 
@@ -42,11 +42,12 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
         _utility.makeTotal(_monieData[i]);
         total = _utility.total;
 
-        _alldayData.add([
-          _monieData[i].strDate,
-          total.toString(),
-          ((_keepTotal - total) * -1).toString()
-        ]);
+        var _map = Map();
+        _map['date'] = _monieData[i].strDate;
+        _map['total'] = total.toString();
+        _map['diff'] = ((_keepTotal - total) * -1).toString();
+
+        _alldayData.add(_map);
 
         _keepTotal = total;
       }
@@ -98,7 +99,7 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
    */
   _listItem({int position}) {
     return Card(
-      color: getBgColor(date: _alldayData[position][0]),
+      color: getBgColor(date: _alldayData[position]['date']),
       elevation: 10.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -109,9 +110,9 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
           child: Table(
             children: [
               TableRow(children: [
-                _getDisplayContainer(position: position, column: 0),
-                _getDisplayContainer(position: position, column: 1),
-                _getDisplayContainer(position: position, column: 2),
+                _getDisplayContainer(position: position, column: 'date'),
+                _getDisplayContainer(position: position, column: 'total'),
+                _getDisplayContainer(position: position, column: 'diff'),
               ]),
             ],
           ),
@@ -152,25 +153,29 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   /**
    * データコンテナ表示
    */
-  Widget _getDisplayContainer({int position, int column}) {
+  Widget _getDisplayContainer({int position, String column}) {
     return Container(
-      alignment: (column == 1) ? Alignment.topCenter : Alignment.topLeft,
+      alignment: (column == 'total') ? Alignment.topCenter : Alignment.topLeft,
       child: Text(
-          getDisplayText(text: _alldayData[position][column], column: column)),
+        getDisplayText(
+          text: _alldayData[position][column],
+          column: column,
+        ),
+      ),
     );
   }
 
   /**
    * 表示テキスト取得
    */
-  String getDisplayText({String text, int column}) {
+  String getDisplayText({String text, String column}) {
     switch (column) {
-      case 0:
+      case 'date':
         _utility.makeYMDYData(text, 0);
         return '${text}（${_utility.youbiStr}）';
         break;
-      case 1:
-      case 2:
+      case 'total':
+      case 'diff':
         return _utility.makeCurrencyDisplay(text);
         break;
     }

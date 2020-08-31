@@ -28,7 +28,7 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
 
   bool _updateFlag = false;
 
-  List<List<String>> _benefitData = List();
+  List<Map<dynamic, dynamic>> _benefitData = List();
 
   /**
   * 初期動作
@@ -60,11 +60,12 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
     var benefits = await database.selectBenefitSortedAllRecord;
     if (benefits.length > 0) {
       for (int i = 0; i < benefits.length; i++) {
-        _benefitData.add([
-          benefits[i].strDate,
-          benefits[i].strCompany,
-          benefits[i].strPrice
-        ]);
+        var _map = Map();
+        _map['date'] = benefits[i].strDate;
+        _map['company'] = benefits[i].strCompany;
+        _map['price'] = benefits[i].strPrice;
+
+        _benefitData.add(_map);
       }
     }
 
@@ -339,9 +340,9 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   */
   _deleteRecord({int position}) async {
     var benefit = Benefit(
-      strDate: _benefitData[position][0],
-      strCompany: _benefitData[position][1],
-      strPrice: _benefitData[position][2],
+      strDate: _benefitData[position]['date'],
+      strCompany: _benefitData[position]['company'],
+      strPrice: _benefitData[position]['price'],
     );
 
     await database.deleteBenefitRecord(benefit);

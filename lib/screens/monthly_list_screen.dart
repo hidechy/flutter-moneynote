@@ -33,7 +33,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   String _thisMonthEndDateTime;
   String _thisMonthEndDay;
 
-  List<List<String>> _monthData = List();
+  List<Map<dynamic, dynamic>> _monthData = List();
 
   Map<String, dynamic> _holidayList = Map();
 
@@ -119,8 +119,13 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
         _monthSum += onedaySpend;
       }
 
-      _monthData.add(
-          [_thisDay, _thisDayTotal.toString(), onedaySpend.toString(), _flag]);
+      var _map = Map();
+      _map['date'] = _thisDay;
+      _map['total'] = _thisDayTotal.toString();
+      _map['spend'] = onedaySpend.toString();
+      _map['flag'] = _flag;
+
+      _monthData.add(_map);
 
       _yesterdaySpend = _thisDayTotal;
     }
@@ -222,45 +227,45 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
       actionPane: const SlidableDrawerActionPane(),
       actionExtentRatio: 0.15,
       child: Card(
-        color: getBgColor(date: _monthData[position][0]),
+        color: getBgColor(date: _monthData[position]['date']),
         elevation: 10.0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
         child: ListTile(
-          leading: _getLeading(mark: _monthData[position][3]),
+          leading: _getLeading(mark: _monthData[position]['flag']),
           title: DefaultTextStyle(
             style: TextStyle(fontSize: 10.0),
             child: Table(
               children: [
                 TableRow(children: [
-                  _getDisplayContainer(position: position, column: 0),
-                  _getDisplayContainer(position: position, column: 1),
-                  _getDisplayContainer(position: position, column: 2),
+                  _getDisplayContainer(position: position, column: 'date'),
+                  _getDisplayContainer(position: position, column: 'total'),
+                  _getDisplayContainer(position: position, column: 'spend'),
                 ]),
               ],
             ),
           ),
           onLongPress: () => _goOnedayInputScreen(
-              context: context, date: _monthData[position][0]),
+              context: context, date: _monthData[position]['date']),
         ),
       ),
       //actions: <Widget>[],
       secondaryActions: <Widget>[
         _getDetailDialogButton(position: position),
         IconSlideAction(
-          color: getBgColor(date: _monthData[position][0]),
+          color: getBgColor(date: _monthData[position]['date']),
           foregroundColor: Colors.blueAccent,
           icon: Icons.details,
           onTap: () => _goDetailDisplayScreen(
-              context: context, date: _monthData[position][0]),
+              context: context, date: _monthData[position]['date']),
         ),
         IconSlideAction(
-          color: getBgColor(date: _monthData[position][0]),
+          color: getBgColor(date: _monthData[position]['date']),
           foregroundColor: Colors.blueAccent,
           icon: Icons.input,
           onTap: () => _goOnedayInputScreen(
-              context: context, date: _monthData[position][0]),
+              context: context, date: _monthData[position]['date']),
         ),
       ],
     );
@@ -270,8 +275,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
    * ダイアログボタン表示
    */
   _getDetailDialogButton({int position}) {
-    var date = _monthData[position][0];
-    switch (_monthData[position][3]) {
+    var date = _monthData[position]['date'];
+    switch (_monthData[position]['flag']) {
       case '1':
         return IconSlideAction(
           color: getBgColor(date: date),
@@ -310,7 +315,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
 
     //----------------//
     String _creditStr = '';
-    var value = await database.selectDepositDateRecord(_monthData[position][0]);
+    var value =
+        await database.selectDepositDateRecord(_monthData[position]['date']);
     if (value.length > 0) {
       List<String> _cre = List();
       for (var i = 0; i < value.length; i++) {
@@ -327,7 +333,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
 
     //----------------//
     String _benefitStr = '';
-    var value2 = await database.selectBenefitRecord(_monthData[position][0]);
+    var value2 =
+        await database.selectBenefitRecord(_monthData[position]['date']);
     if (value2.length > 0) {
       List<String> _bene = List();
       for (var i = 0; i < value2.length; i++) {
@@ -344,7 +351,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
     //----------------//
 
     if (_bankPrice != 0) {
-      _onedaySpend = (int.parse(_monthData[position][2]) * -1) - _bankPrice;
+      _onedaySpend =
+          (int.parse(_monthData[position]['spend']) * -1) - _bankPrice;
       if (value2.length > 0) {
         _onedaySpend *= -1;
       }
@@ -418,7 +426,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
             Align(
               alignment: Alignment.topRight,
               child: Text(
-                (int.parse(_monthData[position][2]) * -1).toString(),
+                (int.parse(_monthData[position]['spend']) * -1).toString(),
                 style: TextStyle(
                   color: Colors.greenAccent,
                   fontSize: 12.0,
@@ -500,7 +508,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   /**
    * データコンテナ表示
    */
-  Widget _getDisplayContainer({int position, int column}) {
+  Widget _getDisplayContainer({int position, String column}) {
     return Container(
       alignment: _getDisplayAlign(column: column),
       child: getDisplayText(column: column, text: _monthData[position][column]),
@@ -510,15 +518,15 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   /**
    * データ表示位置取得
    */
-  _getDisplayAlign({int column}) {
+  _getDisplayAlign({String column}) {
     switch (column) {
-      case 0:
+      case 'date':
         return Alignment.topLeft;
         break;
-      case 1:
+      case 'total':
         return Alignment.topRight;
         break;
-      case 2:
+      case 'spend':
         return Alignment.topRight;
         break;
     }
@@ -527,9 +535,9 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   /**
    * 表示文言取得
    */
-  Widget getDisplayText({int column, String text}) {
+  Widget getDisplayText({String column, String text}) {
     switch (column) {
-      case 0:
+      case 'date':
         _utility.makeYMDYData(text, 0);
 
         return Text(
@@ -537,8 +545,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
           style: TextStyle(fontSize: 10),
         );
         break;
-      case 1:
-      case 2:
+      case 'total':
+      case 'spend':
         return Text(
           _utility.makeCurrencyDisplay(text),
           style: TextStyle(fontSize: 10),

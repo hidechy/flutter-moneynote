@@ -21,7 +21,7 @@ class _HolidaySettingScreenState extends State<HolidaySettingScreen> {
 
   String year;
 
-  List<List<dynamic>> _yearDateList = List();
+  List<Map<dynamic, dynamic>> _yearDateList = List();
 
   AutoScrollController controller;
 
@@ -54,10 +54,11 @@ class _HolidaySettingScreenState extends State<HolidaySettingScreen> {
 
       var ex_value = (value.toString()).split(' ');
 
-      _yearDateList.add([
-        i,
-        ex_value[0],
-      ]);
+      var _map = Map();
+      _map['no'] = i;
+      _map['date'] = ex_value[0];
+
+      _yearDateList.add(_map);
     }
 
     /////////////////////////////////////////////////////
@@ -108,17 +109,18 @@ class _HolidaySettingScreenState extends State<HolidaySettingScreen> {
       controller: controller,
       children: _yearDateList.map<Widget>((data) {
         return Card(
-          color: _utility.getListBgColor(data[1]),
+          color: _utility.getListBgColor(data['date']),
           elevation: 10.0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
           child: ListTile(
-            onTap: () => _holidaySetting(counter: data[0], date: data[1]),
+            onTap: () =>
+                _holidaySetting(counter: data['no'], date: data['date']),
             title: AutoScrollTag(
-              index: data[0],
-              child: Text('${data[1]}'),
-              key: ValueKey(data[0]),
+              index: data['no'],
+              child: Text('${data['date']}'),
+              key: ValueKey(data['no']),
               controller: controller,
             ),
           ),

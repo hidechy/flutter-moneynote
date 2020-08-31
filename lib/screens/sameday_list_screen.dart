@@ -23,7 +23,7 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
   List<Monie> _monieData = List();
 
   //同日リスト作成用
-  List<List<String>> _samedayData = List();
+  List<Map<dynamic, dynamic>> _samedayData = List();
 
   /**
   * 初期動作
@@ -146,10 +146,10 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
           child: Table(
             children: [
               TableRow(children: [
-                _getDisplayContainer(position: position, column: 0),
-                _getDisplayContainer(position: position, column: 2),
-                _getDisplayContainer(position: position, column: 1),
-                _getDisplayContainer(position: position, column: 3),
+                _getDisplayContainer(position: position, column: 'date'),
+                _getDisplayContainer(position: position, column: 'first'),
+                _getDisplayContainer(position: position, column: 'total'),
+                _getDisplayContainer(position: position, column: 'diff'),
               ]),
             ],
           ),
@@ -161,10 +161,10 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
   /**
    * データコンテナ表示
    */
-  Widget _getDisplayContainer({int position, int column}) {
+  Widget _getDisplayContainer({int position, String column}) {
     return Container(
       alignment: _getDisplayAlign(column: column),
-      child: (column == 0)
+      child: (column == 'date')
           ? Text(_samedayData[position][column])
           : Text(_utility.makeCurrencyDisplay(_samedayData[position][column])),
     );
@@ -173,18 +173,18 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
   /**
    * データ表示位置取得
    */
-  _getDisplayAlign({int column}) {
+  _getDisplayAlign({String column}) {
     switch (column) {
-      case 0:
+      case 'date':
         return Alignment.topLeft;
         break;
-      case 1:
+      case 'total':
         return Alignment.center;
         break;
-      case 2:
+      case 'first':
         return Alignment.center;
         break;
-      case 3:
+      case 'diff':
         return Alignment.topRight;
         break;
     }
@@ -212,12 +212,13 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
           var firstDayData =
               await getFirstDayData(dayDate: _monieData[i].strDate);
 
-          _samedayData.add([
-            _monieData[i].strDate,
-            total.toString(),
-            firstDayData.toString(),
-            ((firstDayData - total) * -1).toString()
-          ]);
+          var _map = Map();
+          _map['date'] = _monieData[i].strDate;
+          _map['total'] = total.toString();
+          _map['first'] = firstDayData.toString();
+          _map['diff'] = ((firstDayData - total) * -1).toString();
+
+          _samedayData.add(_map);
         } //if (int.parse(_utility.day) == int.parse(value))
       } //for[i]
     }

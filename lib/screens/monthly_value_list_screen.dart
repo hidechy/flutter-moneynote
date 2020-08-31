@@ -55,7 +55,7 @@ class _MonthlyValueListScreenState extends State<MonthlyValueListScreen> {
 
         if ('${year}-${month}' == '${_utility.year}-${_utility.month}') {
           var _map = Map();
-          _map["strDate"] = _utility.day;
+          _map["date"] = _utility.day;
 
           _map["strYen10000"] = _monieData[i].strYen10000;
           _map["strYen5000"] = _monieData[i].strYen5000;
@@ -133,7 +133,7 @@ class _MonthlyValueListScreenState extends State<MonthlyValueListScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           _utility.getBackGround(),
-          _alldayList(),
+          _monthlyValueList(),
         ],
       ),
     );
@@ -142,7 +142,7 @@ class _MonthlyValueListScreenState extends State<MonthlyValueListScreen> {
   /**
    * リスト表示
    */
-  _alldayList() {
+  _monthlyValueList() {
     return ListView.builder(
       itemCount: _monthlyValueData.length,
       itemBuilder: (context, int position) => _listItem(position: position),
@@ -154,8 +154,8 @@ class _MonthlyValueListScreenState extends State<MonthlyValueListScreen> {
    */
   _listItem({int position}) {
     return Card(
-      color: getBgColor(
-          date: '${_month}-${_monthlyValueData[position]['strDate']}'),
+      color:
+          getBgColor(date: '${_month}-${_monthlyValueData[position]['date']}'),
       elevation: 10.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -167,7 +167,7 @@ class _MonthlyValueListScreenState extends State<MonthlyValueListScreen> {
             children: [
               TableRow(children: [
                 Text(
-                  '${_monthlyValueData[position]['strDate']}',
+                  '${_monthlyValueData[position]['date']}',
                   style: TextStyle(
                     color: Colors.cyanAccent,
                     fontWeight: FontWeight.bold,

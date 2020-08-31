@@ -20,7 +20,7 @@ class DepositInputScreen extends StatefulWidget {
 class _DepositInputScreenState extends State<DepositInputScreen> {
   Utility _utility = Utility();
 
-  List<List<String>> _creditData = List();
+  List<Map<dynamic, dynamic>> _creditData = List();
 
   String _dialogSelectedDate = "";
 
@@ -91,13 +91,14 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
 
     if (credits != null) {
       for (int i = 0; i < credits.length; i++) {
-        _creditData.add([
-          credits[i].intId.toString(),
-          credits[i].strDate,
-          credits[i].strBank,
-          credits[i].strItem,
-          credits[i].strPrice,
-        ]);
+        var _map = Map();
+        _map['id'] = credits[i].intId.toString();
+        _map['date'] = credits[i].strDate;
+        _map['bank'] = credits[i].strBank;
+        _map['item'] = credits[i].strItem;
+        _map['price'] = credits[i].strPrice;
+
+        _creditData.add(_map);
       }
     }
 
@@ -321,10 +322,10 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
             child: Table(
               children: [
                 TableRow(children: [
-                  _getDisplayContainer(position: position, column: 1),
-                  _getDisplayContainer(position: position, column: 3),
-                  _getDisplayContainer(position: position, column: 4),
-                  _getDisplayContainer(position: position, column: 2),
+                  _getDisplayContainer(position: position, column: 'date'),
+                  _getDisplayContainer(position: position, column: 'item'),
+                  _getDisplayContainer(position: position, column: 'price'),
+                  _getDisplayContainer(position: position, column: 'bank'),
                 ]),
               ],
             ),
@@ -346,11 +347,12 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
   /**
   * データコンテナ表示
   */
-  Widget _getDisplayContainer({int position, int column}) {
+  Widget _getDisplayContainer({int position, String column}) {
     return Container(
-      alignment:
-          (column == 4 || column == 2) ? Alignment.topRight : Alignment.topLeft,
-      child: (column == 4)
+      alignment: (column == 'price' || column == 'bank')
+          ? Alignment.topRight
+          : Alignment.topLeft,
+      child: (column == 'price')
           ? Text(_utility.makeCurrencyDisplay(_creditData[position][column]))
           : Text(_creditData[position][column]),
     );
@@ -430,11 +432,11 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
   */
   _deleteRecord({int position}) async {
     var credit = Deposit(
-        intId: int.parse(_creditData[position][0]),
-        strDate: _creditData[position][1],
-        strBank: _creditData[position][2],
-        strItem: _creditData[position][3],
-        strPrice: _creditData[position][4]);
+        intId: int.parse(_creditData[position]['id']),
+        strDate: _creditData[position]['date'],
+        strBank: _creditData[position]['bank'],
+        strItem: _creditData[position]['item'],
+        strPrice: _creditData[position]['price']);
 
     await database.deleteDepositIdRecord(credit);
     Toast.show('データを削除しました', context, duration: Toast.LENGTH_LONG);

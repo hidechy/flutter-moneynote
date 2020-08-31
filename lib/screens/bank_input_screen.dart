@@ -21,7 +21,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
 
   String _dialogSelectedDate = "";
 
-  List<List<String>> _bankData = List();
+  List<Map<dynamic, dynamic>> _bankData = List();
 
   String _text = '';
   TextEditingController _teContPrice = TextEditingController();
@@ -156,12 +156,15 @@ class _BankInputScreenState extends State<BankInputScreen> {
         _utility.makeYMDYData(_monieData[i].strDate, 0);
 
         var _diffMark = (_prevValue != _value) ? 1 : 0;
-        _bankData.add([
-          _monieData[i].strDate,
-          _value.toString(),
-          _diffMark.toString(),
-          _utility.youbiNo.toString()
-        ]);
+
+        var _map = Map();
+        _map['date'] = _monieData[i].strDate;
+        _map['value'] = _value.toString();
+        _map['diffMark'] = _diffMark.toString();
+        _map['youbiNo'] = _utility.youbiNo.toString();
+
+        _bankData..add(_map);
+
         _prevValue = _value;
 
         _lastRecordDate = _monieData[i].strDate;
@@ -316,15 +319,15 @@ class _BankInputScreenState extends State<BankInputScreen> {
    */
   Widget _listItem({int position}) {
     return Card(
-      color: _getBgColor(date: _bankData[position][0]),
+      color: _getBgColor(date: _bankData[position]['date']),
       elevation: 10.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: ListTile(
-        leading: _getLeading(mark: _bankData[position][2]),
+        leading: _getLeading(mark: _bankData[position]['diffMark']),
         title: Text(
-          '${_bankData[position][0]}　${_utility.makeCurrencyDisplay(_bankData[position][1])}',
+          '${_bankData[position]['date']}　${_utility.makeCurrencyDisplay(_bankData[position]['value'])}',
           style: const TextStyle(
             color: Colors.white,
             fontSize: 12.0,

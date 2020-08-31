@@ -16,7 +16,7 @@ class ScoreListScreen extends StatefulWidget {
 class _ScoreListScreenState extends State<ScoreListScreen> {
   Utility _utility = Utility();
 
-  List<List<String>> _scoreData = List();
+  List<Map<dynamic, dynamic>> _scoreData = List();
 
   /**
   * 初期動作
@@ -124,14 +124,15 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
       int _score = ((prevTotal - thisTotal) * -1);
       int _minus = (_benefit > 0) ? (_benefit - _score) : (_score * -1);
 
-      _scoreData.add([
-        dispMonth,
-        prevTotal.toString(),
-        thisTotal.toString(),
-        _score.toString(),
-        _benefit.toString(),
-        _minus.toString()
-      ]);
+      var _map = Map();
+      _map['month'] = dispMonth;
+      _map['prev_total'] = prevTotal.toString();
+      _map['this_total'] = thisTotal.toString();
+      _map['score'] = _score.toString();
+      _map['benefit'] = _benefit.toString();
+      _map['minus'] = _minus.toString();
+
+      _scoreData.add(_map);
     } //for[i]
 
     setState(() {});
@@ -184,7 +185,10 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
             children: [
               TableRow(children: [
                 _getDisplayContainer(
-                    align: 'left', text: '', position: position, column: 0),
+                    align: 'left',
+                    text: '',
+                    position: position,
+                    column: 'month'),
                 Container(),
                 Container(),
                 Container(),
@@ -197,14 +201,20 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
                     position: null,
                     column: null),
                 _getDisplayContainer(
-                    align: 'right', text: '', position: position, column: 1),
+                    align: 'right',
+                    text: '',
+                    position: position,
+                    column: 'prev_total'),
                 _getDisplayContainer(
                     align: 'right',
                     text: 'end : ',
                     position: null,
                     column: null),
                 _getDisplayContainer(
-                    align: 'right', text: '', position: position, column: 2),
+                    align: 'right',
+                    text: '',
+                    position: position,
+                    column: 'this_total'),
                 Container(),
               ]),
               TableRow(children: [
@@ -214,14 +224,20 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
                     position: null,
                     column: null),
                 _getDisplayContainer(
-                    align: 'right', text: '', position: position, column: 3),
+                    align: 'right',
+                    text: '',
+                    position: position,
+                    column: 'score'),
                 _getDisplayContainer(
                     align: 'right',
                     text: 'spend : ',
                     position: null,
                     column: null),
                 _getDisplayContainer(
-                    align: 'right', text: '', position: position, column: 5),
+                    align: 'right',
+                    text: '',
+                    position: position,
+                    column: 'minus'),
                 Container(),
               ]),
               TableRow(children: [
@@ -231,7 +247,10 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
                     position: null,
                     column: null),
                 _getDisplayContainer(
-                    align: 'right', text: '', position: position, column: 4),
+                    align: 'right',
+                    text: '',
+                    position: position,
+                    column: 'benefit'),
                 Container(),
                 Container(),
                 Container(),
@@ -240,7 +259,7 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
           ),
         ),
         onLongPress: () => _goMonthlyListScreen(
-            context: context, date: '${_scoreData[position][0]}-01'),
+            context: context, date: '${_scoreData[position]['month']}-01'),
       ),
     );
   }
@@ -249,7 +268,7 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
   * データコンテナ表示
   */
   Widget _getDisplayContainer(
-      {String align, String text, int position, int column}) {
+      {String align, String text, int position, String column}) {
     return Container(
       alignment: (align == 'left') ? Alignment.topLeft : Alignment.topRight,
       child: (text != '') ? Text(text) : Text(_scoreData[position][column]),
