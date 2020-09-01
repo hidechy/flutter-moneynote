@@ -39,7 +39,7 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
   /**
   * 初期データ作成
   */
-  _makeDefaultDisplayData() async {
+  void _makeDefaultDisplayData() async {
     _menuItems.add(
       DropdownMenuItem(
         value: '',
@@ -173,7 +173,7 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
   /**
    * データ表示位置取得
    */
-  _getDisplayAlign({String column}) {
+  Alignment _getDisplayAlign({String column}) {
     switch (column) {
       case 'date':
         return Alignment.topLeft;
@@ -193,7 +193,7 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
   /**
   * プルダウン変更処理
   */
-  _makeSamedayList({value}) async {
+  void _makeSamedayList({value}) async {
     //プルダウンに選択された日付を表示する
     _numberOfMenu = value;
 
@@ -243,7 +243,7 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
   /**
   * 日付増減ボタン挙動
   */
-  _numberUpDown({int add}) {
+  void _numberUpDown({int add}) {
     var number = (_numberOfMenu == '') ? 0 : int.parse(_numberOfMenu);
     var num = number + add;
     if (num < 1) {

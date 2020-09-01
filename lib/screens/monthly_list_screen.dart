@@ -54,7 +54,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   /**
    * 初期データ作成
    */
-  _makeDefaultDisplayData() async {
+  void _makeDefaultDisplayData() async {
     _utility.makeYMDYData(widget.date, 0);
     year = _utility.year;
     month = _utility.month;
@@ -212,7 +212,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   /**
    * リスト表示
    */
-  _monthlyList() {
+  Widget _monthlyList() {
     return ListView.builder(
       itemCount: _monthData.length,
       itemBuilder: (context, int position) => _listItem(position: position),
@@ -227,7 +227,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
       actionPane: const SlidableDrawerActionPane(),
       actionExtentRatio: 0.15,
       child: Card(
-        color: getBgColor(date: _monthData[position]['date']),
+        color: _getBgColor(date: _monthData[position]['date']),
         elevation: 10.0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
@@ -254,14 +254,14 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
       secondaryActions: <Widget>[
         _getDetailDialogButton(position: position),
         IconSlideAction(
-          color: getBgColor(date: _monthData[position]['date']),
+          color: _getBgColor(date: _monthData[position]['date']),
           foregroundColor: Colors.blueAccent,
           icon: Icons.details,
           onTap: () => _goDetailDisplayScreen(
               context: context, date: _monthData[position]['date']),
         ),
         IconSlideAction(
-          color: getBgColor(date: _monthData[position]['date']),
+          color: _getBgColor(date: _monthData[position]['date']),
           foregroundColor: Colors.blueAccent,
           icon: Icons.input,
           onTap: () => _goOnedayInputScreen(
@@ -274,12 +274,12 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   /**
    * ダイアログボタン表示
    */
-  _getDetailDialogButton({int position}) {
+  Widget _getDetailDialogButton({int position}) {
     var date = _monthData[position]['date'];
     switch (_monthData[position]['flag']) {
       case '1':
         return IconSlideAction(
-          color: getBgColor(date: date),
+          color: _getBgColor(date: date),
           foregroundColor: Colors.blueAccent,
           icon: Icons.business,
           onTap: () => _displayDialog(position: position),
@@ -288,7 +288,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
 
       case '2':
         return IconSlideAction(
-          color: getBgColor(date: date),
+          color: _getBgColor(date: date),
           foregroundColor: Colors.orangeAccent,
           icon: Icons.beenhere,
           onTap: () => _displayDialog(position: position),
@@ -297,7 +297,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
 
       default:
         return IconSlideAction(
-          color: getBgColor(date: date),
+          color: _getBgColor(date: date),
           foregroundColor: Color(0xFF2e2e2e),
           icon: Icons.check_box_outline_blank,
         );
@@ -308,7 +308,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   /**
    * ダイアログ表示
    */
-  _displayDialog({int position}) async {
+  void _displayDialog({int position}) async {
     String _title = '';
     int _onedaySpend = 0;
     int _bankPrice = 0;
@@ -479,7 +479,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   /**
    * 背景色取得
    */
-  getBgColor({String date}) {
+  Color _getBgColor({String date}) {
     _utility.makeYMDYData(date, 0);
 
     Color _color = null;
@@ -511,14 +511,15 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   Widget _getDisplayContainer({int position, String column}) {
     return Container(
       alignment: _getDisplayAlign(column: column),
-      child: getDisplayText(column: column, text: _monthData[position][column]),
+      child:
+          _getDisplayText(column: column, text: _monthData[position][column]),
     );
   }
 
   /**
    * データ表示位置取得
    */
-  _getDisplayAlign({String column}) {
+  Alignment _getDisplayAlign({String column}) {
     switch (column) {
       case 'date':
         return Alignment.topLeft;
@@ -535,7 +536,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   /**
    * 表示文言取得
    */
-  Widget getDisplayText({String column, String text}) {
+  Widget _getDisplayText({String column, String text}) {
     switch (column) {
       case 'date':
         _utility.makeYMDYData(text, 0);
@@ -560,7 +561,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   /**
    * 画面遷移（MonthlyListScreen）
    */
-  _goMonthlyListScreen({BuildContext context, String date}) {
+  void _goMonthlyListScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -574,7 +575,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   /**
    * 画面遷移（OnedayInputScreen）
    */
-  _goOnedayInputScreen({BuildContext context, String date}) {
+  void _goOnedayInputScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -588,7 +589,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   /**
    * 画面遷移（DetailDisplayScreen）
    */
-  _goDetailDisplayScreen({BuildContext context, String date}) async {
+  void _goDetailDisplayScreen({BuildContext context, String date}) async {
     var detailDisplayArgs = await _utility.getDetailDisplayArgs(date);
     _utility.makeYMDYData(date, 0);
 

@@ -8,7 +8,7 @@ class Utility {
   /**
    * 背景取得
    */
-  getBackGround() {
+  Widget getBackGround() {
     return Image.asset(
       'assets/image/bg.png',
       fit: BoxFit.cover,
@@ -27,7 +27,7 @@ class Utility {
   String youbiStr;
   int youbiNo;
 
-  makeYMDYData(String date, int noneDay) {
+  void makeYMDYData(String date, int noneDay) {
     List explodedDate = date.split(' ');
     List explodedSelectedDate = explodedDate[0].split('-');
     year = explodedSelectedDate[0];
@@ -79,7 +79,7 @@ class Utility {
    * 月末日取得
    */
   String monthEndDateTime;
-  makeMonthEnd(int year, int month, int day) {
+  void makeMonthEnd(int year, int month, int day) {
     monthEndDateTime = new DateTime(year, month, day).toString();
   }
 
@@ -89,7 +89,7 @@ class Utility {
   int total = 0;
   int temochi = 0;
   int undercoin = 0;
-  makeTotal(Monie money) {
+  void makeTotal(Monie money) {
     List<List<int>> _totalValue = List();
     _totalValue.add([10000, int.parse(money.strYen10000)]);
     _totalValue.add([5000, int.parse(money.strYen5000)]);
@@ -140,7 +140,7 @@ class Utility {
    * 金額を3桁区切りで表示する
    */
   final formatter = NumberFormat("#,###");
-  makeCurrencyDisplay(String text) {
+  String makeCurrencyDisplay(String text) {
     return formatter.format(int.parse(text));
   }
 
@@ -148,7 +148,7 @@ class Utility {
    * 休業日情報を取得する
    */
   Map<String, dynamic> _holidayList = Map();
-  getHolidayList() async {
+  void getHolidayList() async {
     var holidays = await database.selectHolidaySortedAllRecord;
     if (holidays.length > 0) {
       for (int i = 0; i < holidays.length; i++) {
@@ -160,7 +160,7 @@ class Utility {
   /**
    * リストの背景色を取得する
    */
-  getListBgColor(String date) {
+  Color getListBgColor(String date) {
     makeYMDYData(date, 0);
 
     Color _color = null;
@@ -190,7 +190,7 @@ class Utility {
   /**
    * 詳細画面表示情報を取得する
    */
-  getDetailDisplayArgs(String date) async {
+  Future<Map> getDetailDisplayArgs(String date) async {
     Map _monieArgs = Map();
 
     makeYMDYData(date, 0);

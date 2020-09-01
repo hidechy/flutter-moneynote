@@ -48,7 +48,7 @@ class _BanknameSettingScreenState extends State<BanknameSettingScreen> {
   /**
    * 初期データ作成
    */
-  _makeDefaultDisplayData() async {
+  void _makeDefaultDisplayData() async {
     var values = await database.selectBanknameSortedAllRecord;
 
     if (values.length > 0) {
@@ -265,7 +265,7 @@ class _BanknameSettingScreenState extends State<BanknameSettingScreen> {
     );
   }
 
-  _insertRecord({BuildContext context}) async {
+  void _insertRecord({BuildContext context}) async {
     List<String> insertBanks = List();
 
     insertBanks.add('bank_a');
@@ -339,7 +339,7 @@ class _BanknameSettingScreenState extends State<BanknameSettingScreen> {
   /**
    * 画面遷移（BanknameSettingScreen）
    */
-  _goBanknameSettingScreen() {
+  void _goBanknameSettingScreen() {
     Navigator.push(
       context,
       MaterialPageRoute(

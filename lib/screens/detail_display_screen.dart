@@ -96,7 +96,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 初期データ作成
    */
-  _makeDefaultDisplayData() async {
+  void _makeDefaultDisplayData() async {
     _utility.makeYMDYData(widget.date, 0);
 
     displayYear = _utility.year;
@@ -230,13 +230,13 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           _utility.getBackGround(),
-          DetailDisplayBox(context),
+          _detailDisplayBox(context),
         ],
       ),
     );
   }
 
-  Row DetailDisplayBox(BuildContext context) {
+  Widget _detailDisplayBox(BuildContext context) {
     return Row(
       children: <Widget>[
         Expanded(
@@ -879,7 +879,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * リスト表示
    */
-  _monthDaysList() {
+  Widget _monthDaysList() {
     return ListView(
       scrollDirection: Axis.vertical,
       controller: controller,
@@ -932,7 +932,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
             fontSize: 12,
           ),
           child: Text(
-            getDisplayText(text: text, currencyDisp: currencyDisp),
+            _getDisplayText(text: text, currencyDisp: currencyDisp),
           ),
         ),
       );
@@ -940,14 +940,14 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
       if (undercoin == true) {
         return Center(
           child: Text(
-            getDisplayText(text: text, currencyDisp: currencyDisp),
+            _getDisplayText(text: text, currencyDisp: currencyDisp),
             style: TextStyle(color: Colors.orangeAccent),
           ),
         );
       } else {
         return Center(
           child: Text(
-            getDisplayText(text: text, currencyDisp: currencyDisp),
+            _getDisplayText(text: text, currencyDisp: currencyDisp),
           ),
         );
       }
@@ -957,7 +957,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 表示テキスト取得
    */
-  String getDisplayText({String text, bool currencyDisp}) {
+  String _getDisplayText({String text, bool currencyDisp}) {
     if (currencyDisp) {
       return _utility.makeCurrencyDisplay(text);
     } else {
@@ -1101,7 +1101,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * デートピッカー表示
    */
-  _showDatepicker({BuildContext context}) async {
+  void _showDatepicker({BuildContext context}) async {
     final selectedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -1144,7 +1144,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（前日）
    */
-  _goPrevDate({BuildContext context}) {
+  void _goPrevDate({BuildContext context}) {
     _utility.makeYMDYData(prevDate.toString(), 0);
 
     _goDetailDisplayScreen(
@@ -1157,7 +1157,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（翌日）
    */
-  _goNextDate({BuildContext context}) {
+  void _goNextDate({BuildContext context}) {
     _utility.makeYMDYData(nextDate.toString(), 0);
 
     _goDetailDisplayScreen(
@@ -1170,7 +1170,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（月内指定日）
    */
-  _goMonthDay({BuildContext context, int position}) {
+  void _goMonthDay({BuildContext context, int position}) {
     _goDetailDisplayScreen(
         context: context,
         date:
@@ -1181,7 +1181,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（DetailDisplayScreen）
    */
-  _goDetailDisplayScreen({BuildContext context, String date, int index}) async {
+  void _goDetailDisplayScreen(
+      {BuildContext context, String date, int index}) async {
     var detailDisplayArgs = await _utility.getDetailDisplayArgs(date);
 
     Navigator.pushReplacement(
@@ -1199,7 +1200,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（OnedayInputScreen）
    */
-  _goOnedayInputScreen({BuildContext context, String date}) {
+  void _goOnedayInputScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -1213,7 +1214,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（ScoreListScreen）
    */
-  _goScoreListScreen({BuildContext context, String date}) {
+  void _goScoreListScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -1227,7 +1228,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（MonthlyListScreen）
    */
-  _goMonthlyListScreen({BuildContext context, String date}) {
+  void _goMonthlyListScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -1241,7 +1242,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（BankInputScreen）
    */
-  _goBankInputScreen({BuildContext context, String date}) {
+  void _goBankInputScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -1255,7 +1256,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（SamedayDisplayScreen）
    */
-  _goSamedayListScreen({BuildContext context, String date}) {
+  void _goSamedayListScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -1269,7 +1270,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（BenefitInputScreen）
    */
-  _goBenefitInputScreen({BuildContext context, String date}) {
+  void _goBenefitInputScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -1283,7 +1284,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（AlldayListScreen）
    */
-  _goAlldayListScreen({BuildContext context, String date}) {
+  void _goAlldayListScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -1297,7 +1298,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（DepositInputScreen）
    */
-  _goDepositInputScreen({BuildContext context, String date}) {
+  void _goDepositInputScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -1312,7 +1313,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（SettingBaseScreen）
    */
-  _goSettingBaseScreen() {
+  void _goSettingBaseScreen() {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -1324,7 +1325,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（MonthlyValueListScreen）
    */
-  _goMonthlyValueListScreen({BuildContext context, String date}) {
+  void _goMonthlyValueListScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

@@ -38,7 +38,7 @@ class _HolidaySettingScreenState extends State<HolidaySettingScreen> {
   /**
    * 初期データ作成
    */
-  _makeDefaultDisplayData() async {
+  void _makeDefaultDisplayData() async {
     /////////////////////////////////////////////////////
     _utility.makeYMDYData(widget.date, 0);
     year = _utility.year;
@@ -103,7 +103,7 @@ class _HolidaySettingScreenState extends State<HolidaySettingScreen> {
   /**
    * リスト表示
    */
-  _hidukeList() {
+  Widget _hidukeList() {
     return ListView(
       scrollDirection: Axis.vertical,
       controller: controller,
@@ -132,7 +132,7 @@ class _HolidaySettingScreenState extends State<HolidaySettingScreen> {
   /**
    * 休業日設定
    */
-  _holidaySetting({int counter, String date}) async {
+  void _holidaySetting({int counter, String date}) async {
     var holiday = await database.selectHolidayRecord(date);
 
     var value = Holiday(strDate: date);
@@ -155,7 +155,7 @@ class _HolidaySettingScreenState extends State<HolidaySettingScreen> {
   /**
    * 画面遷移（_goHolidaySettingScreen）
    */
-  _goHolidaySettingScreen({int counter}) {
+  void _goHolidaySettingScreen({int counter}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

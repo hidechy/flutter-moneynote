@@ -43,7 +43,7 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   /**
   * 初期データ作成
   */
-  _makeDefaultDisplayData() async {
+  void _makeDefaultDisplayData() async {
     _utility.makeYMDYData(widget.date, 0);
     _dialogSelectedDate = '${_utility.year}-${_utility.month}-${_utility.day}';
 
@@ -145,7 +145,7 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   /**
   * リスト表示
   */
-  _benefitList() {
+  Widget _benefitList() {
     return ListView.builder(
       itemCount: _benefitData.length,
       itemBuilder: (context, int position) => _listItem(position: position),
@@ -251,7 +251,7 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   /**
   * デートピッカー表示
   */
-  _showDatepicker({BuildContext context}) async {
+  void _showDatepicker({BuildContext context}) async {
     final selectedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -305,7 +305,7 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   /**
   * データ作成/更新
   */
-  _insertRecord({BuildContext context}) async {
+  void _insertRecord({BuildContext context}) async {
     if (_teContCompany.text == '') {
       Toast.show('companyが入力されていないため登録できません。', context,
           duration: Toast.LENGTH_LONG);
@@ -338,7 +338,7 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   /**
   * データ削除
   */
-  _deleteRecord({int position}) async {
+  void _deleteRecord({int position}) async {
     var benefit = Benefit(
       strDate: _benefitData[position]['date'],
       strCompany: _benefitData[position]['company'],
@@ -355,7 +355,7 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   /**
   * 画面遷移（BenefitInputScreen）
   */
-  _goBenefitInputScreen({BuildContext context, String date}) {
+  void _goBenefitInputScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

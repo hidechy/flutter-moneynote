@@ -75,7 +75,7 @@ class _SettingBaseScreenState extends State<SettingBaseScreen> {
   /**
    * 画面遷移（HolidayYearListScreen）
    */
-  _goHolidaySettingScreen() {
+  void _goHolidaySettingScreen() {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -87,7 +87,7 @@ class _SettingBaseScreenState extends State<SettingBaseScreen> {
   /**
    * 画面遷移（BanknameSettingScreen）
    */
-  _goBanknameSettingScreen() {
+  void _goBanknameSettingScreen() {
     Navigator.push(
       context,
       MaterialPageRoute(

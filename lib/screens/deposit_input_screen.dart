@@ -48,7 +48,7 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
   /**
   * 初期データ作成
   */
-  _makeDefaultDisplayData() async {
+  void _makeDefaultDisplayData() async {
     _dialogSelectedDate = widget.date;
 
 //------------------------------------//プルダウンデータ取得
@@ -286,7 +286,7 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
   /**
   * プルダウン変更処理
   */
-  _makeCreditItemList({value}) async {
+  void _makeCreditItemList({value}) async {
     //プルダウンに選択された日付を表示する
     _numberOfMenu = value;
 
@@ -296,7 +296,7 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
   /**
   * リスト表示
   */
-  _creditList() {
+  Widget _creditList() {
     return ListView.builder(
       itemCount: _creditData.length,
       itemBuilder: (context, int position) => _listItem(position: position),
@@ -361,7 +361,7 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
   /**
   * デートピッカー表示
   */
-  _showDatepicker({BuildContext context}) async {
+  void _showDatepicker({BuildContext context}) async {
     final selectedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -405,7 +405,7 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
   /**
   * データ作成/更新
   */
-  _insertRecord({BuildContext context}) async {
+  dynamic _insertRecord({BuildContext context}) async {
     if (_teContPrice.text == '0') {
       Toast.show('金額が入力されていません', context, duration: Toast.LENGTH_LONG);
       return false;
@@ -430,7 +430,7 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
   /**
   * データ削除
   */
-  _deleteRecord({int position}) async {
+  void _deleteRecord({int position}) async {
     var credit = Deposit(
         intId: int.parse(_creditData[position]['id']),
         strDate: _creditData[position]['date'],
@@ -448,7 +448,7 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
   /**
   * データ検索
   */
-  _searchRecord({BuildContext context, String date}) {
+  dynamic _searchRecord({BuildContext context, String date}) {
     if (_numberOfMenu == '') {
       Toast.show('勘定科目が入力されていません', context, duration: Toast.LENGTH_LONG);
       return false;
@@ -468,7 +468,7 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
   /**
   * 画面遷移（CreditRecordInputScreen）
   */
-  _goCreditRecordInputScreen({BuildContext context, String date}) {
+  void _goCreditRecordInputScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

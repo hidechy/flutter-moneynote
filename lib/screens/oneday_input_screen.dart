@@ -84,7 +84,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   /**
   * 初期データ作成
   */
-  _makeDefaultDisplayData() async {
+  void _makeDefaultDisplayData() async {
     _utility.makeYMDYData(widget.date, 0);
     year = _utility.year;
     month = _utility.month;
@@ -395,7 +395,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   /**
   * 前日データのコピー
   */
-  _dataCopy() async {
+  void _dataCopy() async {
     _utility.makeYMDYData(prevDate.toString(), 0);
     _monieData = await database
         .selectRecord('${_utility.year}-${_utility.month}-${_utility.day}');
@@ -437,21 +437,21 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   /**
   * 画面遷移（前日）
   */
-  _goPrevDate({BuildContext context}) {
+  void _goPrevDate({BuildContext context}) {
     _goAnotherDate(context: context, date: prevDate.toString());
   }
 
   /**
   * 画面遷移（翌日）
   */
-  _goNextDate({BuildContext context}) {
+  void _goNextDate({BuildContext context}) {
     _goAnotherDate(context: context, date: nextDate.toString());
   }
 
   /**
   * デートピッカー表示
   */
-  _showDatepicker({BuildContext context}) async {
+  void _showDatepicker({BuildContext context}) async {
     final selectedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -491,7 +491,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   /**
   * データ作成/更新
   */
-  _insertRecord({BuildContext context}) async {
+  void _insertRecord({BuildContext context}) async {
     var monie = Monie(
       strDate: _date,
       strYen10000: _teCont10000.text != "" ? _teCont10000.text : '0',
@@ -538,7 +538,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   /**
   * 合計金額表示
   */
-  _displayTotal() async {
+  void _displayTotal() async {
     //-------------------------------//現在の合計値
     _onedayTotal = 0;
 
@@ -595,7 +595,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   /**
   * 画面遷移（指定日）
   */
-  _goAnotherDate({BuildContext context, String date}) {
+  void _goAnotherDate({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -609,7 +609,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   /**
   * 画面遷移（MonthlyListScreen）
   */
-  _goMonthlyListScreen({BuildContext context, String date}) {
+  void _goMonthlyListScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -623,7 +623,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   /**
   * 画面遷移（DetailDisplayScreen）
   */
-  _goDetailDisplayScreen({BuildContext context, String date}) async {
+  void _goDetailDisplayScreen({BuildContext context, String date}) async {
     var detailDisplayArgs = await _utility.getDetailDisplayArgs(date);
     _utility.makeYMDYData(date, 0);
 

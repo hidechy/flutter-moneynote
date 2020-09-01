@@ -32,7 +32,7 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   /**
    * 初期データ作成
    */
-  _makeDefaultDisplayData() async {
+  void _makeDefaultDisplayData() async {
     //全データ取得
     var _monieData = await database.selectSortedAllRecord;
     if (_monieData.length > 0) {
@@ -87,7 +87,7 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   /**
    * リスト表示
    */
-  _alldayList() {
+  Widget _alldayList() {
     return ListView.builder(
       itemCount: _alldayData.length,
       itemBuilder: (context, int position) => _listItem(position: position),
@@ -97,9 +97,9 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   /**
    * リストアイテム表示
    */
-  _listItem({int position}) {
+  Widget _listItem({int position}) {
     return Card(
-      color: getBgColor(date: _alldayData[position]['date']),
+      color: _getBgColor(date: _alldayData[position]['date']),
       elevation: 10.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -124,7 +124,7 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   /**
    * 背景色取得
    */
-  getBgColor({String date}) {
+  Color _getBgColor({String date}) {
     _utility.makeYMDYData(date, 0);
 
     Color _color = null;
@@ -157,7 +157,7 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
     return Container(
       alignment: (column == 'total') ? Alignment.topCenter : Alignment.topLeft,
       child: Text(
-        getDisplayText(
+        _getDisplayText(
           text: _alldayData[position][column],
           column: column,
         ),
@@ -168,7 +168,7 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   /**
    * 表示テキスト取得
    */
-  String getDisplayText({String text, String column}) {
+  String _getDisplayText({String text, String column}) {
     switch (column) {
       case 'date':
         _utility.makeYMDYData(text, 0);

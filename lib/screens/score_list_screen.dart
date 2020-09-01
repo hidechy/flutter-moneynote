@@ -31,7 +31,7 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
   /**
   * 初期データ作成
   */
-  _makeDefaultDisplayData() async {
+  void _makeDefaultDisplayData() async {
     ///////////////////////////////////benefit
     var val2 = await database.selectBenefitSortedAllRecord;
     var _beneInfo = Map();
@@ -161,7 +161,7 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
   /**
   * リスト表示
   */
-  _scoreList() {
+  Widget _scoreList() {
     return ListView.builder(
       itemCount: _scoreData.length,
       itemBuilder: (context, int position) => _listItem(position: position),
@@ -278,7 +278,7 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
   /**
    * 画面遷移（MonthlyListScreen）
    */
-  _goMonthlyListScreen({BuildContext context, String date}) {
+  void _goMonthlyListScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

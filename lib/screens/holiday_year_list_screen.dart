@@ -27,7 +27,7 @@ class _HolidayYearListScreenState extends State<HolidayYearListScreen> {
   /**
    * 初期データ作成
    */
-  _makeDefaultDisplayData() async {
+  void _makeDefaultDisplayData() async {
     _utility.makeYMDYData(DateTime.now().toString(), 0);
 
     for (int i = 2019; i < int.parse(_utility.year) + 5; i++) {
@@ -60,7 +60,7 @@ class _HolidayYearListScreenState extends State<HolidayYearListScreen> {
   /**
    * リスト表示
    */
-  _alldayList() {
+  Widget _alldayList() {
     return ListView.builder(
       itemCount: _yearData.length,
       itemBuilder: (context, int position) => _listItem(position: position),
@@ -70,9 +70,9 @@ class _HolidayYearListScreenState extends State<HolidayYearListScreen> {
   /**
    * リストアイテム表示
    */
-  _listItem({int position}) {
+  Widget _listItem({int position}) {
     return Card(
-      color: getBgColor(position: position),
+      color: _getBgColor(position: position),
       elevation: 10.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -91,7 +91,7 @@ class _HolidayYearListScreenState extends State<HolidayYearListScreen> {
   /**
    * 背景色取得
    */
-  getBgColor({int position}) {
+  Color _getBgColor({int position}) {
     Color _color = null;
     _color = Colors.black.withOpacity(0.3);
     return _color;
@@ -102,7 +102,7 @@ class _HolidayYearListScreenState extends State<HolidayYearListScreen> {
   /**
    * 画面遷移（_goHolidaySettingScreen）
    */
-  _goHolidaySettingScreen({BuildContext context, int position}) {
+  void _goHolidaySettingScreen({BuildContext context, int position}) {
     var date = '${_yearData[position]}-01-01';
 
     Navigator.push(

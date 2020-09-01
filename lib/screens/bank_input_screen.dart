@@ -47,7 +47,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
   /**
    * 初期データ作成
    */
-  _makeDefaultDisplayData() async {
+  void _makeDefaultDisplayData() async {
     _utility.makeYMDYData(widget.date, 0);
 
     _dialogSelectedDate = '${_utility.year}-${_utility.month}-01';
@@ -60,7 +60,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
   /**
    * 表示データ作成
    */
-  _getBankValue() async {
+  void _getBankValue() async {
     var _monieData = await database.selectSortedAllRecord;
     int _value = 0;
     int _prevValue = 0;
@@ -340,7 +340,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
   /**
    * 背景色取得
    */
-  _getBgColor({String date}) {
+  Color _getBgColor({String date}) {
     _utility.makeYMDYData(date, 0);
 
     Color _color = null;
@@ -418,7 +418,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
   /**
    * デートピッカー表示
    */
-  _showDatepicker({BuildContext context}) async {
+  void _showDatepicker({BuildContext context}) async {
     final selectedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -461,7 +461,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
   /**
    * レコード更新
    */
-  _updateRecord({BuildContext context}) async {
+  dynamic _updateRecord({BuildContext context}) async {
     if (_teContPrice.text == '0') {
       Toast.show('金額が入力されていません', context, duration: Toast.LENGTH_LONG);
       return false;

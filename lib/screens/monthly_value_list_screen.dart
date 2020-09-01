@@ -39,7 +39,7 @@ class _MonthlyValueListScreenState extends State<MonthlyValueListScreen> {
   /**
    * 初期データ作成
    */
-  _makeDefaultDisplayData() async {
+  void _makeDefaultDisplayData() async {
     _utility.makeYMDYData(widget.date, 0);
     year = _utility.year;
     month = _utility.month;
@@ -142,7 +142,7 @@ class _MonthlyValueListScreenState extends State<MonthlyValueListScreen> {
   /**
    * リスト表示
    */
-  _monthlyValueList() {
+  Widget _monthlyValueList() {
     return ListView.builder(
       itemCount: _monthlyValueData.length,
       itemBuilder: (context, int position) => _listItem(position: position),
@@ -152,10 +152,10 @@ class _MonthlyValueListScreenState extends State<MonthlyValueListScreen> {
   /**
    * リストアイテム表示
    */
-  _listItem({int position}) {
+  Widget _listItem({int position}) {
     return Card(
       color:
-          getBgColor(date: '${_month}-${_monthlyValueData[position]['date']}'),
+          _getBgColor(date: '${_month}-${_monthlyValueData[position]['date']}'),
       elevation: 10.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -215,7 +215,7 @@ class _MonthlyValueListScreenState extends State<MonthlyValueListScreen> {
   /**
    * 背景色取得
    */
-  getBgColor({String date}) {
+  Color _getBgColor({String date}) {
     _utility.makeYMDYData(date, 0);
 
     Color _color = null;
@@ -246,7 +246,7 @@ class _MonthlyValueListScreenState extends State<MonthlyValueListScreen> {
   /**
    * 画面遷移（MonthlyValueListScreen）
    */
-  _goMonthlyValueListScreen({BuildContext context, String date}) {
+  void _goMonthlyValueListScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
