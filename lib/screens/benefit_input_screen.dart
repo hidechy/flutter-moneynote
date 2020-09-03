@@ -172,9 +172,9 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
               children: [
                 TableRow(
                   children: [
-                    _getDisplayContainer(position: position, column: 0),
-                    _getDisplayContainer(position: position, column: 1),
-                    _getDisplayContainer(position: position, column: 2),
+                    _getDisplayContainer(position: position, column: 'date'),
+                    _getDisplayContainer(position: position, column: 'company'),
+                    _getDisplayContainer(position: position, column: 'price'),
                   ],
                 ),
               ],
@@ -197,7 +197,7 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   /**
   * データコンテナ表示
   */
-  Widget _getDisplayContainer({int position, int column}) {
+  Widget _getDisplayContainer({int position, String column}) {
     return Container(
       alignment: Alignment.topLeft,
       child: Text(
@@ -209,16 +209,16 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   /**
    * 表示テキスト取得
    */
-  String getDisplayText({String text, int column}) {
+  String getDisplayText({String text, String column}) {
     switch (column) {
-      case 0:
+      case 'date':
         _utility.makeYMDYData(text, 0);
         return '${text}（${_utility.youbiStr}）';
         break;
-      case 1:
+      case 'company':
         return text;
         break;
-      case 2:
+      case 'price':
         return _utility.makeCurrencyDisplay(text);
         break;
     }
