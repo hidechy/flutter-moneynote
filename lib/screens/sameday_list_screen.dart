@@ -93,6 +93,7 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
                       Padding(
                         padding: const EdgeInsets.only(left: 20.0),
                         child: DropdownButton(
+                          dropdownColor: Colors.black.withOpacity(0.1),
                           items: _menuItems,
                           value: _numberOfMenu,
                           onChanged: (value) => _makeSamedayList(value: value),

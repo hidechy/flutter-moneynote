@@ -202,6 +202,7 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 20.0),
                             child: DropdownButton(
+                              dropdownColor: Colors.black.withOpacity(0.1),
                               items: _bankItems,
                               value: _numberOfMenu,
                               onChanged: (value) =>
