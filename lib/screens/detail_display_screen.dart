@@ -83,6 +83,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
 
   Map<String, String> bankNames = Map();
 
+  Map<String, dynamic> _holidayList = Map();
+
   /**
    * 初期動作
    */
@@ -201,6 +203,14 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
       }
     }
 
+    //holiday
+    var holidays = await database.selectHolidaySortedAllRecord;
+    if (holidays.length > 0) {
+      for (int i = 0; i < holidays.length; i++) {
+        _holidayList[holidays[i].strDate] = '';
+      }
+    }
+
     setState(() {});
   }
 
@@ -211,6 +221,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.black.withOpacity(0.1),
         title: const Text('所持金額'),
         centerTitle: true,
         actions: <Widget>[
@@ -887,8 +898,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
         return (data[0] == 0)
             ? Container()
             : Card(
-                color: _utility.getListBgColor(
-                    '${displayYear}-${displayMonth}-${data[1]}'),
+                color: getBgColor('${displayYear}-${displayMonth}-${data[1]}'),
                 elevation: 10.0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
@@ -913,6 +923,35 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
               );
       }).toList(),
     );
+  }
+
+  /**
+   * 背景色取得
+   */
+  getBgColor(String date) {
+    _utility.makeYMDYData(date, 0);
+
+    Color _color = null;
+
+    switch (_utility.youbiNo) {
+      case 0:
+        _color = Colors.redAccent[700].withOpacity(0.3);
+        break;
+
+      case 6:
+        _color = Colors.blueAccent[700].withOpacity(0.3);
+        break;
+
+      default:
+        _color = Colors.black.withOpacity(0.3);
+        break;
+    }
+
+    if (_holidayList[date] != null) {
+      _color = Colors.greenAccent[700].withOpacity(0.3);
+    }
+
+    return _color;
   }
 
   /**

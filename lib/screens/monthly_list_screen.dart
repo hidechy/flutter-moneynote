@@ -150,6 +150,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.black.withOpacity(0.1),
         title: Text(_month),
         actions: <Widget>[
           IconButton(
@@ -227,7 +228,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
       actionPane: const SlidableDrawerActionPane(),
       actionExtentRatio: 0.15,
       child: Card(
-        color: _utility.getListBgColor(_monthData[position]['date']),
+        color: getBgColor(_monthData[position]['date']),
         elevation: 10.0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
@@ -254,14 +255,14 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
       secondaryActions: <Widget>[
         _getDetailDialogButton(position: position),
         IconSlideAction(
-          color: _utility.getListBgColor(_monthData[position]['date']),
+          color: getBgColor(_monthData[position]['date']),
           foregroundColor: Colors.blueAccent,
           icon: Icons.details,
           onTap: () => _goDetailDisplayScreen(
               context: context, date: _monthData[position]['date']),
         ),
         IconSlideAction(
-          color: _utility.getListBgColor(_monthData[position]['date']),
+          color: getBgColor(_monthData[position]['date']),
           foregroundColor: Colors.blueAccent,
           icon: Icons.input,
           onTap: () => _goOnedayInputScreen(
@@ -272,6 +273,35 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   }
 
   /**
+   * 背景色取得
+   */
+  getBgColor(String date) {
+    _utility.makeYMDYData(date, 0);
+
+    Color _color = null;
+
+    switch (_utility.youbiNo) {
+      case 0:
+        _color = Colors.redAccent[700].withOpacity(0.3);
+        break;
+
+      case 6:
+        _color = Colors.blueAccent[700].withOpacity(0.3);
+        break;
+
+      default:
+        _color = Colors.black.withOpacity(0.3);
+        break;
+    }
+
+    if (_holidayList[date] != null) {
+      _color = Colors.greenAccent[700].withOpacity(0.3);
+    }
+
+    return _color;
+  }
+
+  /**
    * ダイアログボタン表示
    */
   Widget _getDetailDialogButton({int position}) {
@@ -279,7 +309,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
     switch (_monthData[position]['flag']) {
       case '1':
         return IconSlideAction(
-          color: _utility.getListBgColor(date),
+          color: getBgColor(date),
           foregroundColor: Colors.blueAccent,
           icon: Icons.business,
           onTap: () => _displayDialog(position: position),
@@ -288,7 +318,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
 
       case '2':
         return IconSlideAction(
-          color: _utility.getListBgColor(date),
+          color: getBgColor(date),
           foregroundColor: Colors.orangeAccent,
           icon: Icons.beenhere,
           onTap: () => _displayDialog(position: position),
@@ -297,7 +327,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
 
       default:
         return IconSlideAction(
-          color: _utility.getListBgColor(date),
+          color: getBgColor(date),
           foregroundColor: Color(0xFF2e2e2e),
           icon: Icons.check_box_outline_blank,
         );

@@ -120,6 +120,7 @@ class _BanknameSettingScreenState extends State<BanknameSettingScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.black.withOpacity(0.1),
         title: const Text('銀行名設定'),
         centerTitle: true,
         actions: <Widget>[],

@@ -145,6 +145,7 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.black.withOpacity(0.1),
         title: const Text('Score List'),
         centerTitle: true,
       ),

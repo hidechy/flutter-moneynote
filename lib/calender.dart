@@ -35,6 +35,7 @@ class _CalenderState extends State<Calender> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.black.withOpacity(0.1),
         title: const Text("money note"),
         centerTitle: true,
         actions: <Widget>[

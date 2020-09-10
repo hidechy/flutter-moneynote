@@ -145,49 +145,6 @@ class Utility {
   }
 
   /**
-   * 休業日情報を取得する
-   */
-  Map<String, dynamic> _holidayList = Map();
-  void getHolidayList() async {
-    var holidays = await database.selectHolidaySortedAllRecord;
-    if (holidays.length > 0) {
-      for (int i = 0; i < holidays.length; i++) {
-        _holidayList[holidays[i].strDate] = '';
-      }
-    }
-  }
-
-  /**
-   * リストの背景色を取得する
-   */
-  Color getListBgColor(String date) {
-    makeYMDYData(date, 0);
-
-    Color _color = null;
-
-    switch (youbiNo) {
-      case 0:
-        _color = Colors.redAccent[700].withOpacity(0.3);
-        break;
-
-      case 6:
-        _color = Colors.blueAccent[700].withOpacity(0.3);
-        break;
-
-      default:
-        _color = Colors.black.withOpacity(0.3);
-        break;
-    }
-
-    getHolidayList();
-    if (_holidayList[date] != null) {
-      _color = Colors.greenAccent[700].withOpacity(0.3);
-    }
-
-    return _color;
-  }
-
-  /**
    * 詳細画面表示情報を取得する
    */
   Future<Map> getDetailDisplayArgs(String date) async {

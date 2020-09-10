@@ -112,6 +112,7 @@ class _MonthlyValueListScreenState extends State<MonthlyValueListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.black.withOpacity(0.1),
         title: Text('${_month}'),
         centerTitle: true,
         actions: <Widget>[
@@ -154,8 +155,7 @@ class _MonthlyValueListScreenState extends State<MonthlyValueListScreen> {
    */
   Widget _listItem({int position}) {
     return Card(
-      color: _utility
-          .getListBgColor('${_month}-${_monthlyValueData[position]['date']}'),
+      color: getBgColor('${_month}-${_monthlyValueData[position]['date']}'),
       elevation: 10.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -210,6 +210,35 @@ class _MonthlyValueListScreenState extends State<MonthlyValueListScreen> {
         ),
       ),
     );
+  }
+
+  /**
+   * 背景色取得
+   */
+  getBgColor(String date) {
+    _utility.makeYMDYData(date, 0);
+
+    Color _color = null;
+
+    switch (_utility.youbiNo) {
+      case 0:
+        _color = Colors.redAccent[700].withOpacity(0.3);
+        break;
+
+      case 6:
+        _color = Colors.blueAccent[700].withOpacity(0.3);
+        break;
+
+      default:
+        _color = Colors.black.withOpacity(0.3);
+        break;
+    }
+
+    if (_holidayList[date] != null) {
+      _color = Colors.greenAccent[700].withOpacity(0.3);
+    }
+
+    return _color;
   }
 
   ///////////////////////////////////////////////////////////////////// 画面遷移

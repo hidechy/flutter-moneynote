@@ -82,6 +82,7 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.black.withOpacity(0.1),
         title: const Text('Benefit'),
         centerTitle: true,
       ),

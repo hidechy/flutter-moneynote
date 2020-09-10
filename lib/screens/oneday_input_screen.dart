@@ -153,6 +153,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.black.withOpacity(0.1),
         title: Text('${_date}(${youbiStr})'),
         centerTitle: true,
         actions: <Widget>[

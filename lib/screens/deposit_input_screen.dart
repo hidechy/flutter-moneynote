@@ -160,6 +160,7 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.black.withOpacity(0.1),
         title: Text('通帳履歴'),
         centerTitle: true,
       ),
