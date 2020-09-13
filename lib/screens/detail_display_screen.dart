@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moneynote/screens/spend_detail_display_screen.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 import '../main.dart';
@@ -286,53 +287,65 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                           fontSize: 14,
                           fontFamily: "Yomogi",
                         ),
-                        child: Table(
-                          children: [
-                            TableRow(children: [
-                              _getTextDispWidget(
-                                  text: 'total',
-                                  greyDisp: false,
-                                  value: '',
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _total.toString(),
-                                  greyDisp: false,
-                                  value: '',
-                                  undercoin: false,
-                                  currencyDisp: true),
-                              const Align(),
-                            ]),
-                            TableRow(children: [
-                              _getTextDispWidget(
-                                  text: 'spend',
-                                  greyDisp: false,
-                                  value: '',
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _spend.toString(),
-                                  greyDisp: false,
-                                  value: '',
-                                  undercoin: false,
-                                  currencyDisp: true),
-                              const Align(),
-                            ]),
-                            TableRow(children: [
-                              _getTextDispWidget(
-                                  text: 'month spend',
-                                  greyDisp: false,
-                                  value: '',
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _monthSpend.toString(),
-                                  greyDisp: false,
-                                  value: '',
-                                  undercoin: false,
-                                  currencyDisp: true),
-                              const Align(),
-                            ]),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: Table(
+                                children: [
+                                  TableRow(children: [
+                                    _getTextDispWidget(
+                                        text: 'total',
+                                        greyDisp: false,
+                                        value: '',
+                                        undercoin: false,
+                                        currencyDisp: false),
+                                    _getTextDispWidget(
+                                        text: _total.toString(),
+                                        greyDisp: false,
+                                        value: '',
+                                        undercoin: false,
+                                        currencyDisp: true),
+                                  ]),
+                                  TableRow(children: [
+                                    _getTextDispWidget(
+                                        text: 'spend',
+                                        greyDisp: false,
+                                        value: '',
+                                        undercoin: false,
+                                        currencyDisp: false),
+                                    _getTextDispWidget(
+                                        text: _spend.toString(),
+                                        greyDisp: false,
+                                        value: '',
+                                        undercoin: false,
+                                        currencyDisp: true),
+                                  ]),
+                                  TableRow(children: [
+                                    _getTextDispWidget(
+                                        text: 'month spend',
+                                        greyDisp: false,
+                                        value: '',
+                                        undercoin: false,
+                                        currencyDisp: false),
+                                    _getTextDispWidget(
+                                        text: _monthSpend.toString(),
+                                        greyDisp: false,
+                                        value: '',
+                                        undercoin: false,
+                                        currencyDisp: true),
+                                  ]),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              width: 80,
+                              child: IconButton(
+                                color: Colors.greenAccent,
+                                icon: Icon(Icons.info),
+                                onPressed: () => _goSpendDetailDisplayScreen(
+                                    context: context, date: displayDate),
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -1371,5 +1384,16 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
         builder: (context) => MonthlyValueListScreen(date: date),
       ),
     );
+  }
+
+  /**
+   * 画面遷移（MonthlyValueListScreen）
+   */
+  _goSpendDetailDisplayScreen({BuildContext context, String date}) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SpendDetailDisplayScreen(date: date),
+        ));
   }
 }
