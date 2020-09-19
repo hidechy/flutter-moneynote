@@ -19,11 +19,11 @@ class HolidaySettingScreen extends StatefulWidget {
 class _HolidaySettingScreenState extends State<HolidaySettingScreen> {
   Utility _utility = Utility();
 
-  String year;
+  String _year = '';
 
   List<Map<dynamic, dynamic>> _yearDateList = List();
 
-  AutoScrollController controller;
+  AutoScrollController _controller = AutoScrollController();
 
   Map<String, dynamic> _holidayList = Map();
 
@@ -43,7 +43,7 @@ class _HolidaySettingScreenState extends State<HolidaySettingScreen> {
   void _makeDefaultDisplayData() async {
     /////////////////////////////////////////////////////
     _utility.makeYMDYData(widget.date, 0);
-    year = _utility.year;
+    _year = _utility.year;
 
     var nextYearFirstDate = new DateTime(int.parse(_utility.year) + 1, 1, 1);
 
@@ -64,7 +64,7 @@ class _HolidaySettingScreenState extends State<HolidaySettingScreen> {
     }
 
     /////////////////////////////////////////////////////
-    controller = AutoScrollController(
+    _controller = AutoScrollController(
       viewportBoundaryGetter: () => Rect.fromLTRB(
         0,
         0,
@@ -74,7 +74,7 @@ class _HolidaySettingScreenState extends State<HolidaySettingScreen> {
       axis: Axis.vertical,
     );
 
-    await controller.scrollToIndex(widget.point,
+    await _controller.scrollToIndex(widget.point,
         preferPosition: AutoScrollPosition.begin);
 
     /////////////////////////////////////////////////////
@@ -98,7 +98,7 @@ class _HolidaySettingScreenState extends State<HolidaySettingScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black.withOpacity(0.1),
-        title: Text('Holiday Setting [${year}]'),
+        title: Text('Holiday Setting [${_year}]'),
         centerTitle: true,
       ),
       body: Stack(
@@ -117,10 +117,10 @@ class _HolidaySettingScreenState extends State<HolidaySettingScreen> {
   Widget _hidukeList() {
     return ListView(
       scrollDirection: Axis.vertical,
-      controller: controller,
+      controller: _controller,
       children: _yearDateList.map<Widget>((data) {
         return Card(
-          color: getBgColor(data['date']),
+          color: _utility.getBgColor(data['date'], _holidayList),
           elevation: 10.0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
@@ -132,41 +132,12 @@ class _HolidaySettingScreenState extends State<HolidaySettingScreen> {
               index: data['no'],
               child: Text('${data['date']}'),
               key: ValueKey(data['no']),
-              controller: controller,
+              controller: _controller,
             ),
           ),
         );
       }).toList(),
     );
-  }
-
-  /**
-   * 背景色取得
-   */
-  getBgColor(String date) {
-    _utility.makeYMDYData(date, 0);
-
-    Color _color = null;
-
-    switch (_utility.youbiNo) {
-      case 0:
-        _color = Colors.redAccent[700].withOpacity(0.3);
-        break;
-
-      case 6:
-        _color = Colors.blueAccent[700].withOpacity(0.3);
-        break;
-
-      default:
-        _color = Colors.black.withOpacity(0.3);
-        break;
-    }
-
-    if (_holidayList[date] != null) {
-      _color = Colors.greenAccent[700].withOpacity(0.3);
-    }
-
-    return _color;
   }
 
   /**

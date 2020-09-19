@@ -16,15 +16,15 @@ class _MonthlyValueListScreenState extends State<MonthlyValueListScreen> {
 
   List<Map<dynamic, dynamic>> _monthlyValueData = List();
 
-  String year;
-  String month;
+  String _year = '';
+  String _month = '';
 
-  String _month;
+  String _yearmonth = '';
 
   Map<String, dynamic> _holidayList = Map();
 
-  DateTime prevMonth;
-  DateTime nextMonth;
+  DateTime _prevMonth; //初期化わからない
+  DateTime _nextMonth; //初期化わからない
 
   /**
    * 初期動作
@@ -41,10 +41,10 @@ class _MonthlyValueListScreenState extends State<MonthlyValueListScreen> {
    */
   void _makeDefaultDisplayData() async {
     _utility.makeYMDYData(widget.date, 0);
-    year = _utility.year;
-    month = _utility.month;
+    _year = _utility.year;
+    _month = _utility.month;
 
-    _month = '${year}-${month}';
+    _yearmonth = '${_year}-${_month}';
 
     //全データ取得
     var _monieData = await database.selectSortedAllRecord;
@@ -53,7 +53,7 @@ class _MonthlyValueListScreenState extends State<MonthlyValueListScreen> {
       for (int i = 0; i < _monieData.length; i++) {
         _utility.makeYMDYData(_monieData[i].strDate, 0);
 
-        if ('${year}-${month}' == '${_utility.year}-${_utility.month}') {
+        if ('${_year}-${_month}' == '${_utility.year}-${_utility.month}') {
           var _map = Map();
           _map["date"] = _utility.day;
 
@@ -99,8 +99,8 @@ class _MonthlyValueListScreenState extends State<MonthlyValueListScreen> {
       }
     }
 
-    prevMonth = new DateTime(int.parse(year), int.parse(month) - 1, 1);
-    nextMonth = new DateTime(int.parse(year), int.parse(month) + 1, 1);
+    _prevMonth = new DateTime(int.parse(_year), int.parse(_month) - 1, 1);
+    _nextMonth = new DateTime(int.parse(_year), int.parse(_month) + 1, 1);
 
     setState(() {});
   }
@@ -118,19 +118,19 @@ class _MonthlyValueListScreenState extends State<MonthlyValueListScreen> {
           CustomScrollView(
             slivers: <Widget>[
               SliverAppBar(
-                title: Text('${_month}'),
+                title: Text('${_yearmonth}'),
                 actions: <Widget>[
                   IconButton(
                     icon: const Icon(Icons.skip_previous),
                     tooltip: '前日',
                     onPressed: () => _goMonthlyValueListScreen(
-                        context: context, date: prevMonth.toString()),
+                        context: context, date: _prevMonth.toString()),
                   ),
                   IconButton(
                     icon: const Icon(Icons.skip_next),
                     tooltip: '翌日',
                     onPressed: () => _goMonthlyValueListScreen(
-                        context: context, date: nextMonth.toString()),
+                        context: context, date: _nextMonth.toString()),
                   ),
                 ],
                 backgroundColor: Colors.black.withOpacity(0.1),
@@ -166,7 +166,8 @@ class _MonthlyValueListScreenState extends State<MonthlyValueListScreen> {
    */
   Widget _listItem({int position}) {
     return Card(
-      color: getBgColor('${_month}-${_monthlyValueData[position]['date']}'),
+      color: _utility.getBgColor(
+          '${_yearmonth}-${_monthlyValueData[position]['date']}', _holidayList),
       elevation: 10.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -221,35 +222,6 @@ class _MonthlyValueListScreenState extends State<MonthlyValueListScreen> {
         ),
       ),
     );
-  }
-
-  /**
-   * 背景色取得
-   */
-  getBgColor(String date) {
-    _utility.makeYMDYData(date, 0);
-
-    Color _color = null;
-
-    switch (_utility.youbiNo) {
-      case 0:
-        _color = Colors.redAccent[700].withOpacity(0.3);
-        break;
-
-      case 6:
-        _color = Colors.blueAccent[700].withOpacity(0.3);
-        break;
-
-      default:
-        _color = Colors.black.withOpacity(0.3);
-        break;
-    }
-
-    if (_holidayList[date] != null) {
-      _color = Colors.greenAccent[700].withOpacity(0.3);
-    }
-
-    return _color;
   }
 
   ///////////////////////////////////////////////////////////////////// 画面遷移

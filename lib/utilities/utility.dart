@@ -173,4 +173,33 @@ class Utility {
 
     return _monieArgs;
   }
+
+/**
+ * 背景色取得
+ */
+  getBgColor(String date, Map _holidayList) {
+    makeYMDYData(date, 0);
+
+    Color _color = null;
+
+    switch (youbiNo) {
+      case 0:
+        _color = Colors.redAccent[700].withOpacity(0.3);
+        break;
+
+      case 6:
+        _color = Colors.blueAccent[700].withOpacity(0.3);
+        break;
+
+      default:
+        _color = Colors.black.withOpacity(0.3);
+        break;
+    }
+
+    if (_holidayList[date] != null) {
+      _color = Colors.greenAccent[700].withOpacity(0.3);
+    }
+
+    return _color;
+  }
 }

@@ -26,13 +26,13 @@ class _BankInputScreenState extends State<BankInputScreen> {
   String _text = '';
   TextEditingController _teContPrice = TextEditingController();
 
-  String _lastRecordDate;
+  String _lastRecordDate = '';
 
   Map _dispFlag = Map();
 
   Map<String, dynamic> _holidayList = Map();
 
-  Map<String, String> bankNames = Map();
+  Map<String, String> _bankNames = Map();
 
   /**
    * 初期動作
@@ -184,7 +184,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
 
     if (values.length > 0) {
       for (int i = 0; i < values.length; i++) {
-        bankNames[values[i].strBank] = values[i].strName;
+        _bankNames[values[i].strBank] = values[i].strName;
       }
     }
 
@@ -337,7 +337,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
    */
   Widget _listItem({int position}) {
     return Card(
-      color: getBgColor(_bankData[position]['date']),
+      color: _utility.getBgColor(_bankData[position]['date'], _holidayList),
       elevation: 10.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -353,35 +353,6 @@ class _BankInputScreenState extends State<BankInputScreen> {
         ),
       ),
     );
-  }
-
-  /**
-   * 背景色取得
-   */
-  getBgColor(String date) {
-    _utility.makeYMDYData(date, 0);
-
-    Color _color = null;
-
-    switch (_utility.youbiNo) {
-      case 0:
-        _color = Colors.redAccent[700].withOpacity(0.3);
-        break;
-
-      case 6:
-        _color = Colors.blueAccent[700].withOpacity(0.3);
-        break;
-
-      default:
-        _color = Colors.black.withOpacity(0.3);
-        break;
-    }
-
-    if (_holidayList[date] != null) {
-      _color = Colors.greenAccent[700].withOpacity(0.3);
-    }
-
-    return _color;
   }
 
   /**
@@ -407,8 +378,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
   Widget _getChoiceChip({String selectedChip}) {
     var dispBank = selectedChip;
     var btnActive = false;
-    if (bankNames[selectedChip] != "" && bankNames[selectedChip] != null) {
-      dispBank = bankNames[selectedChip];
+    if (_bankNames[selectedChip] != "" && _bankNames[selectedChip] != null) {
+      dispBank = _bankNames[selectedChip];
       btnActive = true;
     }
 

@@ -21,17 +21,17 @@ class OnedayInputScreen extends StatefulWidget {
 class _OnedayInputScreenState extends State<OnedayInputScreen> {
   Utility _utility = Utility();
 
-  String year;
-  String month;
-  String day;
-  String youbiStr;
+  String _year = '';
+  String _month = '';
+  String _day = '';
+  String _youbiStr = '';
 
-  String _date;
+  String _date = '';
 
-  DateTime prevDate;
-  DateTime nextDate;
+  DateTime _prevDate; //初期化わからない
+  DateTime _nextDate; //初期化わからない
 
-  List<Monie> _monieData;
+  List<Monie> _monieData = List();
 
   String _text = '';
 
@@ -69,7 +69,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   int _onedayTotal = 0;
   int _onedaySpend = 0;
 
-  Map<String, String> bankNames = Map();
+  Map<String, String> _bankNames = Map();
 
   /**
   * 初期動作
@@ -86,16 +86,16 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   */
   void _makeDefaultDisplayData() async {
     _utility.makeYMDYData(widget.date, 0);
-    year = _utility.year;
-    month = _utility.month;
-    day = _utility.day;
-    youbiStr = _utility.youbiStr;
-    _date = '${year}-${month}-${day}';
+    _year = _utility.year;
+    _month = _utility.month;
+    _day = _utility.day;
+    _youbiStr = _utility.youbiStr;
+    _date = '${_year}-${_month}-${_day}';
 
-    prevDate =
-        new DateTime(int.parse(year), int.parse(month), int.parse(day) - 1);
-    nextDate =
-        new DateTime(int.parse(year), int.parse(month), int.parse(day) + 1);
+    _prevDate =
+        new DateTime(int.parse(_year), int.parse(_month), int.parse(_day) - 1);
+    _nextDate =
+        new DateTime(int.parse(_year), int.parse(_month), int.parse(_day) + 1);
 
     //データベースのレコードを取得
     _monieData = await database.selectRecord(_date);
@@ -137,7 +137,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
 
     if (values.length > 0) {
       for (int i = 0; i < values.length; i++) {
-        bankNames[values[i].strBank] = values[i].strName;
+        _bankNames[values[i].strBank] = values[i].strName;
       }
     }
 
@@ -154,7 +154,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black.withOpacity(0.1),
-        title: Text('${_date}(${youbiStr})'),
+        title: Text('${_date}(${_youbiStr})'),
         centerTitle: true,
         actions: <Widget>[
           IconButton(
@@ -366,8 +366,8 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   */
   Widget _getTextField({String yen, TextEditingController con}) {
     var dispYen = yen;
-    if (bankNames[yen] != "" && bankNames[yen] != null) {
-      dispYen = bankNames[yen];
+    if (_bankNames[yen] != "" && _bankNames[yen] != null) {
+      dispYen = _bankNames[yen];
     }
 
     return Padding(
@@ -397,7 +397,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   * 前日データのコピー
   */
   void _dataCopy() async {
-    _utility.makeYMDYData(prevDate.toString(), 0);
+    _utility.makeYMDYData(_prevDate.toString(), 0);
     _monieData = await database
         .selectRecord('${_utility.year}-${_utility.month}-${_utility.day}');
 
@@ -439,14 +439,14 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
   * 画面遷移（前日）
   */
   void _goPrevDate({BuildContext context}) {
-    _goAnotherDate(context: context, date: prevDate.toString());
+    _goAnotherDate(context: context, date: _prevDate.toString());
   }
 
   /**
   * 画面遷移（翌日）
   */
   void _goNextDate({BuildContext context}) {
-    _goAnotherDate(context: context, date: nextDate.toString());
+    _goAnotherDate(context: context, date: _nextDate.toString());
   }
 
   /**
@@ -580,7 +580,7 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
     //-------------------------------//現在の合計値
 
     //-------------------------------//前日の合計値
-    _utility.makeYMDYData(prevDate.toString(), 0);
+    _utility.makeYMDYData(_prevDate.toString(), 0);
     var prevDayData = await database
         .selectRecord('${_utility.year}-${_utility.month}-${_utility.day}');
     _utility.makeTotal(prevDayData[0]);

@@ -19,19 +19,17 @@ class MonthlyListScreen extends StatefulWidget {
 class _MonthlyListScreenState extends State<MonthlyListScreen> {
   Utility _utility = Utility();
 
-  String year;
-  String month;
-  String day;
-  String _month;
-  String youbiStr;
+  String _year = '';
+  String _month = '';
+  String _yearmonth = '';
 
-  DateTime prevMonth;
-  DateTime nextMonth;
+  DateTime _prevMonth; //初期化わからない
+  DateTime _nextMonth; //初期化わからない
 
-  String _prevMonthEndDateTime;
-  String _prevMonthEndDate;
-  String _thisMonthEndDateTime;
-  String _thisMonthEndDay;
+  String _prevMonthEndDateTime = '';
+  String _prevMonthEndDate = '';
+  String _thisMonthEndDateTime = '';
+  String _thisMonthEndDay = '';
 
   List<Map<dynamic, dynamic>> _monthData = List();
 
@@ -56,25 +54,22 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
    */
   void _makeDefaultDisplayData() async {
     _utility.makeYMDYData(widget.date, 0);
-    year = _utility.year;
-    month = _utility.month;
-    day = _utility.day;
+    _year = _utility.year;
+    _month = _utility.month;
 
-    _month = '${year}-${month}';
+    _yearmonth = '${_year}-${_month}';
 
-    youbiStr = _utility.youbiStr;
-
-    prevMonth = new DateTime(int.parse(year), int.parse(month) - 1, 1);
-    nextMonth = new DateTime(int.parse(year), int.parse(month) + 1, 1);
+    _prevMonth = new DateTime(int.parse(_year), int.parse(_month) - 1, 1);
+    _nextMonth = new DateTime(int.parse(_year), int.parse(_month) + 1, 1);
 
     //--------------------------------------//
-    _utility.makeMonthEnd(int.parse(year), int.parse(month), 0);
+    _utility.makeMonthEnd(int.parse(_year), int.parse(_month), 0);
     _prevMonthEndDateTime = _utility.monthEndDateTime;
 
     _utility.makeYMDYData(_prevMonthEndDateTime, 0);
     _prevMonthEndDate = '${_utility.year}-${_utility.month}-${_utility.day}';
 
-    _utility.makeMonthEnd(int.parse(year), int.parse(month) + 1, 0);
+    _utility.makeMonthEnd(int.parse(_year), int.parse(_month) + 1, 0);
     _thisMonthEndDateTime = _utility.monthEndDateTime;
 
     _utility.makeYMDYData(_thisMonthEndDateTime, 0);
@@ -91,7 +86,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
     var _yesterdaySpend = 0;
     _monthData = List();
     for (int i = 1; i <= int.parse(_thisMonthEndDay); i++) {
-      var _thisDay = '${year}-${month}-${i.toString().padLeft(2, '0')}';
+      var _thisDay = '${_year}-${_month}-${i.toString().padLeft(2, '0')}';
 
       var _thisDayTotal = 0;
       var _monieData = await database.selectRecord(_thisDay);
@@ -156,19 +151,19 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
           CustomScrollView(
             slivers: <Widget>[
               SliverAppBar(
-                title: Text('${_month}'),
+                title: Text('${_yearmonth}'),
                 actions: <Widget>[
                   IconButton(
                     icon: const Icon(Icons.skip_previous),
                     tooltip: '前日',
                     onPressed: () => _goMonthlyListScreen(
-                        context: context, date: prevMonth.toString()),
+                        context: context, date: _prevMonth.toString()),
                   ),
                   IconButton(
                     icon: const Icon(Icons.skip_next),
                     tooltip: '翌日',
                     onPressed: () => _goMonthlyListScreen(
-                        context: context, date: nextMonth.toString()),
+                        context: context, date: _nextMonth.toString()),
                   ),
                 ],
                 backgroundColor: Colors.black.withOpacity(0.1),
@@ -242,7 +237,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
       actionPane: const SlidableDrawerActionPane(),
       actionExtentRatio: 0.15,
       child: Card(
-        color: getBgColor(_monthData[position]['date']),
+        color: _utility.getBgColor(_monthData[position]['date'], _holidayList),
         elevation: 10.0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
@@ -269,14 +264,16 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
       secondaryActions: <Widget>[
         _getDetailDialogButton(position: position),
         IconSlideAction(
-          color: getBgColor(_monthData[position]['date']),
+          color:
+              _utility.getBgColor(_monthData[position]['date'], _holidayList),
           foregroundColor: Colors.blueAccent,
           icon: Icons.details,
           onTap: () => _goDetailDisplayScreen(
               context: context, date: _monthData[position]['date']),
         ),
         IconSlideAction(
-          color: getBgColor(_monthData[position]['date']),
+          color:
+              _utility.getBgColor(_monthData[position]['date'], _holidayList),
           foregroundColor: Colors.blueAccent,
           icon: Icons.input,
           onTap: () => _goOnedayInputScreen(
@@ -287,35 +284,6 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   }
 
   /**
-   * 背景色取得
-   */
-  getBgColor(String date) {
-    _utility.makeYMDYData(date, 0);
-
-    Color _color = null;
-
-    switch (_utility.youbiNo) {
-      case 0:
-        _color = Colors.redAccent[700].withOpacity(0.3);
-        break;
-
-      case 6:
-        _color = Colors.blueAccent[700].withOpacity(0.3);
-        break;
-
-      default:
-        _color = Colors.black.withOpacity(0.3);
-        break;
-    }
-
-    if (_holidayList[date] != null) {
-      _color = Colors.greenAccent[700].withOpacity(0.3);
-    }
-
-    return _color;
-  }
-
-  /**
    * ダイアログボタン表示
    */
   Widget _getDetailDialogButton({int position}) {
@@ -323,7 +291,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
     switch (_monthData[position]['flag']) {
       case '1':
         return IconSlideAction(
-          color: getBgColor(date),
+          color: _utility.getBgColor(date, _holidayList),
           foregroundColor: Colors.blueAccent,
           icon: Icons.business,
           onTap: () => _displayDialog(position: position),
@@ -332,7 +300,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
 
       case '2':
         return IconSlideAction(
-          color: getBgColor(date),
+          color: _utility.getBgColor(date, _holidayList),
           foregroundColor: Colors.orangeAccent,
           icon: Icons.beenhere,
           onTap: () => _displayDialog(position: position),
@@ -341,7 +309,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
 
       default:
         return IconSlideAction(
-          color: getBgColor(date),
+          color: _utility.getBgColor(date, _holidayList),
           foregroundColor: Color(0xFF2e2e2e),
           icon: Icons.check_box_outline_blank,
         );

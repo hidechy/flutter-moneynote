@@ -22,8 +22,6 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   TextEditingController _teContCompany = TextEditingController();
   TextEditingController _teContPrice = TextEditingController();
 
-  String youbiStr;
-
   String _dialogSelectedDate = "";
 
   bool _updateFlag = false;
@@ -202,7 +200,7 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
     return Container(
       alignment: Alignment.topLeft,
       child: Text(
-        getDisplayText(text: _benefitData[position][column], column: column),
+        _getDisplayText(text: _benefitData[position][column], column: column),
       ),
     );
   }
@@ -210,7 +208,7 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   /**
    * 表示テキスト取得
    */
-  String getDisplayText({String text, String column}) {
+  String _getDisplayText({String text, String column}) {
     switch (column) {
       case 'date':
         _utility.makeYMDYData(text, 0);

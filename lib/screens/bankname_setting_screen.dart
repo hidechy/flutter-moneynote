@@ -33,7 +33,7 @@ class _BanknameSettingScreenState extends State<BanknameSettingScreen> {
   TextEditingController _teContPayG = TextEditingController(text: '');
   TextEditingController _teContPayH = TextEditingController(text: '');
 
-  Map<String, String> bankNames = Map();
+  Map<String, String> _bankNames = Map();
 
   /**
    * 初期動作
@@ -53,7 +53,7 @@ class _BanknameSettingScreenState extends State<BanknameSettingScreen> {
 
     if (values.length > 0) {
       for (int i = 0; i < values.length; i++) {
-        bankNames[values[i].strBank] = values[i].strName;
+        _bankNames[values[i].strBank] = values[i].strName;
 
         switch (values[i].strBank) {
           case 'bank_a':
@@ -312,7 +312,7 @@ class _BanknameSettingScreenState extends State<BanknameSettingScreen> {
         var bankname =
             Bankname(strBank: insertBanks[i], strName: insertNames[i]);
 
-        var updateFlag = (bankNames[insertBanks[i]] != null) ? true : false;
+        var updateFlag = (_bankNames[insertBanks[i]] != null) ? true : false;
 
         if (updateFlag) {
           //テーブルに登録されている
@@ -320,7 +320,7 @@ class _BanknameSettingScreenState extends State<BanknameSettingScreen> {
             //今回の値が空白の場合は削除
             database.deleteBanknameRecord(bankname);
           } else {
-            if (bankNames[insertBanks[i]] != insertNames[i]) {
+            if (_bankNames[insertBanks[i]] != insertNames[i]) {
               //前回の値と異なる場合は更新
               database.updateBanknameRecord(bankname);
             }

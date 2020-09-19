@@ -212,7 +212,7 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
           var total = _utility.total;
 
           var firstDayData =
-              await getFirstDayData(dayDate: _monieData[i].strDate);
+              await _getFirstDayData(dayDate: _monieData[i].strDate);
 
           var _map = Map();
           _map['date'] = _monieData[i].strDate;
@@ -228,7 +228,7 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
     setState(() {});
   }
 
-  Future<int> getFirstDayData({String dayDate}) async {
+  Future<int> _getFirstDayData({String dayDate}) async {
     var ex_dayDate = (dayDate).split('-');
     var lastMonthLastDay =
         DateTime(int.parse(ex_dayDate[0]), int.parse(ex_dayDate[1]), 0);

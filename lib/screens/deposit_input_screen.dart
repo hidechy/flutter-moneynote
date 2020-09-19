@@ -33,7 +33,7 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
   String _text = '';
   TextEditingController _teContPrice = TextEditingController();
 
-  Map<String, String> bankNames = Map();
+  Map<String, String> _bankNames = Map();
 
   /**
   * 初期動作
@@ -53,7 +53,7 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
 
 //------------------------------------//プルダウンデータ取得
     var _items;
-    await loadAsset('assets/file/bankitems.txt').then((dynamic output) {
+    await _loadAsset('assets/file/bankitems.txt').then((dynamic output) {
       _items = output;
     });
     var _explodedItems = _items.toString().split('|');
@@ -109,7 +109,7 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
 
     if (values.length > 0) {
       for (int i = 0; i < values.length; i++) {
-        bankNames[values[i].strBank] = values[i].strName;
+        _bankNames[values[i].strBank] = values[i].strName;
       }
     }
 
@@ -119,7 +119,7 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
   /**
   * ファイル読み込み
   */
-  Future<String> loadAsset(String path) async {
+  Future<String> _loadAsset(String path) async {
     return await rootBundle.loadString(path);
   }
 
@@ -129,8 +129,8 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
   Widget _getChoiceChip({String selectedChip}) {
     var dispBank = selectedChip;
     var btnActive = false;
-    if (bankNames[selectedChip] != "" && bankNames[selectedChip] != null) {
-      dispBank = bankNames[selectedChip];
+    if (_bankNames[selectedChip] != "" && _bankNames[selectedChip] != null) {
+      dispBank = _bankNames[selectedChip];
       btnActive = true;
     }
 
