@@ -20,7 +20,7 @@ class DepositInputScreen extends StatefulWidget {
 class _DepositInputScreenState extends State<DepositInputScreen> {
   Utility _utility = Utility();
 
-  List<Map<dynamic, dynamic>> _creditData = List();
+  List<Map<dynamic, dynamic>> _depositData = List();
 
   String _dialogSelectedDate = "";
 
@@ -82,23 +82,23 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
     _numberOfMenu = _bankItems[0].value;
 
     //------------------------------------//リストデータ取得
-    var credits = null;
+    var deposit = null;
     if (widget.searchitem == null) {
-      credits = await database.selectDepositSortedAllRecord;
+      deposit = await database.selectDepositSortedAllRecord;
     } else {
-      credits = await database.selectDepositItemRecord(widget.searchitem);
+      deposit = await database.selectDepositItemRecord(widget.searchitem);
     }
 
-    if (credits != null) {
-      for (int i = 0; i < credits.length; i++) {
+    if (deposit != null) {
+      for (int i = 0; i < deposit.length; i++) {
         var _map = Map();
-        _map['id'] = credits[i].intId.toString();
-        _map['date'] = credits[i].strDate;
-        _map['bank'] = credits[i].strBank;
-        _map['item'] = credits[i].strItem;
-        _map['price'] = credits[i].strPrice;
+        _map['id'] = deposit[i].intId.toString();
+        _map['date'] = deposit[i].strDate;
+        _map['bank'] = deposit[i].strBank;
+        _map['item'] = deposit[i].strItem;
+        _map['price'] = deposit[i].strPrice;
 
-        _creditData.add(_map);
+        _depositData.add(_map);
       }
     }
 
@@ -207,7 +207,7 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
                               items: _bankItems,
                               value: _numberOfMenu,
                               onChanged: (value) =>
-                                  _makeCreditItemList(value: value),
+                                  _makeDepositItemList(value: value),
                             ),
                           ),
                           FlatButton(
@@ -253,7 +253,7 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
                         IconButton(
                           icon: const Icon(Icons.refresh),
                           tooltip: 'reload',
-                          onPressed: () => _goCreditRecordInputScreen(
+                          onPressed: () => _goDepositRecordInputScreen(
                               context: context, date: widget.date),
                           color: Colors.blueAccent,
                         ),
@@ -276,7 +276,7 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
                 ),
               ),
               Expanded(
-                child: _creditList(),
+                child: _depositList(),
               ),
             ],
           ),
@@ -288,7 +288,7 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
   /**
   * プルダウン変更処理
   */
-  void _makeCreditItemList({value}) async {
+  void _makeDepositItemList({value}) async {
     //プルダウンに選択された日付を表示する
     _numberOfMenu = value;
 
@@ -298,9 +298,9 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
   /**
   * リスト表示
   */
-  Widget _creditList() {
+  Widget _depositList() {
     return ListView.builder(
-      itemCount: _creditData.length,
+      itemCount: _depositData.length,
       itemBuilder: (context, int position) => _listItem(position: position),
     );
   }
@@ -355,8 +355,8 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
           ? Alignment.topRight
           : Alignment.topLeft,
       child: (column == 'price')
-          ? Text(_utility.makeCurrencyDisplay(_creditData[position][column]))
-          : Text(_creditData[position][column]),
+          ? Text(_utility.makeCurrencyDisplay(_depositData[position][column]))
+          : Text(_depositData[position][column]),
     );
   }
 
@@ -418,31 +418,31 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
       return false;
     }
 
-    var _credit = Deposit(
+    var _deposit = Deposit(
         strDate: _dialogSelectedDate,
         strBank: _chipValue,
         strItem: _numberOfMenu,
         strPrice: _teContPrice.text);
 
-    await database.insertDepositRecord(_credit);
+    await database.insertDepositRecord(_deposit);
     Toast.show('登録が完了しました', context, duration: Toast.LENGTH_LONG);
-    _goCreditRecordInputScreen(context: context, date: widget.date);
+    _goDepositRecordInputScreen(context: context, date: widget.date);
   }
 
   /**
   * データ削除
   */
   void _deleteRecord({int position}) async {
-    var credit = Deposit(
-        intId: int.parse(_creditData[position]['id']),
-        strDate: _creditData[position]['date'],
-        strBank: _creditData[position]['bank'],
-        strItem: _creditData[position]['item'],
-        strPrice: _creditData[position]['price']);
+    var deposit = Deposit(
+        intId: int.parse(_depositData[position]['id']),
+        strDate: _depositData[position]['date'],
+        strBank: _depositData[position]['bank'],
+        strItem: _depositData[position]['item'],
+        strPrice: _depositData[position]['price']);
 
-    await database.deleteDepositIdRecord(credit);
+    await database.deleteDepositIdRecord(deposit);
     Toast.show('データを削除しました', context, duration: Toast.LENGTH_LONG);
-    _goCreditRecordInputScreen(context: context, date: widget.date);
+    _goDepositRecordInputScreen(context: context, date: widget.date);
   }
 
   ///////////////////////////////////////////////////////////////////// 画面遷移
@@ -468,9 +468,9 @@ class _DepositInputScreenState extends State<DepositInputScreen> {
   }
 
   /**
-  * 画面遷移（CreditRecordInputScreen）
+  * 画面遷移（DepositRecordInputScreen）
   */
-  void _goCreditRecordInputScreen({BuildContext context, String date}) {
+  void _goDepositRecordInputScreen({BuildContext context, String date}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

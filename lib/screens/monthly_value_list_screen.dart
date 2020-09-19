@@ -111,30 +111,41 @@ class _MonthlyValueListScreenState extends State<MonthlyValueListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black.withOpacity(0.1),
-        title: Text('${_month}'),
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.skip_previous),
-            tooltip: '前日',
-            onPressed: () => _goMonthlyValueListScreen(
-                context: context, date: prevMonth.toString()),
-          ),
-          IconButton(
-            icon: const Icon(Icons.skip_next),
-            tooltip: '翌日',
-            onPressed: () => _goMonthlyValueListScreen(
-                context: context, date: nextMonth.toString()),
-          ),
-        ],
-      ),
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
           _utility.getBackGround(),
-          _monthlyValueList(),
+          CustomScrollView(
+            slivers: <Widget>[
+              SliverAppBar(
+                title: Text('${_month}'),
+                actions: <Widget>[
+                  IconButton(
+                    icon: const Icon(Icons.skip_previous),
+                    tooltip: '前日',
+                    onPressed: () => _goMonthlyValueListScreen(
+                        context: context, date: prevMonth.toString()),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.skip_next),
+                    tooltip: '翌日',
+                    onPressed: () => _goMonthlyValueListScreen(
+                        context: context, date: nextMonth.toString()),
+                  ),
+                ],
+                backgroundColor: Colors.black.withOpacity(0.1),
+                pinned: true,
+                expandedHeight: 50.0,
+                floating: false,
+              ),
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, position) => _listItem(position: position),
+                  childCount: _monthlyValueData.length,
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );

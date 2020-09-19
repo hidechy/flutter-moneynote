@@ -863,7 +863,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                         date: displayDate,
                         index: widget.index,
                       ),
-                      color: Colors.blueAccent,
+                      color: Colors.greenAccent,
                     ),
                     IconButton(
                       icon: const Icon(Icons.calendar_today),

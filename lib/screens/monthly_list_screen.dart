@@ -106,8 +106,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
           : (_yesterdaySpend - _thisDayTotal) * -1;
 
       var _flag = '0';
-      var _creRec = await database.selectDepositDateRecord(_thisDay);
-      if (_creRec.length > 0) {
+      var _depoRec = await database.selectDepositDateRecord(_thisDay);
+      if (_depoRec.length > 0) {
         _flag = '1';
       }
       var _beneRec = await database.selectBenefitRecord(_thisDay);
@@ -149,59 +149,73 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black.withOpacity(0.1),
-        title: Text(_month),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.skip_previous),
-            tooltip: '前日',
-            onPressed: () => _goMonthlyListScreen(
-                context: context, date: prevMonth.toString()),
-          ),
-          IconButton(
-            icon: const Icon(Icons.skip_next),
-            tooltip: '翌日',
-            onPressed: () => _goMonthlyListScreen(
-                context: context, date: nextMonth.toString()),
-          ),
-        ],
-        centerTitle: true,
-      ),
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
           _utility.getBackGround(),
-          Column(
-            children: <Widget>[
-              Container(
-                color: Colors.yellow,
-                alignment: Alignment.centerRight,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        'start　${_utility.makeCurrencyDisplay(_prevMonthEndTotal.toString())}',
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 12,
+          CustomScrollView(
+            slivers: <Widget>[
+              SliverAppBar(
+                title: Text('${_month}'),
+                actions: <Widget>[
+                  IconButton(
+                    icon: const Icon(Icons.skip_previous),
+                    tooltip: '前日',
+                    onPressed: () => _goMonthlyListScreen(
+                        context: context, date: prevMonth.toString()),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.skip_next),
+                    tooltip: '翌日',
+                    onPressed: () => _goMonthlyListScreen(
+                        context: context, date: nextMonth.toString()),
+                  ),
+                ],
+                backgroundColor: Colors.black.withOpacity(0.1),
+                pinned: true,
+                expandedHeight: 100.0,
+                floating: false,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          color: Colors.yellow,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text(
+                                  'start　${_utility.makeCurrencyDisplay(_prevMonthEndTotal.toString())}',
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                Text(
+                                  'total　${_monthTotal}',
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
-                      Text(
-                        'total　${_monthTotal}',
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-              Expanded(
-                child: _monthlyList(),
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, position) => _listItem(position: position),
+                  childCount: _monthData.length,
+                ),
               ),
             ],
           ),
@@ -344,20 +358,20 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
     int _bankPrice = 0;
 
     //----------------//
-    String _creditStr = '';
+    String _depositStr = '';
     var value =
         await database.selectDepositDateRecord(_monthData[position]['date']);
     if (value.length > 0) {
-      List<String> _cre = List();
+      List<String> _depo = List();
       for (var i = 0; i < value.length; i++) {
         _title = value[i].strDate;
 
-        _cre.add("□${value[i].strItem}");
-        _cre.add("${value[i].strBank}　${value[i].strPrice}");
+        _depo.add("□${value[i].strItem}");
+        _depo.add("${value[i].strBank}　${value[i].strPrice}");
 
         _bankPrice += int.parse(value[i].strPrice);
       }
-      _creditStr = _cre.join('\n');
+      _depositStr = _depo.join('\n');
     }
     //----------------//
 
@@ -406,16 +420,16 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            (_creditStr == '')
+            (_depositStr == '')
                 ? Container()
                 : Text(
-                    _creditStr,
+                    _depositStr,
                     style: TextStyle(
                       fontFamily: 'Loboto',
                       fontSize: 12.0,
                     ),
                   ),
-            (_creditStr == '')
+            (_depositStr == '')
                 ? Container()
                 : Divider(
                     color: Colors.indigo,

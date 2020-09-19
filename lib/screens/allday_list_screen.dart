@@ -70,16 +70,28 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black.withOpacity(0.1),
-        title: Text('All Day List'),
-        centerTitle: true,
-      ),
-      body: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          _utility.getBackGround(),
-          _alldayList(),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            title: Text('All Day List'),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.refresh),
+                color: Colors.greenAccent,
+                onPressed: () => _goAlldayListScreen(context),
+              ),
+            ],
+            backgroundColor: Colors.black.withOpacity(0.1),
+            pinned: true,
+            expandedHeight: 50.0,
+            floating: false,
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, position) => _listItem(position: position),
+              childCount: _alldayData.length,
+            ),
+          ),
         ],
       ),
     );
@@ -180,5 +192,16 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
         return _utility.makeCurrencyDisplay(text);
         break;
     }
+  }
+
+  _goAlldayListScreen(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AlldayListScreen(
+          date: widget.date,
+        ),
+      ),
+    );
   }
 }
