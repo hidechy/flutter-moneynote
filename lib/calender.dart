@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel;
 import 'package:flutter_calendar_carousel/classes/event.dart';
+import 'main.dart';
 
 import 'screens/monthly_list_screen.dart';
 import 'screens/oneday_input_screen.dart';
@@ -26,7 +28,44 @@ class _CalenderState extends State<Calender> {
   String day;
   String youbiStr;
 
-  String _date;
+  EventList<Event> _markedDateMap = new EventList<Event>();
+
+  /**
+   * 初期動作
+   */
+  @override
+  void initState() {
+    super.initState();
+
+    _makeDefaultDisplayData();
+  }
+
+  /**
+   * 初期データ作成
+   */
+  void _makeDefaultDisplayData() async {
+    var holidays = await database.selectHolidaySortedAllRecord;
+    if (holidays.length > 0) {
+      for (int i = 0; i < holidays.length; i++) {
+        _utility.makeYMDYData(holidays[i].strDate, 0);
+
+        _markedDateMap.add(
+          new DateTime(int.parse(_utility.year), int.parse(_utility.month),
+              int.parse(_utility.day)),
+          new Event(
+            date: new DateTime(
+              int.parse(_utility.year),
+              int.parse(_utility.month),
+              int.parse(_utility.day),
+            ),
+            icon: Icon(Icons.flag),
+          ),
+        );
+      }
+    }
+
+    setState(() {});
+  }
 
   /**
    * 画面描画
@@ -61,6 +100,8 @@ class _CalenderState extends State<Calender> {
           _utility.getBackGround(),
           Container(
             child: CalendarCarousel<Event>(
+              markedDatesMap: _markedDateMap,
+
               locale: 'JA',
 
               todayBorderColor: Colors.amber[600],
