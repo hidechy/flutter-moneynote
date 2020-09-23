@@ -23,8 +23,8 @@ class _MonthlyValueListScreenState extends State<MonthlyValueListScreen> {
 
   Map<String, dynamic> _holidayList = Map();
 
-  DateTime _prevMonth; //初期化わからない
-  DateTime _nextMonth; //初期化わからない
+  DateTime _prevMonth = DateTime.now();
+  DateTime _nextMonth = DateTime.now();
 
   /**
    * 初期動作

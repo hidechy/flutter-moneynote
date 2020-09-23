@@ -28,8 +28,8 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
 
   String _date = '';
 
-  DateTime _prevDate; //初期化わからない
-  DateTime _nextDate; //初期化わからない
+  DateTime _prevDate = DateTime.now();
+  DateTime _nextDate = DateTime.now();
 
   List<Monie> _monieData = List();
 

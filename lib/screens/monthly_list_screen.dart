@@ -23,8 +23,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   String _month = '';
   String _yearmonth = '';
 
-  DateTime _prevMonth; //初期化わからない
-  DateTime _nextMonth; //初期化わからない
+  DateTime _prevMonth = DateTime.now();
+  DateTime _nextMonth = DateTime.now();
 
   String _prevMonthEndDateTime = '';
   String _prevMonthEndDate = '';

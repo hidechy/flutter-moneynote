@@ -35,8 +35,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
 
   String _displayDate = '';
 
-  DateTime _prevDate; //初期化わからない
-  DateTime _nextDate; //初期化わからない
+  DateTime _prevDate = DateTime.now();
+  DateTime _nextDate = DateTime.now();
 
   List<List<dynamic>> _monthDays = List();
 
