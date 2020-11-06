@@ -26,13 +26,13 @@ class _BankInputScreenState extends State<BankInputScreen> {
   String _text = '';
   TextEditingController _teContPrice = TextEditingController();
 
-  String _lastRecordDate = '';
+  String _lastRecordDate;
 
   Map _dispFlag = Map();
 
   Map<String, dynamic> _holidayList = Map();
 
-  Map<String, String> _bankNames = Map();
+  Map<String, String> bankNames = Map();
 
   /**
    * 初期動作
@@ -184,7 +184,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
 
     if (values.length > 0) {
       for (int i = 0; i < values.length; i++) {
-        _bankNames[values[i].strBank] = values[i].strName;
+        bankNames[values[i].strBank] = values[i].strName;
       }
     }
 
@@ -212,117 +212,100 @@ class _BankInputScreenState extends State<BankInputScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black.withOpacity(0.1),
+        title: Text('銀行預金'),
+        centerTitle: true,
+      ),
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
           _utility.getBackGround(),
-          CustomScrollView(
-            slivers: <Widget>[
-              SliverAppBar(
-                title: Text('銀行預金'),
-                actions: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.refresh),
-                    color: Colors.greenAccent,
-                    onPressed: () => _goBankInputScreen(context),
-                  ),
-                ],
-                backgroundColor: Colors.black.withOpacity(0.1),
-                pinned: true,
-                expandedHeight: 370,
-                floating: false,
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Container(
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
+          Column(
+            children: <Widget>[
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                color: Colors.black.withOpacity(0.3),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        _getChoiceChip(selectedChip: 'bank_a'),
+                        _getChoiceChip(selectedChip: 'bank_b'),
+                        _getChoiceChip(selectedChip: 'bank_c'),
+                        _getChoiceChip(selectedChip: 'bank_d'),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        _getChoiceChip(selectedChip: 'bank_e'),
+                        _getChoiceChip(selectedChip: 'bank_f'),
+                        _getChoiceChip(selectedChip: 'bank_g'),
+                        _getChoiceChip(selectedChip: 'bank_h'),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        _getChoiceChip(selectedChip: 'pay_a'),
+                        _getChoiceChip(selectedChip: 'pay_b'),
+                        _getChoiceChip(selectedChip: 'pay_c'),
+                        _getChoiceChip(selectedChip: 'pay_d'),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        _getChoiceChip(selectedChip: 'pay_e'),
+                        _getChoiceChip(selectedChip: 'pay_f'),
+                        _getChoiceChip(selectedChip: 'pay_g'),
+                        _getChoiceChip(selectedChip: 'pay_h'),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0,
+                        vertical: 8.0,
                       ),
-                      color: Colors.black.withOpacity(0.1),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              _getChoiceChip(selectedChip: 'bank_a'),
-                              _getChoiceChip(selectedChip: 'bank_b'),
-                              _getChoiceChip(selectedChip: 'bank_c'),
-                              _getChoiceChip(selectedChip: 'bank_d'),
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              _getChoiceChip(selectedChip: 'bank_e'),
-                              _getChoiceChip(selectedChip: 'bank_f'),
-                              _getChoiceChip(selectedChip: 'bank_g'),
-                              _getChoiceChip(selectedChip: 'bank_h'),
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              _getChoiceChip(selectedChip: 'pay_a'),
-                              _getChoiceChip(selectedChip: 'pay_b'),
-                              _getChoiceChip(selectedChip: 'pay_c'),
-                              _getChoiceChip(selectedChip: 'pay_d'),
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              _getChoiceChip(selectedChip: 'pay_e'),
-                              _getChoiceChip(selectedChip: 'pay_f'),
-                              _getChoiceChip(selectedChip: 'pay_g'),
-                              _getChoiceChip(selectedChip: 'pay_h'),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20.0,
-                              vertical: 8.0,
-                            ),
-                            child: TextField(
-                              controller: _teContPrice,
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.end,
-                              onChanged: (value) {
-                                setState(
-                                  () {
-                                    _text = value;
-                                  },
-                                );
-                              },
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
-                              IconButton(
-                                icon: const Icon(Icons.calendar_today),
-                                tooltip: 'jump',
-                                onPressed: () =>
-                                    _showDatepicker(context: context),
-                                color: Colors.blueAccent,
-                              ),
-                              Text('${_dialogSelectedDate}'),
-                              IconButton(
-                                icon: const Icon(Icons.input),
-                                tooltip: 'input',
-                                onPressed: () =>
-                                    _updateRecord(context: context),
-                                color: Colors.greenAccent,
-                              ),
-                            ],
-                          ),
-                        ],
+                      child: TextField(
+                        controller: _teContPrice,
+                        keyboardType: TextInputType.number,
+                        textAlign: TextAlign.end,
+                        onChanged: (value) {
+                          setState(
+                            () {
+                              _text = value;
+                            },
+                          );
+                        },
                       ),
                     ),
-                    color: Colors.black.withOpacity(0.1),
-                  ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        IconButton(
+                          icon: const Icon(Icons.calendar_today),
+                          tooltip: 'jump',
+                          onPressed: () => _showDatepicker(context: context),
+                          color: Colors.blueAccent,
+                        ),
+                        Text('${_dialogSelectedDate}'),
+                        IconButton(
+                          icon: const Icon(Icons.input),
+                          tooltip: 'input',
+                          onPressed: () => _updateRecord(context: context),
+                          color: Colors.greenAccent,
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, position) => _listItem(position: position),
-                  childCount: _bankData.length,
+              Expanded(
+                child: ListView.builder(
+                  itemCount: _bankData.length,
+                  itemBuilder: (context, int position) =>
+                      _listItem(position: position),
                 ),
               ),
             ],
@@ -337,7 +320,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
    */
   Widget _listItem({int position}) {
     return Card(
-      color: _utility.getBgColor(_bankData[position]['date'], _holidayList),
+      color: getBgColor(_bankData[position]['date']),
       elevation: 10.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -353,6 +336,35 @@ class _BankInputScreenState extends State<BankInputScreen> {
         ),
       ),
     );
+  }
+
+  /**
+   * 背景色取得
+   */
+  getBgColor(String date) {
+    _utility.makeYMDYData(date, 0);
+
+    Color _color = null;
+
+    switch (_utility.youbiNo) {
+      case 0:
+        _color = Colors.redAccent[700].withOpacity(0.3);
+        break;
+
+      case 6:
+        _color = Colors.blueAccent[700].withOpacity(0.3);
+        break;
+
+      default:
+        _color = Colors.black.withOpacity(0.3);
+        break;
+    }
+
+    if (_holidayList[date] != null) {
+      _color = Colors.greenAccent[700].withOpacity(0.3);
+    }
+
+    return _color;
   }
 
   /**
@@ -378,38 +390,30 @@ class _BankInputScreenState extends State<BankInputScreen> {
   Widget _getChoiceChip({String selectedChip}) {
     var dispBank = selectedChip;
     var btnActive = false;
-    if (_bankNames[selectedChip] != "" && _bankNames[selectedChip] != null) {
-      dispBank = _bankNames[selectedChip];
+    if (bankNames[selectedChip] != "" && bankNames[selectedChip] != null) {
+      dispBank = bankNames[selectedChip];
       btnActive = true;
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5.0),
-      child: (btnActive)
-          ? ChoiceChip(
-              backgroundColor: Colors.greenAccent.withOpacity(0.5),
+    return (_dispFlag[selectedChip] == 0)
+        ? Container()
+        : Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            child: ChoiceChip(
+              backgroundColor: (btnActive)
+                  ? Colors.greenAccent.withOpacity(0.5)
+                  : Colors.blueAccent.withOpacity(0.1),
               label: Text(
                 '${dispBank}',
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
               ),
               selected: _chipValue == selectedChip,
               onSelected: (bool isSelected) {
                 _chipValue = selectedChip;
                 _getBankValue();
               },
-            )
-          : ChoiceChip(
-              backgroundColor: Colors.greenAccent.withOpacity(0.1),
-              label: Text(
-                '${dispBank}',
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.1),
-                ),
-              ),
-              selected: _chipValue == selectedChip,
-              onSelected: null,
             ),
-    );
+          );
   }
 
   /**
@@ -541,16 +545,5 @@ class _BankInputScreenState extends State<BankInputScreen> {
     _teContPrice.text = '0';
 
     _getBankValue();
-  }
-
-  _goBankInputScreen(BuildContext context) {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => BankInputScreen(
-          date: widget.date,
-        ),
-      ),
-    );
   }
 }
