@@ -21,6 +21,8 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
 
   List<String> _trainData = List();
 
+  List<Map<dynamic, dynamic>> _timePlaceData = List();
+
   /**
    * 初期動作
    */
@@ -58,6 +60,23 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
       Map data2 = jsonDecode(response2.body);
       for (var i = 0; i < data2['data']['article'].length; i++) {
         _trainData.add(data2['data']['article'][i]);
+      }
+    }
+
+    /////////////////////////////////////////////////////
+    Response response3 = await get(
+        'http://toyohide.work/BrainLog/money/${widget.date}/timeplaceapi');
+
+    if (response3 != null) {
+      Map data3 = jsonDecode(response3.body);
+
+      for (var i = 0; i < data3['data'].length; i++) {
+        var _map = Map();
+        _map['time'] = data3['data'][i]['time'];
+        _map['place'] = data3['data'][i]['place'];
+        _map['price'] = data3['data'][i]['price'];
+        _map['inTrain'] = (data3['data'][i]['place'] == "移動中") ? 1 : 0;
+        _timePlaceData.add(_map);
       }
     }
 
@@ -122,6 +141,23 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
                               _listItem(position: position),
                         ),
                       ),
+                (_timePlaceData.length == 0)
+                    ? Container()
+                    : const Divider(
+                        color: Colors.indigo,
+                        height: 20.0,
+                        indent: 20.0,
+                        endIndent: 20.0,
+                      ),
+                (_timePlaceData.length == 0)
+                    ? Container()
+                    : Expanded(
+                        child: ListView.builder(
+                          itemCount: _timePlaceData.length,
+                          itemBuilder: (context, int position) =>
+                              _listItem3(position: position),
+                        ),
+                      ),
                 (_trainData.length == 0)
                     ? Container()
                     : const Divider(
@@ -179,6 +215,40 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
         children: [
           TableRow(children: [
             Text('${_trainData[position]}'),
+          ]),
+        ],
+      ),
+    );
+  }
+
+  /**
+   * リストアイテム表示
+   */
+  _listItem3({int position}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Table(
+        children: [
+          TableRow(children: [
+            Container(
+              child: Text('${_timePlaceData[position]['time']}'),
+              color: (_timePlaceData[position]['inTrain'] == 1)
+                  ? Colors.greenAccent.withOpacity(0.3)
+                  : Colors.black,
+            ),
+            Container(
+              child: Text('${_timePlaceData[position]['place']}'),
+              color: (_timePlaceData[position]['inTrain'] == 1)
+                  ? Colors.greenAccent.withOpacity(0.3)
+                  : Colors.black,
+            ),
+            Container(
+              alignment: Alignment.topRight,
+              child: Text('${_timePlaceData[position]['price']}'),
+              color: (_timePlaceData[position]['inTrain'] == 1)
+                  ? Colors.greenAccent.withOpacity(0.3)
+                  : Colors.black,
+            ),
           ]),
         ],
       ),
