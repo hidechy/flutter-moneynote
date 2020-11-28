@@ -202,4 +202,23 @@ class Utility {
 
     return _color;
   }
+
+  /**
+   * 銀行名取得
+   */
+  getBankName() {
+    Map<String, String> bankNames = Map();
+
+    bankNames['bank_a'] = 'みずほ';
+    bankNames['bank_b'] = '住友547';
+    bankNames['bank_c'] = '住友259';
+    bankNames['bank_d'] = 'UFJ';
+
+    bankNames['pay_a'] = 'Suica1';
+    bankNames['pay_b'] = 'PayPay';
+    bankNames['pay_c'] = 'PASUMO';
+    bankNames['pay_d'] = 'Suica2';
+
+    return bankNames;
+  }
 }

@@ -309,8 +309,11 @@ class _BanknameSettingScreenState extends State<BanknameSettingScreen> {
 
     try {
       for (int i = 0; i < insertBanks.length; i++) {
-        var bankname =
-            Bankname(strBank: insertBanks[i], strName: insertNames[i]);
+        var bankname = Bankname(
+          intId: i,
+          strBank: insertBanks[i],
+          strName: insertNames[i],
+        );
 
         var updateFlag = (_bankNames[insertBanks[i]] != null) ? true : false;
 

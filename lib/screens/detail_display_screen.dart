@@ -191,14 +191,16 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
 
     _monthSpend = (_lastMonthTotal - _total) * -1;
 
-    ///////////////////////////////////////////////////////////////////
-    var values = await database.selectBanknameSortedAllRecord;
+//    ///////////////////////////////////////////////////////////////////
+//    var values = await database.selectBanknameSortedAllRecord;
+//
+//    if (values.length > 0) {
+//      for (int i = 0; i < values.length; i++) {
+//        _bankNames[values[i].strBank] = values[i].strName;
+//      }
+//    }
 
-    if (values.length > 0) {
-      for (int i = 0; i < values.length; i++) {
-        _bankNames[values[i].strBank] = values[i].strName;
-      }
-    }
+    _bankNames = _utility.getBankName();
 
     //holiday
     var holidays = await database.selectHolidaySortedAllRecord;
@@ -1037,15 +1039,15 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                   onTap: () =>
                       _goBankInputScreen(context: context, date: _displayDate),
                 ),
-                ListTile(
-                  leading: const Icon(Icons.category),
-                  title: const Text(
-                    'Deposit Input',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  onTap: () => _goDepositInputScreen(
-                      context: context, date: _displayDate),
-                ),
+//                ListTile(
+//                  leading: const Icon(Icons.category),
+//                  title: const Text(
+//                    'Deposit Input',
+//                    style: TextStyle(fontSize: 14),
+//                  ),
+//                  onTap: () => _goDepositInputScreen(
+//                      context: context, date: _displayDate),
+//                ),
                 ListTile(
                   leading: const Icon(Icons.beenhere),
                   title: const Text(
@@ -1316,20 +1318,20 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
     );
   }
 
-  /**
-   * 画面遷移（DepositInputScreen）
-   */
-  void _goDepositInputScreen({BuildContext context, String date}) {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => DepositInputScreen(
-          date: date,
-          searchitem: null,
-        ),
-      ),
-    );
-  }
+//  /**
+//   * 画面遷移（DepositInputScreen）
+//   */
+//  void _goDepositInputScreen({BuildContext context, String date}) {
+//    Navigator.pushReplacement(
+//      context,
+//      MaterialPageRoute(
+//        builder: (context) => DepositInputScreen(
+//          date: date,
+//          searchitem: null,
+//        ),
+//      ),
+//    );
+//  }
 
   /**
    * 画面遷移（SettingBaseScreen）
