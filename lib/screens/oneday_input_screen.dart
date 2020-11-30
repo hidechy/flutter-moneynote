@@ -133,13 +133,6 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
     }
 
 //    ///////////////////////////////////////////////////////////////////
-//    var values = await database.selectBanknameSortedAllRecord;
-//
-//    if (values.length > 0) {
-//      for (int i = 0; i < values.length; i++) {
-//        _bankNames[values[i].strBank] = values[i].strName;
-//      }
-//    }
 
     _bankNames = _utility.getBankName();
 

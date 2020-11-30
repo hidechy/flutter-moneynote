@@ -49,21 +49,6 @@ class _SettingBaseScreenState extends State<SettingBaseScreen> {
                   onTap: () => _goHolidaySettingScreen(),
                 ),
               ),
-//              Card(
-//                color: Colors.black.withOpacity(0.3),
-//                elevation: 10.0,
-//                shape: RoundedRectangleBorder(
-//                  borderRadius: BorderRadius.circular(10.0),
-//                ),
-//                child: ListTile(
-//                  leading: const Icon(Icons.business),
-//                  title: const Text(
-//                    'Bankname Setting',
-//                    style: TextStyle(fontSize: 14),
-//                  ),
-//                  onTap: () => _goBanknameSettingScreen(),
-//                ),
-//              ),
             ],
           ),
         ],
@@ -84,16 +69,4 @@ class _SettingBaseScreenState extends State<SettingBaseScreen> {
       ),
     );
   }
-
-//  /**
-//   * 画面遷移（BanknameSettingScreen）
-//   */
-//  void _goBanknameSettingScreen() {
-//    Navigator.push(
-//      context,
-//      MaterialPageRoute(
-//        builder: (context) => BanknameSettingScreen(),
-//      ),
-//    );
-//  }
 }

@@ -180,13 +180,6 @@ class _BankInputScreenState extends State<BankInputScreen> {
     }
 
 //    ///////////////////////////////////////////////////////////////////
-//    var values = await database.selectBanknameSortedAllRecord;
-//
-//    if (values.length > 0) {
-//      for (int i = 0; i < values.length; i++) {
-//        bankNames[values[i].strBank] = values[i].strName;
-//      }
-//    }
 
     bankNames = _utility.getBankName();
 

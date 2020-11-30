@@ -64,8 +64,10 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
     }
 
     /////////////////////////////////////////////////////
-    Response response3 = await get(
-        'http://toyohide.work/BrainLog/money/${widget.date}/timeplaceapi');
+    String url = "http://toyohide.work/BrainLog/api/timeplace";
+    Map<String, String> headers = {'content-type': 'application/json'};
+    String body = json.encode({"date": widget.date});
+    Response response3 = await post(url, headers: headers, body: body);
 
     if (response3 != null) {
       Map data3 = jsonDecode(response3.body);
