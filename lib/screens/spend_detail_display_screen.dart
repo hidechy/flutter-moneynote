@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:toast/toast.dart';
+import '../main.dart';
 import '../utilities/utility.dart';
 
 class SpendDetailDisplayScreen extends StatefulWidget {
@@ -43,12 +45,14 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
 
     if (response != null) {
       Map data = jsonDecode(response.body);
-      if (data['data']['date'] == widget.date) {
-        var ex_data = (data['data']['item']).split(";");
-        for (var i = 0; i < ex_data.length; i++) {
-          _spendDetailData.add((ex_data[i]).split("|"));
+      if (data['data'] != "nodata") {
+        if (data['data']['date'] == widget.date) {
+          var ex_data = (data['data']['item']).split(";");
+          for (var i = 0; i < ex_data.length; i++) {
+            _spendDetailData.add((ex_data[i]).split("|"));
+          }
+          _spendSum = data['data']['sum'];
         }
-        _spendSum = data['data']['sum'];
       }
     }
 
@@ -120,7 +124,23 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
             padding: const EdgeInsets.all(20),
             child: Column(
               children: <Widget>[
-                Text('${widget.date}（${_utility.youbiStr}）'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.check_box_outline_blank),
+                      color: Colors.black,
+                      onPressed: () => null,
+                    ),
+                    Text('${widget.date}（${_utility.youbiStr}）'),
+                    IconButton(
+                      icon: const Icon(Icons.cloud_upload),
+                      tooltip: 'synchro',
+                      onPressed: () => _uploadDailyData(date: widget.date),
+                      color: Colors.blueAccent,
+                    ),
+                  ],
+                ),
                 const Divider(
                   color: Colors.indigo,
                   height: 20.0,
@@ -255,5 +275,52 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
         ],
       ),
     );
+  }
+
+  /**
+   * マネーデータアップロード
+   */
+  void _uploadDailyData({String date}) async {
+    var _money = await database.selectRecord('${date}');
+
+    Map<String, dynamic> _uploadData = Map();
+
+    _uploadData['date'] = _money[0].strDate;
+
+    _uploadData['yen_10000'] = _money[0].strYen10000;
+    _uploadData['yen_5000'] = _money[0].strYen5000;
+    _uploadData['yen_2000'] = _money[0].strYen2000;
+    _uploadData['yen_1000'] = _money[0].strYen1000;
+    _uploadData['yen_500'] = _money[0].strYen500;
+    _uploadData['yen_100'] = _money[0].strYen100;
+    _uploadData['yen_50'] = _money[0].strYen50;
+    _uploadData['yen_10'] = _money[0].strYen10;
+    _uploadData['yen_5'] = _money[0].strYen5;
+    _uploadData['yen_1'] = _money[0].strYen1;
+
+    _uploadData['bank_a'] = _money[0].strBankA;
+    _uploadData['bank_b'] = _money[0].strBankB;
+    _uploadData['bank_c'] = _money[0].strBankC;
+    _uploadData['bank_d'] = _money[0].strBankD;
+    _uploadData['bank_e'] = _money[0].strBankE;
+    _uploadData['bank_f'] = _money[0].strBankF;
+    _uploadData['bank_g'] = _money[0].strBankG;
+    _uploadData['bank_h'] = _money[0].strBankH;
+
+    _uploadData['pay_a'] = _money[0].strPayA;
+    _uploadData['pay_b'] = _money[0].strPayB;
+    _uploadData['pay_c'] = _money[0].strPayC;
+    _uploadData['pay_d'] = _money[0].strPayD;
+    _uploadData['pay_e'] = _money[0].strPayE;
+    _uploadData['pay_f'] = _money[0].strPayF;
+    _uploadData['pay_g'] = _money[0].strPayG;
+    _uploadData['pay_h'] = _money[0].strPayH;
+
+    String url = "http://toyohide.work/BrainLog/api/moneyinsert";
+    Map<String, String> headers = {'content-type': 'application/json'};
+    String body = json.encode(_uploadData);
+    await post(url, headers: headers, body: body);
+
+    Toast.show('登録が完了しました', context, duration: Toast.LENGTH_LONG);
   }
 }
