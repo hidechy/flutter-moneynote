@@ -8,6 +8,7 @@ import '../utilities/utility.dart';
 
 class SpendDetailDisplayScreen extends StatefulWidget {
   final String date;
+
   SpendDetailDisplayScreen({@required this.date});
 
   @override
@@ -24,6 +25,35 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
   List<String> _trainData = List();
 
   List<Map<dynamic, dynamic>> _timePlaceData = List();
+
+  String _yen10000 = '0';
+  String _yen5000 = '0';
+  String _yen2000 = '0';
+  String _yen1000 = '0';
+  String _yen500 = '0';
+  String _yen100 = '0';
+  String _yen50 = '0';
+  String _yen10 = '0';
+  String _yen5 = '0';
+  String _yen1 = '0';
+
+  String _bankA = '0';
+  String _bankB = '0';
+  String _bankC = '0';
+  String _bankD = '0';
+  String _bankE = '0';
+  String _bankF = '0';
+  String _bankG = '0';
+  String _bankH = '0';
+
+  String _payA = '0';
+  String _payB = '0';
+  String _payC = '0';
+  String _payD = '0';
+  String _payE = '0';
+  String _payF = '0';
+  String _payG = '0';
+  String _payH = '0';
 
   /**
    * 初期動作
@@ -86,6 +116,38 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
       }
     }
 
+    /////////////////////////////////////////////////////
+    var _money = await database.selectRecord('${widget.date}');
+
+    _yen10000 = _money[0].strYen10000;
+    _yen5000 = _money[0].strYen5000;
+    _yen2000 = _money[0].strYen2000;
+    _yen1000 = _money[0].strYen1000;
+    _yen500 = _money[0].strYen500;
+    _yen100 = _money[0].strYen100;
+    _yen50 = _money[0].strYen50;
+    _yen10 = _money[0].strYen10;
+    _yen5 = _money[0].strYen5;
+    _yen1 = _money[0].strYen1;
+
+    _bankA = _money[0].strBankA;
+    _bankB = _money[0].strBankB;
+    _bankC = _money[0].strBankC;
+    _bankD = _money[0].strBankD;
+    _bankE = _money[0].strBankE;
+    _bankF = _money[0].strBankF;
+    _bankG = _money[0].strBankG;
+    _bankH = _money[0].strBankH;
+
+    _payA = _money[0].strPayA;
+    _payB = _money[0].strPayB;
+    _payC = _money[0].strPayC;
+    _payD = _money[0].strPayD;
+    _payE = _money[0].strPayE;
+    _payF = _money[0].strPayF;
+    _payG = _money[0].strPayG;
+    _payH = _money[0].strPayH;
+
     setState(() {});
   }
 
@@ -121,7 +183,11 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
           ),
           color: Colors.black.withOpacity(0.3),
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.only(
+              top: 5,
+              right: 20,
+              left: 20,
+            ),
             child: Column(
               children: <Widget>[
                 Row(
@@ -141,6 +207,7 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
                     ),
                   ],
                 ),
+                _makeDisplayMoneyItem(),
                 const Divider(
                   color: Colors.indigo,
                   height: 20.0,
@@ -281,40 +348,38 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
    * マネーデータアップロード
    */
   void _uploadDailyData({String date}) async {
-    var _money = await database.selectRecord('${date}');
-
     Map<String, dynamic> _uploadData = Map();
 
-    _uploadData['date'] = _money[0].strDate;
+    _uploadData['date'] = date;
 
-    _uploadData['yen_10000'] = _money[0].strYen10000;
-    _uploadData['yen_5000'] = _money[0].strYen5000;
-    _uploadData['yen_2000'] = _money[0].strYen2000;
-    _uploadData['yen_1000'] = _money[0].strYen1000;
-    _uploadData['yen_500'] = _money[0].strYen500;
-    _uploadData['yen_100'] = _money[0].strYen100;
-    _uploadData['yen_50'] = _money[0].strYen50;
-    _uploadData['yen_10'] = _money[0].strYen10;
-    _uploadData['yen_5'] = _money[0].strYen5;
-    _uploadData['yen_1'] = _money[0].strYen1;
+    _uploadData['yen_10000'] = _yen10000;
+    _uploadData['yen_5000'] = _yen5000;
+    _uploadData['yen_2000'] = _yen2000;
+    _uploadData['yen_1000'] = _yen1000;
+    _uploadData['yen_500'] = _yen500;
+    _uploadData['yen_100'] = _yen100;
+    _uploadData['yen_50'] = _yen50;
+    _uploadData['yen_10'] = _yen10;
+    _uploadData['yen_5'] = _yen5;
+    _uploadData['yen_1'] = _yen1;
 
-    _uploadData['bank_a'] = _money[0].strBankA;
-    _uploadData['bank_b'] = _money[0].strBankB;
-    _uploadData['bank_c'] = _money[0].strBankC;
-    _uploadData['bank_d'] = _money[0].strBankD;
-    _uploadData['bank_e'] = _money[0].strBankE;
-    _uploadData['bank_f'] = _money[0].strBankF;
-    _uploadData['bank_g'] = _money[0].strBankG;
-    _uploadData['bank_h'] = _money[0].strBankH;
+    _uploadData['bank_a'] = _bankA;
+    _uploadData['bank_b'] = _bankB;
+    _uploadData['bank_c'] = _bankC;
+    _uploadData['bank_d'] = _bankD;
+    _uploadData['bank_e'] = _bankE;
+    _uploadData['bank_f'] = _bankF;
+    _uploadData['bank_g'] = _bankG;
+    _uploadData['bank_h'] = _bankH;
 
-    _uploadData['pay_a'] = _money[0].strPayA;
-    _uploadData['pay_b'] = _money[0].strPayB;
-    _uploadData['pay_c'] = _money[0].strPayC;
-    _uploadData['pay_d'] = _money[0].strPayD;
-    _uploadData['pay_e'] = _money[0].strPayE;
-    _uploadData['pay_f'] = _money[0].strPayF;
-    _uploadData['pay_g'] = _money[0].strPayG;
-    _uploadData['pay_h'] = _money[0].strPayH;
+    _uploadData['pay_a'] = _payA;
+    _uploadData['pay_b'] = _payB;
+    _uploadData['pay_c'] = _payC;
+    _uploadData['pay_d'] = _payD;
+    _uploadData['pay_e'] = _payE;
+    _uploadData['pay_f'] = _payF;
+    _uploadData['pay_g'] = _payG;
+    _uploadData['pay_h'] = _payH;
 
     String url = "http://toyohide.work/BrainLog/api/moneyinsert";
     Map<String, String> headers = {'content-type': 'application/json'};
@@ -322,5 +387,100 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
     await post(url, headers: headers, body: body);
 
     Toast.show('登録が完了しました', context, duration: Toast.LENGTH_LONG);
+  }
+
+  /**
+   * アップロードデータ表示
+   */
+  Widget _makeDisplayMoneyItem() {
+    return Container(
+      color: Colors.blueAccent.withOpacity(0.3),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: DefaultTextStyle(
+          style: TextStyle(fontSize: 10.0),
+          child: Column(
+            children: <Widget>[
+              Table(
+                children: [
+                  TableRow(children: [
+                    Text('${_yen10000}'),
+                    Text('${_yen5000}'),
+                    Text('${_yen2000}'),
+                    Text('${_yen1000}'),
+                    Text('${_yen500}'),
+                    Text('${_yen100}'),
+                    Text('${_yen50}'),
+                    Text('${_yen10}'),
+                    Text('${_yen5}'),
+                    Text('${_yen1}'),
+                  ])
+                ],
+              ),
+              const Divider(
+                color: Colors.indigo,
+                height: 20.0,
+                indent: 20.0,
+                endIndent: 20.0,
+              ),
+              (int.parse(_bankA) == 0)
+                  ? Container()
+                  : Table(
+                      children: [
+                        TableRow(children: [
+                          Text('${_bankA}'),
+                          Text('${_bankB}'),
+                          Text('${_bankC}'),
+                          Text('${_bankD}')
+                        ])
+                      ],
+                    ),
+              (int.parse(_bankE) == 0)
+                  ? Container()
+                  : Table(
+                      children: [
+                        TableRow(children: [
+                          Text('${_bankE}'),
+                          Text('${_bankF}'),
+                          Text('${_bankG}'),
+                          Text('${_bankH}')
+                        ])
+                      ],
+                    ),
+              const Divider(
+                color: Colors.indigo,
+                height: 20.0,
+                indent: 20.0,
+                endIndent: 20.0,
+              ),
+              (int.parse(_payA) == 0)
+                  ? Container()
+                  : Table(
+                      children: [
+                        TableRow(children: [
+                          Text('${_payA}'),
+                          Text('${_payB}'),
+                          Text('${_payC}'),
+                          Text('${_payD}')
+                        ])
+                      ],
+                    ),
+              (int.parse(_payE) == 0)
+                  ? Container()
+                  : Table(
+                      children: [
+                        TableRow(children: [
+                          Text('${_payE}'),
+                          Text('${_payF}'),
+                          Text('${_payG}'),
+                          Text('${_payH}')
+                        ])
+                      ],
+                    ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
