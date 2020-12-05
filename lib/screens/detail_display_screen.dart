@@ -1329,7 +1329,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    * 画面遷移（MonthlyValueListScreen）
    */
-  _goSpendDetailDisplayScreen({BuildContext context, String date}) {
+  void _goSpendDetailDisplayScreen({BuildContext context, String date}) {
     Navigator.push(
         context,
         MaterialPageRoute(

@@ -275,7 +275,7 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
   /**
    * リストアイテム表示
    */
-  _listItem({int position}) {
+  Widget _listItem({int position}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Table(
@@ -297,7 +297,7 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
   /**
    * リストアイテム表示
    */
-  _listItem2({int position}) {
+  Widget _listItem2({int position}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Table(
@@ -313,7 +313,7 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
   /**
    * リストアイテム表示
    */
-  _listItem3({int position}) {
+  Widget _listItem3({int position}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Table(
@@ -404,16 +404,37 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
               Table(
                 children: [
                   TableRow(children: [
-                    Text('${_yen10000}'),
-                    Text('${_yen5000}'),
-                    Text('${_yen2000}'),
-                    Text('${_yen1000}'),
+                    Text(
+                      '${_yen10000}',
+                      style: TextStyle(color: Colors.greenAccent),
+                    ),
+                    Text(
+                      '${_yen5000}',
+                      style: TextStyle(color: Colors.greenAccent),
+                    ),
+                    Text(
+                      '${_yen2000}',
+                      style: TextStyle(color: Colors.greenAccent),
+                    ),
+                    Text(
+                      '${_yen1000}',
+                      style: TextStyle(color: Colors.greenAccent),
+                    ),
                     Text('${_yen500}'),
                     Text('${_yen100}'),
                     Text('${_yen50}'),
-                    Text('${_yen10}'),
-                    Text('${_yen5}'),
-                    Text('${_yen1}'),
+                    Text(
+                      '${_yen10}',
+                      style: TextStyle(color: Colors.orangeAccent),
+                    ),
+                    Text(
+                      '${_yen5}',
+                      style: TextStyle(color: Colors.orangeAccent),
+                    ),
+                    Text(
+                      '${_yen1}',
+                      style: TextStyle(color: Colors.orangeAccent),
+                    ),
                   ])
                 ],
               ),

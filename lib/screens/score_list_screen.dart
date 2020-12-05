@@ -272,8 +272,31 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
       {String align, String text, int position, String column}) {
     return Container(
       alignment: (align == 'left') ? Alignment.topLeft : Alignment.topRight,
-      child: (text != '') ? Text(text) : Text(_scoreData[position][column]),
+      child: _getDisplayText(text: text, position: position, column: column),
     );
+  }
+
+  /**
+   * 表示するテキストを取得
+   */
+  Widget _getDisplayText({String text, int position, String column}) {
+    if (text != '') {
+      if (text == 'score : ') {
+        return Text(
+          '${text}',
+          style: TextStyle(color: Colors.orangeAccent),
+        );
+      } else {
+        return Text('${text}');
+      }
+    } else if (column == 'score') {
+      return Text(
+        '${_scoreData[position][column]}',
+        style: TextStyle(color: Colors.orangeAccent),
+      );
+    } else {
+      return Text('${_scoreData[position][column]}');
+    }
   }
 
   /**

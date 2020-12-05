@@ -165,7 +165,7 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
     }
   }
 
-  _goAlldayListScreen(BuildContext context) {
+  void _goAlldayListScreen(BuildContext context) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

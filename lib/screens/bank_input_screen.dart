@@ -336,7 +336,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
   /**
    * 背景色取得
    */
-  getBgColor(String date) {
+  Color getBgColor(String date) {
     _utility.makeYMDYData(date, 0);
 
     Color _color = null;
