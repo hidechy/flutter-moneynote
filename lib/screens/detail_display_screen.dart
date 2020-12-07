@@ -239,6 +239,9 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
     );
   }
 
+  /**
+   *
+   */
   Widget _detailDisplayBox(BuildContext context) {
     return Row(
       children: <Widget>[
@@ -1331,9 +1334,10 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
    */
   void _goSpendDetailDisplayScreen({BuildContext context, String date}) {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => SpendDetailDisplayScreen(date: date),
-        ));
+      context,
+      MaterialPageRoute(
+        builder: (context) => SpendDetailDisplayScreen(date: date),
+      ),
+    );
   }
 }

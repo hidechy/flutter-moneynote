@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:moneynote/screens/spend_summary_display_screen.dart';
 import 'package:toast/toast.dart';
 import '../main.dart';
 import '../utilities/utility.dart';
@@ -163,10 +164,14 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
         backgroundColor: Colors.black.withOpacity(0.1),
         title: Text('Spend Detail'),
         centerTitle: true,
+
+        //-------------------------//これを消すと「←」が出てくる（消さない）
         leading: Icon(
           Icons.check_box_outline_blank,
           color: Color(0xFF2e2e2e),
         ),
+        //-------------------------//これを消すと「←」が出てくる（消さない）
+
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.close),
@@ -194,9 +199,11 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     IconButton(
-                      icon: Icon(Icons.check_box_outline_blank),
-                      color: Colors.black,
-                      onPressed: () => null,
+                      icon: Icon(Icons.comment),
+                      tooltip: 'summary',
+                      onPressed: () =>
+                          _goSpendSummaryDisplayScreen(date: widget.date),
+                      color: Colors.greenAccent,
                     ),
                     Text('${widget.date}（${_utility.youbiStr}）'),
                     IconButton(
@@ -501,6 +508,15 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void _goSpendSummaryDisplayScreen({String date}) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SpendSummaryDisplayScreen(date: date),
       ),
     );
   }
