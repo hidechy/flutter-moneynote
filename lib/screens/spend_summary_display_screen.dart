@@ -4,6 +4,8 @@ import 'package:moneynote/utilities/utility.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
 
+import 'UcSpendDisplayScreen.dart';
+
 class SpendSummaryDisplayScreen extends StatefulWidget {
   final String date;
 
@@ -239,15 +241,48 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
             children: [
               TableRow(children: [
                 Text('${_summaryData[position]['item']}'),
-                Text(
-                    '${_utility.makeCurrencyDisplay(_summaryData[position]['sum'].toString())}'),
-                Text('${_summaryData[position]['percent']}'),
+                Container(
+                  alignment: Alignment.topRight,
+                  child: Text(
+                      '${_utility.makeCurrencyDisplay(_summaryData[position]['sum'].toString())}'),
+                ),
+                Container(
+                  alignment: Alignment.topRight,
+                  child: Text('${_summaryData[position]['percent']}'),
+                ),
               ]),
             ],
           ),
         ),
+        trailing: _makeTrailing(position: position),
       ),
     );
+  }
+
+  /**
+   *
+   */
+  Widget _makeTrailing({position}) {
+    if (_summaryData[position]['item'] == "支払い") {
+      _utility.makeYMDYData(widget.date, 0);
+      if (_selectedMonth == _utility.month) {
+        return Icon(Icons.check_box_outline_blank, color: Color(0xFF2e2e2e));
+      } else {
+        if (_selectedMonth == '') {
+          return Icon(Icons.check_box_outline_blank, color: Color(0xFF2e2e2e));
+        } else {
+          return GestureDetector(
+            onTap: () => _goUcCardSpendDisplay(),
+            child: Icon(
+              Icons.credit_card,
+              color: Colors.greenAccent,
+            ),
+          );
+        }
+      }
+    } else {
+      return Icon(Icons.check_box_outline_blank, color: Color(0xFF2e2e2e));
+    }
   }
 
   /**
@@ -290,5 +325,18 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
     _summaryData = _summaryData2;
 
     setState(() {});
+  }
+
+  /**
+   *
+   */
+  Widget _goUcCardSpendDisplay() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            UcSpendDisplayScreen(date: '${_selectedYear}-${_selectedMonth}-01'),
+      ),
+    );
   }
 }
