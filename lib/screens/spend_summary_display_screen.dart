@@ -264,21 +264,17 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
    */
   Widget _makeTrailing({position}) {
     if (_summaryData[position]['item'] == "支払い") {
-      _utility.makeYMDYData(widget.date, 0);
-      if (_selectedMonth == _utility.month) {
+      if (_selectedMonth == '') {
         return Icon(Icons.check_box_outline_blank, color: Color(0xFF2e2e2e));
       } else {
-        if (_selectedMonth == '') {
-          return Icon(Icons.check_box_outline_blank, color: Color(0xFF2e2e2e));
-        } else {
-          return GestureDetector(
-            onTap: () => _goUcCardSpendDisplay(),
-            child: Icon(
-              Icons.credit_card,
-              color: Colors.greenAccent,
-            ),
-          );
-        }
+        return GestureDetector(
+          onTap: () =>
+              _goUcCardSpendDisplay(sumprice: _summaryData[position]['sum']),
+          child: Icon(
+            Icons.credit_card,
+            color: Colors.greenAccent,
+          ),
+        );
       }
     } else {
       return Icon(Icons.check_box_outline_blank, color: Color(0xFF2e2e2e));
@@ -330,12 +326,14 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
   /**
    *
    */
-  Widget _goUcCardSpendDisplay() {
+  Widget _goUcCardSpendDisplay({sumprice}) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            UcSpendDisplayScreen(date: '${_selectedYear}-${_selectedMonth}-01'),
+        builder: (context) => UcSpendDisplayScreen(
+          date: '${_selectedYear}-${_selectedMonth}-01',
+          sumprice: sumprice,
+        ),
       ),
     );
   }

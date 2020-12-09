@@ -6,7 +6,8 @@ import 'package:http/http.dart';
 
 class UcSpendDisplayScreen extends StatefulWidget {
   final String date;
-  UcSpendDisplayScreen({@required this.date});
+  final int sumprice;
+  UcSpendDisplayScreen({@required this.date, @required this.sumprice});
 
   @override
   _UcSpendDisplayScreenState createState() => _UcSpendDisplayScreenState();
@@ -92,6 +93,8 @@ class _UcSpendDisplayScreenState extends State<UcSpendDisplayScreen> {
    *
    */
   Widget _spendDisplayBox() {
+    int _diff = (widget.sumprice - _total);
+
     return Column(
       children: <Widget>[
         Container(
@@ -103,7 +106,8 @@ class _UcSpendDisplayScreenState extends State<UcSpendDisplayScreen> {
           alignment: Alignment.topRight,
           width: double.infinity,
           color: Colors.orangeAccent.withOpacity(0.3),
-          child: Text('${_utility.makeCurrencyDisplay(_total.toString())}'),
+          child: Text(
+              '${_utility.makeCurrencyDisplay(_total.toString())} / ${_utility.makeCurrencyDisplay(widget.sumprice.toString())} / ${_utility.makeCurrencyDisplay(_diff.toString())}'),
         ),
         Expanded(
           child: _ucCardSpendList(),
