@@ -84,6 +84,9 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
     setState(() {});
   }
 
+  /**
+   *
+   */
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,42 +124,32 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
    *
    */
   Widget _summaryDisplayBox(BuildContext context) {
-    return Row(
+    return Column(
       children: <Widget>[
-        Container(
-          width: 100,
-          child: Column(
-            children: <Widget>[
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+        Row(
+          children: <Widget>[
+            Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              margin: EdgeInsets.only(top: 5),
+              color: Colors.black.withOpacity(0.1),
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  right: 20.0,
+                  left: 20.0,
                 ),
-                margin: EdgeInsets.only(top: 5),
-                color: Colors.black.withOpacity(0.1),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    right: 20.0,
-                    left: 20.0,
-                  ),
-                  child: DropdownButton(
-                    dropdownColor: Colors.black.withOpacity(0.1),
-                    items: _dropdownYears,
-                    value: _selectedYear,
-                    onChanged: (value) =>
-                        _goSpendSummaryDisplayScreen(value: value),
-                  ),
+                child: DropdownButton(
+                  dropdownColor: Colors.black.withOpacity(0.1),
+                  items: _dropdownYears,
+                  value: _selectedYear,
+                  onChanged: (value) =>
+                      _goSpendSummaryDisplayScreen(value: value),
                 ),
               ),
-              Expanded(
-                child: _monthList(),
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          child: Column(
-            children: <Widget>[
-              Container(
+            ),
+            Expanded(
+              child: Container(
                 margin: EdgeInsets.symmetric(
                   vertical: 5,
                   horizontal: 10,
@@ -167,6 +160,16 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
                 color: Colors.orangeAccent.withOpacity(0.3),
                 child:
                     Text('${_utility.makeCurrencyDisplay(_total.toString())}'),
+              ),
+            ),
+          ],
+        ),
+        Expanded(
+          child: Row(
+            children: <Widget>[
+              Container(
+                width: 60,
+                child: _monthList(),
               ),
               Expanded(
                 child: Container(
@@ -212,6 +215,36 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
         onTap: () => _monthSummaryDisplay(month: _yearMonth[position]),
       ),
     );
+  }
+
+  /**
+   *
+   */
+  Future<void> _monthSummaryDisplay({month}) async {
+    _selectedMonth = month;
+
+    List<Map<dynamic, dynamic>> _summaryData2 = List();
+
+    String url = "http://toyohide.work/BrainLog/api/monthsummary";
+    Map<String, String> headers = {'content-type': 'application/json'};
+    String date = "${_selectedYear}-${month}-01";
+
+    String body = json.encode({"date": date});
+    Response response = await post(url, headers: headers, body: body);
+
+    if (response != null) {
+      Map data = jsonDecode(response.body);
+
+      _total = 0;
+      for (var i = 0; i < data['data'].length; i++) {
+        _summaryData2.add(data['data'][i]);
+        _total += data['data'][i]['sum'];
+      }
+    }
+
+    _summaryData = _summaryData2;
+
+    setState(() {});
   }
 
   /**
@@ -291,36 +324,6 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
         builder: (context) => SpendSummaryDisplayScreen(date: '${value}-01-01'),
       ),
     );
-  }
-
-  /**
-   *
-   */
-  Future<void> _monthSummaryDisplay({month}) async {
-    _selectedMonth = month;
-
-    List<Map<dynamic, dynamic>> _summaryData2 = List();
-
-    String url = "http://toyohide.work/BrainLog/api/monthsummary";
-    Map<String, String> headers = {'content-type': 'application/json'};
-    String date = "${_selectedYear}-${month}-01";
-
-    String body = json.encode({"date": date});
-    Response response = await post(url, headers: headers, body: body);
-
-    if (response != null) {
-      Map data = jsonDecode(response.body);
-
-      _total = 0;
-      for (var i = 0; i < data['data'].length; i++) {
-        _summaryData2.add(data['data'][i]);
-        _total += data['data'][i]['sum'];
-      }
-    }
-
-    _summaryData = _summaryData2;
-
-    setState(() {});
   }
 
   /**
