@@ -80,12 +80,16 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
         if (data['data']['date'] == widget.date) {
           var ex_data = (data['data']['item']).split(";");
           for (var i = 0; i < ex_data.length; i++) {
-            _spendDetailData.add((ex_data[i]).split("|"));
+            String _linedata = '${ex_data[i]}|1';
+            _spendDetailData.add(_linedata.split("|"));
           }
-          _spendSum = data['data']['sum'];
+          String _goukei = '|${data['data']['sum'].toString()}|2';
+          _spendDetailData.add(_goukei.split("|"));
         }
       }
     }
+
+    print(_spendDetailData);
 
     /////////////////////////////////////////////////////
     Response response2 = await get(
@@ -221,13 +225,6 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
                   indent: 20.0,
                   endIndent: 20.0,
                 ),
-                Text('${_spendSum}'),
-                const Divider(
-                  color: Colors.indigo,
-                  height: 20.0,
-                  indent: 20.0,
-                  endIndent: 20.0,
-                ),
                 (_spendDetailData.length == 0)
                     ? Container()
                     : Expanded(
@@ -288,11 +285,27 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
       child: Table(
         children: [
           TableRow(children: [
-            Text('${_spendDetailData[position][0]}'),
+            (_spendDetailData[position][2] == '2')
+                ? Container(
+                    alignment: Alignment.topRight,
+                    child: Text(
+                      '合計',
+                      style: TextStyle(
+                        color: Colors.greenAccent,
+                      ),
+                    ),
+                  )
+                : Text('${_spendDetailData[position][0]}'),
             Align(
               alignment: Alignment.topRight,
-              child: Text(
-                  '${_utility.makeCurrencyDisplay(_spendDetailData[position][1])}'),
+              child: (_spendDetailData[position][2] == '2')
+                  ? Text(
+                      '${_utility.makeCurrencyDisplay(_spendDetailData[position][1])}',
+                      style: TextStyle(color: Colors.greenAccent),
+                    )
+                  : Text(
+                      '${_utility.makeCurrencyDisplay(_spendDetailData[position][1])}',
+                    ),
             ),
             Align(),
           ]),
@@ -411,37 +424,16 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
               Table(
                 children: [
                   TableRow(children: [
-                    Text(
-                      '${_yen10000}',
-                      style: TextStyle(color: Colors.greenAccent),
-                    ),
-                    Text(
-                      '${_yen5000}',
-                      style: TextStyle(color: Colors.greenAccent),
-                    ),
-                    Text(
-                      '${_yen2000}',
-                      style: TextStyle(color: Colors.greenAccent),
-                    ),
-                    Text(
-                      '${_yen1000}',
-                      style: TextStyle(color: Colors.greenAccent),
-                    ),
-                    Text('${_yen500}'),
-                    Text('${_yen100}'),
-                    Text('${_yen50}'),
-                    Text(
-                      '${_yen10}',
-                      style: TextStyle(color: Colors.orangeAccent),
-                    ),
-                    Text(
-                      '${_yen5}',
-                      style: TextStyle(color: Colors.orangeAccent),
-                    ),
-                    Text(
-                      '${_yen1}',
-                      style: TextStyle(color: Colors.orangeAccent),
-                    ),
+                    _getDisplayContainer(name: '10000', value: _yen10000),
+                    _getDisplayContainer(name: '5000', value: _yen5000),
+                    _getDisplayContainer(name: '2000', value: _yen2000),
+                    _getDisplayContainer(name: '1000', value: _yen1000),
+                    _getDisplayContainer(name: '500', value: _yen500),
+                    _getDisplayContainer(name: '100', value: _yen100),
+                    _getDisplayContainer(name: '50', value: _yen50),
+                    _getDisplayContainer(name: '10', value: _yen10),
+                    _getDisplayContainer(name: '5', value: _yen5),
+                    _getDisplayContainer(name: '1', value: _yen1)
                   ])
                 ],
               ),
@@ -456,10 +448,10 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
                   : Table(
                       children: [
                         TableRow(children: [
-                          Text('${_bankA}'),
-                          Text('${_bankB}'),
-                          Text('${_bankC}'),
-                          Text('${_bankD}')
+                          _getDisplayContainer(name: 'bankA', value: _bankA),
+                          _getDisplayContainer(name: 'bankB', value: _bankB),
+                          _getDisplayContainer(name: 'bankC', value: _bankC),
+                          _getDisplayContainer(name: 'bankD', value: _bankD)
                         ])
                       ],
                     ),
@@ -468,10 +460,10 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
                   : Table(
                       children: [
                         TableRow(children: [
-                          Text('${_bankE}'),
-                          Text('${_bankF}'),
-                          Text('${_bankG}'),
-                          Text('${_bankH}')
+                          _getDisplayContainer(name: 'bankE', value: _bankE),
+                          _getDisplayContainer(name: 'bankF', value: _bankF),
+                          _getDisplayContainer(name: 'bankG', value: _bankG),
+                          _getDisplayContainer(name: 'bankH', value: _bankH)
                         ])
                       ],
                     ),
@@ -486,10 +478,10 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
                   : Table(
                       children: [
                         TableRow(children: [
-                          Text('${_payA}'),
-                          Text('${_payB}'),
-                          Text('${_payC}'),
-                          Text('${_payD}')
+                          _getDisplayContainer(name: 'payA', value: _payA),
+                          _getDisplayContainer(name: 'payB', value: _payB),
+                          _getDisplayContainer(name: 'payC', value: _payC),
+                          _getDisplayContainer(name: 'payD', value: _payD)
                         ])
                       ],
                     ),
@@ -498,10 +490,10 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
                   : Table(
                       children: [
                         TableRow(children: [
-                          Text('${_payE}'),
-                          Text('${_payF}'),
-                          Text('${_payG}'),
-                          Text('${_payH}')
+                          _getDisplayContainer(name: 'payE', value: _payE),
+                          _getDisplayContainer(name: 'payF', value: _payF),
+                          _getDisplayContainer(name: 'payG', value: _payG),
+                          _getDisplayContainer(name: 'payH', value: _payH)
                         ])
                       ],
                     ),
@@ -512,6 +504,42 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
     );
   }
 
+  /**
+   *
+   */
+  Widget _getDisplayContainer({name, value}) {
+    return Container(
+      alignment: Alignment.topRight,
+      child: Text('${_utility.makeCurrencyDisplay(value)}',
+          style: TextStyle(color: _getTextColor(name: name))),
+    );
+  }
+
+  /**
+   *
+   */
+  Color _getTextColor({name}) {
+    switch (name) {
+      case '10000':
+      case '5000':
+      case '2000':
+      case '1000':
+        return Colors.greenAccent;
+        break;
+      case '10':
+      case '5':
+      case '1':
+        return Colors.orangeAccent;
+        break;
+      default:
+        return Colors.white;
+        break;
+    }
+  }
+
+  /**
+   *
+   */
   void _goSpendSummaryDisplayScreen({String date}) {
     Navigator.push(
       context,
