@@ -20,6 +20,8 @@ class _UcSpendDisplayScreenState extends State<UcSpendDisplayScreen> {
 
   int _total = 0;
 
+  List<int> _selectedList = List();
+
   /**
    * 初期動作
    */
@@ -131,12 +133,13 @@ class _UcSpendDisplayScreenState extends State<UcSpendDisplayScreen> {
    */
   Widget _listItem({int position}) {
     return Card(
-      color: Colors.black.withOpacity(0.3),
+      color: _getSelectedBgColor(position: position),
       elevation: 10.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: ListTile(
+        onTap: () => _addSelectedAry(position: position),
         title: DefaultTextStyle(
           style: TextStyle(fontSize: 10.0),
           child: Column(
@@ -151,5 +154,29 @@ class _UcSpendDisplayScreenState extends State<UcSpendDisplayScreen> {
         ),
       ),
     );
+  }
+
+  /**
+   *
+   */
+  _addSelectedAry({position}) {
+    if (_selectedList.contains(position)) {
+      _selectedList.remove(position);
+    } else {
+      _selectedList.add(position);
+    }
+
+    setState(() {});
+  }
+
+  /**
+   *
+   */
+  Color _getSelectedBgColor({position}) {
+    if (_selectedList.contains(position)) {
+      return Colors.greenAccent.withOpacity(0.3);
+    } else {
+      return Colors.black.withOpacity(0.3);
+    }
   }
 }
