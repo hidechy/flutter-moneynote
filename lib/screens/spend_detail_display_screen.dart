@@ -285,6 +285,7 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
       child: Table(
         children: [
           TableRow(children: [
+            Align(),
             (_spendDetailData[position][2] == '2')
                 ? Container(
                     alignment: Alignment.topRight,
@@ -295,7 +296,10 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
                       ),
                     ),
                   )
-                : Text('${_spendDetailData[position][0]}'),
+                : Align(
+                    alignment: Alignment.topLeft,
+                    child: Text('${_spendDetailData[position][0]}'),
+                  ),
             Align(
               alignment: Alignment.topRight,
               child: (_spendDetailData[position][2] == '2')
@@ -307,7 +311,6 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
                       '${_utility.makeCurrencyDisplay(_spendDetailData[position][1])}',
                     ),
             ),
-            Align(),
           ]),
         ],
       ),

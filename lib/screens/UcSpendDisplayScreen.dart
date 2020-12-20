@@ -21,6 +21,8 @@ class _UcSpendDisplayScreenState extends State<UcSpendDisplayScreen> {
   int _total = 0;
 
   List<int> _selectedList = List();
+  int _selectedTotal = 0;
+  int _selectedDiff = 0;
 
   /**
    * 初期動作
@@ -52,6 +54,8 @@ class _UcSpendDisplayScreenState extends State<UcSpendDisplayScreen> {
       }
     }
     ///////////////////////
+
+    _selectedDiff = _total;
 
     setState(() {});
   }
@@ -97,19 +101,30 @@ class _UcSpendDisplayScreenState extends State<UcSpendDisplayScreen> {
   Widget _spendDisplayBox() {
     int _diff = (widget.sumprice - _total);
 
+    List<dynamic> _value = List();
+    _value.add(_utility.makeCurrencyDisplay(_total.toString()));
+    _value.add(_utility.makeCurrencyDisplay(widget.sumprice.toString()));
+    _value.add(_utility.makeCurrencyDisplay(_diff.toString()));
+
+    List<dynamic> _value2 = List();
+    _value2.add(_utility.makeCurrencyDisplay(_selectedTotal.toString()));
+    _value2.add(_utility.makeCurrencyDisplay(_selectedDiff.toString()));
+
     return Column(
       children: <Widget>[
         Container(
-          margin: EdgeInsets.symmetric(
-            vertical: 5,
-            horizontal: 10,
-          ),
-          padding: EdgeInsets.all(8),
-          alignment: Alignment.topRight,
           width: double.infinity,
           color: Colors.orangeAccent.withOpacity(0.3),
-          child: Text(
-              '${_utility.makeCurrencyDisplay(_total.toString())} / ${_utility.makeCurrencyDisplay(widget.sumprice.toString())} / ${_utility.makeCurrencyDisplay(_diff.toString())}'),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                '${_value2.join(' / ')}',
+                style: TextStyle(color: Colors.greenAccent),
+              ),
+              Text('${_value.join(' / ')}'),
+            ],
+          ),
         ),
         Expanded(
           child: _ucCardSpendList(),
@@ -162,9 +177,13 @@ class _UcSpendDisplayScreenState extends State<UcSpendDisplayScreen> {
   _addSelectedAry({position}) {
     if (_selectedList.contains(position)) {
       _selectedList.remove(position);
+      _selectedTotal -= int.parse(_ucCardSpendData[position]['price']);
     } else {
       _selectedList.add(position);
+      _selectedTotal += int.parse(_ucCardSpendData[position]['price']);
     }
+
+    _selectedDiff = (_total - _selectedTotal);
 
     setState(() {});
   }
