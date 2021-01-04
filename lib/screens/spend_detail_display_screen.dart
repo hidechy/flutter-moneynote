@@ -56,6 +56,9 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
   String _payG = '0';
   String _payH = '0';
 
+  DateTime _prevDate = DateTime.now();
+  DateTime _nextDate = DateTime.now();
+
   /**
    * 初期動作
    */
@@ -70,6 +73,13 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
    * 初期データ作成
    */
   void _makeDefaultDisplayData() async {
+    _utility.makeYMDYData(widget.date, 0);
+
+    _prevDate = new DateTime(int.parse(_utility.year),
+        int.parse(_utility.month), int.parse(_utility.day) - 1);
+    _nextDate = new DateTime(int.parse(_utility.year),
+        int.parse(_utility.month), int.parse(_utility.day) + 1);
+
     /////////////////////////////////////////////////////
     Response response = await get(
         'http://toyohide.work/BrainLog/money/${widget.date}/spenditemapi');
@@ -88,8 +98,6 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
         }
       }
     }
-
-    print(_spendDetailData);
 
     /////////////////////////////////////////////////////
     Response response2 = await get(
@@ -124,34 +132,36 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
     /////////////////////////////////////////////////////
     var _money = await database.selectRecord('${widget.date}');
 
-    _yen10000 = _money[0].strYen10000;
-    _yen5000 = _money[0].strYen5000;
-    _yen2000 = _money[0].strYen2000;
-    _yen1000 = _money[0].strYen1000;
-    _yen500 = _money[0].strYen500;
-    _yen100 = _money[0].strYen100;
-    _yen50 = _money[0].strYen50;
-    _yen10 = _money[0].strYen10;
-    _yen5 = _money[0].strYen5;
-    _yen1 = _money[0].strYen1;
+    if (_money[0] != null) {
+      _yen10000 = _money[0].strYen10000;
+      _yen5000 = _money[0].strYen5000;
+      _yen2000 = _money[0].strYen2000;
+      _yen1000 = _money[0].strYen1000;
+      _yen500 = _money[0].strYen500;
+      _yen100 = _money[0].strYen100;
+      _yen50 = _money[0].strYen50;
+      _yen10 = _money[0].strYen10;
+      _yen5 = _money[0].strYen5;
+      _yen1 = _money[0].strYen1;
 
-    _bankA = _money[0].strBankA;
-    _bankB = _money[0].strBankB;
-    _bankC = _money[0].strBankC;
-    _bankD = _money[0].strBankD;
-    _bankE = _money[0].strBankE;
-    _bankF = _money[0].strBankF;
-    _bankG = _money[0].strBankG;
-    _bankH = _money[0].strBankH;
+      _bankA = _money[0].strBankA;
+      _bankB = _money[0].strBankB;
+      _bankC = _money[0].strBankC;
+      _bankD = _money[0].strBankD;
+      _bankE = _money[0].strBankE;
+      _bankF = _money[0].strBankF;
+      _bankG = _money[0].strBankG;
+      _bankH = _money[0].strBankH;
 
-    _payA = _money[0].strPayA;
-    _payB = _money[0].strPayB;
-    _payC = _money[0].strPayC;
-    _payD = _money[0].strPayD;
-    _payE = _money[0].strPayE;
-    _payF = _money[0].strPayF;
-    _payG = _money[0].strPayG;
-    _payH = _money[0].strPayH;
+      _payA = _money[0].strPayA;
+      _payB = _money[0].strPayB;
+      _payC = _money[0].strPayC;
+      _payD = _money[0].strPayD;
+      _payE = _money[0].strPayE;
+      _payF = _money[0].strPayF;
+      _payG = _money[0].strPayG;
+      _payH = _money[0].strPayH;
+    }
 
     setState(() {});
   }
@@ -162,6 +172,9 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
   @override
   Widget build(BuildContext context) {
     _utility.makeYMDYData(widget.date, 0);
+
+    var _prevdate = (_prevDate.toString()).split(' ');
+    var _nextdate = (_nextDate.toString()).split(' ');
 
     return Scaffold(
       appBar: AppBar(
@@ -199,6 +212,27 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
             ),
             child: Column(
               children: <Widget>[
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      IconButton(
+                        icon: const Icon(Icons.skip_previous),
+                        onPressed: () => _goSpendDetailDisplayScreen(
+                          context: context,
+                          date: _prevdate[0],
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.skip_next),
+                        onPressed: () => _goSpendDetailDisplayScreen(
+                          context: context,
+                          date: _nextdate[0],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -548,6 +582,18 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => SpendSummaryDisplayScreen(date: date),
+      ),
+    );
+  }
+
+  /**
+   * 画面遷移（MonthlyValueListScreen）
+   */
+  void _goSpendDetailDisplayScreen({BuildContext context, String date}) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SpendDetailDisplayScreen(date: date),
       ),
     );
   }
