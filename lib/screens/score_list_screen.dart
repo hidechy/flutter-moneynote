@@ -135,6 +135,25 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
       _scoreData.add(_map);
     } //for[i]
 
+    //////////////////////////////////////////////////
+    var scoreCount = _scoreData.length;
+    var gain = 0;
+    for (var i = 0; i < scoreCount; i++) {
+      var value = _scoreData[i];
+
+      if (i == 0) {
+        value['gain'] = '';
+      } else if (i == (scoreCount - 1)) {
+        value['gain'] = '';
+      } else {
+        gain += int.parse(value['score']);
+        value['gain'] = gain;
+      }
+    }
+    //////////////////////////////////////////////////
+
+    print(_scoreData);
+
     setState(() {});
   }
 
@@ -252,8 +271,16 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
                     text: '',
                     position: position,
                     column: 'benefit'),
-                Container(),
-                Container(),
+                _getDisplayContainer(
+                    align: 'right',
+                    text: 'gain : ',
+                    position: null,
+                    column: null),
+                _getDisplayContainer(
+                    align: 'right',
+                    text: '',
+                    position: position,
+                    column: 'gain'),
                 Container(),
               ]),
             ],
@@ -281,21 +308,35 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
    */
   Widget _getDisplayText({String text, int position, String column}) {
     if (text != '') {
-      if (text == 'score : ') {
+      switch (text) {
+        case 'score : ':
+          return Text('${text}', style: TextStyle(color: Colors.orangeAccent));
+          break;
+        case 'gain : ':
+          return Text('${text}', style: TextStyle(color: Colors.greenAccent));
+          break;
+        default:
+          return Text('${text}');
+          break;
+      }
+    }
+
+    switch (column) {
+      case 'score':
         return Text(
-          '${text}',
+          '${_scoreData[position][column]}',
           style: TextStyle(color: Colors.orangeAccent),
         );
-      } else {
-        return Text('${text}');
-      }
-    } else if (column == 'score') {
-      return Text(
-        '${_scoreData[position][column]}',
-        style: TextStyle(color: Colors.orangeAccent),
-      );
-    } else {
-      return Text('${_scoreData[position][column]}');
+        break;
+      case 'gain':
+        return Text(
+          '${_scoreData[position][column]}',
+          style: TextStyle(color: Colors.greenAccent),
+        );
+        break;
+      default:
+        return Text('${_scoreData[position][column]}');
+        break;
     }
   }
 
