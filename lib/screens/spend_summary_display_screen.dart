@@ -71,8 +71,14 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
 
       _total = 0;
       for (var i = 0; i < data['data'].length; i++) {
-        _summaryData.add(data['data'][i]);
         _total += data['data'][i]['sum'];
+
+        Map _map = Map();
+        _map['item'] = data['data'][i]['item'];
+        _map['sum'] = data['data'][i]['sum'];
+        _map['percent'] = data['data'][i]['percent'];
+        _map['total'] = _total;
+        _summaryData.add(_map);
       }
     }
     ///////////////////////
@@ -237,8 +243,14 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
 
       _total = 0;
       for (var i = 0; i < data['data'].length; i++) {
-        _summaryData2.add(data['data'][i]);
         _total += data['data'][i]['sum'];
+
+        Map _map = Map();
+        _map['item'] = data['data'][i]['item'];
+        _map['sum'] = data['data'][i]['sum'];
+        _map['percent'] = data['data'][i]['percent'];
+        _map['total'] = _total;
+        _summaryData2.add(_map);
       }
     }
 
@@ -276,8 +288,17 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
                 Text('${_summaryData[position]['item']}'),
                 Container(
                   alignment: Alignment.topRight,
-                  child: Text(
-                      '${_utility.makeCurrencyDisplay(_summaryData[position]['sum'].toString())}'),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Text(
+                          '${_utility.makeCurrencyDisplay(_summaryData[position]['sum'].toString())}'),
+                      Text(
+                        '${_summaryData[position]['total']}',
+                        style: TextStyle(color: Colors.grey.withOpacity(0.8)),
+                      ),
+                    ],
+                  ),
                 ),
                 Container(
                   alignment: Alignment.topRight,

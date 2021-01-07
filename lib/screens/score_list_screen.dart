@@ -152,8 +152,6 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
     }
     //////////////////////////////////////////////////
 
-    print(_scoreData);
-
     setState(() {});
   }
 
