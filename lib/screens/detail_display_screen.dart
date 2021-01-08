@@ -84,6 +84,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
 
   Map<String, dynamic> _holidayList = Map();
 
+  var _lastMonthTotal = 0;
+
   /**
    * 初期動作
    */
@@ -125,7 +127,6 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
       ]);
     }
     ////////////////////////////////////////////////
-
     /////////////////////////////////////////////////////
     _controller = AutoScrollController(
       viewportBoundaryGetter: () => Rect.fromLTRB(
@@ -140,7 +141,6 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
     await _controller.scrollToIndex(widget.index,
         preferPosition: AutoScrollPosition.begin);
     /////////////////////////////////////////////////////
-
     if (widget.detailDisplayArgs['today'] != null) {
       _yen10000 = widget.detailDisplayArgs['today'][0].strYen10000;
       _yen5000 = widget.detailDisplayArgs['today'][0].strYen5000;
@@ -183,7 +183,6 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
       _spend = (_yesterdayTotal - _total) * -1;
     }
 
-    var _lastMonthTotal = 0;
     if (widget.detailDisplayArgs['lastMonthEnd'] != null) {
       _utility.makeTotal(widget.detailDisplayArgs['lastMonthEnd'][0]);
       _lastMonthTotal = _utility.total;
@@ -287,18 +286,20 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                               child: Table(
                                 children: [
                                   TableRow(children: [
-                                    _getTextDispWidget(
-                                        text: 'total',
-                                        greyDisp: false,
-                                        value: '',
-                                        undercoin: false,
-                                        currencyDisp: false),
-                                    _getTextDispWidget(
-                                        text: _total.toString(),
-                                        greyDisp: false,
-                                        value: '',
-                                        undercoin: false,
-                                        currencyDisp: true),
+                                    Center(
+                                      child: Text(
+                                        'total',
+                                        style: TextStyle(
+                                            color: Colors.yellowAccent),
+                                      ),
+                                    ),
+                                    Center(
+                                      child: Text(
+                                        '${_utility.makeCurrencyDisplay(_total.toString())}',
+                                        style: TextStyle(
+                                            color: Colors.yellowAccent),
+                                      ),
+                                    ),
                                   ]),
                                   TableRow(children: [
                                     _getTextDispWidget(
@@ -327,6 +328,15 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                                         value: '',
                                         undercoin: false,
                                         currencyDisp: true),
+                                  ]),
+                                  TableRow(children: [
+                                    Center(
+                                      child: Text('month start'),
+                                    ),
+                                    Center(
+                                      child: Text(
+                                          '${_utility.makeCurrencyDisplay(_lastMonthTotal.toString())}'),
+                                    ),
                                   ]),
                                 ],
                               ),
@@ -1150,7 +1160,6 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   }
 
   ///////////////////////////////////////////////////////////////////// 画面遷移
-
   /**
    * 画面遷移（前日）
    */

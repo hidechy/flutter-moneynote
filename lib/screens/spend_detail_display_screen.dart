@@ -451,7 +451,10 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
    */
   Widget _makeDisplayMoneyItem() {
     return Container(
-      color: Colors.blueAccent.withOpacity(0.3),
+      decoration: BoxDecoration(
+        color: Colors.blueAccent.withOpacity(0.3),
+        border: Border.all(color: Colors.white),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: DefaultTextStyle(

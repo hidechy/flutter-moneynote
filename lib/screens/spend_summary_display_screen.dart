@@ -82,7 +82,6 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
       }
     }
     ///////////////////////
-
     for (int i = 1; i <= 12; i++) {
       _yearMonth.add(i.toString().padLeft(2, '0'));
     }
