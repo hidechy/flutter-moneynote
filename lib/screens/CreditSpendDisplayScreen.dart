@@ -68,7 +68,7 @@ class _CreditSpendDisplayScreenState extends State<CreditSpendDisplayScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black.withOpacity(0.1),
-        title: Text('Uc Card [${_utility.year}-${_utility.month}]'),
+        title: Text('Credit Card [${_utility.year}-${_utility.month}]'),
         centerTitle: true,
 
         //-------------------------//これを消すと「←」が出てくる（消さない）
@@ -102,20 +102,16 @@ class _CreditSpendDisplayScreenState extends State<CreditSpendDisplayScreen> {
   Widget _spendDisplayBox() {
     int _diff = (widget.sumprice - _total);
 
-//    List<dynamic> _value = List();
-//    _value.add(_utility.makeCurrencyDisplay(_total.toString()));
-//    _value.add(_utility.makeCurrencyDisplay(widget.sumprice.toString()));
-//    _value.add(_utility.makeCurrencyDisplay(_diff.toString()));
-//
-//    List<dynamic> _value2 = List();
-//    _value2.add(_utility.makeCurrencyDisplay(_selectedTotal.toString()));
-//    _value2.add(_utility.makeCurrencyDisplay(_selectedDiff.toString()));
-
     return Column(
       children: <Widget>[
         Container(
           width: double.infinity,
-          color: Colors.orangeAccent.withOpacity(0.3),
+          decoration: BoxDecoration(
+            color: Colors.orangeAccent.withOpacity(0.3),
+            border: Border.all(
+              color: Colors.white.withOpacity(0.3),
+            ),
+          ),
           child: Row(
             children: <Widget>[
               Expanded(

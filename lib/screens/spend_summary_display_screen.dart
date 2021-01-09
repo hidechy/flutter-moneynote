@@ -155,6 +155,12 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
             ),
             Expanded(
               child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.orangeAccent.withOpacity(0.3),
+                  border: Border.all(
+                    color: Colors.white.withOpacity(0.3),
+                  ),
+                ),
                 margin: EdgeInsets.symmetric(
                   vertical: 5,
                   horizontal: 10,
@@ -162,7 +168,6 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
                 padding: EdgeInsets.all(8),
                 alignment: Alignment.topRight,
                 width: double.infinity,
-                color: Colors.orangeAccent.withOpacity(0.3),
                 child:
                     Text('${_utility.makeCurrencyDisplay(_total.toString())}'),
               ),

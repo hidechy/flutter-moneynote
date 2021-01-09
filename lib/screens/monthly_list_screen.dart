@@ -177,27 +177,23 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Container(
-                          color: Colors.yellow,
+//                          color: Colors.orangeAccent.withOpacity(0.3),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Text(
-                                  'start　${_utility.makeCurrencyDisplay(_prevMonthEndTotal.toString())}',
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12,
-                                  ),
-                                ),
+                                    'start　${_utility.makeCurrencyDisplay(_prevMonthEndTotal.toString())}'),
                                 Text(
-                                  'total　${_monthTotal}',
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12,
-                                  ),
-                                ),
+                                    'total　${_utility.makeCurrencyDisplay(_monthTotal.toString())}'),
                               ],
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.orangeAccent.withOpacity(0.3),
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.3),
                             ),
                           ),
                         ),
