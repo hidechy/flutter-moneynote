@@ -180,7 +180,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
     if (widget.detailDisplayArgs['yesterday'] != null) {
       _utility.makeTotal(widget.detailDisplayArgs['yesterday'][0]);
       var _yesterdayTotal = _utility.total;
-      _spend = (_yesterdayTotal - _total) * -1;
+      _spend = (_yesterdayTotal - _total);
     }
 
     if (widget.detailDisplayArgs['lastMonthEnd'] != null) {
@@ -188,7 +188,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
       _lastMonthTotal = _utility.total;
     }
 
-    _monthSpend = (_lastMonthTotal - _total) * -1;
+    _monthSpend = (_lastMonthTotal - _total);
 
 //    ///////////////////////////////////////////////////////////////////
 
@@ -257,568 +257,45 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                   child: Column(
                     children: <Widget>[
                       //------------------------------------------------------------------------//
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10.0),
-                        child: Center(
-                          child: DefaultTextStyle(
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontFamily: "Yomogi",
-                            ),
-                            child: Text('${_displayDate}（${_youbiStr}）'),
-                          ),
-                        ),
-                      ),
-                      const Divider(
-                        color: Colors.indigo,
-                        height: 20.0,
-                        indent: 20.0,
-                        endIndent: 20.0,
-                      ),
-                      DefaultTextStyle(
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontFamily: "Yomogi",
-                        ),
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: Table(
-                                children: [
-                                  TableRow(children: [
-                                    Center(
-                                      child: Text(
-                                        'total',
-                                        style: TextStyle(
-                                            color: Colors.yellowAccent),
-                                      ),
-                                    ),
-                                    Center(
-                                      child: Text(
-                                        '${_utility.makeCurrencyDisplay(_total.toString())}',
-                                        style: TextStyle(
-                                            color: Colors.yellowAccent),
-                                      ),
-                                    ),
-                                  ]),
-                                  TableRow(children: [
-                                    _getTextDispWidget(
-                                        text: 'spend',
-                                        greyDisp: false,
-                                        value: '',
-                                        undercoin: false,
-                                        currencyDisp: false),
-                                    _getTextDispWidget(
-                                        text: _spend.toString(),
-                                        greyDisp: false,
-                                        value: '',
-                                        undercoin: false,
-                                        currencyDisp: true),
-                                  ]),
-                                  TableRow(children: [
-                                    _getTextDispWidget(
-                                        text: 'month spend',
-                                        greyDisp: false,
-                                        value: '',
-                                        undercoin: false,
-                                        currencyDisp: false),
-                                    _getTextDispWidget(
-                                        text: _monthSpend.toString(),
-                                        greyDisp: false,
-                                        value: '',
-                                        undercoin: false,
-                                        currencyDisp: true),
-                                  ]),
-                                  TableRow(children: [
-                                    Center(
-                                      child: Text('month start'),
-                                    ),
-                                    Center(
-                                      child: Text(
-                                          '${_utility.makeCurrencyDisplay(_lastMonthTotal.toString())}'),
-                                    ),
-                                  ]),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              width: 80,
-                              child: IconButton(
-                                color: Colors.greenAccent,
-                                icon: Icon(Icons.info),
-                                onPressed: () => _goSpendDetailDisplayScreen(
-                                    context: context, date: _displayDate),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Divider(
-                        color: Colors.indigo,
-                        height: 20.0,
-                        indent: 20.0,
-                        endIndent: 20.0,
-                      ),
-                      DefaultTextStyle(
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontFamily: "Yomogi",
-                        ),
-                        child: Table(
-                          children: [
-                            TableRow(children: [
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  color: Colors.green[900].withOpacity(0.5),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 2,
-                                    ),
-                                    child: Text('currency'),
-                                  ),
-                                ),
-                              ),
-                              Container(),
-                              Container(),
-                              Container(),
-                            ]),
-                            TableRow(children: [
-                              _getTextDispWidget(
-                                  text: '10000',
-                                  greyDisp: false,
-                                  value: '',
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _yen10000,
-                                  greyDisp: false,
-                                  value: '',
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: '100',
-                                  greyDisp: false,
-                                  value: '',
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _yen100,
-                                  greyDisp: false,
-                                  value: '',
-                                  undercoin: false,
-                                  currencyDisp: false),
-                            ]),
-                            TableRow(children: [
-                              _getTextDispWidget(
-                                  text: '5000',
-                                  greyDisp: false,
-                                  value: '',
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _yen5000,
-                                  greyDisp: false,
-                                  value: '',
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: '50',
-                                  greyDisp: false,
-                                  value: '',
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _yen50,
-                                  greyDisp: false,
-                                  value: '',
-                                  undercoin: false,
-                                  currencyDisp: false),
-                            ]),
-                            TableRow(children: [
-                              _getTextDispWidget(
-                                  text: '2000',
-                                  greyDisp: false,
-                                  value: '',
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _yen2000,
-                                  greyDisp: false,
-                                  value: '',
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: '10',
-                                  greyDisp: false,
-                                  value: '',
-                                  undercoin: true,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _yen10,
-                                  greyDisp: false,
-                                  value: '',
-                                  undercoin: true,
-                                  currencyDisp: false),
-                            ]),
-                            TableRow(children: [
-                              _getTextDispWidget(
-                                  text: '1000',
-                                  greyDisp: false,
-                                  value: '',
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _yen1000,
-                                  greyDisp: false,
-                                  value: '',
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: '5',
-                                  greyDisp: false,
-                                  value: '',
-                                  undercoin: true,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _yen5,
-                                  greyDisp: false,
-                                  value: '',
-                                  undercoin: true,
-                                  currencyDisp: false),
-                            ]),
-                            TableRow(children: [
-                              _getTextDispWidget(
-                                  text: '500',
-                                  greyDisp: false,
-                                  value: '',
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _yen500,
-                                  greyDisp: false,
-                                  value: '',
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: '1',
-                                  greyDisp: false,
-                                  value: '',
-                                  undercoin: true,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _yen1,
-                                  greyDisp: false,
-                                  value: '',
-                                  undercoin: true,
-                                  currencyDisp: false),
-                            ]),
-                          ],
-                        ),
-                      ),
-                      const Divider(
-                        color: Colors.indigo,
-                        height: 20.0,
-                        indent: 20.0,
-                        endIndent: 20.0,
-                      ),
+
                       Container(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 30.0),
-                          child: Text(
-                            _utility.makeCurrencyDisplay(_temochi.toString()),
-                            style: const TextStyle(
-                              color: Colors.greenAccent,
-                              fontSize: 12,
-                            ),
+                        padding: EdgeInsets.only(top: 10),
+                        child: DefaultTextStyle(
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontFamily: "Yomogi",
                           ),
+                          child: Text('${_displayDate}（${_youbiStr}）'),
                         ),
                       ),
-                      Container(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 30.0),
-                          child: Text(
-                            _utility.makeCurrencyDisplay(_undercoin.toString()),
-                            style: const TextStyle(
-                              color: Colors.orangeAccent,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
+
+                      const Divider(
+                        color: Colors.indigo,
+                        indent: 20.0,
+                        endIndent: 20.0,
                       ),
-                      DefaultTextStyle(
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontFamily: "Yomogi",
-                        ),
-                        child: Table(
-                          children: [
-                            TableRow(children: [
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  color: Colors.green[900].withOpacity(0.5),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 2,
-                                    ),
-                                    child: Text('deposit'),
-                                  ),
-                                ),
-                              ),
-                              Container(),
-                              Container(),
-                              Container(),
-                            ]),
-                            TableRow(children: [
-                              _getTextDispWidget(
-                                  text: 'bank_a',
-                                  greyDisp: true,
-                                  value: _bankA,
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _bankA,
-                                  greyDisp: true,
-                                  value: _bankA,
-                                  undercoin: false,
-                                  currencyDisp: true),
-                              _getTextDispWidget(
-                                  text: 'bank_e',
-                                  greyDisp: true,
-                                  value: _bankE,
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _bankE,
-                                  greyDisp: true,
-                                  value: _bankE,
-                                  undercoin: false,
-                                  currencyDisp: true),
-                            ]),
-                            TableRow(children: [
-                              _getTextDispWidget(
-                                  text: 'bank_b',
-                                  greyDisp: true,
-                                  value: _bankD,
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _bankB,
-                                  greyDisp: true,
-                                  value: _bankD,
-                                  undercoin: false,
-                                  currencyDisp: true),
-                              _getTextDispWidget(
-                                  text: 'bank_f',
-                                  greyDisp: true,
-                                  value: _bankF,
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _bankF,
-                                  greyDisp: true,
-                                  value: _bankF,
-                                  undercoin: false,
-                                  currencyDisp: true),
-                            ]),
-                            TableRow(children: [
-                              _getTextDispWidget(
-                                  text: 'bank_c',
-                                  greyDisp: true,
-                                  value: _bankC,
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _bankC,
-                                  greyDisp: true,
-                                  value: _bankC,
-                                  undercoin: false,
-                                  currencyDisp: true),
-                              _getTextDispWidget(
-                                  text: 'bank_g',
-                                  greyDisp: true,
-                                  value: _bankG,
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _bankG,
-                                  greyDisp: true,
-                                  value: _bankG,
-                                  undercoin: false,
-                                  currencyDisp: true),
-                            ]),
-                            TableRow(children: [
-                              _getTextDispWidget(
-                                  text: 'bank_d',
-                                  greyDisp: true,
-                                  value: _bankD,
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _bankD,
-                                  greyDisp: true,
-                                  value: _bankD,
-                                  undercoin: false,
-                                  currencyDisp: true),
-                              _getTextDispWidget(
-                                  text: 'bank_h',
-                                  greyDisp: true,
-                                  value: _bankH,
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _bankH,
-                                  greyDisp: true,
-                                  value: _bankH,
-                                  undercoin: false,
-                                  currencyDisp: true),
-                            ]),
-                          ],
-                        ),
-                      ),
+
+                      _dispTotal(),
+
                       const Divider(
                         color: Colors.indigo,
                         height: 20.0,
                         indent: 20.0,
                         endIndent: 20.0,
                       ),
-                      DefaultTextStyle(
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontFamily: "Yomogi",
-                        ),
-                        child: Table(
-                          children: [
-                            TableRow(children: [
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  color: Colors.green[900].withOpacity(0.5),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 2,
-                                    ),
-                                    child: Text('e-money'),
-                                  ),
-                                ),
-                              ),
-                              Container(),
-                              Container(),
-                              Container(),
-                            ]),
-                            TableRow(children: [
-                              _getTextDispWidget(
-                                  text: 'pay_a',
-                                  greyDisp: true,
-                                  value: _payA,
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _payA,
-                                  greyDisp: true,
-                                  value: _payA,
-                                  undercoin: false,
-                                  currencyDisp: true),
-                              _getTextDispWidget(
-                                  text: 'pay_e',
-                                  greyDisp: true,
-                                  value: _payE,
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _payE,
-                                  greyDisp: true,
-                                  value: _payE,
-                                  undercoin: false,
-                                  currencyDisp: true),
-                            ]),
-                            TableRow(children: [
-                              _getTextDispWidget(
-                                  text: 'pay_b',
-                                  greyDisp: true,
-                                  value: _payB,
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _payB,
-                                  greyDisp: true,
-                                  value: _payB,
-                                  undercoin: false,
-                                  currencyDisp: true),
-                              _getTextDispWidget(
-                                  text: 'pay_f',
-                                  greyDisp: true,
-                                  value: _payF,
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _payF,
-                                  greyDisp: true,
-                                  value: _payF,
-                                  undercoin: false,
-                                  currencyDisp: true),
-                            ]),
-                            TableRow(children: [
-                              _getTextDispWidget(
-                                  text: 'pay_c',
-                                  greyDisp: true,
-                                  value: _payC,
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _payC,
-                                  greyDisp: true,
-                                  value: _payC,
-                                  undercoin: false,
-                                  currencyDisp: true),
-                              _getTextDispWidget(
-                                  text: 'pay_g',
-                                  greyDisp: true,
-                                  value: _payG,
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _payG,
-                                  greyDisp: true,
-                                  value: _payG,
-                                  undercoin: false,
-                                  currencyDisp: true),
-                            ]),
-                            TableRow(children: [
-                              _getTextDispWidget(
-                                  text: 'pay_d',
-                                  greyDisp: true,
-                                  value: _payD,
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _payD,
-                                  greyDisp: true,
-                                  value: _payD,
-                                  undercoin: false,
-                                  currencyDisp: true),
-                              _getTextDispWidget(
-                                  text: 'pay_h',
-                                  greyDisp: true,
-                                  value: _payH,
-                                  undercoin: false,
-                                  currencyDisp: false),
-                              _getTextDispWidget(
-                                  text: _payH,
-                                  greyDisp: true,
-                                  value: _payH,
-                                  undercoin: false,
-                                  currencyDisp: true),
-                            ]),
-                          ],
-                        ),
+
+                      _dispCurrency(),
+                      _dispDeposit(),
+
+                      const Divider(
+                        color: Colors.indigo,
+                        height: 20.0,
+                        indent: 20.0,
+                        endIndent: 20.0,
                       ),
+
+                      _dispEMoney(),
+
                       //------------------------------------------------------------------------//
                     ],
                   ),
@@ -897,6 +374,587 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
               Expanded(
                 child: _monthDaysList(),
               ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  /**
+   *
+   */
+  Widget _dispTotal() {
+    return Column(
+      children: <Widget>[
+        DefaultTextStyle(
+          style: const TextStyle(
+            fontSize: 14,
+            fontFamily: "Yomogi",
+          ),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Column(
+                  children: <Widget>[
+                    Table(
+                      children: [
+                        TableRow(children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20),
+                            child: Text('month start'),
+                          ),
+                          Container(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                                '${_utility.makeCurrencyDisplay(_lastMonthTotal.toString())}'),
+                          ),
+                        ]),
+                        TableRow(children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20),
+                            child: Text('month spend'),
+                          ),
+                          Container(
+                              alignment: Alignment.topRight,
+                              child: Text(
+                                  '${_utility.makeCurrencyDisplay(_monthSpend.toString())}')),
+                        ]),
+                      ],
+                    ),
+                    const Divider(color: Colors.indigo, indent: 20.0),
+                    Table(
+                      children: [
+                        TableRow(children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20),
+                            child: Text(
+                              'total',
+                              style: TextStyle(color: Colors.yellowAccent),
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                              '${_utility.makeCurrencyDisplay(_total.toString())}',
+                              style: TextStyle(color: Colors.yellowAccent),
+                            ),
+                          ),
+                        ]),
+                      ],
+                    ),
+                    const Divider(color: Colors.indigo, indent: 20.0),
+                    Table(
+                      children: [
+                        TableRow(children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20),
+                            child: Text('today spend'),
+                          ),
+                          Container(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                                '${_utility.makeCurrencyDisplay(_spend.toString())}'),
+                          ),
+                        ]),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                width: 80,
+                child: IconButton(
+                  color: Colors.greenAccent,
+                  icon: Icon(Icons.info),
+                  onPressed: () => _goSpendDetailDisplayScreen(
+                      context: context, date: _displayDate),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  /**
+   *
+   */
+  Widget _dispCurrency() {
+    return Column(
+      children: <Widget>[
+        DefaultTextStyle(
+          style: const TextStyle(
+            fontSize: 12,
+            fontFamily: "Yomogi",
+          ),
+          child: Table(
+            children: [
+              TableRow(children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Container(
+                    alignment: Alignment.center,
+                    color: Colors.green[900].withOpacity(0.5),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 2,
+                      ),
+                      child: Text('currency'),
+                    ),
+                  ),
+                ),
+                Container(),
+                Container(),
+                Container(),
+              ]),
+              TableRow(children: [
+                _getTextDispWidget(
+                    text: '10000',
+                    greyDisp: false,
+                    value: '',
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: _yen10000,
+                    greyDisp: false,
+                    value: '',
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: '100',
+                    greyDisp: false,
+                    value: '',
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: _yen100,
+                    greyDisp: false,
+                    value: '',
+                    undercoin: false,
+                    currencyDisp: false),
+              ]),
+              TableRow(children: [
+                _getTextDispWidget(
+                    text: '5000',
+                    greyDisp: false,
+                    value: '',
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: _yen5000,
+                    greyDisp: false,
+                    value: '',
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: '50',
+                    greyDisp: false,
+                    value: '',
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: _yen50,
+                    greyDisp: false,
+                    value: '',
+                    undercoin: false,
+                    currencyDisp: false),
+              ]),
+              TableRow(children: [
+                _getTextDispWidget(
+                    text: '2000',
+                    greyDisp: false,
+                    value: '',
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: _yen2000,
+                    greyDisp: false,
+                    value: '',
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: '10',
+                    greyDisp: false,
+                    value: '',
+                    undercoin: true,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: _yen10,
+                    greyDisp: false,
+                    value: '',
+                    undercoin: true,
+                    currencyDisp: false),
+              ]),
+              TableRow(children: [
+                _getTextDispWidget(
+                    text: '1000',
+                    greyDisp: false,
+                    value: '',
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: _yen1000,
+                    greyDisp: false,
+                    value: '',
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: '5',
+                    greyDisp: false,
+                    value: '',
+                    undercoin: true,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: _yen5,
+                    greyDisp: false,
+                    value: '',
+                    undercoin: true,
+                    currencyDisp: false),
+              ]),
+              TableRow(children: [
+                _getTextDispWidget(
+                    text: '500',
+                    greyDisp: false,
+                    value: '',
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: _yen500,
+                    greyDisp: false,
+                    value: '',
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: '1',
+                    greyDisp: false,
+                    value: '',
+                    undercoin: true,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: _yen1,
+                    greyDisp: false,
+                    value: '',
+                    undercoin: true,
+                    currencyDisp: false),
+              ]),
+            ],
+          ),
+        ),
+        const Divider(
+          color: Colors.indigo,
+          height: 20.0,
+          indent: 20.0,
+          endIndent: 20.0,
+        ),
+        Container(
+          alignment: Alignment.centerRight,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 30.0),
+            child: Text(
+              _utility.makeCurrencyDisplay(_temochi.toString()),
+              style: const TextStyle(
+                color: Colors.greenAccent,
+                fontSize: 12,
+              ),
+            ),
+          ),
+        ),
+        Container(
+          alignment: Alignment.centerRight,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 30.0),
+            child: Text(
+              _utility.makeCurrencyDisplay(_undercoin.toString()),
+              style: const TextStyle(
+                color: Colors.orangeAccent,
+                fontSize: 12,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /**
+   *
+   */
+  Widget _dispDeposit() {
+    return Column(
+      children: <Widget>[
+        DefaultTextStyle(
+          style: const TextStyle(
+            fontSize: 12,
+            fontFamily: "Yomogi",
+          ),
+          child: Table(
+            children: [
+              TableRow(children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Container(
+                    alignment: Alignment.center,
+                    color: Colors.green[900].withOpacity(0.5),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 2,
+                      ),
+                      child: Text('deposit'),
+                    ),
+                  ),
+                ),
+                Container(),
+                Container(),
+                Container(),
+              ]),
+              TableRow(children: [
+                _getTextDispWidget(
+                    text: 'bank_a',
+                    greyDisp: true,
+                    value: _bankA,
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: _bankA,
+                    greyDisp: true,
+                    value: _bankA,
+                    undercoin: false,
+                    currencyDisp: true),
+                _getTextDispWidget(
+                    text: 'bank_e',
+                    greyDisp: true,
+                    value: _bankE,
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: _bankE,
+                    greyDisp: true,
+                    value: _bankE,
+                    undercoin: false,
+                    currencyDisp: true),
+              ]),
+              TableRow(children: [
+                _getTextDispWidget(
+                    text: 'bank_b',
+                    greyDisp: true,
+                    value: _bankD,
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: _bankB,
+                    greyDisp: true,
+                    value: _bankD,
+                    undercoin: false,
+                    currencyDisp: true),
+                _getTextDispWidget(
+                    text: 'bank_f',
+                    greyDisp: true,
+                    value: _bankF,
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: _bankF,
+                    greyDisp: true,
+                    value: _bankF,
+                    undercoin: false,
+                    currencyDisp: true),
+              ]),
+              TableRow(children: [
+                _getTextDispWidget(
+                    text: 'bank_c',
+                    greyDisp: true,
+                    value: _bankC,
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: _bankC,
+                    greyDisp: true,
+                    value: _bankC,
+                    undercoin: false,
+                    currencyDisp: true),
+                _getTextDispWidget(
+                    text: 'bank_g',
+                    greyDisp: true,
+                    value: _bankG,
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: _bankG,
+                    greyDisp: true,
+                    value: _bankG,
+                    undercoin: false,
+                    currencyDisp: true),
+              ]),
+              TableRow(children: [
+                _getTextDispWidget(
+                    text: 'bank_d',
+                    greyDisp: true,
+                    value: _bankD,
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: _bankD,
+                    greyDisp: true,
+                    value: _bankD,
+                    undercoin: false,
+                    currencyDisp: true),
+                _getTextDispWidget(
+                    text: 'bank_h',
+                    greyDisp: true,
+                    value: _bankH,
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: _bankH,
+                    greyDisp: true,
+                    value: _bankH,
+                    undercoin: false,
+                    currencyDisp: true),
+              ]),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  /**
+   *
+   */
+  Widget _dispEMoney() {
+    return Column(
+      children: <Widget>[
+        DefaultTextStyle(
+          style: const TextStyle(
+            fontSize: 12,
+            fontFamily: "Yomogi",
+          ),
+          child: Table(
+            children: [
+              TableRow(children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Container(
+                    alignment: Alignment.center,
+                    color: Colors.green[900].withOpacity(0.5),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 2,
+                      ),
+                      child: Text('e-money'),
+                    ),
+                  ),
+                ),
+                Container(),
+                Container(),
+                Container(),
+              ]),
+              TableRow(children: [
+                _getTextDispWidget(
+                    text: 'pay_a',
+                    greyDisp: true,
+                    value: _payA,
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: _payA,
+                    greyDisp: true,
+                    value: _payA,
+                    undercoin: false,
+                    currencyDisp: true),
+                _getTextDispWidget(
+                    text: 'pay_e',
+                    greyDisp: true,
+                    value: _payE,
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: _payE,
+                    greyDisp: true,
+                    value: _payE,
+                    undercoin: false,
+                    currencyDisp: true),
+              ]),
+              TableRow(children: [
+                _getTextDispWidget(
+                    text: 'pay_b',
+                    greyDisp: true,
+                    value: _payB,
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: _payB,
+                    greyDisp: true,
+                    value: _payB,
+                    undercoin: false,
+                    currencyDisp: true),
+                _getTextDispWidget(
+                    text: 'pay_f',
+                    greyDisp: true,
+                    value: _payF,
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: _payF,
+                    greyDisp: true,
+                    value: _payF,
+                    undercoin: false,
+                    currencyDisp: true),
+              ]),
+              TableRow(children: [
+                _getTextDispWidget(
+                    text: 'pay_c',
+                    greyDisp: true,
+                    value: _payC,
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: _payC,
+                    greyDisp: true,
+                    value: _payC,
+                    undercoin: false,
+                    currencyDisp: true),
+                _getTextDispWidget(
+                    text: 'pay_g',
+                    greyDisp: true,
+                    value: _payG,
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: _payG,
+                    greyDisp: true,
+                    value: _payG,
+                    undercoin: false,
+                    currencyDisp: true),
+              ]),
+              TableRow(children: [
+                _getTextDispWidget(
+                    text: 'pay_d',
+                    greyDisp: true,
+                    value: _payD,
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: _payD,
+                    greyDisp: true,
+                    value: _payD,
+                    undercoin: false,
+                    currencyDisp: true),
+                _getTextDispWidget(
+                    text: 'pay_h',
+                    greyDisp: true,
+                    value: _payH,
+                    undercoin: false,
+                    currencyDisp: false),
+                _getTextDispWidget(
+                    text: _payH,
+                    greyDisp: true,
+                    value: _payH,
+                    undercoin: false,
+                    currencyDisp: true),
+              ]),
             ],
           ),
         ),
