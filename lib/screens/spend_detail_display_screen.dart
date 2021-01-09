@@ -453,7 +453,7 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.blueAccent.withOpacity(0.3),
-        border: Border.all(color: Colors.white),
+        border: Border.all(color: Colors.white.withOpacity(0.3)),
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),

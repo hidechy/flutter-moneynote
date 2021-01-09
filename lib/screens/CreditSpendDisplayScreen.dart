@@ -4,16 +4,17 @@ import 'package:moneynote/utilities/utility.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
 
-class UcSpendDisplayScreen extends StatefulWidget {
+class CreditSpendDisplayScreen extends StatefulWidget {
   final String date;
   final int sumprice;
-  UcSpendDisplayScreen({@required this.date, @required this.sumprice});
+  CreditSpendDisplayScreen({@required this.date, @required this.sumprice});
 
   @override
-  _UcSpendDisplayScreenState createState() => _UcSpendDisplayScreenState();
+  _CreditSpendDisplayScreenState createState() =>
+      _CreditSpendDisplayScreenState();
 }
 
-class _UcSpendDisplayScreenState extends State<UcSpendDisplayScreen> {
+class _CreditSpendDisplayScreenState extends State<CreditSpendDisplayScreen> {
   Utility _utility = Utility();
 
   List<Map<dynamic, dynamic>> _ucCardSpendData = List();
@@ -101,14 +102,14 @@ class _UcSpendDisplayScreenState extends State<UcSpendDisplayScreen> {
   Widget _spendDisplayBox() {
     int _diff = (widget.sumprice - _total);
 
-    List<dynamic> _value = List();
-    _value.add(_utility.makeCurrencyDisplay(_total.toString()));
-    _value.add(_utility.makeCurrencyDisplay(widget.sumprice.toString()));
-    _value.add(_utility.makeCurrencyDisplay(_diff.toString()));
-
-    List<dynamic> _value2 = List();
-    _value2.add(_utility.makeCurrencyDisplay(_selectedTotal.toString()));
-    _value2.add(_utility.makeCurrencyDisplay(_selectedDiff.toString()));
+//    List<dynamic> _value = List();
+//    _value.add(_utility.makeCurrencyDisplay(_total.toString()));
+//    _value.add(_utility.makeCurrencyDisplay(widget.sumprice.toString()));
+//    _value.add(_utility.makeCurrencyDisplay(_diff.toString()));
+//
+//    List<dynamic> _value2 = List();
+//    _value2.add(_utility.makeCurrencyDisplay(_selectedTotal.toString()));
+//    _value2.add(_utility.makeCurrencyDisplay(_selectedDiff.toString()));
 
     return Column(
       children: <Widget>[
@@ -116,13 +117,60 @@ class _UcSpendDisplayScreenState extends State<UcSpendDisplayScreen> {
           width: double.infinity,
           color: Colors.orangeAccent.withOpacity(0.3),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(
-                '${_value2.join(' / ')}',
-                style: TextStyle(color: Colors.greenAccent),
+              Expanded(
+                child: Table(
+                  children: [
+                    TableRow(children: [
+                      Text('list total'),
+                      Container(
+                        alignment: Alignment.topRight,
+                        child: Text(
+                            '${_utility.makeCurrencyDisplay(_total.toString())}'),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Text('sumprice'),
+                      Container(
+                        alignment: Alignment.topRight,
+                        child: Text(
+                            '${_utility.makeCurrencyDisplay(widget.sumprice.toString())}'),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Text('diff'),
+                      Container(
+                        alignment: Alignment.topRight,
+                        child: Text(
+                            '${_utility.makeCurrencyDisplay(_diff.toString())}'),
+                      ),
+                    ]),
+                  ],
+                ),
               ),
-              Text('${_value.join(' / ')}'),
+              SizedBox(width: 10),
+              Expanded(
+                child: Table(
+                  children: [
+                    TableRow(children: [
+                      Text('select total'),
+                      Container(
+                        alignment: Alignment.topRight,
+                        child: Text(
+                            '${_utility.makeCurrencyDisplay(_selectedTotal.toString())}'),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Text('select diff'),
+                      Container(
+                        alignment: Alignment.topRight,
+                        child: Text(
+                            '${_utility.makeCurrencyDisplay(_selectedDiff.toString())}'),
+                      ),
+                    ]),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -154,6 +202,7 @@ class _UcSpendDisplayScreenState extends State<UcSpendDisplayScreen> {
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: ListTile(
+        trailing: _getCreditTrailing(kind: _ucCardSpendData[position]['kind']),
         onTap: () => _addSelectedAry(position: position),
         title: DefaultTextStyle(
           style: TextStyle(fontSize: 10.0),
@@ -162,8 +211,12 @@ class _UcSpendDisplayScreenState extends State<UcSpendDisplayScreen> {
             children: <Widget>[
               Text('${_ucCardSpendData[position]['date']}'),
               Text('${_ucCardSpendData[position]['item']}'),
-              Text(
-                  '${_utility.makeCurrencyDisplay(_ucCardSpendData[position]['price'])}'),
+              Container(
+                width: double.infinity,
+                alignment: Alignment.topRight,
+                child: Text(
+                    '${_utility.makeCurrencyDisplay(_ucCardSpendData[position]['price'])}'),
+              ),
             ],
           ),
         ),
@@ -196,6 +249,32 @@ class _UcSpendDisplayScreenState extends State<UcSpendDisplayScreen> {
       return Colors.greenAccent.withOpacity(0.3);
     } else {
       return Colors.black.withOpacity(0.3);
+    }
+  }
+
+  /**
+   *
+   */
+  Widget _getCreditTrailing({kind}) {
+    switch (kind) {
+      case 'uc':
+        return Icon(
+          Icons.grade,
+          color: Colors.purpleAccent.withOpacity(0.3),
+        );
+        break;
+      case 'rakuten':
+        return Icon(
+          Icons.grade,
+          color: Colors.deepOrangeAccent.withOpacity(0.3),
+        );
+        break;
+      case 'sumitomo':
+        return Icon(
+          Icons.grade,
+          color: Colors.greenAccent.withOpacity(0.3),
+        );
+        break;
     }
   }
 }

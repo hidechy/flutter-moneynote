@@ -6,7 +6,6 @@ import '../main.dart';
 import '../utilities/utility.dart';
 
 import 'bank_input_screen.dart';
-import 'deposit_input_screen.dart';
 import 'monthly_list_screen.dart';
 import 'monthly_value_list_screen.dart';
 import 'oneday_input_screen.dart';
@@ -259,7 +258,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                       //------------------------------------------------------------------------//
 
                       Container(
-                        padding: EdgeInsets.only(top: 10),
+                        padding: const EdgeInsets.only(top: 10),
                         child: DefaultTextStyle(
                           style: const TextStyle(
                             fontSize: 14,
@@ -304,12 +303,12 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
               //------------------------------------------------------------------------//
               Expanded(
                 child: Container(
-                  padding: EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
                   width: double.infinity,
                   child: RaisedButton(
                     color: Colors.black.withOpacity(0.3),
                     onPressed: () => _showUnderMenu(),
-                    child: Icon(
+                    child: const Icon(
                       Icons.keyboard_arrow_up,
                       color: Colors.greenAccent,
                     ),
@@ -332,7 +331,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                margin: EdgeInsets.only(top: 5),
+                margin: const EdgeInsets.only(top: 5),
                 color: Colors.black.withOpacity(0.3),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -358,7 +357,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                margin: EdgeInsets.only(top: 5),
+                margin: const EdgeInsets.only(top: 5),
                 color: Colors.black.withOpacity(0.1),
                 child: Padding(
                   padding: const EdgeInsets.all(10),
@@ -400,9 +399,9 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     Table(
                       children: [
                         TableRow(children: [
-                          Padding(
+                          const Padding(
                             padding: const EdgeInsets.only(left: 20),
-                            child: Text('month start'),
+                            child: const Text('month start'),
                           ),
                           Container(
                             alignment: Alignment.topRight,
@@ -411,9 +410,9 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                           ),
                         ]),
                         TableRow(children: [
-                          Padding(
+                          const Padding(
                             padding: const EdgeInsets.only(left: 20),
-                            child: Text('month spend'),
+                            child: const Text('month spend'),
                           ),
                           Container(
                               alignment: Alignment.topRight,
@@ -426,18 +425,20 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     Table(
                       children: [
                         TableRow(children: [
-                          Padding(
+                          const Padding(
                             padding: const EdgeInsets.only(left: 20),
-                            child: Text(
+                            child: const Text(
                               'total',
-                              style: TextStyle(color: Colors.yellowAccent),
+                              style:
+                                  const TextStyle(color: Colors.yellowAccent),
                             ),
                           ),
                           Container(
                             alignment: Alignment.topRight,
                             child: Text(
                               '${_utility.makeCurrencyDisplay(_total.toString())}',
-                              style: TextStyle(color: Colors.yellowAccent),
+                              style:
+                                  const TextStyle(color: Colors.yellowAccent),
                             ),
                           ),
                         ]),
@@ -447,9 +448,9 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     Table(
                       children: [
                         TableRow(children: [
-                          Padding(
+                          const Padding(
                             padding: const EdgeInsets.only(left: 20),
-                            child: Text('today spend'),
+                            child: const Text('today spend'),
                           ),
                           Container(
                             alignment: Alignment.topRight,
@@ -466,7 +467,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                 width: 80,
                 child: IconButton(
                   color: Colors.greenAccent,
-                  icon: Icon(Icons.info),
+                  icon: const Icon(Icons.info),
                   onPressed: () => _goSpendDetailDisplayScreen(
                       context: context, date: _displayDate),
                 ),
@@ -497,7 +498,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                   child: Container(
                     alignment: Alignment.center,
                     color: Colors.green[900].withOpacity(0.5),
-                    child: Padding(
+                    child: const Padding(
                       padding: const EdgeInsets.symmetric(
                         vertical: 2,
                       ),

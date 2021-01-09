@@ -4,7 +4,7 @@ import 'package:moneynote/utilities/utility.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
 
-import 'UcSpendDisplayScreen.dart';
+import 'CreditSpendDisplayScreen.dart';
 
 class SpendSummaryDisplayScreen extends StatefulWidget {
   final String date;
@@ -353,7 +353,7 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => UcSpendDisplayScreen(
+        builder: (context) => CreditSpendDisplayScreen(
           date: '${_selectedYear}-${_selectedMonth}-01',
           sumprice: sumprice,
         ),
