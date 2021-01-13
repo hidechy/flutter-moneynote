@@ -198,7 +198,7 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   */
   Widget _getDisplayContainer({int position, String column}) {
     return Container(
-      alignment: Alignment.topLeft,
+      alignment: (column == 'price') ? Alignment.topRight : Alignment.topLeft,
       child: Text(
         _getDisplayText(text: _benefitData[position][column], column: column),
       ),
@@ -231,6 +231,7 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextField(
+        style: TextStyle(fontSize: 10),
         keyboardType:
             (valueAlign == 'right') ? TextInputType.number : TextInputType.text,
         controller: con,

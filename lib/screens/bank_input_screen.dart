@@ -34,6 +34,24 @@ class _BankInputScreenState extends State<BankInputScreen> {
 
   Map<String, String> bankNames = Map();
 
+  String _lastYen_bankA;
+  String _lastYen_bankB;
+  String _lastYen_bankC;
+  String _lastYen_bankD;
+  String _lastYen_bankE;
+  String _lastYen_bankF;
+  String _lastYen_bankG;
+  String _lastYen_bankH;
+
+  String _lastYen_payA;
+  String _lastYen_payB;
+  String _lastYen_payC;
+  String _lastYen_payD;
+  String _lastYen_payE;
+  String _lastYen_payF;
+  String _lastYen_payG;
+  String _lastYen_payH;
+
   /**
    * 初期動作
    */
@@ -67,6 +85,24 @@ class _BankInputScreenState extends State<BankInputScreen> {
     if (_monieData.length > 0) {
       _bankData = List();
       for (int i = 0; i < _monieData.length; i++) {
+        _lastYen_bankA = _monieData[i].strBankA;
+        _lastYen_bankB = _monieData[i].strBankB;
+        _lastYen_bankC = _monieData[i].strBankC;
+        _lastYen_bankD = _monieData[i].strBankD;
+        _lastYen_bankE = _monieData[i].strBankE;
+        _lastYen_bankF = _monieData[i].strBankF;
+        _lastYen_bankG = _monieData[i].strBankG;
+        _lastYen_bankH = _monieData[i].strBankH;
+
+        _lastYen_payA = _monieData[i].strPayA;
+        _lastYen_payB = _monieData[i].strPayB;
+        _lastYen_payC = _monieData[i].strPayC;
+        _lastYen_payD = _monieData[i].strPayD;
+        _lastYen_payE = _monieData[i].strPayE;
+        _lastYen_payF = _monieData[i].strPayF;
+        _lastYen_payG = _monieData[i].strPayG;
+        _lastYen_payH = _monieData[i].strPayH;
+
         _dispFlag['bank_a'] = _makeDispFlag(
             value: _monieData[i].strBankA, nowFlag: _dispFlag['bank_a']);
         _dispFlag['bank_b'] = _makeDispFlag(
@@ -218,95 +254,205 @@ class _BankInputScreenState extends State<BankInputScreen> {
           _utility.getBackGround(),
           Column(
             children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.orangeAccent.withOpacity(0.3),
+                  border: Border.all(
+                    color: Colors.white.withOpacity(0.3),
+                  ),
+                ),
+                padding: EdgeInsets.all(8),
+                child: DefaultTextStyle(
+                  style: TextStyle(fontSize: 10.0),
+                  child: Column(
+                    children: <Widget>[
+                      (_lastYen_bankA == '0')
+                          ? Container()
+                          : Table(
+                              children: [
+                                TableRow(children: [
+                                  _getBankMoneyDisplay(value: _lastYen_bankA),
+                                  _getBankMoneyDisplay(value: _lastYen_bankB),
+                                  _getBankMoneyDisplay(value: _lastYen_bankC),
+                                  _getBankMoneyDisplay(value: _lastYen_bankD),
+                                ]),
+                              ],
+                            ),
+                      (_lastYen_bankE == '0')
+                          ? Container()
+                          : Table(
+                              children: [
+                                TableRow(children: [
+                                  _getBankMoneyDisplay(value: _lastYen_bankE),
+                                  _getBankMoneyDisplay(value: _lastYen_bankF),
+                                  _getBankMoneyDisplay(value: _lastYen_bankG),
+                                  _getBankMoneyDisplay(value: _lastYen_bankH),
+                                ]),
+                              ],
+                            ),
+                      const Divider(
+                        color: Colors.indigo,
+                        indent: 20.0,
+                        endIndent: 20.0,
+                      ),
+                      (_lastYen_payA == '0')
+                          ? Container()
+                          : Table(
+                              children: [
+                                TableRow(children: [
+                                  _getBankMoneyDisplay(value: _lastYen_payA),
+                                  _getBankMoneyDisplay(value: _lastYen_payB),
+                                  _getBankMoneyDisplay(value: _lastYen_payC),
+                                  _getBankMoneyDisplay(value: _lastYen_payD),
+                                ]),
+                              ],
+                            ),
+                      (_lastYen_payE == '0')
+                          ? Container()
+                          : Table(
+                              children: [
+                                TableRow(children: [
+                                  _getBankMoneyDisplay(value: _lastYen_payE),
+                                  _getBankMoneyDisplay(value: _lastYen_payF),
+                                  _getBankMoneyDisplay(value: _lastYen_payG),
+                                  _getBankMoneyDisplay(value: _lastYen_payH),
+                                ]),
+                              ],
+                            ),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.all(5),
+                        width: double.infinity,
+                        child: ListView.builder(
+                          itemCount: _bankData.length,
+                          itemBuilder: (context, int position) =>
+                              _listItem(position: position),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 100,
+                      child: Column(
+                        children: <Widget>[
+                          ///////////////////////////////////////
+                          Expanded(
+                            child: Container(
+                              width: double.infinity,
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                color: Colors.black.withOpacity(0.3),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    _getChoiceChip(selectedChip: 'bank_a'),
+                                    _getChoiceChip(selectedChip: 'bank_b'),
+                                    _getChoiceChip(selectedChip: 'bank_c'),
+                                    _getChoiceChip(selectedChip: 'bank_d'),
+                                    _getChoiceChip(selectedChip: 'bank_e'),
+                                    _getChoiceChip(selectedChip: 'bank_f'),
+                                    _getChoiceChip(selectedChip: 'bank_g'),
+                                    _getChoiceChip(selectedChip: 'bank_h'),
+                                    const Divider(
+                                      color: Colors.indigo,
+                                      indent: 20.0,
+                                      endIndent: 20.0,
+                                    ),
+                                    _getChoiceChip(selectedChip: 'pay_a'),
+                                    _getChoiceChip(selectedChip: 'pay_b'),
+                                    _getChoiceChip(selectedChip: 'pay_c'),
+                                    _getChoiceChip(selectedChip: 'pay_d'),
+                                    _getChoiceChip(selectedChip: 'pay_e'),
+                                    _getChoiceChip(selectedChip: 'pay_f'),
+                                    _getChoiceChip(selectedChip: 'pay_g'),
+                                    _getChoiceChip(selectedChip: 'pay_h'),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          ///////////////////////////////////////
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 color: Colors.black.withOpacity(0.3),
-                child: Column(
+                child: Row(
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        _getChoiceChip(selectedChip: 'bank_a'),
-                        _getChoiceChip(selectedChip: 'bank_b'),
-                        _getChoiceChip(selectedChip: 'bank_c'),
-                        _getChoiceChip(selectedChip: 'bank_d'),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Column(
+                        children: <Widget>[
+                          IconButton(
+                            icon: const Icon(Icons.calendar_today),
+                            tooltip: 'jump',
+                            onPressed: () => _showDatepicker(context: context),
+                            color: Colors.blueAccent,
+                          ),
+                          Text('${_dialogSelectedDate}'),
+                        ],
+                      ),
                     ),
-                    Row(
-                      children: <Widget>[
-                        _getChoiceChip(selectedChip: 'bank_e'),
-                        _getChoiceChip(selectedChip: 'bank_f'),
-                        _getChoiceChip(selectedChip: 'bank_g'),
-                        _getChoiceChip(selectedChip: 'bank_h'),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        _getChoiceChip(selectedChip: 'pay_a'),
-                        _getChoiceChip(selectedChip: 'pay_b'),
-                        _getChoiceChip(selectedChip: 'pay_c'),
-                        _getChoiceChip(selectedChip: 'pay_d'),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        _getChoiceChip(selectedChip: 'pay_e'),
-                        _getChoiceChip(selectedChip: 'pay_f'),
-                        _getChoiceChip(selectedChip: 'pay_g'),
-                        _getChoiceChip(selectedChip: 'pay_h'),
-                      ],
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextField(
+                          style: TextStyle(fontSize: 13),
+                          controller: _teContPrice,
+                          keyboardType: TextInputType.number,
+                          textAlign: TextAlign.end,
+                          onChanged: (value) {
+                            setState(
+                              () {
+                                _text = value;
+                              },
+                            );
+                          },
+                        ),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0,
-                        vertical: 8.0,
+                          vertical: 8, horizontal: 10),
+                      child: IconButton(
+                        icon: const Icon(Icons.input),
+                        tooltip: 'input',
+                        onPressed: () => _updateRecord(context: context),
+                        color: Colors.greenAccent,
                       ),
-                      child: TextField(
-                        controller: _teContPrice,
-                        keyboardType: TextInputType.number,
-                        textAlign: TextAlign.end,
-                        onChanged: (value) {
-                          setState(
-                            () {
-                              _text = value;
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        IconButton(
-                          icon: const Icon(Icons.calendar_today),
-                          tooltip: 'jump',
-                          onPressed: () => _showDatepicker(context: context),
-                          color: Colors.blueAccent,
-                        ),
-                        Text('${_dialogSelectedDate}'),
-                        IconButton(
-                          icon: const Icon(Icons.input),
-                          tooltip: 'input',
-                          onPressed: () => _updateRecord(context: context),
-                          color: Colors.greenAccent,
-                        ),
-                      ],
                     ),
                   ],
                 ),
               ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: _bankData.length,
-                  itemBuilder: (context, int position) =>
-                      _listItem(position: position),
-                ),
-              ),
             ],
-          ),
+          )
         ],
       ),
+    );
+  }
+
+  /**
+   *
+   */
+  Widget _getBankMoneyDisplay({value}) {
+    return Container(
+      alignment: Alignment.topRight,
+      child: Text('${_utility.makeCurrencyDisplay(value)}'),
     );
   }
 
@@ -322,11 +468,19 @@ class _BankInputScreenState extends State<BankInputScreen> {
       ),
       child: ListTile(
         leading: _getLeading(mark: _bankData[position]['diffMark']),
-        title: Text(
-          '${_bankData[position]['date']}　${_utility.makeCurrencyDisplay(_bankData[position]['value'])}',
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 12.0,
+        title: DefaultTextStyle(
+          style: TextStyle(fontSize: 10),
+          child: Table(
+            children: [
+              TableRow(children: [
+                Text('${_bankData[position]['date']}'),
+                Container(
+                  alignment: Alignment.topRight,
+                  child: Text(
+                      '${_utility.makeCurrencyDisplay(_bankData[position]['value'])}'),
+                ),
+              ]),
+            ],
           ),
         ),
       ),
@@ -392,15 +546,22 @@ class _BankInputScreenState extends State<BankInputScreen> {
 
     return (_dispFlag[selectedChip] == 0)
         ? Container()
-        : Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+        : Container(
+            margin: EdgeInsets.symmetric(horizontal: 8),
             child: ChoiceChip(
               backgroundColor: (btnActive)
                   ? Colors.greenAccent.withOpacity(0.5)
                   : Colors.blueAccent.withOpacity(0.1),
-              label: Text(
-                '${dispBank}',
-                style: const TextStyle(color: Colors.white),
+              label: Container(
+                alignment: Alignment.center,
+                width: double.infinity,
+                child: Text(
+                  '${dispBank}',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 10,
+                  ),
+                ),
               ),
               selected: _chipValue == selectedChip,
               onSelected: (bool isSelected) {
