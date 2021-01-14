@@ -323,6 +323,58 @@ class _BankInputScreenState extends State<BankInputScreen> {
                   ),
                 ),
               ),
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                color: Colors.black.withOpacity(0.3),
+                child: Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Column(
+                        children: <Widget>[
+                          IconButton(
+                            icon: const Icon(Icons.calendar_today),
+                            tooltip: 'jump',
+                            onPressed: () => _showDatepicker(context: context),
+                            color: Colors.blueAccent,
+                          ),
+                          Text('${_dialogSelectedDate}'),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextField(
+                          style: TextStyle(fontSize: 13),
+                          controller: _teContPrice,
+                          keyboardType: TextInputType.number,
+                          textAlign: TextAlign.end,
+                          onChanged: (value) {
+                            setState(
+                              () {
+                                _text = value;
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8, horizontal: 10),
+                      child: IconButton(
+                        icon: const Icon(Icons.input),
+                        tooltip: 'input',
+                        onPressed: () => _updateRecord(context: context),
+                        color: Colors.greenAccent,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Expanded(
                 child: Row(
                   children: <Widget>[
@@ -382,58 +434,6 @@ class _BankInputScreenState extends State<BankInputScreen> {
                           ),
                           ///////////////////////////////////////
                         ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                color: Colors.black.withOpacity(0.3),
-                child: Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Column(
-                        children: <Widget>[
-                          IconButton(
-                            icon: const Icon(Icons.calendar_today),
-                            tooltip: 'jump',
-                            onPressed: () => _showDatepicker(context: context),
-                            color: Colors.blueAccent,
-                          ),
-                          Text('${_dialogSelectedDate}'),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextField(
-                          style: TextStyle(fontSize: 13),
-                          controller: _teContPrice,
-                          keyboardType: TextInputType.number,
-                          textAlign: TextAlign.end,
-                          onChanged: (value) {
-                            setState(
-                              () {
-                                _text = value;
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 10),
-                      child: IconButton(
-                        icon: const Icon(Icons.input),
-                        tooltip: 'input',
-                        onPressed: () => _updateRecord(context: context),
-                        color: Colors.greenAccent,
                       ),
                     ),
                   ],

@@ -70,27 +70,28 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            title: Text('All Day List'),
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.refresh),
-                color: Colors.greenAccent,
-                onPressed: () => _goAlldayListScreen(context),
+      appBar: AppBar(
+        backgroundColor: Colors.black.withOpacity(0.1),
+        title: Text('Allday List'),
+        centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.refresh),
+            color: Colors.greenAccent,
+            onPressed: () => _goAlldayListScreen(context),
+          ),
+        ],
+      ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          _utility.getBackGround(),
+          Column(
+            children: <Widget>[
+              Expanded(
+                child: _alldayList(),
               ),
             ],
-            backgroundColor: Colors.black.withOpacity(0.1),
-            pinned: true,
-            expandedHeight: 50.0,
-            floating: false,
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, position) => _listItem(position: position),
-              childCount: _alldayData.length,
-            ),
           ),
         ],
       ),
@@ -123,27 +124,20 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
           child: Table(
             children: [
               TableRow(children: [
-                _getDisplayContainer(position: position, column: 'date'),
-                _getDisplayContainer(position: position, column: 'total'),
-                _getDisplayContainer(position: position, column: 'diff'),
+                Text('${_alldayData[position]['date']}'),
+                Container(
+                  alignment: Alignment.topRight,
+                  child: Text(
+                      '${_utility.makeCurrencyDisplay(_alldayData[position]['total'])}'),
+                ),
+                Container(
+                  alignment: Alignment.topRight,
+                  child: Text(
+                      '${_utility.makeCurrencyDisplay(_alldayData[position]['diff'])}'),
+                ),
               ]),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  /**
-   * データコンテナ表示
-   */
-  Widget _getDisplayContainer({int position, String column}) {
-    return Container(
-      alignment: (column == 'total') ? Alignment.topCenter : Alignment.topLeft,
-      child: Text(
-        _getDisplayText(
-          text: _alldayData[position][column],
-          column: column,
         ),
       ),
     );

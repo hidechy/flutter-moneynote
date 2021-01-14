@@ -57,6 +57,17 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
     //リストデータ取得
     var benefits = await database.selectBenefitSortedAllRecord;
     if (benefits.length > 0) {
+      int _total = 0;
+      for (int i = 0; i < benefits.length; i++) {
+        _total += int.parse(benefits[i].strPrice);
+      }
+
+      var _map = Map();
+      _map['date'] = _dialogSelectedDate;
+      _map['company'] = '合計：';
+      _map['price'] = _total.toString();
+      _benefitData.add(_map);
+
       for (int i = 0; i < benefits.length; i++) {
         var _map = Map();
         _map['date'] = benefits[i].strDate;
@@ -159,7 +170,9 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
       actionPane: const SlidableDrawerActionPane(),
       actionExtentRatio: 0.15,
       child: Card(
-        color: Colors.black.withOpacity(0.3),
+        color: (_benefitData[position]['company'] == '合計：')
+            ? Colors.greenAccent[700].withOpacity(0.3)
+            : Colors.black.withOpacity(0.3),
         elevation: 10.0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
@@ -171,9 +184,26 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
               children: [
                 TableRow(
                   children: [
-                    _getDisplayContainer(position: position, column: 'date'),
-                    _getDisplayContainer(position: position, column: 'company'),
-                    _getDisplayContainer(position: position, column: 'price'),
+                    (_benefitData[position]['company'] == '合計：')
+                        ? Container()
+                        : Text('${_benefitData[position]['date']}'),
+                    (_benefitData[position]['company'] == '合計：')
+                        ? Container(
+                            alignment: Alignment.topRight,
+                            child: Text('${_benefitData[position]['company']}'),
+                          )
+                        : Text('${_benefitData[position]['company']}'),
+                    (_benefitData[position]['company'] == '合計：')
+                        ? Container(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                                '${_utility.makeCurrencyDisplay(_benefitData[position]['price'])}'),
+                          )
+                        : Container(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                                '${_utility.makeCurrencyDisplay(_benefitData[position]['price'])}'),
+                          ),
                   ],
                 ),
               ],
@@ -191,36 +221,6 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
         ),
       ],
     );
-  }
-
-  /**
-  * データコンテナ表示
-  */
-  Widget _getDisplayContainer({int position, String column}) {
-    return Container(
-      alignment: (column == 'price') ? Alignment.topRight : Alignment.topLeft,
-      child: Text(
-        _getDisplayText(text: _benefitData[position][column], column: column),
-      ),
-    );
-  }
-
-  /**
-   * 表示テキスト取得
-   */
-  String _getDisplayText({String text, String column}) {
-    switch (column) {
-      case 'date':
-        _utility.makeYMDYData(text, 0);
-        return '${text}（${_utility.youbiStr}）';
-        break;
-      case 'company':
-        return text;
-        break;
-      case 'price':
-        return _utility.makeCurrencyDisplay(text);
-        break;
-    }
   }
 
   /**
