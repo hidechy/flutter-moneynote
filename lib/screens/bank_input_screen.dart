@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../main.dart';
 
@@ -51,6 +52,13 @@ class _BankInputScreenState extends State<BankInputScreen> {
   String _lastYen_payF;
   String _lastYen_payG;
   String _lastYen_payH;
+
+  final ItemScrollController _itemScrollController = ItemScrollController();
+
+  final ItemPositionsListener _itemPositionsListener =
+      ItemPositionsListener.create();
+
+  int maxNo = 0;
 
   /**
    * 初期動作
@@ -207,6 +215,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
       }
     }
 
+    maxNo = _bankData.length;
+
     //holiday
     var holidays = await database.selectHolidaySortedAllRecord;
     if (holidays.length > 0) {
@@ -214,8 +224,6 @@ class _BankInputScreenState extends State<BankInputScreen> {
         _holidayList[holidays[i].strDate] = '';
       }
     }
-
-//    ///////////////////////////////////////////////////////////////////
 
     bankNames = _utility.getBankName();
 
@@ -380,12 +388,16 @@ class _BankInputScreenState extends State<BankInputScreen> {
                   children: <Widget>[
                     Expanded(
                       child: Container(
-                        padding: const EdgeInsets.all(5),
                         width: double.infinity,
-                        child: ListView.builder(
+                        child: ScrollablePositionedList.separated(
+                          itemBuilder: (context, index) {
+                            return ListTile(title: _listItem(position: index));
+                          },
+                          separatorBuilder: (context, index) =>
+                              const Divider(height: 1),
                           itemCount: _bankData.length,
-                          itemBuilder: (context, int position) =>
-                              _listItem(position: position),
+                          itemScrollController: _itemScrollController,
+                          itemPositionsListener: _itemPositionsListener,
                         ),
                       ),
                     ),
@@ -393,6 +405,25 @@ class _BankInputScreenState extends State<BankInputScreen> {
                       width: 100,
                       child: Column(
                         children: <Widget>[
+                          Container(
+                            width: double.infinity,
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              color: Colors.black.withOpacity(0.3),
+                              child: Column(
+                                children: <Widget>[
+                                  IconButton(
+                                    icon: Icon(Icons.arrow_downward),
+                                    color: Colors.greenAccent,
+                                    onPressed: () => _scroll(),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+
                           ///////////////////////////////////////
                           Expanded(
                             child: Container(
@@ -443,6 +474,17 @@ class _BankInputScreenState extends State<BankInputScreen> {
           )
         ],
       ),
+    );
+  }
+
+  /**
+   *
+   */
+  void _scroll() {
+    _itemScrollController.scrollTo(
+      index: maxNo,
+      duration: Duration(seconds: 1),
+      curve: Curves.easeInOutCubic,
     );
   }
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+
 import '../utilities/utility.dart';
 
 import '../main.dart';
@@ -18,6 +20,13 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   List<Map<dynamic, dynamic>> _alldayData = List();
 
   Map<String, dynamic> _holidayList = Map();
+
+  final ItemScrollController _itemScrollController = ItemScrollController();
+
+  final ItemPositionsListener _itemPositionsListener =
+      ItemPositionsListener.create();
+
+  int maxNo = 0;
 
   /**
    * 初期動作
@@ -53,6 +62,8 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
       }
     }
 
+    maxNo = _alldayData.length;
+
     //holiday
     var holidays = await database.selectHolidaySortedAllRecord;
     if (holidays.length > 0) {
@@ -65,7 +76,7 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   }
 
   /**
-   * 画面描画
+   *
    */
   @override
   Widget build(BuildContext context) {
@@ -75,6 +86,11 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
         title: Text('Allday List'),
         centerTitle: true,
         actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.arrow_downward),
+            color: Colors.greenAccent,
+            onPressed: () => _scroll(),
+          ),
           IconButton(
             icon: Icon(Icons.refresh),
             color: Colors.greenAccent,
@@ -86,25 +102,17 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           _utility.getBackGround(),
-          Column(
-            children: <Widget>[
-              Expanded(
-                child: _alldayList(),
-              ),
-            ],
+          ScrollablePositionedList.separated(
+            itemBuilder: (context, index) {
+              return ListTile(title: _listItem(position: index));
+            },
+            separatorBuilder: (context, index) => const Divider(height: 1),
+            itemCount: _alldayData.length,
+            itemScrollController: _itemScrollController,
+            itemPositionsListener: _itemPositionsListener,
           ),
         ],
       ),
-    );
-  }
-
-  /**
-   * リスト表示
-   */
-  Widget _alldayList() {
-    return ListView.builder(
-      itemCount: _alldayData.length,
-      itemBuilder: (context, int position) => _listItem(position: position),
     );
   }
 
@@ -144,21 +152,19 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   }
 
   /**
-   * 表示テキスト取得
-   */
-  String _getDisplayText({String text, String column}) {
-    switch (column) {
-      case 'date':
-        _utility.makeYMDYData(text, 0);
-        return '${text}（${_utility.youbiStr}）';
-        break;
-      case 'total':
-      case 'diff':
-        return _utility.makeCurrencyDisplay(text);
-        break;
-    }
+      *
+      */
+  void _scroll() {
+    _itemScrollController.scrollTo(
+      index: maxNo,
+      duration: Duration(seconds: 1),
+      curve: Curves.easeInOutCubic,
+    );
   }
 
+  /**
+   *
+   */
   void _goAlldayListScreen(BuildContext context) {
     Navigator.pushReplacement(
       context,
