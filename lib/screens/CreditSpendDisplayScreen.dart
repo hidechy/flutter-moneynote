@@ -4,6 +4,8 @@ import 'package:moneynote/utilities/utility.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
 
+import 'all_credit_list_screen.dart';
+
 class CreditSpendDisplayScreen extends StatefulWidget {
   final String date;
   final int sumprice;
@@ -170,6 +172,23 @@ class _CreditSpendDisplayScreenState extends State<CreditSpendDisplayScreen> {
             ],
           ),
         ),
+        Container(
+          alignment: Alignment.topRight,
+          child: GestureDetector(
+            onTap: () => _goAllCreditListScreen(),
+            child: Container(
+              margin: EdgeInsets.all(10),
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Colors.blueAccent.withOpacity(0.3),
+                border: Border.all(
+                  color: Colors.white.withOpacity(0.3),
+                ),
+              ),
+              child: Text('All Credit'),
+            ),
+          ),
+        ),
         Expanded(
           child: _ucCardSpendList(),
         ),
@@ -272,5 +291,17 @@ class _CreditSpendDisplayScreenState extends State<CreditSpendDisplayScreen> {
         );
         break;
     }
+  }
+
+  /**
+   *
+   */
+  _goAllCreditListScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AllCreditListScreen(),
+      ),
+    );
   }
 }

@@ -132,35 +132,37 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
     /////////////////////////////////////////////////////
     var _money = await database.selectRecord('${widget.date}');
 
-    if (_money[0] != null) {
-      _yen10000 = _money[0].strYen10000;
-      _yen5000 = _money[0].strYen5000;
-      _yen2000 = _money[0].strYen2000;
-      _yen1000 = _money[0].strYen1000;
-      _yen500 = _money[0].strYen500;
-      _yen100 = _money[0].strYen100;
-      _yen50 = _money[0].strYen50;
-      _yen10 = _money[0].strYen10;
-      _yen5 = _money[0].strYen5;
-      _yen1 = _money[0].strYen1;
+    if (_money.length > 0) {
+      if (_money[0] != null) {
+        _yen10000 = _money[0].strYen10000;
+        _yen5000 = _money[0].strYen5000;
+        _yen2000 = _money[0].strYen2000;
+        _yen1000 = _money[0].strYen1000;
+        _yen500 = _money[0].strYen500;
+        _yen100 = _money[0].strYen100;
+        _yen50 = _money[0].strYen50;
+        _yen10 = _money[0].strYen10;
+        _yen5 = _money[0].strYen5;
+        _yen1 = _money[0].strYen1;
 
-      _bankA = _money[0].strBankA;
-      _bankB = _money[0].strBankB;
-      _bankC = _money[0].strBankC;
-      _bankD = _money[0].strBankD;
-      _bankE = _money[0].strBankE;
-      _bankF = _money[0].strBankF;
-      _bankG = _money[0].strBankG;
-      _bankH = _money[0].strBankH;
+        _bankA = _money[0].strBankA;
+        _bankB = _money[0].strBankB;
+        _bankC = _money[0].strBankC;
+        _bankD = _money[0].strBankD;
+        _bankE = _money[0].strBankE;
+        _bankF = _money[0].strBankF;
+        _bankG = _money[0].strBankG;
+        _bankH = _money[0].strBankH;
 
-      _payA = _money[0].strPayA;
-      _payB = _money[0].strPayB;
-      _payC = _money[0].strPayC;
-      _payD = _money[0].strPayD;
-      _payE = _money[0].strPayE;
-      _payF = _money[0].strPayF;
-      _payG = _money[0].strPayG;
-      _payH = _money[0].strPayH;
+        _payA = _money[0].strPayA;
+        _payB = _money[0].strPayB;
+        _payC = _money[0].strPayC;
+        _payD = _money[0].strPayD;
+        _payE = _money[0].strPayE;
+        _payF = _money[0].strPayF;
+        _payG = _money[0].strPayG;
+        _payH = _money[0].strPayH;
+      }
     }
 
     setState(() {});

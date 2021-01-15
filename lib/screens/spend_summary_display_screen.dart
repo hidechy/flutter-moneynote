@@ -4,7 +4,7 @@ import 'package:moneynote/utilities/utility.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
 
-import 'CreditSpendDisplayScreen.dart';
+import 'creditSpendDisplayScreen.dart';
 
 class SpendSummaryDisplayScreen extends StatefulWidget {
   final String date;
@@ -321,13 +321,13 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
    *
    */
   Widget _makeTrailing({position}) {
-    if (_summaryData[position]['item'] == "支払い") {
+    if (_summaryData[position]['item'] == "credit") {
       if (_selectedMonth == '') {
         return Icon(Icons.check_box_outline_blank, color: Color(0xFF2e2e2e));
       } else {
         return GestureDetector(
-          onTap: () =>
-              _goUcCardSpendDisplay(sumprice: _summaryData[position]['sum']),
+          onTap: () => _goUcCardSpendDisplayScreen(
+              sumprice: _summaryData[position]['sum']),
           child: Icon(
             Icons.credit_card,
             color: Colors.greenAccent,
@@ -354,7 +354,7 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
   /**
    *
    */
-  Widget _goUcCardSpendDisplay({sumprice}) {
+  Widget _goUcCardSpendDisplayScreen({sumprice}) {
     Navigator.push(
       context,
       MaterialPageRoute(

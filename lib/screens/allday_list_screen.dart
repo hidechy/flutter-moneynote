@@ -102,11 +102,10 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           _utility.getBackGround(),
-          ScrollablePositionedList.separated(
+          ScrollablePositionedList.builder(
             itemBuilder: (context, index) {
               return ListTile(title: _listItem(position: index));
             },
-            separatorBuilder: (context, index) => const Divider(height: 1),
             itemCount: _alldayData.length,
             itemScrollController: _itemScrollController,
             itemPositionsListener: _itemPositionsListener,

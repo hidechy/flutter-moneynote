@@ -389,12 +389,10 @@ class _BankInputScreenState extends State<BankInputScreen> {
                     Expanded(
                       child: Container(
                         width: double.infinity,
-                        child: ScrollablePositionedList.separated(
+                        child: ScrollablePositionedList.builder(
                           itemBuilder: (context, index) {
                             return ListTile(title: _listItem(position: index));
                           },
-                          separatorBuilder: (context, index) =>
-                              const Divider(height: 1),
                           itemCount: _bankData.length,
                           itemScrollController: _itemScrollController,
                           itemPositionsListener: _itemPositionsListener,
