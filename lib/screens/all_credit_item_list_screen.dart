@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../utilities/utility.dart';
 
@@ -17,6 +18,13 @@ class _AllCreditItemListScreenState extends State<AllCreditItemListScreen> {
   Utility _utility = Utility();
 
   List<Map<dynamic, dynamic>> _creditCardItemData = List();
+
+  final ItemScrollController _itemScrollController = ItemScrollController();
+
+  final ItemPositionsListener _itemPositionsListener =
+      ItemPositionsListener.create();
+
+  int maxNo = 0;
 
   /**
    * 初期動作
@@ -107,9 +115,13 @@ class _AllCreditItemListScreenState extends State<AllCreditItemListScreen> {
    *
    */
   Widget _creditCardItemList() {
-    return ListView.builder(
+    return ScrollablePositionedList.builder(
+      itemBuilder: (context, index) {
+        return ListTile(title: _listItem(position: index));
+      },
       itemCount: _creditCardItemData.length,
-      itemBuilder: (context, int position) => _listItem(position: position),
+      itemScrollController: _itemScrollController,
+      itemPositionsListener: _itemPositionsListener,
     );
   }
 
@@ -117,6 +129,8 @@ class _AllCreditItemListScreenState extends State<AllCreditItemListScreen> {
    *
    */
   Widget _listItem({int position}) {
+    var ex_date = (_creditCardItemData[position]['date']).split('-');
+
     return Card(
       color: Colors.black.withOpacity(0.3),
       elevation: 10.0,
@@ -124,6 +138,23 @@ class _AllCreditItemListScreenState extends State<AllCreditItemListScreen> {
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: ListTile(
+        leading: Container(
+          width: 40,
+          margin: EdgeInsets.symmetric(vertical: 5),
+          decoration: BoxDecoration(
+            color: Colors.orangeAccent.withOpacity(0.3),
+            border: Border.all(
+              color: Colors.white.withOpacity(0.3),
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text('${ex_date[0]}'),
+              Text('${ex_date[1]}'),
+            ],
+          ),
+        ),
         trailing:
             _getCreditTrailing(kind: _creditCardItemData[position]['kind']),
         title: DefaultTextStyle(

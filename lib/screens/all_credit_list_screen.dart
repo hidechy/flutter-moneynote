@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../utilities/utility.dart';
 
@@ -16,6 +17,13 @@ class _AllCreditListScreenState extends State<AllCreditListScreen> {
   Utility _utility = Utility();
 
   List<Map<dynamic, dynamic>> _creditCardSpendData = List();
+
+  final ItemScrollController _itemScrollController = ItemScrollController();
+
+  final ItemPositionsListener _itemPositionsListener =
+      ItemPositionsListener.create();
+
+  int maxNo = 0;
 
   /**
    * 初期動作
@@ -43,6 +51,8 @@ class _AllCreditListScreenState extends State<AllCreditListScreen> {
         _creditCardSpendData.add(data['data'][i]);
       }
     }
+
+    maxNo = _creditCardSpendData.length;
 
     setState(() {});
   }
@@ -86,10 +96,19 @@ class _AllCreditListScreenState extends State<AllCreditListScreen> {
                   color: Colors.orangeAccent.withOpacity(0.3),
                   border: Border.all(color: Colors.white.withOpacity(0.3)),
                 ),
-                child: IconButton(
-                  icon: Icon(Icons.list),
-                  onPressed: () => _goAllCreditItemListScreen(),
-                  color: Colors.greenAccent,
+                child: Row(
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.list),
+                      onPressed: () => _goAllCreditItemListScreen(),
+                      color: Colors.greenAccent,
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.arrow_downward),
+                      color: Colors.greenAccent,
+                      onPressed: () => _scroll(),
+                    ),
+                  ],
                 ),
               ),
               Expanded(
@@ -105,10 +124,25 @@ class _AllCreditListScreenState extends State<AllCreditListScreen> {
   /**
    *
    */
+  void _scroll() {
+    _itemScrollController.scrollTo(
+      index: maxNo,
+      duration: Duration(seconds: 1),
+      curve: Curves.easeInOutCubic,
+    );
+  }
+
+  /**
+   *
+   */
   Widget _creditCardSpendList() {
-    return ListView.builder(
+    return ScrollablePositionedList.builder(
+      itemBuilder: (context, index) {
+        return ListTile(title: _listItem(position: index));
+      },
       itemCount: _creditCardSpendData.length,
-      itemBuilder: (context, int position) => _listItem(position: position),
+      itemScrollController: _itemScrollController,
+      itemPositionsListener: _itemPositionsListener,
     );
   }
 
@@ -116,6 +150,8 @@ class _AllCreditListScreenState extends State<AllCreditListScreen> {
    *
    */
   Widget _listItem({int position}) {
+    var ex_date = (_creditCardSpendData[position]['date']).split('-');
+
     return Card(
       color: Colors.black.withOpacity(0.3),
       elevation: 10.0,
@@ -123,6 +159,23 @@ class _AllCreditListScreenState extends State<AllCreditListScreen> {
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: ListTile(
+        leading: Container(
+          width: 40,
+          margin: EdgeInsets.symmetric(vertical: 5),
+          decoration: BoxDecoration(
+            color: Colors.orangeAccent.withOpacity(0.3),
+            border: Border.all(
+              color: Colors.white.withOpacity(0.3),
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text('${ex_date[0]}'),
+              Text('${ex_date[1]}'),
+            ],
+          ),
+        ),
         trailing:
             _getCreditTrailing(kind: _creditCardSpendData[position]['kind']),
         title: DefaultTextStyle(
