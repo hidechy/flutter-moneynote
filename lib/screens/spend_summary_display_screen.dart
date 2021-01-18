@@ -276,7 +276,7 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
   /**
    *
    */
-  _listItem2({int position}) {
+  Widget _listItem2({int position}) {
     return Card(
       color: Colors.black.withOpacity(0.3),
       elevation: 10.0,
@@ -342,7 +342,7 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
   /**
    *
    */
-  _goSpendSummaryDisplayScreen({value}) {
+  void _goSpendSummaryDisplayScreen({value}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

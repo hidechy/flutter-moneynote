@@ -227,7 +227,7 @@ class _AllCreditListScreenState extends State<AllCreditListScreen> {
   /**
    *
    */
-  _goAllCreditItemListScreen() {
+  void _goAllCreditItemListScreen() {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

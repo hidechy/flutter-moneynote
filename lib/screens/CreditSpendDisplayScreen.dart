@@ -242,7 +242,7 @@ class _CreditSpendDisplayScreenState extends State<CreditSpendDisplayScreen> {
   /**
    *
    */
-  _addSelectedAry({position}) {
+  void _addSelectedAry({position}) {
     if (_selectedList.contains(position)) {
       _selectedList.remove(position);
       _selectedTotal -= int.parse(_ucCardSpendData[position]['price']);
@@ -296,7 +296,7 @@ class _CreditSpendDisplayScreenState extends State<CreditSpendDisplayScreen> {
   /**
    *
    */
-  _goAllCreditListScreen() {
+  void _goAllCreditListScreen() {
     Navigator.push(
       context,
       MaterialPageRoute(

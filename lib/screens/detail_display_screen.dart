@@ -1067,7 +1067,15 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
       builder: (BuildContext context) {
         return SingleChildScrollView(
           child: Container(
-            color: Colors.black.withOpacity(0.1),
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.3),
+              border: Border(
+                top: BorderSide(
+                  color: Colors.yellowAccent.withOpacity(0.3),
+                  width: 10,
+                ),
+              ),
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[

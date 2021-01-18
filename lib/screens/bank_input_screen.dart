@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:toast/toast.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
@@ -199,13 +200,24 @@ class _BankInputScreenState extends State<BankInputScreen> {
 
         _utility.makeYMDYData(_monieData[i].strDate, 0);
 
-        var _diffMark = (_prevValue != _value) ? 1 : 0;
+//        var _diffMark = (_prevValue != _value) ? 1 : 0;
+
+        var _diffMark = 0;
+        var _diffPrice = 0;
+        var _diffShirushi = "＝";
+        if (_prevValue != _value) {
+          _diffMark = 1;
+          _diffPrice = (_prevValue - _value) * -1;
+          _diffShirushi = (_value > _prevValue) ? "↑" : "↓";
+        }
 
         var _map = Map();
         _map['date'] = _monieData[i].strDate;
         _map['value'] = _value.toString();
         _map['diffMark'] = _diffMark.toString();
         _map['youbiNo'] = _utility.youbiNo.toString();
+        _map['diffPrice'] = _diffPrice.toString();
+        _map['diffShirushi'] = _diffShirushi;
 
         _bankData..add(_map);
 
@@ -389,14 +401,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
                     Expanded(
                       child: Container(
                         width: double.infinity,
-                        child: ScrollablePositionedList.builder(
-                          itemBuilder: (context, index) {
-                            return ListTile(title: _listItem(position: index));
-                          },
-                          itemCount: _bankData.length,
-                          itemScrollController: _itemScrollController,
-                          itemPositionsListener: _itemPositionsListener,
-                        ),
+                        child: _bankList(),
                       ),
                     ),
                     Container(
@@ -478,6 +483,91 @@ class _BankInputScreenState extends State<BankInputScreen> {
   /**
    *
    */
+  Widget _bankList() {
+    return ScrollablePositionedList.builder(
+      itemBuilder: (context, index) {
+        return Slidable(
+          actionPane: const SlidableDrawerActionPane(),
+          child: ListTile(
+            title: _listItem(position: index),
+          ),
+          secondaryActions: <Widget>[
+            IconSlideAction(
+              color: _getBgColor(_bankData[index]['date']),
+              foregroundColor: Colors.blueAccent,
+              icon: Icons.date_range,
+              onTap: () => _changeSelectedDate(date: _bankData[index]['date']),
+            ),
+          ],
+        );
+      },
+      itemCount: _bankData.length,
+      itemScrollController: _itemScrollController,
+      itemPositionsListener: _itemPositionsListener,
+    );
+  }
+
+  /**
+   *
+   */
+  void _changeSelectedDate({String date}) {
+    _dialogSelectedDate = date;
+    setState(() {});
+  }
+
+  /**
+   * リストアイテム表示
+   */
+  Widget _listItem({int position}) {
+    var _diffLine = "";
+
+    if (_bankData[position]['diffPrice'] == '0') {
+      _diffLine = '　';
+    } else {
+      _diffLine += _bankData[position]['diffShirushi'];
+      _diffLine += "　";
+      _diffLine +=
+          _utility.makeCurrencyDisplay(_bankData[position]['diffPrice']);
+    }
+
+    return Card(
+      color: _getBgColor(_bankData[position]['date']),
+      elevation: 10.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: ListTile(
+        leading: _getLeading(mark: _bankData[position]['diffMark']),
+        title: DefaultTextStyle(
+          style: TextStyle(fontSize: 10),
+          child: Table(
+            children: [
+              TableRow(children: [
+                Text('${_bankData[position]['date']}'),
+                Column(
+                  children: <Widget>[
+                    Container(
+                      alignment: Alignment.topRight,
+                      child: Text(
+                          '${_utility.makeCurrencyDisplay(_bankData[position]['value'])}'),
+                    ),
+                    Container(
+                      alignment: Alignment.topRight,
+                      child: Text('${_diffLine}'),
+                    ),
+                  ],
+                ),
+              ]),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  /**
+   *
+   */
   void _scroll() {
     _itemScrollController.scrollTo(
       index: maxNo,
@@ -497,40 +587,9 @@ class _BankInputScreenState extends State<BankInputScreen> {
   }
 
   /**
-   * リストアイテム表示
-   */
-  Widget _listItem({int position}) {
-    return Card(
-      color: getBgColor(_bankData[position]['date']),
-      elevation: 10.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: ListTile(
-        leading: _getLeading(mark: _bankData[position]['diffMark']),
-        title: DefaultTextStyle(
-          style: TextStyle(fontSize: 10),
-          child: Table(
-            children: [
-              TableRow(children: [
-                Text('${_bankData[position]['date']}'),
-                Container(
-                  alignment: Alignment.topRight,
-                  child: Text(
-                      '${_utility.makeCurrencyDisplay(_bankData[position]['value'])}'),
-                ),
-              ]),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  /**
    * 背景色取得
    */
-  Color getBgColor(String date) {
+  Color _getBgColor(String date) {
     _utility.makeYMDYData(date, 0);
 
     Color _color = null;
