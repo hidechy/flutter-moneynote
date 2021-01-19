@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:moneynote/screens/amazon_purchase_list_screen.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../utilities/utility.dart';
 
@@ -9,6 +11,9 @@ import 'package:http/http.dart';
 import 'all_credit_list_screen.dart';
 
 class AllCreditItemListScreen extends StatefulWidget {
+  final String date;
+  AllCreditItemListScreen({@required this.date});
+
   @override
   _AllCreditItemListScreenState createState() =>
       _AllCreditItemListScreenState();
@@ -95,10 +100,30 @@ class _AllCreditItemListScreenState extends State<AllCreditItemListScreen> {
                   color: Colors.orangeAccent.withOpacity(0.3),
                   border: Border.all(color: Colors.white.withOpacity(0.3)),
                 ),
-                child: IconButton(
-                  icon: Icon(Icons.list),
-                  onPressed: () => _goAllCreditListScreen(),
-                  color: Colors.greenAccent,
+                child: Table(
+                  children: [
+                    TableRow(children: [
+                      Container(
+                        child: Row(
+                          children: <Widget>[
+                            IconButton(
+                              icon: Icon(Icons.list),
+                              onPressed: () => _goAllCreditListScreen(),
+                              color: Colors.greenAccent,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.topRight,
+                        child: IconButton(
+                          icon: Icon(FontAwesomeIcons.amazon),
+                          color: Colors.greenAccent,
+                          onPressed: () => _goAmazonPurchaseListScreen(),
+                        ),
+                      ),
+                    ]),
+                  ],
                 ),
               ),
               Expanded(
@@ -129,7 +154,7 @@ class _AllCreditItemListScreenState extends State<AllCreditItemListScreen> {
    *
    */
   Widget _listItem({int position}) {
-    var ex_date = (_creditCardItemData[position]['date']).split('-');
+    var ex_pm = (_creditCardItemData[position]['pay_month']).split('-');
 
     return Card(
       color: Colors.black.withOpacity(0.3),
@@ -150,8 +175,8 @@ class _AllCreditItemListScreenState extends State<AllCreditItemListScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text('${ex_date[0]}'),
-              Text('${ex_date[1]}'),
+              Text('${ex_pm[0]}'),
+              Text('${ex_pm[1]}'),
             ],
           ),
         ),
@@ -210,7 +235,23 @@ class _AllCreditItemListScreenState extends State<AllCreditItemListScreen> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => AllCreditListScreen(),
+        builder: (context) => AllCreditListScreen(
+          date: widget.date,
+        ),
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  void _goAmazonPurchaseListScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AmazonPurchaseListScreen(
+          date: widget.date,
+        ),
       ),
     );
   }

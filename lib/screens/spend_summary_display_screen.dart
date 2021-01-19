@@ -4,7 +4,7 @@ import 'package:moneynote/utilities/utility.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
 
-import 'creditSpendDisplayScreen.dart';
+import 'credit_spend_display_screen.dart';
 
 class SpendSummaryDisplayScreen extends StatefulWidget {
   final String date;
@@ -354,7 +354,7 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
   /**
    *
    */
-  Widget _goUcCardSpendDisplayScreen({sumprice}) {
+  void _goUcCardSpendDisplayScreen({sumprice}) {
     Navigator.push(
       context,
       MaterialPageRoute(

@@ -300,7 +300,9 @@ class _CreditSpendDisplayScreenState extends State<CreditSpendDisplayScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AllCreditListScreen(),
+        builder: (context) => AllCreditListScreen(
+          date: widget.date,
+        ),
       ),
     );
   }
