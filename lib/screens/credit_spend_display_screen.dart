@@ -8,8 +8,7 @@ import 'all_credit_list_screen.dart';
 
 class CreditSpendDisplayScreen extends StatefulWidget {
   final String date;
-  final int sumprice;
-  CreditSpendDisplayScreen({@required this.date, @required this.sumprice});
+  CreditSpendDisplayScreen({@required this.date});
 
   @override
   _CreditSpendDisplayScreenState createState() =>
@@ -27,6 +26,11 @@ class _CreditSpendDisplayScreenState extends State<CreditSpendDisplayScreen> {
   int _selectedTotal = 0;
   int _selectedDiff = 0;
 
+  DateTime _prevDate = DateTime.now();
+  DateTime _nextDate = DateTime.now();
+
+  int _sumprice = 0;
+
   /**
    * 初期動作
    */
@@ -41,6 +45,31 @@ class _CreditSpendDisplayScreenState extends State<CreditSpendDisplayScreen> {
    * 初期データ作成
    */
   void _makeDefaultDisplayData() async {
+    _utility.makeYMDYData(widget.date, 0);
+
+    _prevDate = new DateTime(
+        int.parse(_utility.year), int.parse(_utility.month) - 1, 1);
+    _nextDate = new DateTime(
+        int.parse(_utility.year), int.parse(_utility.month) + 1, 1);
+
+    //--------------------------------//
+    String url2 = "http://toyohide.work/BrainLog/api/monthsummary";
+    Map<String, String> headers2 = {'content-type': 'application/json'};
+    var date2 = '${_utility.year}-${_utility.month}-${_utility.day}';
+    String body2 = json.encode({"date": date2});
+    Response response2 = await post(url2, headers: headers2, body: body2);
+
+    if (response2 != null) {
+      Map data2 = jsonDecode(response2.body);
+
+      for (var i = 0; i < data2['data'].length; i++) {
+        if (data2['data'][i]['item'] == 'credit') {
+          _sumprice = data2['data'][i]['sum'];
+        }
+      }
+    }
+    //--------------------------------//
+
     ///////////////////////
     String url = "http://toyohide.work/BrainLog/api/uccardspend";
     Map<String, String> headers = {'content-type': 'application/json'};
@@ -102,7 +131,7 @@ class _CreditSpendDisplayScreenState extends State<CreditSpendDisplayScreen> {
    *
    */
   Widget _spendDisplayBox() {
-    int _diff = (widget.sumprice - _total);
+    int _diff = (_sumprice - _total);
 
     return Column(
       children: <Widget>[
@@ -132,7 +161,7 @@ class _CreditSpendDisplayScreenState extends State<CreditSpendDisplayScreen> {
                       Container(
                         alignment: Alignment.topRight,
                         child: Text(
-                            '${_utility.makeCurrencyDisplay(widget.sumprice.toString())}'),
+                            '${_utility.makeCurrencyDisplay(_sumprice.toString())}'),
                       ),
                     ]),
                     TableRow(children: [
@@ -173,20 +202,45 @@ class _CreditSpendDisplayScreenState extends State<CreditSpendDisplayScreen> {
           ),
         ),
         Container(
-          alignment: Alignment.topRight,
-          child: GestureDetector(
-            onTap: () => _goAllCreditListScreen(),
-            child: Container(
-              margin: EdgeInsets.all(10),
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Colors.blueAccent.withOpacity(0.3),
-                border: Border.all(
-                  color: Colors.white.withOpacity(0.3),
+          child: Table(
+            children: [
+              TableRow(children: [
+                Container(
+                  child: Row(
+                    children: <Widget>[
+                      IconButton(
+                        icon: const Icon(Icons.skip_previous),
+                        tooltip: '前月',
+                        onPressed: () => _goPrevMonth(context: context),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.skip_next),
+                        tooltip: '翌月',
+                        onPressed: () => _goNextMonth(context: context),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              child: Text('All Credit'),
-            ),
+                Container(
+                  alignment: Alignment.topRight,
+                  child: GestureDetector(
+                    onTap: () => _goAllCreditListScreen(),
+                    child: Container(
+                      margin: EdgeInsets.all(5),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.blueAccent.withOpacity(0.3),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.3),
+                        ),
+                      ),
+                      child: Text('All Credit'),
+                    ),
+                  ),
+                ),
+              ]),
+            ],
           ),
         ),
         Expanded(
@@ -303,6 +357,36 @@ class _CreditSpendDisplayScreenState extends State<CreditSpendDisplayScreen> {
         builder: (context) => AllCreditListScreen(
           date: widget.date,
         ),
+      ),
+    );
+  }
+
+  /**
+   * 画面遷移（前月）
+   */
+  void _goPrevMonth({BuildContext context}) {
+    _utility.makeYMDYData(_prevDate.toString(), 0);
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CreditSpendDisplayScreen(
+            date: '${_utility.year}-${_utility.month}-${_utility.day}'),
+      ),
+    );
+  }
+
+  /**
+   * 画面遷移（翌月）
+   */
+  void _goNextMonth({BuildContext context}) {
+    _utility.makeYMDYData(_nextDate.toString(), 0);
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CreditSpendDisplayScreen(
+            date: '${_utility.year}-${_utility.month}-${_utility.day}'),
       ),
     );
   }

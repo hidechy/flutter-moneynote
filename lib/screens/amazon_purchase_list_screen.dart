@@ -21,6 +21,9 @@ class _AmazonPurchaseListScreenState extends State<AmazonPurchaseListScreen> {
 
   int _total = 0;
 
+  int _prevYear = 0;
+  int _nextYear = 0;
+
   /**
    * 初期動作
    */
@@ -35,6 +38,10 @@ class _AmazonPurchaseListScreenState extends State<AmazonPurchaseListScreen> {
    * 初期データ作成
    */
   void _makeDefaultDisplayData() async {
+    _utility.makeYMDYData(widget.date, 0);
+    _prevYear = int.parse(_utility.year) - 1;
+    _nextYear = int.parse(_utility.year) + 1;
+
     String url = "http://toyohide.work/BrainLog/api/amazonPurchaseList";
     Map<String, String> headers = {'content-type': 'application/json'};
     String body = json.encode({"date": widget.date});
@@ -88,16 +95,40 @@ class _AmazonPurchaseListScreenState extends State<AmazonPurchaseListScreen> {
           Column(
             children: <Widget>[
               Container(
-                alignment: Alignment.topRight,
-                padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: Colors.yellowAccent.withOpacity(0.3),
                   border: Border.all(
                     color: Colors.white.withOpacity(0.3),
                   ),
                 ),
-                child:
-                    Text('${_utility.makeCurrencyDisplay(_total.toString())}'),
+                child: Table(
+                  children: [
+                    TableRow(children: [
+                      Container(
+                        child: Row(
+                          children: <Widget>[
+                            IconButton(
+                              icon: const Icon(Icons.skip_previous),
+                              tooltip: '前年',
+                              onPressed: () => _goPrevYear(context: context),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.skip_next),
+                              tooltip: '翌年',
+                              onPressed: () => _goNextYear(context: context),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 10, right: 20),
+                        alignment: Alignment.topRight,
+                        child: Text(
+                            '${_utility.makeCurrencyDisplay(_total.toString())}'),
+                      ),
+                    ]),
+                  ],
+                ),
               ),
               Expanded(
                 child: _amazonPurchaseList(),
@@ -173,6 +204,32 @@ class _AmazonPurchaseListScreenState extends State<AmazonPurchaseListScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  /**
+   * 画面遷移（前年）
+   */
+  void _goPrevYear({BuildContext context}) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            AmazonPurchaseListScreen(date: '${_prevYear}-01-01'),
+      ),
+    );
+  }
+
+  /**
+   * 画面遷移（翌年）
+   */
+  void _goNextYear({BuildContext context}) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            AmazonPurchaseListScreen(date: '${_nextYear}-01-01'),
       ),
     );
   }

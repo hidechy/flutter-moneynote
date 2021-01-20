@@ -326,8 +326,7 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
         return Icon(Icons.check_box_outline_blank, color: Color(0xFF2e2e2e));
       } else {
         return GestureDetector(
-          onTap: () => _goUcCardSpendDisplayScreen(
-              sumprice: _summaryData[position]['sum']),
+          onTap: () => _goUcCardSpendDisplayScreen(),
           child: Icon(
             Icons.credit_card,
             color: Colors.greenAccent,
@@ -354,14 +353,12 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
   /**
    *
    */
-  void _goUcCardSpendDisplayScreen({sumprice}) {
+  void _goUcCardSpendDisplayScreen() {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => CreditSpendDisplayScreen(
-          date: '${_selectedYear}-${_selectedMonth}-01',
-          sumprice: sumprice,
-        ),
+            date: '${_selectedYear}-${_selectedMonth}-01'),
       ),
     );
   }
