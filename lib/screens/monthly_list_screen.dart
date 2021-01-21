@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:moneynote/screens/graph_display_screen.dart';
 
 import '../main.dart';
 
@@ -38,6 +39,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   int _monthTotal = 0;
 
   int _prevMonthEndTotal = 0;
+
+  List<Map<dynamic, dynamic>> _graphData = List();
 
   /**
    * 初期動作
@@ -123,6 +126,14 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
       _monthData.add(_map);
 
       _yesterdaySpend = _thisDayTotal;
+
+      //////////////////////////////////////
+      var _map2 = Map();
+      _map2['date'] = _thisDay;
+      _map2['total'] = _thisDayTotal.toString();
+      _graphData.add(_map2);
+      //////////////////////////////////////
+
     }
 
     _monthTotal = _monthSum;
@@ -176,27 +187,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Container(
-//                          color: Colors.orangeAccent.withOpacity(0.3),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(
-                                    'start　${_utility.makeCurrencyDisplay(_prevMonthEndTotal.toString())}'),
-                                Text(
-                                    'total　${_utility.makeCurrencyDisplay(_monthTotal.toString())}'),
-                              ],
-                            ),
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.orangeAccent.withOpacity(0.3),
-                            border: Border.all(
-                              color: Colors.white.withOpacity(0.3),
-                            ),
-                          ),
-                        ),
+                        _totalContainer(),
                       ],
                     ),
                   ),
@@ -212,6 +203,55 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  /**
+   *
+   */
+  Widget _totalContainer() {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.orangeAccent.withOpacity(0.3),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.3),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                      'start　${_utility.makeCurrencyDisplay(_prevMonthEndTotal.toString())}'),
+                  Text(
+                      'total　${_utility.makeCurrencyDisplay(_monthTotal.toString())}'),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Container(
+          width: 60,
+          margin: EdgeInsets.only(left: 6),
+          decoration: BoxDecoration(
+            color: Colors.orangeAccent.withOpacity(0.3),
+            border: Border.all(
+              color: Colors.white.withOpacity(0.3),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GestureDetector(
+              onTap: () => _goGraphDisplayScreen(),
+              child: Icon(Icons.show_chart),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -579,6 +619,21 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
           date: date,
           index: int.parse(_utility.day),
           detailDisplayArgs: detailDisplayArgs,
+        ),
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  Widget _goGraphDisplayScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => GraphDisplayScreen(
+          date: widget.date,
+          graphdata: _graphData,
         ),
       ),
     );

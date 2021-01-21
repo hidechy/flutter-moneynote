@@ -167,7 +167,7 @@ class _AmazonPurchaseListScreenState extends State<AmazonPurchaseListScreen> {
           width: 40,
           margin: EdgeInsets.symmetric(vertical: 5),
           decoration: BoxDecoration(
-            color: Colors.orangeAccent.withOpacity(0.3),
+            color: _getLeadingBgColor(month: ex_date[1]),
             border: Border.all(
               color: Colors.white.withOpacity(0.3),
             ),
@@ -206,6 +206,32 @@ class _AmazonPurchaseListScreenState extends State<AmazonPurchaseListScreen> {
         ),
       ),
     );
+  }
+
+  /**
+   *
+   */
+  Color _getLeadingBgColor({String month}) {
+    switch (int.parse(month) % 6) {
+      case 0:
+        return Colors.orangeAccent.withOpacity(0.3);
+        break;
+      case 1:
+        return Colors.blueAccent.withOpacity(0.3);
+        break;
+      case 2:
+        return Colors.redAccent.withOpacity(0.3);
+        break;
+      case 3:
+        return Colors.purpleAccent.withOpacity(0.3);
+        break;
+      case 4:
+        return Colors.greenAccent.withOpacity(0.3);
+        break;
+      case 5:
+        return Colors.yellowAccent.withOpacity(0.3);
+        break;
+    }
   }
 
   /**

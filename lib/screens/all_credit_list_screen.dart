@@ -184,7 +184,7 @@ class _AllCreditListScreenState extends State<AllCreditListScreen> {
           width: 40,
           margin: EdgeInsets.symmetric(vertical: 5),
           decoration: BoxDecoration(
-            color: Colors.orangeAccent.withOpacity(0.3),
+            color: _getLeadingBgColor(month: ex_pm[1]),
             border: Border.all(
               color: Colors.white.withOpacity(0.3),
             ),
@@ -199,24 +199,71 @@ class _AllCreditListScreenState extends State<AllCreditListScreen> {
         ),
         trailing:
             _getCreditTrailing(kind: _creditCardSpendData[position]['kind']),
-        title: DefaultTextStyle(
-          style: TextStyle(fontSize: 10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text('${_creditCardSpendData[position]['date']}'),
-              Text('${_creditCardSpendData[position]['item']}'),
-              Container(
-                width: double.infinity,
-                alignment: Alignment.topRight,
-                child: Text(
-                    '${_utility.makeCurrencyDisplay(_creditCardSpendData[position]['price'])}'),
+        title: Row(
+          children: <Widget>[
+            Expanded(
+              child: DefaultTextStyle(
+                style: TextStyle(fontSize: 10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text('${_creditCardSpendData[position]['date']}'),
+                    Text('${_creditCardSpendData[position]['item']}'),
+                    Container(
+                      width: double.infinity,
+                      alignment: Alignment.topRight,
+                      child: Text(
+                          '${_utility.makeCurrencyDisplay(_creditCardSpendData[position]['price'])}'),
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
+            ),
+            Container(
+              width: 20,
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(left: 5),
+              padding: EdgeInsets.symmetric(vertical: 5),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.white.withOpacity(0.3),
+                ),
+              ),
+              child: Text(
+                '${_creditCardSpendData[position]['month_diff']}',
+                style: TextStyle(fontSize: 10),
+              ),
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  /**
+   *
+   */
+  Color _getLeadingBgColor({String month}) {
+    switch (int.parse(month) % 6) {
+      case 0:
+        return Colors.orangeAccent.withOpacity(0.3);
+        break;
+      case 1:
+        return Colors.blueAccent.withOpacity(0.3);
+        break;
+      case 2:
+        return Colors.redAccent.withOpacity(0.3);
+        break;
+      case 3:
+        return Colors.purpleAccent.withOpacity(0.3);
+        break;
+      case 4:
+        return Colors.greenAccent.withOpacity(0.3);
+        break;
+      case 5:
+        return Colors.yellowAccent.withOpacity(0.3);
+        break;
+    }
   }
 
   /**
