@@ -631,9 +631,10 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => GraphDisplayScreen(
+        builder: (context) => GraphDisplayScreen.withSampleData(
           date: widget.date,
           graphdata: _graphData,
+          holidayList: _holidayList,
         ),
       ),
     );

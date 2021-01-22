@@ -4,16 +4,33 @@ import 'package:charts_flutter/flutter.dart' as charts;
 
 import '../utilities/utility.dart';
 
-//
-//
-//
-
 class GraphDisplayScreen extends StatelessWidget {
+  final List<charts.Series> seriesList;
+  final bool animate;
   final String date;
-  final List graphdata;
-  GraphDisplayScreen({@required this.date, @required this.graphdata});
+  final List graphData;
+  final Map holidayList;
+  GraphDisplayScreen(
+      {this.seriesList,
+      this.animate,
+      this.date,
+      this.graphData,
+      this.holidayList});
 
   Utility _utility = Utility();
+
+  /**
+   *
+   */
+  factory GraphDisplayScreen.withSampleData(
+      {String date, List graphdata, Map holidayList}) {
+    return new GraphDisplayScreen(
+        seriesList: _createSampleData(graphdata: graphdata),
+        animate: false,
+        date: date,
+        graphData: graphdata,
+        holidayList: holidayList);
+  }
 
   /**
    *
@@ -43,62 +60,78 @@ class GraphDisplayScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: SimpleTimeSeriesChart.withSampleData(
-        date: date,
-        graphdata: graphdata,
+      body: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          _utility.getBackGround(),
+          Column(
+            children: <Widget>[
+              Container(
+                height: 400,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  color: Colors.white.withOpacity(0.8),
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    child: new charts.TimeSeriesChart(
+                      seriesList,
+                      animate: animate,
+                      dateTimeFactory: const charts.LocalDateTimeFactory(),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: _graphList(),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
-}
-
-//
-//
-//
-
-class SimpleTimeSeriesChart extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
-  final String date;
-  SimpleTimeSeriesChart({this.seriesList, this.animate, this.date});
-
-  Utility _utility = Utility();
 
   /**
-   *
+   * リスト表示
    */
-  factory SimpleTimeSeriesChart.withSampleData({String date, List graphdata}) {
-    return new SimpleTimeSeriesChart(
-      seriesList: _createSampleData(graphdata: graphdata),
-      animate: false,
-      date: date,
+  Widget _graphList() {
+    return ListView.builder(
+      itemCount: graphData.length,
+      itemBuilder: (context, int position) => _listItem(position: position),
     );
   }
 
   /**
-   *
+   * リストアイテム表示
    */
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      fit: StackFit.expand,
-      children: <Widget>[
-        _utility.getBackGround(),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.3),
-            border: Border.all(
-              color: Colors.white.withOpacity(0.3),
-            ),
-          ),
-          margin: EdgeInsets.all(8),
-          padding: EdgeInsets.all(8),
-          child: new charts.TimeSeriesChart(
-            seriesList,
-            animate: animate,
-            dateTimeFactory: const charts.LocalDateTimeFactory(),
+  Widget _listItem({int position}) {
+    _utility.makeYMDYData(graphData[position]['date'], 0);
+
+    return Card(
+      color: _utility.getBgColor(graphData[position]['date'], holidayList),
+      elevation: 10.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: ListTile(
+        title: DefaultTextStyle(
+          style: TextStyle(fontSize: 10.0),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Text(
+                    '${graphData[position]['date']}（${_utility.youbiStr}）'),
+              ),
+              Container(
+                child: Text(
+                    '${_utility.makeCurrencyDisplay(graphData[position]['total'].toString())}'),
+              ),
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
 
@@ -116,7 +149,9 @@ class SimpleTimeSeriesChart extends StatelessWidget {
         int.parse(ex_date[2]),
       );
       var _value = int.parse(graphdata[i]['total']);
-      data.add(new MoneyData(_datetime, _value));
+      data.add(
+        new MoneyData(_datetime, _value),
+      );
     }
 
     return [
@@ -130,10 +165,6 @@ class SimpleTimeSeriesChart extends StatelessWidget {
     ];
   }
 }
-
-//
-//
-//
 
 class MoneyData {
   final DateTime time;

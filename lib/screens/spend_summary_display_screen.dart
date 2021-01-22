@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:moneynote/screens/summary_chart_display_screen.dart';
 import 'package:moneynote/utilities/utility.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'dart:convert';
 import 'package:http/http.dart';
@@ -28,6 +30,8 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
   List<dynamic> _yearMonth = List();
 
   List<Map<dynamic, dynamic>> _summaryData = List();
+
+  List<Map<dynamic, dynamic>> _piechartData = List();
 
   /**
    * 初期動作
@@ -79,6 +83,11 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
         _map['percent'] = data['data'][i]['percent'];
         _map['total'] = _total;
         _summaryData.add(_map);
+
+        Map _map2 = Map();
+        _map2['item'] = data['data'][i]['item'];
+        _map2['sum'] = data['data'][i]['sum'];
+        _piechartData.add(_map2);
       }
     }
     ///////////////////////
@@ -172,6 +181,15 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
                     Text('${_utility.makeCurrencyDisplay(_total.toString())}'),
               ),
             ),
+            Container(
+              width: 60,
+              margin: EdgeInsets.only(right: 10),
+              child: IconButton(
+                icon: Icon(FontAwesomeIcons.chartPie),
+                color: Colors.greenAccent,
+                onPressed: () => _goSummaryChartDisplayScreen(),
+              ),
+            ),
           ],
         ),
         Expanded(
@@ -235,6 +253,8 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
 
     List<Map<dynamic, dynamic>> _summaryData2 = List();
 
+    List<Map<dynamic, dynamic>> _piechartData2 = List();
+
     String url = "http://toyohide.work/BrainLog/api/monthsummary";
     Map<String, String> headers = {'content-type': 'application/json'};
     String date = "${_selectedYear}-${month}-01";
@@ -255,10 +275,17 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
         _map['percent'] = data['data'][i]['percent'];
         _map['total'] = _total;
         _summaryData2.add(_map);
+
+        Map _map2 = Map();
+        _map2['item'] = data['data'][i]['item'];
+        _map2['sum'] = data['data'][i]['sum'];
+        _piechartData2.add(_map2);
       }
     }
 
     _summaryData = _summaryData2;
+
+    _piechartData = _piechartData2;
 
     setState(() {});
   }
@@ -359,6 +386,22 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
       MaterialPageRoute(
         builder: (context) => CreditSpendDisplayScreen(
             date: '${_selectedYear}-${_selectedMonth}-01'),
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  void _goSummaryChartDisplayScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SummaryChartDisplayScreen.withSampleData(
+          piechartData: _piechartData,
+          year: _selectedYear,
+          month: _selectedMonth,
+        ),
       ),
     );
   }
