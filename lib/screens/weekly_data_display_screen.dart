@@ -79,6 +79,14 @@ class _WeeklyDataDisplayScreenState extends State<WeeklyDataDisplayScreen> {
       }
       //////////////////////////////////////
 
+      ///////////////
+      var _bene = 0;
+      var _benefit = await database.selectBenefitRecord(_thisDay);
+      if (_benefit.length > 0) {
+        _bene = int.parse(_benefit[0].strPrice);
+      }
+      ///////////////
+
       /////-------------------------------------------------
       List _spendItem = List();
 
@@ -96,6 +104,10 @@ class _WeeklyDataDisplayScreenState extends State<WeeklyDataDisplayScreen> {
             }
           }
         }
+      }
+
+      if (_bene > 0) {
+        _spendItem.add(['収入', _bene * -1]);
       }
       /////-------------------------------------------------
 
@@ -302,12 +314,17 @@ class _WeeklyDataDisplayScreenState extends State<WeeklyDataDisplayScreen> {
       var _text = "";
       _text += spendItem[i][0];
       _text += " : ";
-      _text += _utility.makeCurrencyDisplay(spendItem[i][1]);
+      _text += _utility.makeCurrencyDisplay(spendItem[i][1].toString());
 
       _dataList.add(
         Container(
           margin: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-          child: Text('${_text}'),
+          child: (spendItem[i][0] == '収入')
+              ? Text(
+                  '${_text}',
+                  style: TextStyle(color: Colors.orangeAccent),
+                )
+              : Text('${_text}'),
         ),
       );
     }

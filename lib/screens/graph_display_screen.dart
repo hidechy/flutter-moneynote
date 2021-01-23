@@ -63,28 +63,50 @@ class GraphDisplayScreen extends StatelessWidget {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          _utility.getBackGround(),
+          Container(
+            height: 400,
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              color: Colors.white.withOpacity(0.8),
+              child: Container(
+                padding: EdgeInsets.all(10),
+                child: new charts.TimeSeriesChart(
+                  seriesList,
+                  animate: animate,
+                  dateTimeFactory: const charts.LocalDateTimeFactory(),
+                ),
+              ),
+            ),
+          ),
           Column(
             children: <Widget>[
               Container(
-                height: 400,
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  color: Colors.white.withOpacity(0.8),
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    child: new charts.TimeSeriesChart(
-                      seriesList,
-                      animate: animate,
-                      dateTimeFactory: const charts.LocalDateTimeFactory(),
-                    ),
-                  ),
-                ),
+                height: 200,
               ),
               Expanded(
-                child: _graphList(),
+                child: _utility.getBackGround(),
+              ),
+            ],
+          ),
+          Column(
+            children: <Widget>[
+              Container(
+                height: 200,
+              ),
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                        color: Colors.yellowAccent.withOpacity(0.3),
+                        width: 10,
+                      ),
+                    ),
+                  ),
+                  child: _graphList(),
+                ),
               ),
             ],
           ),

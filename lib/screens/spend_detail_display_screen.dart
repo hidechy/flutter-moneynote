@@ -333,39 +333,42 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
    * リストアイテム表示
    */
   Widget _listItem({int position}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Table(
-        children: [
-          TableRow(children: [
-            Align(),
-            (_spendDetailData[position][2] == '2')
-                ? Container(
-                    alignment: Alignment.topRight,
-                    child: Text(
-                      '合計',
-                      style: TextStyle(
-                        color: Colors.greenAccent,
+    return DefaultTextStyle(
+      style: TextStyle(fontFamily: "Exo"),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Table(
+          children: [
+            TableRow(children: [
+              Align(),
+              (_spendDetailData[position][2] == '2')
+                  ? Container(
+                      alignment: Alignment.topRight,
+                      child: Text(
+                        '合計',
+                        style: TextStyle(
+                          color: Colors.greenAccent,
+                        ),
                       ),
-                    ),
-                  )
-                : Align(
-                    alignment: Alignment.topLeft,
-                    child: Text('${_spendDetailData[position][0]}'),
-                  ),
-            Align(
-              alignment: Alignment.topRight,
-              child: (_spendDetailData[position][2] == '2')
-                  ? Text(
-                      '${_utility.makeCurrencyDisplay(_spendDetailData[position][1])}',
-                      style: TextStyle(color: Colors.greenAccent),
                     )
-                  : Text(
-                      '${_utility.makeCurrencyDisplay(_spendDetailData[position][1])}',
+                  : Align(
+                      alignment: Alignment.topLeft,
+                      child: Text('${_spendDetailData[position][0]}'),
                     ),
-            ),
-          ]),
-        ],
+              Align(
+                alignment: Alignment.topRight,
+                child: (_spendDetailData[position][2] == '2')
+                    ? Text(
+                        '${_utility.makeCurrencyDisplay(_spendDetailData[position][1])}',
+                        style: TextStyle(color: Colors.greenAccent),
+                      )
+                    : Text(
+                        '${_utility.makeCurrencyDisplay(_spendDetailData[position][1])}',
+                      ),
+              ),
+            ]),
+          ],
+        ),
       ),
     );
   }
@@ -374,14 +377,17 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
    * リストアイテム表示
    */
   Widget _listItem2({int position}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Table(
-        children: [
-          TableRow(children: [
-            Text('${_trainData[position]}'),
-          ]),
-        ],
+    return DefaultTextStyle(
+      style: TextStyle(fontFamily: "Exo"),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Table(
+          children: [
+            TableRow(children: [
+              Text('${_trainData[position]}'),
+            ]),
+          ],
+        ),
       ),
     );
   }
@@ -390,32 +396,35 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
    * リストアイテム表示
    */
   Widget _listItem3({int position}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Table(
-        children: [
-          TableRow(children: [
-            Container(
-              child: Text('${_timePlaceData[position]['time']}'),
-              color: (_timePlaceData[position]['inTrain'] == 1)
-                  ? Colors.greenAccent.withOpacity(0.3)
-                  : Colors.black,
-            ),
-            Container(
-              child: Text('${_timePlaceData[position]['place']}'),
-              color: (_timePlaceData[position]['inTrain'] == 1)
-                  ? Colors.greenAccent.withOpacity(0.3)
-                  : Colors.black,
-            ),
-            Container(
-              alignment: Alignment.topRight,
-              child: Text('${_timePlaceData[position]['price']}'),
-              color: (_timePlaceData[position]['inTrain'] == 1)
-                  ? Colors.greenAccent.withOpacity(0.3)
-                  : Colors.black,
-            ),
-          ]),
-        ],
+    return DefaultTextStyle(
+      style: TextStyle(fontFamily: "Exo"),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Table(
+          children: [
+            TableRow(children: [
+              Container(
+                child: Text('${_timePlaceData[position]['time']}'),
+                color: (_timePlaceData[position]['inTrain'] == 1)
+                    ? Colors.greenAccent.withOpacity(0.3)
+                    : Colors.black,
+              ),
+              Container(
+                child: Text('${_timePlaceData[position]['place']}'),
+                color: (_timePlaceData[position]['inTrain'] == 1)
+                    ? Colors.greenAccent.withOpacity(0.3)
+                    : Colors.black,
+              ),
+              Container(
+                alignment: Alignment.topRight,
+                child: Text('${_timePlaceData[position]['price']}'),
+                color: (_timePlaceData[position]['inTrain'] == 1)
+                    ? Colors.greenAccent.withOpacity(0.3)
+                    : Colors.black,
+              ),
+            ]),
+          ],
+        ),
       ),
     );
   }
