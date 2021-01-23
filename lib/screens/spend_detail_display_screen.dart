@@ -1,9 +1,13 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import 'package:moneynote/screens/spend_summary_display_screen.dart';
+import 'package:moneynote/screens/weekly_data_display_screen.dart';
+
 import 'package:toast/toast.dart';
+import 'package:http/http.dart';
+import 'dart:convert';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'spend_summary_display_screen.dart';
+
 import '../main.dart';
 import '../utilities/utility.dart';
 
@@ -214,26 +218,39 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
             ),
             child: Column(
               children: <Widget>[
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      IconButton(
-                        icon: const Icon(Icons.skip_previous),
-                        onPressed: () => _goSpendDetailDisplayScreen(
-                          context: context,
-                          date: _prevdate[0],
-                        ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          IconButton(
+                            icon: const Icon(Icons.skip_previous),
+                            onPressed: () => _goSpendDetailDisplayScreen(
+                              context: context,
+                              date: _prevdate[0],
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.skip_next),
+                            onPressed: () => _goSpendDetailDisplayScreen(
+                              context: context,
+                              date: _nextdate[0],
+                            ),
+                          ),
+                        ],
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.skip_next),
-                        onPressed: () => _goSpendDetailDisplayScreen(
-                          context: context,
-                          date: _nextdate[0],
-                        ),
+                    ),
+                    Container(
+                      width: 100,
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                        icon: Icon(FontAwesomeIcons.calendarWeek),
+                        color: Colors.greenAccent,
+                        onPressed: () => _goWeeklyDataDisplayScreen(),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -599,6 +616,18 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => SpendDetailDisplayScreen(date: date),
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  void _goWeeklyDataDisplayScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => WeeklyDataDisplayScreen(date: widget.date),
       ),
     );
   }
