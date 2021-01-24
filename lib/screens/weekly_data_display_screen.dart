@@ -111,6 +111,27 @@ class _WeeklyDataDisplayScreenState extends State<WeeklyDataDisplayScreen> {
       }
       /////-------------------------------------------------
 
+      /////-------------------------------------------------
+      List _timePlace = List();
+
+      String url = "http://toyohide.work/BrainLog/api/timeplace";
+      Map<String, String> headers = {'content-type': 'application/json'};
+      String body = json.encode({"date": _thisDay});
+      Response response3 = await post(url, headers: headers, body: body);
+
+      if (response3 != null) {
+        Map data3 = jsonDecode(response3.body);
+
+        for (var i = 0; i < data3['data'].length; i++) {
+          var _map = Map();
+          _map['time'] = data3['data'][i]['time'];
+          _map['place'] = data3['data'][i]['place'];
+          _map['price'] = data3['data'][i]['price'];
+          _timePlace.add(_map);
+        }
+      }
+      /////-------------------------------------------------
+
       //////////////////////////////////////
       var _zenjitsuTotal = 0;
 
@@ -132,6 +153,7 @@ class _WeeklyDataDisplayScreenState extends State<WeeklyDataDisplayScreen> {
       _map['total'] = _thisDayTotal;
       _map['diff'] = (_zenjitsuTotal - _thisDayTotal);
       _map['spendItem'] = _spendItem;
+      _map['timePlace'] = _timePlace;
       _weeklyData.add(_map);
 
       if (_thisDay != _today) {
@@ -146,6 +168,8 @@ class _WeeklyDataDisplayScreenState extends State<WeeklyDataDisplayScreen> {
         _holidayList[holidays[i].strDate] = '';
       }
     }
+
+    print(_weeklyData);
 
     setState(() {});
   }
@@ -285,6 +309,20 @@ class _WeeklyDataDisplayScreenState extends State<WeeklyDataDisplayScreen> {
                   ),
                 ],
               ),
+
+              /////////////
+              Row(
+                children: <Widget>[
+                  Container(
+                    width: 100,
+                  ),
+                  Expanded(
+                    child: _makeTimePlaceData(
+                        timePlace: _weeklyData[position]['timePlace']),
+                  ),
+                ],
+              ),
+              /////////////
             ],
           ),
         ),
@@ -300,8 +338,17 @@ class _WeeklyDataDisplayScreenState extends State<WeeklyDataDisplayScreen> {
       return Container();
     }
 
-    return Wrap(
-      children: _makeSpendItemDataRows(spendItem: spendItem),
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            color: Colors.white.withOpacity(0.3),
+          ),
+        ),
+      ),
+      child: Wrap(
+        children: _makeSpendItemDataRows(spendItem: spendItem),
+      ),
     );
   }
 
@@ -311,20 +358,77 @@ class _WeeklyDataDisplayScreenState extends State<WeeklyDataDisplayScreen> {
   List _makeSpendItemDataRows({spendItem}) {
     List<Widget> _dataList = List();
     for (var i = 0; i < spendItem.length; i++) {
-      var _text = "";
-      _text += spendItem[i][0];
-      _text += " : ";
-      _text += _utility.makeCurrencyDisplay(spendItem[i][1].toString());
-
       _dataList.add(
         Container(
-          margin: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-          child: (spendItem[i][0] == '収入')
-              ? Text(
-                  '${_text}',
-                  style: TextStyle(color: Colors.orangeAccent),
-                )
-              : Text('${_text}'),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Container(
+                  child: Text('${spendItem[i][0]}'),
+                ),
+              ),
+              Container(
+                width: 50,
+                alignment: Alignment.topRight,
+                child: Text('${_utility.makeCurrencyDisplay(spendItem[i][1])}'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    return _dataList;
+  }
+
+  /**
+   *
+   */
+  _makeTimePlaceData({timePlace}) {
+    if (timePlace.length == 0) {
+      return Container();
+    }
+
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            color: Colors.white.withOpacity(0.3),
+          ),
+        ),
+      ),
+      child: Wrap(
+        children: _makeTimePlaceDataRows(timePlace: timePlace),
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  _makeTimePlaceDataRows({timePlace}) {
+    List<Widget> _dataList = List();
+    for (var i = 0; i < timePlace.length; i++) {
+      _dataList.add(
+        Container(
+          child: Row(
+            children: <Widget>[
+              Container(
+                width: 40,
+                child: Text('${timePlace[i]['time']}'),
+              ),
+              Expanded(
+                child: Container(
+                  child: Text('${timePlace[i]['place']}'),
+                ),
+              ),
+              Container(
+                width: 50,
+                alignment: Alignment.topRight,
+                child: Text(
+                    '${_utility.makeCurrencyDisplay(timePlace[i]['price'].toString())}'),
+              ),
+            ],
+          ),
         ),
       );
     }
