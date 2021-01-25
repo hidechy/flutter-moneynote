@@ -9,7 +9,6 @@ import '../utilities/utility.dart';
 
 import 'bank_input_screen.dart';
 import 'monthly_list_screen.dart';
-import 'monthly_value_list_screen.dart';
 import 'oneday_input_screen.dart';
 import 'score_list_screen.dart';
 import 'benefit_input_screen.dart';
@@ -1179,15 +1178,6 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                   onTap: () => _goMonthlyListScreen(
                       context: context, date: _displayDate),
                 ),
-                ListTile(
-                  leading: const Icon(Icons.view_array),
-                  title: const Text(
-                    'Monthly Value List',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  onTap: () => _goMonthlyValueListScreen(
-                      context: context, date: _displayDate),
-                ),
                 const Divider(
                   color: Colors.indigo,
                   height: 20.0,
@@ -1471,18 +1461,6 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => SettingBaseScreen(),
-      ),
-    );
-  }
-
-  /**
-   * 画面遷移（MonthlyValueListScreen）
-   */
-  void _goMonthlyValueListScreen({BuildContext context, String date}) {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => MonthlyValueListScreen(date: date),
       ),
     );
   }
