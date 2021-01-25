@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:moneynote/screens/spend_detail_display_screen.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:bubble/bubble.dart';
 
 import '../main.dart';
 import '../utilities/utility.dart';
@@ -78,6 +80,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
 
   int _spend = 0;
   int _monthSpend = 0;
+  int _lastSpend = 0;
 
   Map<String, String> _bankNames = Map();
 
@@ -176,9 +179,10 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
       _undercoin = _utility.undercoin;
     }
 
+    var _yesterdayTotal = 0;
     if (widget.detailDisplayArgs['yesterday'] != null) {
       _utility.makeTotal(widget.detailDisplayArgs['yesterday'][0]);
-      var _yesterdayTotal = _utility.total;
+      _yesterdayTotal = _utility.total;
       _spend = (_yesterdayTotal - _total);
     }
 
@@ -188,6 +192,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
     }
 
     _monthSpend = (_lastMonthTotal - _total);
+    _lastSpend = (_lastMonthTotal - _yesterdayTotal);
 
 //    ///////////////////////////////////////////////////////////////////
 
@@ -252,7 +257,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                 ),
                 color: Colors.black.withOpacity(0.3),
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 30),
+                  padding: const EdgeInsets.only(bottom: 10),
                   child: Column(
                     children: <Widget>[
                       //------------------------------------------------------------------------//
@@ -268,30 +273,16 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                         ),
                       ),
 
-                      const Divider(
-                        color: Colors.indigo,
-                        indent: 20.0,
-                        endIndent: 20.0,
-                      ),
+                      const Divider(color: Colors.indigo),
 
                       _dispTotal(),
 
-                      const Divider(
-                        color: Colors.indigo,
-                        height: 20.0,
-                        indent: 20.0,
-                        endIndent: 20.0,
-                      ),
+                      const Divider(color: Colors.indigo),
 
                       _dispCurrency(),
                       _dispDeposit(),
 
-                      const Divider(
-                        color: Colors.indigo,
-                        height: 20.0,
-                        indent: 20.0,
-                        endIndent: 20.0,
-                      ),
+                      const Divider(color: Colors.indigo),
 
                       _dispEMoney(),
 
@@ -395,38 +386,60 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
             children: <Widget>[
               Expanded(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Table(
-                      children: [
-                        TableRow(children: [
-                          const Padding(
-                            padding: const EdgeInsets.only(left: 20),
-                            child: const Text('month start'),
-                          ),
-                          Container(
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.only(left: 10),
+                          child: const Text('month start'),
+                        ),
+                        Expanded(
+                          child: Container(
                             alignment: Alignment.topRight,
                             child: Text(
                                 '${_utility.makeCurrencyDisplay(_lastMonthTotal.toString())}'),
                           ),
-                        ]),
-                        TableRow(children: [
-                          const Padding(
-                            padding: const EdgeInsets.only(left: 20),
-                            child: const Text('month spend'),
-                          ),
-                          Container(
-                              alignment: Alignment.topRight,
-                              child: Text(
-                                  '${_utility.makeCurrencyDisplay(_monthSpend.toString())}')),
-                        ]),
+                        ),
                       ],
                     ),
-                    const Divider(color: Colors.indigo, indent: 20.0),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.only(left: 10),
+                          child: const Text('month spend'),
+                        ),
+                        Container(
+                          width: 60,
+                          alignment: Alignment.topRight,
+                          child: Icon(
+                            FontAwesomeIcons.caretRight,
+                            color: Colors.greenAccent.withOpacity(0.6),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.topRight,
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Colors.greenAccent.withOpacity(0.3),
+                                  width: 3,
+                                ),
+                              ),
+                            ),
+                            child: Text(
+                                '${_utility.makeCurrencyDisplay(_monthSpend.toString())}'),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Divider(color: Colors.indigo),
                     Table(
                       children: [
                         TableRow(children: [
                           const Padding(
-                            padding: const EdgeInsets.only(left: 20),
+                            padding: const EdgeInsets.only(left: 10),
                             child: const Text(
                               'total',
                               style:
@@ -444,21 +457,45 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                         ]),
                       ],
                     ),
-                    const Divider(color: Colors.indigo, indent: 20.0),
-                    Table(
-                      children: [
-                        TableRow(children: [
-                          const Padding(
-                            padding: const EdgeInsets.only(left: 20),
-                            child: const Text('today spend'),
-                          ),
-                          Container(
-                            alignment: Alignment.topRight,
-                            child: Text(
-                                '${_utility.makeCurrencyDisplay(_spend.toString())}'),
-                          ),
-                        ]),
-                      ],
+                    const Divider(color: Colors.indigo),
+                    Bubble(
+                      nip: BubbleNip.rightTop,
+                      color: Colors.greenAccent.withOpacity(0.2),
+                      nipWidth: 20,
+                      child: DefaultTextStyle(
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontFamily: "Yomogi",
+                        ),
+                        child: Column(
+                          children: <Widget>[
+                            Table(
+                              children: [
+                                TableRow(children: [
+                                  const Text('today spend'),
+                                  Container(
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                        '${_utility.makeCurrencyDisplay(_spend.toString())}'),
+                                  ),
+                                ]),
+                              ],
+                            ),
+                            Table(
+                              children: [
+                                TableRow(children: [
+                                  const Text('last spend'),
+                                  Container(
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                        '${_utility.makeCurrencyDisplay(_lastSpend.toString())}'),
+                                  ),
+                                ]),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -522,7 +559,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     greyDisp: false,
                     value: '',
                     undercoin: false,
-                    currencyDisp: false),
+                    currencyDisp: true),
                 _getTextDispWidget(
                     text: '100',
                     greyDisp: false,
@@ -534,7 +571,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     greyDisp: false,
                     value: '',
                     undercoin: false,
-                    currencyDisp: false),
+                    currencyDisp: true),
               ]),
               TableRow(children: [
                 _getTextDispWidget(
@@ -548,7 +585,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     greyDisp: false,
                     value: '',
                     undercoin: false,
-                    currencyDisp: false),
+                    currencyDisp: true),
                 _getTextDispWidget(
                     text: '50',
                     greyDisp: false,
@@ -560,7 +597,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     greyDisp: false,
                     value: '',
                     undercoin: false,
-                    currencyDisp: false),
+                    currencyDisp: true),
               ]),
               TableRow(children: [
                 _getTextDispWidget(
@@ -574,7 +611,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     greyDisp: false,
                     value: '',
                     undercoin: false,
-                    currencyDisp: false),
+                    currencyDisp: true),
                 _getTextDispWidget(
                     text: '10',
                     greyDisp: false,
@@ -586,7 +623,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     greyDisp: false,
                     value: '',
                     undercoin: true,
-                    currencyDisp: false),
+                    currencyDisp: true),
               ]),
               TableRow(children: [
                 _getTextDispWidget(
@@ -600,7 +637,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     greyDisp: false,
                     value: '',
                     undercoin: false,
-                    currencyDisp: false),
+                    currencyDisp: true),
                 _getTextDispWidget(
                     text: '5',
                     greyDisp: false,
@@ -612,7 +649,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     greyDisp: false,
                     value: '',
                     undercoin: true,
-                    currencyDisp: false),
+                    currencyDisp: true),
               ]),
               TableRow(children: [
                 _getTextDispWidget(
@@ -626,7 +663,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     greyDisp: false,
                     value: '',
                     undercoin: false,
-                    currencyDisp: false),
+                    currencyDisp: true),
                 _getTextDispWidget(
                     text: '1',
                     greyDisp: false,
@@ -638,21 +675,20 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     greyDisp: false,
                     value: '',
                     undercoin: true,
-                    currencyDisp: false),
+                    currencyDisp: true),
               ]),
             ],
           ),
         ),
-        const Divider(
-          color: Colors.indigo,
-          height: 20.0,
-          indent: 20.0,
-          endIndent: 20.0,
+        Divider(
+          color: Colors.white.withOpacity(0.3),
+          indent: 10.0,
+          endIndent: 10.0,
         ),
         Container(
           alignment: Alignment.centerRight,
           child: Padding(
-            padding: const EdgeInsets.only(right: 30.0),
+            padding: const EdgeInsets.only(right: 10.0),
             child: Text(
               _utility.makeCurrencyDisplay(_temochi.toString()),
               style: const TextStyle(
@@ -665,7 +701,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
         Container(
           alignment: Alignment.centerRight,
           child: Padding(
-            padding: const EdgeInsets.only(right: 30.0),
+            padding: const EdgeInsets.only(right: 10.0),
             child: Text(
               _utility.makeCurrencyDisplay(_undercoin.toString()),
               style: const TextStyle(
@@ -1012,34 +1048,80 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
       String value,
       bool undercoin,
       bool currencyDisp}) {
-    if (greyDisp == true && value == '0') {
-      return Center(
-        child: DefaultTextStyle(
-          style: TextStyle(
-            color: Colors.white.withOpacity(0.3),
-            fontSize: 12,
-          ),
+    //----------------------------------------
+    if (currencyDisp == false) {
+      //見出し
+
+      if (greyDisp == true && value == '0') {
+        return Container(
+          padding: EdgeInsets.only(left: 10),
           child: Text(
             _getDisplayText(text: text, currencyDisp: currencyDisp),
-          ),
-        ),
-      );
-    } else {
-      if (undercoin == true) {
-        return Center(
-          child: Text(
-            _getDisplayText(text: text, currencyDisp: currencyDisp),
-            style: TextStyle(color: Colors.orangeAccent),
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.white.withOpacity(0.3),
+            ),
           ),
         );
       } else {
-        return Center(
+        if (undercoin == true) {
+          return Container(
+            padding: EdgeInsets.only(left: 10),
+            child: Text(
+              _getDisplayText(text: text, currencyDisp: currencyDisp),
+              style: TextStyle(
+                color: Colors.orangeAccent,
+              ),
+            ),
+          );
+        } else {
+          return Container(
+            padding: EdgeInsets.only(left: 10),
+            child: Text(
+              _getDisplayText(text: text, currencyDisp: currencyDisp),
+            ),
+          );
+        }
+      }
+    } else {
+      //値
+
+      if (greyDisp == true && value == '0') {
+        return Container(
+          alignment: Alignment.topRight,
+          padding: EdgeInsets.only(right: 10),
           child: Text(
             _getDisplayText(text: text, currencyDisp: currencyDisp),
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.white.withOpacity(0.3),
+            ),
           ),
         );
+      } else {
+        if (undercoin == true) {
+          return Container(
+            alignment: Alignment.topRight,
+            padding: EdgeInsets.only(right: 10),
+            child: Text(
+              _getDisplayText(text: text, currencyDisp: currencyDisp),
+              style: TextStyle(
+                color: Colors.orangeAccent,
+              ),
+            ),
+          );
+        } else {
+          return Container(
+            alignment: Alignment.topRight,
+            padding: EdgeInsets.only(right: 10),
+            child: Text(
+              _getDisplayText(text: text, currencyDisp: currencyDisp),
+            ),
+          );
+        }
       }
     }
+    //----------------------------------------
   }
 
   /**
@@ -1095,6 +1177,15 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     style: TextStyle(fontSize: 14),
                   ),
                   onTap: () => _goMonthlyListScreen(
+                      context: context, date: _displayDate),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.view_array),
+                  title: const Text(
+                    'Monthly Value List',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  onTap: () => _goMonthlyValueListScreen(
                       context: context, date: _displayDate),
                 ),
                 const Divider(
@@ -1153,15 +1244,6 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                   ),
                   onTap: () =>
                       _goAlldayListScreen(context: context, date: _displayDate),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.view_array),
-                  title: const Text(
-                    'Monthly Value List',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  onTap: () => _goMonthlyValueListScreen(
-                      context: context, date: _displayDate),
                 ),
                 const Divider(
                   color: Colors.indigo,

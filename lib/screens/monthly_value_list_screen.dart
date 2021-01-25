@@ -86,6 +86,11 @@ class _MonthlyValueListScreenState extends State<MonthlyValueListScreen> {
           _map["strPayG"] = _monieData[i].strPayG;
           _map["strPayH"] = _monieData[i].strPayH;
 
+          //-------------------------------------//
+          _utility.makeTotal(_monieData[i]);
+          _map['total'] = _utility.total;
+          //-------------------------------------//
+
           _monthlyValueData.add(_map);
         }
       }
@@ -173,50 +178,197 @@ class _MonthlyValueListScreenState extends State<MonthlyValueListScreen> {
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: ListTile(
+        leading: Container(
+          width: 40,
+          margin: EdgeInsets.symmetric(vertical: 5),
+          decoration: BoxDecoration(
+            color: Colors.cyanAccent.withOpacity(0.3),
+            border: Border.all(
+              color: Colors.white.withOpacity(0.3),
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text('${_monthlyValueData[position]['date']}'),
+            ],
+          ),
+        ),
         title: DefaultTextStyle(
-          style: TextStyle(fontSize: 10.0),
-          child: Table(
-            children: [
-              TableRow(children: [
-                Text(
-                  '${_monthlyValueData[position]['date']}',
-                  style: TextStyle(
-                    color: Colors.cyanAccent,
-                    fontWeight: FontWeight.bold,
+          style: TextStyle(
+            fontSize: 10.0,
+            color: Colors.white.withOpacity(0.6),
+          ),
+          child: Column(
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Colors.white.withOpacity(0.3),
+                    ),
                   ),
                 ),
-                Text(
-                  '${_monthlyValueData[position]['strYen10000']}',
-                  style: TextStyle(color: Colors.greenAccent),
+                alignment: Alignment.topRight,
+                child: Text(
+                  '${_utility.makeCurrencyDisplay(_monthlyValueData[position]['total'].toString())}',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
-                Text(
-                  '${_monthlyValueData[position]['strYen5000']}',
-                  style: TextStyle(color: Colors.greenAccent),
-                ),
-                Text(
-                  '${_monthlyValueData[position]['strYen2000']}',
-                  style: TextStyle(color: Colors.greenAccent),
-                ),
-                Text(
-                  '${_monthlyValueData[position]['strYen1000']}',
-                  style: TextStyle(color: Colors.greenAccent),
-                ),
-                Text('${_monthlyValueData[position]['strYen500']}'),
-                Text('${_monthlyValueData[position]['strYen100']}'),
-                Text('${_monthlyValueData[position]['strYen50']}'),
-                Text(
-                  '${_monthlyValueData[position]['strYen10']}',
-                  style: TextStyle(color: Colors.orangeAccent),
-                ),
-                Text(
-                  '${_monthlyValueData[position]['strYen5']}',
-                  style: TextStyle(color: Colors.orangeAccent),
-                ),
-                Text(
-                  '${_monthlyValueData[position]['strYen1']}',
-                  style: TextStyle(color: Colors.orangeAccent),
-                ),
-              ]),
+              ),
+              Table(
+                children: [
+                  TableRow(children: [
+                    Text(
+                      '${_monthlyValueData[position]['strYen10000']}',
+                      style:
+                          TextStyle(color: Colors.greenAccent.withOpacity(0.6)),
+                    ),
+                    Text(
+                      '${_monthlyValueData[position]['strYen5000']}',
+                      style:
+                          TextStyle(color: Colors.greenAccent.withOpacity(0.6)),
+                    ),
+                    Text(
+                      '${_monthlyValueData[position]['strYen2000']}',
+                      style:
+                          TextStyle(color: Colors.greenAccent.withOpacity(0.6)),
+                    ),
+                    Text(
+                      '${_monthlyValueData[position]['strYen1000']}',
+                      style:
+                          TextStyle(color: Colors.greenAccent.withOpacity(0.6)),
+                    ),
+                    Text('${_monthlyValueData[position]['strYen500']}'),
+                    Text('${_monthlyValueData[position]['strYen100']}'),
+                    Text('${_monthlyValueData[position]['strYen50']}'),
+                    Text(
+                      '${_monthlyValueData[position]['strYen10']}',
+                      style: TextStyle(
+                          color: Colors.orangeAccent.withOpacity(0.6)),
+                    ),
+                    Text(
+                      '${_monthlyValueData[position]['strYen5']}',
+                      style: TextStyle(
+                          color: Colors.orangeAccent.withOpacity(0.6)),
+                    ),
+                    Text(
+                      '${_monthlyValueData[position]['strYen1']}',
+                      style: TextStyle(
+                          color: Colors.orangeAccent.withOpacity(0.6)),
+                    ),
+                  ]),
+                ],
+              ),
+              Table(
+                children: [
+                  TableRow(children: [
+                    Container(
+                      alignment: Alignment.topRight,
+                      child: Text(
+                          '${_utility.makeCurrencyDisplay(_monthlyValueData[position]['strBankA'])}'),
+                    ),
+                    Container(
+                      alignment: Alignment.topRight,
+                      child: Text(
+                          '${_utility.makeCurrencyDisplay(_monthlyValueData[position]['strBankB'])}'),
+                    ),
+                    Container(
+                      alignment: Alignment.topRight,
+                      child: Text(
+                          '${_utility.makeCurrencyDisplay(_monthlyValueData[position]['strBankC'])}'),
+                    ),
+                    Container(
+                      alignment: Alignment.topRight,
+                      child: Text(
+                          '${_utility.makeCurrencyDisplay(_monthlyValueData[position]['strBankD'])}'),
+                    ),
+                  ]),
+                ],
+              ),
+              (_monthlyValueData[position]['strBankE'] == '0')
+                  ? Container()
+                  : Table(
+                      children: [
+                        TableRow(children: [
+                          Container(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                                '${_utility.makeCurrencyDisplay(_monthlyValueData[position]['strBankE'])}'),
+                          ),
+                          Container(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                                '${_utility.makeCurrencyDisplay(_monthlyValueData[position]['strBankF'])}'),
+                          ),
+                          Container(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                                '${_utility.makeCurrencyDisplay(_monthlyValueData[position]['strBankG'])}'),
+                          ),
+                          Container(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                                '${_utility.makeCurrencyDisplay(_monthlyValueData[position]['strBankH'])}'),
+                          ),
+                        ]),
+                      ],
+                    ),
+              Table(
+                children: [
+                  TableRow(children: [
+                    Container(
+                      alignment: Alignment.topRight,
+                      child: Text(
+                          '${_utility.makeCurrencyDisplay(_monthlyValueData[position]['strPayA'])}'),
+                    ),
+                    Container(
+                      alignment: Alignment.topRight,
+                      child: Text(
+                          '${_utility.makeCurrencyDisplay(_monthlyValueData[position]['strPayB'])}'),
+                    ),
+                    Container(
+                      alignment: Alignment.topRight,
+                      child: Text(
+                          '${_utility.makeCurrencyDisplay(_monthlyValueData[position]['strPayC'])}'),
+                    ),
+                    Container(
+                      alignment: Alignment.topRight,
+                      child: Text(
+                          '${_utility.makeCurrencyDisplay(_monthlyValueData[position]['strPayD'])}'),
+                    ),
+                  ]),
+                ],
+              ),
+              (_monthlyValueData[position]['strBankE'] == '0')
+                  ? Container()
+                  : Table(
+                      children: [
+                        TableRow(children: [
+                          Container(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                                '${_utility.makeCurrencyDisplay(_monthlyValueData[position]['strPayE'])}'),
+                          ),
+                          Container(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                                '${_utility.makeCurrencyDisplay(_monthlyValueData[position]['strPayF'])}'),
+                          ),
+                          Container(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                                '${_utility.makeCurrencyDisplay(_monthlyValueData[position]['strPayG'])}'),
+                          ),
+                          Container(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                                '${_utility.makeCurrencyDisplay(_monthlyValueData[position]['strPayH'])}'),
+                          ),
+                        ]),
+                      ],
+                    ),
             ],
           ),
         ),
