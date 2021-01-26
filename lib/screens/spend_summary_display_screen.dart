@@ -70,6 +70,8 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
     String body = json.encode({"date": widget.date});
     Response response = await post(url, headers: headers, body: body);
 
+    int _piechartOther = 0;
+    Map _map2 = Map();
     if (response != null) {
       Map data = jsonDecode(response.body);
 
@@ -84,11 +86,20 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
         _map['total'] = _total;
         _summaryData.add(_map);
 
-        Map _map2 = Map();
-        _map2['item'] = data['data'][i]['item'];
-        _map2['sum'] = data['data'][i]['sum'];
-        _piechartData.add(_map2);
+        if (data['data'][i]['percent'] > 5) {
+          _map2 = Map();
+          _map2['item'] = data['data'][i]['item'];
+          _map2['sum'] = data['data'][i]['sum'];
+          _piechartData.add(_map2);
+        } else {
+          _piechartOther += data['data'][i]['sum'];
+        }
       }
+
+      _map2 = Map();
+      _map2['item'] = 'その他';
+      _map2['sum'] = _piechartOther;
+      _piechartData.add(_map2);
     }
     ///////////////////////
     for (int i = 1; i <= 12; i++) {
@@ -266,6 +277,9 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
       Map data = jsonDecode(response.body);
 
       _total = 0;
+
+      int _piechartOther = 0;
+      Map _map2 = Map();
       for (var i = 0; i < data['data'].length; i++) {
         _total += data['data'][i]['sum'];
 
@@ -276,11 +290,20 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
         _map['total'] = _total;
         _summaryData2.add(_map);
 
-        Map _map2 = Map();
-        _map2['item'] = data['data'][i]['item'];
-        _map2['sum'] = data['data'][i]['sum'];
-        _piechartData2.add(_map2);
+        if (data['data'][i]['percent'] > 5) {
+          _map2 = Map();
+          _map2['item'] = data['data'][i]['item'];
+          _map2['sum'] = data['data'][i]['sum'];
+          _piechartData2.add(_map2);
+        } else {
+          _piechartOther += data['data'][i]['sum'];
+        }
       }
+
+      _map2 = Map();
+      _map2['item'] = 'その他';
+      _map2['sum'] = _piechartOther;
+      _piechartData2.add(_map2);
     }
 
     _summaryData = _summaryData2;

@@ -43,6 +43,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   String _prevMonthEndDateTime = '';
   String _prevMonthEndDate = '';
 
+  int _monthTotal = 0;
+
   //graph
   bool _graphDisplay = false;
   List<charts.Series<MoneyData, DateTime>> seriesList = List();
@@ -135,8 +137,10 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
 
           if (j == 0) {
             _map['diff'] = (_prevMonthEndTotal - _utility.total);
+            _monthTotal += (_prevMonthEndTotal - _utility.total);
           } else {
             _map['diff'] = (_yesterdayTotal - _utility.total);
+            _monthTotal += (_yesterdayTotal - _utility.total);
           }
 
           _monthlyData.add(_map);
@@ -232,6 +236,9 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
                         seriesList,
                         animate: false,
                         dateTimeFactory: const charts.LocalDateTimeFactory(),
+                        defaultRenderer: new charts.LineRendererConfig(
+                          includePoints: true,
+                        ),
                       ),
                     ),
             ),
@@ -241,7 +248,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
           Column(
             children: <Widget>[
               Container(
-                height: 300,
+                height: 250,
               ),
               Expanded(
                 child: _utility.getBackGround(),
@@ -252,20 +259,29 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
           Column(
             children: <Widget>[
               Container(
-                height: 300,
+                height: 250,
+              ),
+              Container(
+                margin: EdgeInsets.only(
+                  top: 5,
+                ),
+                alignment: Alignment.topRight,
+                padding: EdgeInsets.symmetric(
+                  vertical: 5,
+                  horizontal: 20,
+                ),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.orangeAccent.withOpacity(0.3),
+                  border: Border.all(
+                    color: Colors.white.withOpacity(0.3),
+                  ),
+                ),
+                child: Text(
+                    '${_utility.makeCurrencyDisplay(_monthTotal.toString())}'),
               ),
               Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      top: BorderSide(
-                        color: Colors.yellowAccent.withOpacity(0.3),
-                        width: 10,
-                      ),
-                    ),
-                  ),
-                  child: _monthlyList(),
-                ),
+                child: _monthlyList(),
               ),
             ],
           ),

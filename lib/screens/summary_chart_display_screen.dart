@@ -85,11 +85,21 @@ class SummaryChartDisplayScreen extends StatelessWidget {
                       child: new charts.PieChart(
                         seriesList,
                         animate: animate,
-                        defaultRenderer: new charts.ArcRendererConfig(
-                          arcRendererDecorators: [
-                            new charts.ArcLabelDecorator()
-                          ],
-                        ),
+                        behaviors: [
+                          new charts.DatumLegend(
+                            position: charts.BehaviorPosition.end,
+                            outsideJustification:
+                                charts.OutsideJustification.endDrawArea,
+                            horizontalFirst: false,
+                            cellPadding:
+                                new EdgeInsets.only(right: 4.0, bottom: 4.0),
+                            entryTextStyle: charts.TextStyleSpec(
+                              color: charts.MaterialPalette.purple.shadeDefault,
+                              fontFamily: 'Georgia',
+                              fontSize: 11,
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   ),
