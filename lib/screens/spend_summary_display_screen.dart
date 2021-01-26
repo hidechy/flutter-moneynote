@@ -1,21 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:moneynote/screens/summary_chart_display_screen.dart';
-import 'package:moneynote/utilities/utility.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import '../utilities/utility.dart';
 
 import 'dart:convert';
 import 'package:http/http.dart';
+
+//graph
+import 'package:charts_flutter/flutter.dart' as charts;
 
 import 'credit_spend_display_screen.dart';
 
 class SpendSummaryDisplayScreen extends StatefulWidget {
   final String date;
-
   SpendSummaryDisplayScreen({@required this.date});
 
   @override
   _SpendSummaryDisplayScreenState createState() =>
       _SpendSummaryDisplayScreenState();
+}
+
+//graph
+class SpendSummary {
+  final String item;
+  final int sales;
+
+  SpendSummary(this.item, this.sales);
 }
 
 class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
@@ -25,13 +34,15 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
 
   String _selectedYear = '';
   String _selectedMonth = '';
+
+  List<Widget> _monthButton = List();
+
   int _total = 0;
-
-  List<dynamic> _yearMonth = List();
-
   List<Map<dynamic, dynamic>> _summaryData = List();
 
-  List<Map<dynamic, dynamic>> _piechartData = List();
+  //graph
+  bool _graphDisplay = false;
+  List<charts.Series<SpendSummary, String>> seriesList = List();
 
   /**
    * 初期動作
@@ -50,7 +61,7 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
     List explodedDate = DateTime.now().toString().split(' ');
     List explodedSelectedDate = explodedDate[0].split('-');
 
-    for (int i = int.parse(explodedSelectedDate[0]); i >= 2019; i--) {
+    for (int i = int.parse(explodedSelectedDate[0]); i >= 2020; i--) {
       _dropdownYears.add(
         DropdownMenuItem(
           value: i.toString(),
@@ -64,18 +75,23 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
     _utility.makeYMDYData(widget.date, 0);
     _selectedYear = _utility.year;
 
+    _makeMonthButton();
+
     ///////////////////////
     String url = "http://toyohide.work/BrainLog/api/yearsummary";
     Map<String, String> headers = {'content-type': 'application/json'};
     String body = json.encode({"date": widget.date});
     Response response = await post(url, headers: headers, body: body);
 
-    int _piechartOther = 0;
-    Map _map2 = Map();
     if (response != null) {
+      //graph
+      final _graphdata = List<SpendSummary>();
+      seriesList = List();
+
       Map data = jsonDecode(response.body);
 
       _total = 0;
+      int _piechartOther = 0;
       for (var i = 0; i < data['data'].length; i++) {
         _total += data['data'][i]['sum'];
 
@@ -86,25 +102,45 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
         _map['total'] = _total;
         _summaryData.add(_map);
 
+        //graph
+        _graphDisplay = true;
+
         if (data['data'][i]['percent'] > 5) {
-          _map2 = Map();
-          _map2['item'] = data['data'][i]['item'];
-          _map2['sum'] = data['data'][i]['sum'];
-          _piechartData.add(_map2);
+          _graphdata.add(
+            new SpendSummary(
+              data['data'][i]['item'],
+              data['data'][i]['sum'],
+            ),
+          );
         } else {
           _piechartOther += data['data'][i]['sum'];
         }
       }
 
-      _map2 = Map();
-      _map2['item'] = 'その他';
-      _map2['sum'] = _piechartOther;
-      _piechartData.add(_map2);
+      //graph
+      if (_graphdata.length > 0) {
+        _graphdata.add(
+          new SpendSummary(
+            'その他',
+            _piechartOther,
+          ),
+        );
+      } else {
+        _graphDisplay = false;
+      }
+
+      //graph
+      seriesList.add(
+        new charts.Series<SpendSummary, String>(
+          id: 'Sales',
+          colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+          domainFn: (SpendSummary sales, _) => sales.item,
+          measureFn: (SpendSummary sales, _) => sales.sales,
+          data: _graphdata,
+        ),
+      );
     }
     ///////////////////////
-    for (int i = 1; i <= 12; i++) {
-      _yearMonth.add(i.toString().padLeft(2, '0'));
-    }
 
     setState(() {});
   }
@@ -112,12 +148,46 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
   /**
    *
    */
+  void _makeMonthButton() {
+    _monthButton = List();
+
+    for (int i = 1; i <= 12; i++) {
+      _monthButton.add(
+        GestureDetector(
+          onTap: () =>
+              _monthSummaryDisplay(month: i.toString().padLeft(2, '0')),
+          child: Container(
+            width: 40,
+            margin: EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              color: (i.toString().padLeft(2, '0') == _selectedMonth)
+                  ? Colors.orangeAccent.withOpacity(0.3)
+                  : Colors.black.withOpacity(0.3),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.3),
+              ),
+            ),
+            child: Center(child: Text('${i.toString().padLeft(2, '0')}')),
+          ),
+        ),
+      );
+    }
+  }
+
+  /**
+   *
+   */
   @override
   Widget build(BuildContext context) {
+    var _dispDate = _selectedYear;
+    if (_selectedMonth != '') {
+      _dispDate += '-' + _selectedMonth;
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black.withOpacity(0.1),
-        title: Text('Spend Summary'),
+        title: Text('${_dispDate}'),
         centerTitle: true,
 
         //-------------------------//これを消すと「←」が出てくる（消さない）
@@ -139,7 +209,117 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           _utility.getBackGround(),
-          _summaryDisplayBox(context),
+          Column(
+            children: <Widget>[
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                color: Colors.white.withOpacity(0.8),
+                child: Container(
+                  padding: EdgeInsets.all(10),
+                  child: (_graphDisplay == false)
+                      ? Container(
+                          width: double.infinity,
+                          height: 200,
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        )
+                      : Container(
+                          height: 200,
+                          child: new charts.PieChart(
+                            seriesList,
+                            animate: false,
+                            behaviors: [
+                              new charts.DatumLegend(
+                                position: charts.BehaviorPosition.end,
+                                outsideJustification:
+                                    charts.OutsideJustification.endDrawArea,
+                                horizontalFirst: false,
+                                cellPadding: new EdgeInsets.only(
+                                    right: 4.0, bottom: 4.0),
+                                entryTextStyle: charts.TextStyleSpec(
+                                  color: charts
+                                      .MaterialPalette.purple.shadeDefault,
+                                  fontFamily: 'Georgia',
+                                  fontSize: 11,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                ),
+              ),
+            ],
+          ),
+          Column(
+            children: <Widget>[
+              (_graphDisplay == false)
+                  ? Container(height: 230)
+                  : Container(height: 200),
+              Container(
+                child: Row(
+                  children: <Widget>[
+                    (_graphDisplay == false)
+                        ? Container()
+                        : Container(
+                            padding: EdgeInsets.only(left: 20, bottom: 10),
+                            child: Text(
+                              '${_utility.makeCurrencyDisplay(_total.toString())}',
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                    Expanded(
+                      child: Container(),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(right: 10),
+                      child: DropdownButton(
+                        dropdownColor: Colors.black.withOpacity(0.1),
+                        items: _dropdownYears,
+                        value: _selectedYear,
+                        onChanged: (value) =>
+                            _goSpendSummaryDisplayScreen(value: value),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        height: 40,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: _monthButton,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  child: (_graphDisplay == false)
+                      ? Container(
+                          padding: EdgeInsets.only(left: 20),
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'no data',
+                            style: TextStyle(color: Colors.yellowAccent),
+                          ),
+                        )
+                      : _summaryList(),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -148,88 +328,9 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
   /**
    *
    */
-  Widget _summaryDisplayBox(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              margin: EdgeInsets.only(top: 5),
-              color: Colors.black.withOpacity(0.1),
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  right: 20.0,
-                  left: 20.0,
-                ),
-                child: DropdownButton(
-                  dropdownColor: Colors.black.withOpacity(0.1),
-                  items: _dropdownYears,
-                  value: _selectedYear,
-                  onChanged: (value) =>
-                      _goSpendSummaryDisplayScreen(value: value),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.orangeAccent.withOpacity(0.3),
-                  border: Border.all(
-                    color: Colors.white.withOpacity(0.3),
-                  ),
-                ),
-                margin: EdgeInsets.symmetric(
-                  vertical: 5,
-                  horizontal: 10,
-                ),
-                padding: EdgeInsets.all(8),
-                alignment: Alignment.topRight,
-                width: double.infinity,
-                child:
-                    Text('${_utility.makeCurrencyDisplay(_total.toString())}'),
-              ),
-            ),
-            Container(
-              width: 60,
-              margin: EdgeInsets.only(right: 10),
-              child: IconButton(
-                icon: Icon(FontAwesomeIcons.chartPie),
-                color: Colors.greenAccent,
-                onPressed: () => _goSummaryChartDisplayScreen(),
-              ),
-            ),
-          ],
-        ),
-        Expanded(
-          child: Row(
-            children: <Widget>[
-              Container(
-                width: 60,
-                child: _monthList(),
-              ),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.all(5),
-                  width: double.infinity,
-                  child: _summaryList(),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  /**
-   *
-   */
-  Widget _monthList() {
+  Widget _summaryList() {
     return ListView.builder(
-      itemCount: _yearMonth.length,
+      itemCount: _summaryData.length,
       itemBuilder: (context, int position) => _listItem(position: position),
     );
   }
@@ -238,95 +339,6 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
    *
    */
   Widget _listItem({int position}) {
-    return Card(
-      color: (_yearMonth[position] == _selectedMonth)
-          ? Colors.orangeAccent.withOpacity(0.3)
-          : Colors.black.withOpacity(0.3),
-      elevation: 10.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: ListTile(
-        title: DefaultTextStyle(
-          style: TextStyle(fontSize: 10.0),
-          child: Text('${_yearMonth[position]}'),
-        ),
-        onTap: () => _monthSummaryDisplay(month: _yearMonth[position]),
-      ),
-    );
-  }
-
-  /**
-   *
-   */
-  Future<void> _monthSummaryDisplay({month}) async {
-    _selectedMonth = month;
-
-    List<Map<dynamic, dynamic>> _summaryData2 = List();
-
-    List<Map<dynamic, dynamic>> _piechartData2 = List();
-
-    String url = "http://toyohide.work/BrainLog/api/monthsummary";
-    Map<String, String> headers = {'content-type': 'application/json'};
-    String date = "${_selectedYear}-${month}-01";
-
-    String body = json.encode({"date": date});
-    Response response = await post(url, headers: headers, body: body);
-
-    if (response != null) {
-      Map data = jsonDecode(response.body);
-
-      _total = 0;
-
-      int _piechartOther = 0;
-      Map _map2 = Map();
-      for (var i = 0; i < data['data'].length; i++) {
-        _total += data['data'][i]['sum'];
-
-        Map _map = Map();
-        _map['item'] = data['data'][i]['item'];
-        _map['sum'] = data['data'][i]['sum'];
-        _map['percent'] = data['data'][i]['percent'];
-        _map['total'] = _total;
-        _summaryData2.add(_map);
-
-        if (data['data'][i]['percent'] > 5) {
-          _map2 = Map();
-          _map2['item'] = data['data'][i]['item'];
-          _map2['sum'] = data['data'][i]['sum'];
-          _piechartData2.add(_map2);
-        } else {
-          _piechartOther += data['data'][i]['sum'];
-        }
-      }
-
-      _map2 = Map();
-      _map2['item'] = 'その他';
-      _map2['sum'] = _piechartOther;
-      _piechartData2.add(_map2);
-    }
-
-    _summaryData = _summaryData2;
-
-    _piechartData = _piechartData2;
-
-    setState(() {});
-  }
-
-  /**
-   *
-   */
-  Widget _summaryList() {
-    return ListView.builder(
-      itemCount: _summaryData.length,
-      itemBuilder: (context, int position) => _listItem2(position: position),
-    );
-  }
-
-  /**
-   *
-   */
-  Widget _listItem2({int position}) {
     return Card(
       color: Colors.black.withOpacity(0.3),
       elevation: 10.0,
@@ -391,6 +403,86 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
   /**
    *
    */
+  Future<void> _monthSummaryDisplay({String month}) async {
+    _selectedMonth = month;
+    _makeMonthButton();
+
+    List<Map<dynamic, dynamic>> _summaryData2 = List();
+
+    String url = "http://toyohide.work/BrainLog/api/monthsummary";
+    Map<String, String> headers = {'content-type': 'application/json'};
+    String date = "${_selectedYear}-${month}-01";
+
+    String body = json.encode({"date": date});
+    Response response = await post(url, headers: headers, body: body);
+
+    if (response != null) {
+      //graph
+      final _graphdata = List<SpendSummary>();
+      seriesList = List();
+
+      Map data = jsonDecode(response.body);
+
+      _total = 0;
+
+      int _piechartOther = 0;
+      for (var i = 0; i < data['data'].length; i++) {
+        _total += data['data'][i]['sum'];
+
+        Map _map = Map();
+        _map['item'] = data['data'][i]['item'];
+        _map['sum'] = data['data'][i]['sum'];
+        _map['percent'] = data['data'][i]['percent'];
+        _map['total'] = _total;
+        _summaryData2.add(_map);
+
+        //graph
+        _graphDisplay = true;
+
+        if (data['data'][i]['percent'] > 5) {
+          _graphdata.add(
+            new SpendSummary(
+              data['data'][i]['item'],
+              data['data'][i]['sum'],
+            ),
+          );
+        } else {
+          _piechartOther += data['data'][i]['sum'];
+        }
+      }
+
+      //graph
+      if (_graphdata.length > 0) {
+        _graphdata.add(
+          new SpendSummary(
+            'その他',
+            _piechartOther,
+          ),
+        );
+      } else {
+        _graphDisplay = false;
+      }
+
+      //graph
+      seriesList.add(
+        new charts.Series<SpendSummary, String>(
+          id: 'Sales',
+          colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+          domainFn: (SpendSummary sales, _) => sales.item,
+          measureFn: (SpendSummary sales, _) => sales.sales,
+          data: _graphdata,
+        ),
+      );
+    }
+
+    _summaryData = _summaryData2;
+
+    setState(() {});
+  }
+
+  /**
+   *
+   */
   void _goSpendSummaryDisplayScreen({value}) {
     Navigator.pushReplacement(
       context,
@@ -409,22 +501,6 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
       MaterialPageRoute(
         builder: (context) => CreditSpendDisplayScreen(
             date: '${_selectedYear}-${_selectedMonth}-01'),
-      ),
-    );
-  }
-
-  /**
-   *
-   */
-  void _goSummaryChartDisplayScreen() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SummaryChartDisplayScreen.withSampleData(
-          piechartData: _piechartData,
-          year: _selectedYear,
-          month: _selectedMonth,
-        ),
       ),
     );
   }
