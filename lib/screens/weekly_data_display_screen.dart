@@ -156,7 +156,7 @@ class _WeeklyDataDisplayScreenState extends State<WeeklyDataDisplayScreen> {
       _map['timePlace'] = _timePlace;
       _weeklyData.add(_map);
 
-      if (_thisDay != _today) {
+      if (_thisDayTotal > 0) {
         _weeklySpend += (_zenjitsuTotal - _thisDayTotal);
       }
     }
@@ -168,8 +168,6 @@ class _WeeklyDataDisplayScreenState extends State<WeeklyDataDisplayScreen> {
         _holidayList[holidays[i].strDate] = '';
       }
     }
-
-    print(_weeklyData);
 
     setState(() {});
   }

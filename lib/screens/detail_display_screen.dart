@@ -500,7 +500,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                 ),
               ),
               Container(
-                width: 80,
+                padding: EdgeInsets.symmetric(horizontal: 5),
                 child: IconButton(
                   color: Colors.greenAccent,
                   icon: const Icon(Icons.info),
