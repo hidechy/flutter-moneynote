@@ -43,8 +43,9 @@ class _HolidayYearListScreenState extends State<HolidayYearListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.black.withOpacity(0.1),
+        backgroundColor: Colors.transparent,
         title: Text('Holiday Setting Year List'),
         centerTitle: true,
       ),

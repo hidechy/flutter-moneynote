@@ -87,8 +87,9 @@ class _CalenderState extends State<Calender> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.black.withOpacity(0.1),
+        backgroundColor: Colors.transparent,
         title: const Text("money note"),
         centerTitle: true,
         actions: <Widget>[
@@ -113,6 +114,7 @@ class _CalenderState extends State<Calender> {
         children: <Widget>[
           _utility.getBackGround(),
           Container(
+            margin: EdgeInsets.only(top: 50),
             child: CalendarCarousel<Event>(
               markedDatesMap: _markedDateMap,
 

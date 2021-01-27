@@ -214,8 +214,9 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.black.withOpacity(0.1),
+        backgroundColor: Colors.transparent,
         title: const Text('所持金額'),
         centerTitle: true,
         actions: <Widget>[
@@ -245,128 +246,131 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
    *
    */
   Widget _detailDisplayBox(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Expanded(
-          child: Column(
-            children: <Widget>[
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                color: Colors.black.withOpacity(0.3),
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: Column(
-                    children: <Widget>[
-                      //------------------------------------------------------------------------//
+    return Container(
+      margin: EdgeInsets.only(top: 50),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Column(
+              children: <Widget>[
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  color: Colors.black.withOpacity(0.3),
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Column(
+                      children: <Widget>[
+                        //------------------------------------------------------------------------//
 
-                      Container(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: DefaultTextStyle(
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontFamily: "Yomogi",
+                        Container(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: DefaultTextStyle(
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontFamily: "Yomogi",
+                            ),
+                            child: Text('${_displayDate}（${_youbiStr}）'),
                           ),
-                          child: Text('${_displayDate}（${_youbiStr}）'),
                         ),
+
+                        const Divider(color: Colors.indigo),
+
+                        _dispTotal(),
+
+                        const Divider(color: Colors.indigo),
+
+                        _dispCurrency(),
+                        _dispDeposit(),
+
+                        const Divider(color: Colors.indigo),
+
+                        _dispEMoney(),
+
+                        //------------------------------------------------------------------------//
+                      ],
+                    ),
+                  ),
+                ),
+                //------------------------------------------------------------------------//
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.all(5),
+                    width: double.infinity,
+                    child: RaisedButton(
+                      color: Colors.black.withOpacity(0.3),
+                      onPressed: () => _showUnderMenu(),
+                      child: const Icon(
+                        Icons.keyboard_arrow_up,
+                        color: Colors.greenAccent,
                       ),
-
-                      const Divider(color: Colors.indigo),
-
-                      _dispTotal(),
-
-                      const Divider(color: Colors.indigo),
-
-                      _dispCurrency(),
-                      _dispDeposit(),
-
-                      const Divider(color: Colors.indigo),
-
-                      _dispEMoney(),
-
-                      //------------------------------------------------------------------------//
-                    ],
-                  ),
-                ),
-              ),
-              //------------------------------------------------------------------------//
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(5),
-                  width: double.infinity,
-                  child: RaisedButton(
-                    color: Colors.black.withOpacity(0.3),
-                    onPressed: () => _showUnderMenu(),
-                    child: const Icon(
-                      Icons.keyboard_arrow_up,
-                      color: Colors.greenAccent,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              //------------------------------------------------------------------------//
-            ],
+                //------------------------------------------------------------------------//
+              ],
+            ),
           ),
-        ),
-        ///////////////////////////////
-        Container(
-          width: 60,
-          child: Column(
-            children: <Widget>[
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                margin: const EdgeInsets.only(top: 5),
-                color: Colors.black.withOpacity(0.3),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    IconButton(
-                      icon: const Icon(Icons.refresh),
-                      onPressed: () => _goDetailDisplayScreen(
-                        context: context,
-                        date: _displayDate,
-                        index: widget.index,
-                      ),
-                      color: Colors.greenAccent,
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.calendar_today),
-                      onPressed: () => _showDatepicker(context: context),
-                      color: Colors.blueAccent,
-                    ),
-                  ],
-                ),
-              ),
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                margin: const EdgeInsets.only(top: 5),
-                color: Colors.black.withOpacity(0.1),
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
+          ///////////////////////////////
+          Container(
+            width: 60,
+            child: Column(
+              children: <Widget>[
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  margin: const EdgeInsets.only(top: 5),
+                  color: Colors.black.withOpacity(0.3),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Text('${_displayYear}'),
-                      Text('${_displayMonth}'),
+                      IconButton(
+                        icon: const Icon(Icons.refresh),
+                        onPressed: () => _goDetailDisplayScreen(
+                          context: context,
+                          date: _displayDate,
+                          index: widget.index,
+                        ),
+                        color: Colors.greenAccent,
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.calendar_today),
+                        onPressed: () => _showDatepicker(context: context),
+                        color: Colors.blueAccent,
+                      ),
                     ],
                   ),
                 ),
-              ),
-              Expanded(
-                child: _monthDaysList(),
-              ),
-            ],
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  margin: const EdgeInsets.only(top: 5),
+                  color: Colors.black.withOpacity(0.1),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text('${_displayYear}'),
+                        Text('${_displayMonth}'),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: _monthDaysList(),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

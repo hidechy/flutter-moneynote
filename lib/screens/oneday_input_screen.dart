@@ -147,8 +147,9 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.black.withOpacity(0.1),
+        backgroundColor: Colors.transparent,
         title: Text('${_date}(${_youbiStr})'),
         centerTitle: true,
         actions: <Widget>[
@@ -169,186 +170,190 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
         children: <Widget>[
           _utility.getBackGround(),
           SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  color: Colors.black.withOpacity(0.3),
-                  child: Column(
-                    children: <Widget>[
-                      const SizedBox(
-                        height: 10.0,
-                      ),
-                      Table(
-                        children: [
-                          TableRow(children: [
-                            _getTextField(yen: '10000', con: _teCont10000),
-                            _getTextField(yen: '5000', con: _teCont5000),
-                            _getTextField(yen: '2000', con: _teCont2000),
-                            _getTextField(yen: '1000', con: _teCont1000),
-                          ]),
-                          TableRow(children: [
-                            _getTextField(yen: '500', con: _teCont500),
-                            _getTextField(yen: '100', con: _teCont100),
-                            _getTextField(yen: '50', con: _teCont50),
-                            const Align(),
-                          ]),
-                          TableRow(children: [
-                            _getTextField(yen: '10', con: _teCont10),
-                            _getTextField(yen: '5', con: _teCont5),
-                            _getTextField(yen: '1', con: _teCont1),
-                            const Align(),
-                          ]),
-                        ],
-                      ),
-                      const Divider(
-                        color: Colors.indigo,
-                        height: 20.0,
-                        indent: 20.0,
-                        endIndent: 20.0,
-                      ),
-                      Table(
-                        children: [
-                          TableRow(children: [
-                            _getTextField(yen: 'bank_a', con: _teContBankA),
-                            _getTextField(yen: 'bank_b', con: _teContBankB),
-                            _getTextField(yen: 'bank_c', con: _teContBankC),
-                            _getTextField(yen: 'bank_d', con: _teContBankD),
-                          ]),
-                          TableRow(children: [
-                            _getTextField(yen: 'bank_e', con: _teContBankE),
-                            _getTextField(yen: 'bank_f', con: _teContBankF),
-                            _getTextField(yen: 'bank_g', con: _teContBankG),
-                            _getTextField(yen: 'bank_h', con: _teContBankH),
-                          ]),
-                        ],
-                      ),
-                      const Divider(
-                        color: Colors.indigo,
-                        height: 20.0,
-                        indent: 20.0,
-                        endIndent: 20.0,
-                      ),
-                      Table(
-                        children: [
-                          TableRow(children: [
-                            _getTextField(yen: 'pay_a', con: _teContPayA),
-                            _getTextField(yen: 'pay_b', con: _teContPayB),
-                            _getTextField(yen: 'pay_c', con: _teContPayC),
-                            _getTextField(yen: 'pay_d', con: _teContPayD),
-                          ]),
-                          TableRow(children: [
-                            _getTextField(yen: 'pay_e', con: _teContPayE),
-                            _getTextField(yen: 'pay_f', con: _teContPayF),
-                            _getTextField(yen: 'pay_g', con: _teContPayG),
-                            _getTextField(yen: 'pay_h', con: _teContPayH),
-                          ]),
-                        ],
-                      ),
-                      const Divider(
-                        color: Colors.indigo,
-                        height: 20.0,
-                        indent: 20.0,
-                        endIndent: 20.0,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          IconButton(
-                            icon: const Icon(Icons.content_copy),
-                            tooltip: 'copy',
-                            onPressed: () => _dataCopy(),
-                            color: Colors.blueAccent,
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.list),
-                            tooltip: 'list',
-                            onPressed: () => _goMonthlyListScreen(
-                                context: context, date: _date),
-                            color: Colors.blueAccent,
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.details),
-                            tooltip: 'detail',
-                            onPressed: () => _goDetailDisplayScreen(
-                                context: context, date: _date),
-                            color: Colors.blueAccent,
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.calendar_today),
-                            tooltip: 'jump',
-                            onPressed: () => _showDatepicker(context: context),
-                            color: Colors.blueAccent,
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.check_box),
-                            tooltip: 'total',
-                            onPressed: () => _displayTotal(),
-                            color: Colors.greenAccent,
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.input),
-                            tooltip: 'input',
-                            onPressed: () => _insertRecord(context: context),
-                            color: Colors.greenAccent,
-                          ),
-                        ],
-                      ),
-                      const Divider(
-                        color: Colors.indigo,
-                        height: 20.0,
-                        indent: 20.0,
-                        endIndent: 20.0,
-                      ),
-                      DefaultTextStyle(
-                        style: TextStyle(
-                          color: Colors.greenAccent,
-                          fontSize: 11,
+            child: Container(
+              margin: EdgeInsets.only(top: 50),
+              child: Column(
+                children: <Widget>[
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    color: Colors.black.withOpacity(0.3),
+                    child: Column(
+                      children: <Widget>[
+                        const SizedBox(
+                          height: 10.0,
                         ),
-                        child: Table(
+                        Table(
                           children: [
                             TableRow(children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text('onedayTotal'),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  alignment: Alignment.topRight,
-                                  child: Text(
-                                    '${_utility.makeCurrencyDisplay(_onedayTotal.toString())}',
-                                    style: TextStyle(fontSize: 13),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text('onedaySpend'),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  alignment: Alignment.topRight,
-                                  child: Text(
-                                    '${_utility.makeCurrencyDisplay(_onedaySpend.toString())}',
-                                    style: TextStyle(fontSize: 13),
-                                  ),
-                                ),
-                              ),
+                              _getTextField(yen: '10000', con: _teCont10000),
+                              _getTextField(yen: '5000', con: _teCont5000),
+                              _getTextField(yen: '2000', con: _teCont2000),
+                              _getTextField(yen: '1000', con: _teCont1000),
+                            ]),
+                            TableRow(children: [
+                              _getTextField(yen: '500', con: _teCont500),
+                              _getTextField(yen: '100', con: _teCont100),
+                              _getTextField(yen: '50', con: _teCont50),
+                              const Align(),
+                            ]),
+                            TableRow(children: [
+                              _getTextField(yen: '10', con: _teCont10),
+                              _getTextField(yen: '5', con: _teCont5),
+                              _getTextField(yen: '1', con: _teCont1),
+                              const Align(),
                             ]),
                           ],
                         ),
-                      ),
-                    ],
+                        const Divider(
+                          color: Colors.indigo,
+                          height: 20.0,
+                          indent: 20.0,
+                          endIndent: 20.0,
+                        ),
+                        Table(
+                          children: [
+                            TableRow(children: [
+                              _getTextField(yen: 'bank_a', con: _teContBankA),
+                              _getTextField(yen: 'bank_b', con: _teContBankB),
+                              _getTextField(yen: 'bank_c', con: _teContBankC),
+                              _getTextField(yen: 'bank_d', con: _teContBankD),
+                            ]),
+                            TableRow(children: [
+                              _getTextField(yen: 'bank_e', con: _teContBankE),
+                              _getTextField(yen: 'bank_f', con: _teContBankF),
+                              _getTextField(yen: 'bank_g', con: _teContBankG),
+                              _getTextField(yen: 'bank_h', con: _teContBankH),
+                            ]),
+                          ],
+                        ),
+                        const Divider(
+                          color: Colors.indigo,
+                          height: 20.0,
+                          indent: 20.0,
+                          endIndent: 20.0,
+                        ),
+                        Table(
+                          children: [
+                            TableRow(children: [
+                              _getTextField(yen: 'pay_a', con: _teContPayA),
+                              _getTextField(yen: 'pay_b', con: _teContPayB),
+                              _getTextField(yen: 'pay_c', con: _teContPayC),
+                              _getTextField(yen: 'pay_d', con: _teContPayD),
+                            ]),
+                            TableRow(children: [
+                              _getTextField(yen: 'pay_e', con: _teContPayE),
+                              _getTextField(yen: 'pay_f', con: _teContPayF),
+                              _getTextField(yen: 'pay_g', con: _teContPayG),
+                              _getTextField(yen: 'pay_h', con: _teContPayH),
+                            ]),
+                          ],
+                        ),
+                        const Divider(
+                          color: Colors.indigo,
+                          height: 20.0,
+                          indent: 20.0,
+                          endIndent: 20.0,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            IconButton(
+                              icon: const Icon(Icons.content_copy),
+                              tooltip: 'copy',
+                              onPressed: () => _dataCopy(),
+                              color: Colors.blueAccent,
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.list),
+                              tooltip: 'list',
+                              onPressed: () => _goMonthlyListScreen(
+                                  context: context, date: _date),
+                              color: Colors.blueAccent,
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.details),
+                              tooltip: 'detail',
+                              onPressed: () => _goDetailDisplayScreen(
+                                  context: context, date: _date),
+                              color: Colors.blueAccent,
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.calendar_today),
+                              tooltip: 'jump',
+                              onPressed: () =>
+                                  _showDatepicker(context: context),
+                              color: Colors.blueAccent,
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.check_box),
+                              tooltip: 'total',
+                              onPressed: () => _displayTotal(),
+                              color: Colors.greenAccent,
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.input),
+                              tooltip: 'input',
+                              onPressed: () => _insertRecord(context: context),
+                              color: Colors.greenAccent,
+                            ),
+                          ],
+                        ),
+                        const Divider(
+                          color: Colors.indigo,
+                          height: 20.0,
+                          indent: 20.0,
+                          endIndent: 20.0,
+                        ),
+                        DefaultTextStyle(
+                          style: TextStyle(
+                            color: Colors.greenAccent,
+                            fontSize: 11,
+                          ),
+                          child: Table(
+                            children: [
+                              TableRow(children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text('onedayTotal'),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      '${_utility.makeCurrencyDisplay(_onedayTotal.toString())}',
+                                      style: TextStyle(fontSize: 13),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text('onedaySpend'),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      '${_utility.makeCurrencyDisplay(_onedaySpend.toString())}',
+                                      style: TextStyle(fontSize: 13),
+                                    ),
+                                  ),
+                                ),
+                              ]),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  height: size.height / 2,
-                ),
-              ],
+                  Container(
+                    height: size.height / 2,
+                  ),
+                ],
+              ),
             ),
           ),
         ],

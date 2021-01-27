@@ -81,8 +81,9 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.black.withOpacity(0.1),
+        backgroundColor: Colors.transparent,
         title: Text('Allday List'),
         centerTitle: true,
         actions: <Widget>[
@@ -102,13 +103,16 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           _utility.getBackGround(),
-          ScrollablePositionedList.builder(
-            itemBuilder: (context, index) {
-              return ListTile(title: _listItem(position: index));
-            },
-            itemCount: _alldayData.length,
-            itemScrollController: _itemScrollController,
-            itemPositionsListener: _itemPositionsListener,
+          Container(
+            margin: EdgeInsets.only(top: 50),
+            child: ScrollablePositionedList.builder(
+              itemBuilder: (context, index) {
+                return ListTile(title: _listItem(position: index));
+              },
+              itemCount: _alldayData.length,
+              itemScrollController: _itemScrollController,
+              itemPositionsListener: _itemPositionsListener,
+            ),
           ),
         ],
       ),

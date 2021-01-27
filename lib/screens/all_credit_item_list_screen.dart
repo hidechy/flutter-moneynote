@@ -67,8 +67,9 @@ class _AllCreditItemListScreenState extends State<AllCreditItemListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.black.withOpacity(0.1),
+        backgroundColor: Colors.transparent,
         title: Text('All Credit（種別順）'),
         centerTitle: true,
 
@@ -91,45 +92,48 @@ class _AllCreditItemListScreenState extends State<AllCreditItemListScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           _utility.getBackGround(),
-          Column(
-            children: <Widget>[
-              Container(
-                alignment: Alignment.topLeft,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.orangeAccent.withOpacity(0.3),
-                  border: Border.all(color: Colors.white.withOpacity(0.3)),
-                ),
-                child: Table(
-                  children: [
-                    TableRow(children: [
-                      Container(
-                        child: Row(
-                          children: <Widget>[
-                            IconButton(
-                              icon: Icon(Icons.list),
-                              onPressed: () => _goAllCreditListScreen(),
-                              color: Colors.greenAccent,
-                            ),
-                          ],
+          Container(
+            margin: EdgeInsets.only(top: 50),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  alignment: Alignment.topLeft,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.orangeAccent.withOpacity(0.3),
+                    border: Border.all(color: Colors.white.withOpacity(0.3)),
+                  ),
+                  child: Table(
+                    children: [
+                      TableRow(children: [
+                        Container(
+                          child: Row(
+                            children: <Widget>[
+                              IconButton(
+                                icon: Icon(Icons.list),
+                                onPressed: () => _goAllCreditListScreen(),
+                                color: Colors.greenAccent,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Container(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                          icon: Icon(FontAwesomeIcons.amazon),
-                          color: Colors.greenAccent,
-                          onPressed: () => _goAmazonPurchaseListScreen(),
+                        Container(
+                          alignment: Alignment.topRight,
+                          child: IconButton(
+                            icon: Icon(FontAwesomeIcons.amazon),
+                            color: Colors.greenAccent,
+                            onPressed: () => _goAmazonPurchaseListScreen(),
+                          ),
                         ),
-                      ),
-                    ]),
-                  ],
+                      ]),
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                child: _creditCardItemList(),
-              ),
-            ],
+                Expanded(
+                  child: _creditCardItemList(),
+                ),
+              ],
+            ),
           ),
         ],
       ),

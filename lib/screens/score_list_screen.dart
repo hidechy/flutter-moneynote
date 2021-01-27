@@ -161,8 +161,9 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.black.withOpacity(0.1),
+        backgroundColor: Colors.transparent,
         title: const Text('Score List'),
         centerTitle: true,
       ),

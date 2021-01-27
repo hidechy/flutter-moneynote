@@ -96,8 +96,9 @@ class _HolidaySettingScreenState extends State<HolidaySettingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.black.withOpacity(0.1),
+        backgroundColor: Colors.transparent,
         title: Text('Holiday Setting [${_year}]'),
         centerTitle: true,
       ),

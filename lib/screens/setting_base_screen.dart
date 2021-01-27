@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:moneynote/screens/bankname_setting_screen.dart';
+import 'package:moneynote/utilities/utility.dart';
 
 import 'holiday_year_list_screen.dart';
 
@@ -9,14 +9,17 @@ class SettingBaseScreen extends StatefulWidget {
 }
 
 class _SettingBaseScreenState extends State<SettingBaseScreen> {
+  Utility _utility = Utility();
+
   /**
    * 画面描画
    */
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.black.withOpacity(0.1),
+        backgroundColor: Colors.transparent,
         title: Text(
           'Settings',
           style: const TextStyle(fontFamily: "Yomogi"),
@@ -26,30 +29,28 @@ class _SettingBaseScreenState extends State<SettingBaseScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          Image.asset(
-            'assets/image/bg.png',
-            fit: BoxFit.cover,
-            color: Colors.black.withOpacity(0.7),
-            colorBlendMode: BlendMode.darken,
-          ),
-          Column(
-            children: <Widget>[
-              Card(
-                color: Colors.black.withOpacity(0.3),
-                elevation: 10.0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: ListTile(
-                  leading: const Icon(Icons.flag),
-                  title: const Text(
-                    'Holiday Setting',
-                    style: TextStyle(fontSize: 14),
+          _utility.getBackGround(),
+          Container(
+            margin: EdgeInsets.only(top: 50),
+            child: Column(
+              children: <Widget>[
+                Card(
+                  color: Colors.black.withOpacity(0.3),
+                  elevation: 10.0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
-                  onTap: () => _goHolidaySettingScreen(),
+                  child: ListTile(
+                    leading: const Icon(Icons.flag),
+                    title: const Text(
+                      'Holiday Setting',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    onTap: () => _goHolidaySettingScreen(),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

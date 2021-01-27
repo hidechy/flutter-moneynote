@@ -198,8 +198,9 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.black.withOpacity(0.1),
+        backgroundColor: Colors.transparent,
         title: Text('${_yearmonth}'),
         centerTitle: true,
         actions: <Widget>[
@@ -220,8 +221,11 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
+          _utility.getBackGround(),
+
           //----------------------//graph
           Container(
+            margin: EdgeInsets.only(top: 50),
             child: Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),

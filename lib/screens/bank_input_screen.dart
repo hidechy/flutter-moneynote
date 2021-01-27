@@ -263,8 +263,9 @@ class _BankInputScreenState extends State<BankInputScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.black.withOpacity(0.1),
+        backgroundColor: Colors.transparent,
         title: Text('銀行預金'),
         centerTitle: true,
       ),
@@ -275,6 +276,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
           Column(
             children: <Widget>[
               Container(
+                margin: EdgeInsets.only(top: 50),
                 decoration: BoxDecoration(
                   color: Colors.orangeAccent.withOpacity(0.3),
                   border: Border.all(
