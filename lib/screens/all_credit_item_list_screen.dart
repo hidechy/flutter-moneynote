@@ -9,6 +9,7 @@ import 'dart:convert';
 import 'package:http/http.dart';
 
 import 'all_credit_list_screen.dart';
+import 'seiyuu_purchase_list_screen.dart';
 
 class AllCreditItemListScreen extends StatefulWidget {
   final String date;
@@ -118,11 +119,20 @@ class _AllCreditItemListScreenState extends State<AllCreditItemListScreen> {
                           ),
                         ),
                         Container(
-                          alignment: Alignment.topRight,
-                          child: IconButton(
-                            icon: Icon(FontAwesomeIcons.amazon),
-                            color: Colors.greenAccent,
-                            onPressed: () => _goAmazonPurchaseListScreen(),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              IconButton(
+                                icon: Icon(FontAwesomeIcons.amazon),
+                                color: Colors.greenAccent,
+                                onPressed: () => _goAmazonPurchaseListScreen(),
+                              ),
+                              IconButton(
+                                icon: Icon(FontAwesomeIcons.bullseye),
+                                color: Colors.greenAccent,
+                                onPressed: () => _goSeiyuuPurchaseListScreen(),
+                              ),
+                            ],
                           ),
                         ),
                       ]),
@@ -301,6 +311,20 @@ class _AllCreditItemListScreenState extends State<AllCreditItemListScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => AmazonPurchaseListScreen(
+          date: widget.date,
+        ),
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  void _goSeiyuuPurchaseListScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SeiyuuPurchaseListScreen(
           date: widget.date,
         ),
       ),

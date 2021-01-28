@@ -183,7 +183,6 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
     var _nextdate = (_nextDate.toString()).split(' ');
 
     return Scaffold(
-      extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text('Spend Detail'),
@@ -206,126 +205,123 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
       ),
       body: Stack(fit: StackFit.expand, children: <Widget>[
         _utility.getBackGround(),
-        Container(
-          margin: EdgeInsets.only(top: 50),
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0),
+        Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          color: Colors.black.withOpacity(0.3),
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: 5,
+              right: 20,
+              left: 20,
             ),
-            color: Colors.black.withOpacity(0.3),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                top: 5,
-                right: 20,
-                left: 20,
-              ),
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            IconButton(
-                              icon: const Icon(Icons.skip_previous),
-                              onPressed: () => _goSpendDetailDisplayScreen(
-                                context: context,
-                                date: _prevdate[0],
-                              ),
+            child: Column(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          IconButton(
+                            icon: const Icon(Icons.skip_previous),
+                            onPressed: () => _goSpendDetailDisplayScreen(
+                              context: context,
+                              date: _prevdate[0],
                             ),
-                            IconButton(
-                              icon: const Icon(Icons.skip_next),
-                              onPressed: () => _goSpendDetailDisplayScreen(
-                                context: context,
-                                date: _nextdate[0],
-                              ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.skip_next),
+                            onPressed: () => _goSpendDetailDisplayScreen(
+                              context: context,
+                              date: _nextdate[0],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                      Container(
-                        width: 100,
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                          icon: Icon(FontAwesomeIcons.calendarWeek),
-                          color: Colors.greenAccent,
-                          onPressed: () => _goWeeklyDataDisplayScreen(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      IconButton(
-                        icon: Icon(Icons.comment),
-                        tooltip: 'summary',
-                        onPressed: () =>
-                            _goSpendSummaryDisplayScreen(date: widget.date),
+                    ),
+                    Container(
+                      width: 100,
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                        icon: Icon(FontAwesomeIcons.calendarWeek),
                         color: Colors.greenAccent,
+                        onPressed: () => _goWeeklyDataDisplayScreen(),
                       ),
-                      Text('${widget.date}（${_utility.youbiStr}）'),
-                      IconButton(
-                        icon: const Icon(Icons.cloud_upload),
-                        tooltip: 'synchro',
-                        onPressed: () => _uploadDailyData(date: widget.date),
-                        color: Colors.blueAccent,
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.comment),
+                      tooltip: 'summary',
+                      onPressed: () =>
+                          _goSpendSummaryDisplayScreen(date: widget.date),
+                      color: Colors.greenAccent,
+                    ),
+                    Text('${widget.date}（${_utility.youbiStr}）'),
+                    IconButton(
+                      icon: const Icon(Icons.cloud_upload),
+                      tooltip: 'synchro',
+                      onPressed: () => _uploadDailyData(date: widget.date),
+                      color: Colors.blueAccent,
+                    ),
+                  ],
+                ),
+                _makeDisplayMoneyItem(),
+                const Divider(
+                  color: Colors.indigo,
+                  height: 20.0,
+                  indent: 20.0,
+                  endIndent: 20.0,
+                ),
+                (_spendDetailData.length == 0)
+                    ? Container()
+                    : Expanded(
+                        child: ListView.builder(
+                          itemCount: _spendDetailData.length,
+                          itemBuilder: (context, int position) =>
+                              _listItem(position: position),
+                        ),
                       ),
-                    ],
-                  ),
-                  _makeDisplayMoneyItem(),
-                  const Divider(
-                    color: Colors.indigo,
-                    height: 20.0,
-                    indent: 20.0,
-                    endIndent: 20.0,
-                  ),
-                  (_spendDetailData.length == 0)
-                      ? Container()
-                      : Expanded(
-                          child: ListView.builder(
-                            itemCount: _spendDetailData.length,
-                            itemBuilder: (context, int position) =>
-                                _listItem(position: position),
-                          ),
+                (_timePlaceData.length == 0)
+                    ? Container()
+                    : const Divider(
+                        color: Colors.indigo,
+                        height: 20.0,
+                        indent: 20.0,
+                        endIndent: 20.0,
+                      ),
+                (_timePlaceData.length == 0)
+                    ? Container()
+                    : Expanded(
+                        child: ListView.builder(
+                          itemCount: _timePlaceData.length,
+                          itemBuilder: (context, int position) =>
+                              _listItem3(position: position),
                         ),
-                  (_timePlaceData.length == 0)
-                      ? Container()
-                      : const Divider(
-                          color: Colors.indigo,
-                          height: 20.0,
-                          indent: 20.0,
-                          endIndent: 20.0,
+                      ),
+                (_trainData.length == 0)
+                    ? Container()
+                    : const Divider(
+                        color: Colors.indigo,
+                        height: 20.0,
+                        indent: 20.0,
+                        endIndent: 20.0,
+                      ),
+                (_trainData.length == 0)
+                    ? Container()
+                    : Expanded(
+                        child: ListView.builder(
+                          itemCount: _trainData.length,
+                          itemBuilder: (context, int position) =>
+                              _listItem2(position: position),
                         ),
-                  (_timePlaceData.length == 0)
-                      ? Container()
-                      : Expanded(
-                          child: ListView.builder(
-                            itemCount: _timePlaceData.length,
-                            itemBuilder: (context, int position) =>
-                                _listItem3(position: position),
-                          ),
-                        ),
-                  (_trainData.length == 0)
-                      ? Container()
-                      : const Divider(
-                          color: Colors.indigo,
-                          height: 20.0,
-                          indent: 20.0,
-                          endIndent: 20.0,
-                        ),
-                  (_trainData.length == 0)
-                      ? Container()
-                      : Expanded(
-                          child: ListView.builder(
-                            itemCount: _trainData.length,
-                            itemBuilder: (context, int position) =>
-                                _listItem2(position: position),
-                          ),
-                        ),
-                ],
-              ),
+                      ),
+              ],
             ),
           ),
         ),
@@ -337,41 +333,39 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
    * リストアイテム表示
    */
   Widget _listItem({int position}) {
-    return DefaultTextStyle(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Table(
-          children: [
-            TableRow(children: [
-              Align(),
-              (_spendDetailData[position][2] == '2')
-                  ? Container(
-                      alignment: Alignment.topRight,
-                      child: Text(
-                        '合計',
-                        style: TextStyle(
-                          color: Colors.greenAccent,
-                        ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Table(
+        children: [
+          TableRow(children: [
+            Align(),
+            (_spendDetailData[position][2] == '2')
+                ? Container(
+                    alignment: Alignment.topRight,
+                    child: Text(
+                      '合計',
+                      style: TextStyle(
+                        color: Colors.greenAccent,
                       ),
-                    )
-                  : Align(
-                      alignment: Alignment.topLeft,
-                      child: Text('${_spendDetailData[position][0]}'),
                     ),
-              Align(
-                alignment: Alignment.topRight,
-                child: (_spendDetailData[position][2] == '2')
-                    ? Text(
-                        '${_utility.makeCurrencyDisplay(_spendDetailData[position][1])}',
-                        style: TextStyle(color: Colors.greenAccent),
-                      )
-                    : Text(
-                        '${_utility.makeCurrencyDisplay(_spendDetailData[position][1])}',
-                      ),
-              ),
-            ]),
-          ],
-        ),
+                  )
+                : Align(
+                    alignment: Alignment.topLeft,
+                    child: Text('${_spendDetailData[position][0]}'),
+                  ),
+            Align(
+              alignment: Alignment.topRight,
+              child: (_spendDetailData[position][2] == '2')
+                  ? Text(
+                      '${_utility.makeCurrencyDisplay(_spendDetailData[position][1])}',
+                      style: TextStyle(color: Colors.greenAccent),
+                    )
+                  : Text(
+                      '${_utility.makeCurrencyDisplay(_spendDetailData[position][1])}',
+                    ),
+            ),
+          ]),
+        ],
       ),
     );
   }
@@ -380,16 +374,14 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
    * リストアイテム表示
    */
   Widget _listItem2({int position}) {
-    return DefaultTextStyle(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Table(
-          children: [
-            TableRow(children: [
-              Text('${_trainData[position]}'),
-            ]),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Table(
+        children: [
+          TableRow(children: [
+            Text('${_trainData[position]}'),
+          ]),
+        ],
       ),
     );
   }
@@ -398,34 +390,32 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
    * リストアイテム表示
    */
   Widget _listItem3({int position}) {
-    return DefaultTextStyle(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Table(
-          children: [
-            TableRow(children: [
-              Container(
-                child: Text('${_timePlaceData[position]['time']}'),
-                color: (_timePlaceData[position]['inTrain'] == 1)
-                    ? Colors.greenAccent.withOpacity(0.3)
-                    : Colors.black,
-              ),
-              Container(
-                child: Text('${_timePlaceData[position]['place']}'),
-                color: (_timePlaceData[position]['inTrain'] == 1)
-                    ? Colors.greenAccent.withOpacity(0.3)
-                    : Colors.black,
-              ),
-              Container(
-                alignment: Alignment.topRight,
-                child: Text('${_timePlaceData[position]['price']}'),
-                color: (_timePlaceData[position]['inTrain'] == 1)
-                    ? Colors.greenAccent.withOpacity(0.3)
-                    : Colors.black,
-              ),
-            ]),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Table(
+        children: [
+          TableRow(children: [
+            Container(
+              child: Text('${_timePlaceData[position]['time']}'),
+              color: (_timePlaceData[position]['inTrain'] == 1)
+                  ? Colors.greenAccent.withOpacity(0.3)
+                  : Colors.black,
+            ),
+            Container(
+              child: Text('${_timePlaceData[position]['place']}'),
+              color: (_timePlaceData[position]['inTrain'] == 1)
+                  ? Colors.greenAccent.withOpacity(0.3)
+                  : Colors.black,
+            ),
+            Container(
+              alignment: Alignment.topRight,
+              child: Text('${_timePlaceData[position]['price']}'),
+              color: (_timePlaceData[position]['inTrain'] == 1)
+                  ? Colors.greenAccent.withOpacity(0.3)
+                  : Colors.black,
+            ),
+          ]),
+        ],
       ),
     );
   }
