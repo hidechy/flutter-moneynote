@@ -70,7 +70,7 @@ class _AmazonPurchaseListScreenState extends State<AmazonPurchaseListScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black.withOpacity(0.1),
-        title: Text('Amazon Purchase(${_utility.year})'),
+        title: Text('Amazon(${_utility.year})'),
         centerTitle: true,
 
         //-------------------------//これを消すと「←」が出てくる（消さない）

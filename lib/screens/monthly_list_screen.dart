@@ -198,7 +198,6 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text('${_yearmonth}'),
@@ -224,28 +223,25 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
           _utility.getBackGround(),
 
           //----------------------//graph
-          Container(
-            margin: EdgeInsets.only(top: 50),
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              color: Colors.white.withOpacity(0.8),
-              child: (_graphDisplay == false)
-                  ? Container()
-                  : Container(
-                      height: size.height - 40,
-                      padding: EdgeInsets.all(10),
-                      child: new charts.TimeSeriesChart(
-                        seriesList,
-                        animate: false,
-                        dateTimeFactory: const charts.LocalDateTimeFactory(),
-                        defaultRenderer: new charts.LineRendererConfig(
-                          includePoints: true,
-                        ),
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            color: Colors.white.withOpacity(0.8),
+            child: (_graphDisplay == false)
+                ? Container()
+                : Container(
+                    height: size.height - 40,
+                    padding: EdgeInsets.all(10),
+                    child: new charts.TimeSeriesChart(
+                      seriesList,
+                      animate: false,
+                      dateTimeFactory: const charts.LocalDateTimeFactory(),
+                      defaultRenderer: new charts.LineRendererConfig(
+                        includePoints: true,
                       ),
                     ),
-            ),
+                  ),
           ),
           //----------------------//graph
 
@@ -300,8 +296,21 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
   Widget _monthlyList() {
     return ListView.builder(
       itemCount: _monthlyData.length,
-      itemBuilder: (context, int position) => _listItem(position: position),
+      itemBuilder: (context, int position) {
+        return _listItem(position: position);
+      },
     );
+
+    /*
+            body: ListView.builder(
+          itemBuilder: (BuildContext context, int index) {
+            if (index >= list.length) {
+              list.addAll(["メッセージ","メッセージ","メッセージ","メッセージ",]);
+            }
+            return _messageItem(list[index]);
+          },
+        )
+    */
   }
 
   /**

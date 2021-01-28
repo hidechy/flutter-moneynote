@@ -268,8 +268,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                           padding: const EdgeInsets.only(top: 10),
                           child: DefaultTextStyle(
                             style: const TextStyle(
-                              fontSize: 14,
-                              fontFamily: "Yomogi",
+                              fontSize: 14
                             ),
                             child: Text('${_displayDate}（${_youbiStr}）'),
                           ),
@@ -382,8 +381,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
       children: <Widget>[
         DefaultTextStyle(
           style: const TextStyle(
-            fontSize: 14,
-            fontFamily: "Yomogi",
+            fontSize: 14
           ),
           child: Row(
             children: <Widget>[
@@ -467,8 +465,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                       nipWidth: 20,
                       child: DefaultTextStyle(
                         style: TextStyle(
-                          fontSize: 12,
-                          fontFamily: "Yomogi",
+                          fontSize: 12
                         ),
                         child: Column(
                           children: <Widget>[
@@ -527,8 +524,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
       children: <Widget>[
         DefaultTextStyle(
           style: const TextStyle(
-            fontSize: 12,
-            fontFamily: "Yomogi",
+            fontSize: 12
           ),
           child: Table(
             children: [
@@ -726,8 +722,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
       children: <Widget>[
         DefaultTextStyle(
           style: const TextStyle(
-            fontSize: 12,
-            fontFamily: "Yomogi",
+            fontSize: 12
           ),
           child: Table(
             children: [
@@ -868,8 +863,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
       children: <Widget>[
         DefaultTextStyle(
           style: const TextStyle(
-            fontSize: 12,
-            fontFamily: "Yomogi",
+            fontSize: 12
           ),
           child: Table(
             children: [

@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
       ],
       title: 'money note',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(brightness: Brightness.dark, fontFamily: "Yomogi"),
+      theme: ThemeData(brightness: Brightness.dark),
       home: Calender(),
     );
   }

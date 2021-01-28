@@ -338,7 +338,6 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
    */
   Widget _listItem({int position}) {
     return DefaultTextStyle(
-      style: TextStyle(fontFamily: "Exo"),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Table(
@@ -382,7 +381,6 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
    */
   Widget _listItem2({int position}) {
     return DefaultTextStyle(
-      style: TextStyle(fontFamily: "Exo"),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Table(
@@ -401,7 +399,6 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
    */
   Widget _listItem3({int position}) {
     return DefaultTextStyle(
-      style: TextStyle(fontFamily: "Exo"),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Table(

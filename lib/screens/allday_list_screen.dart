@@ -107,7 +107,7 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
             margin: EdgeInsets.only(top: 50),
             child: ScrollablePositionedList.builder(
               itemBuilder: (context, index) {
-                return ListTile(title: _listItem(position: index));
+                return _listItem(position: index);
               },
               itemCount: _alldayData.length,
               itemScrollController: _itemScrollController,

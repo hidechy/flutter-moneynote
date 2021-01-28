@@ -146,7 +146,7 @@ class _AllCreditItemListScreenState extends State<AllCreditItemListScreen> {
   Widget _creditCardItemList() {
     return ScrollablePositionedList.builder(
       itemBuilder: (context, index) {
-        return ListTile(title: _listItem(position: index));
+        return _listItem(position: index);
       },
       itemCount: _creditCardItemData.length,
       itemScrollController: _itemScrollController,

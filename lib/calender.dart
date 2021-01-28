@@ -16,6 +16,8 @@ import 'utilities/utility.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
 
+import 'package:toast/toast.dart';
+
 class Calender extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -78,6 +80,8 @@ class _CalenderState extends State<Calender> {
     _summaryDataWidget = await _makeSpendSummaryData(
         date: '${_utility.year}-${_utility.month}-01');
 
+    Toast.show('呼び出し完了', context, duration: Toast.LENGTH_LONG);
+
     setState(() {});
   }
 
@@ -88,83 +92,54 @@ class _CalenderState extends State<Calender> {
   Widget build(BuildContext context) {
     return new Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title: const Text("money note"),
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.trending_up),
-            tooltip: 'score',
-            onPressed: () => _goScoreDisplayScreen(
-                context: context, date: _currentDate.toString()),
-            color: Colors.blueAccent,
-          ),
-          IconButton(
-            icon: const Icon(Icons.list),
-            tooltip: 'list',
-            onPressed: () => _goMonthlyScreen(
-                context: context, date: _currentDate.toString()),
-            color: Colors.blueAccent,
-          ),
-        ],
-      ),
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
           _utility.getBackGround(),
-          Container(
-            margin: EdgeInsets.only(top: 50),
-            child: CalendarCarousel<Event>(
-              markedDatesMap: _markedDateMap,
+          CalendarCarousel<Event>(
+            markedDatesMap: _markedDateMap,
 
-              locale: 'JA',
+            locale: 'JA',
 
-              todayBorderColor: Colors.amber[600],
-              todayButtonColor: Colors.amber[900],
+            todayBorderColor: Colors.amber[600],
+            todayButtonColor: Colors.amber[900],
 
-              selectedDayBorderColor: Colors.blue[600],
-              selectedDayButtonColor: Colors.blue[900],
+            selectedDayBorderColor: Colors.blue[600],
+            selectedDayButtonColor: Colors.blue[900],
 
-              thisMonthDayBorderColor: Colors.grey,
+            thisMonthDayBorderColor: Colors.grey,
 
-              weekendTextStyle: TextStyle(
-                  fontSize: 16.0, color: Colors.red, fontFamily: 'Yomogi'),
-              weekdayTextStyle: TextStyle(color: Colors.grey),
-              dayButtonColor: Colors.black.withOpacity(0.3),
+            weekendTextStyle: TextStyle(fontSize: 16.0, color: Colors.red),
+            weekdayTextStyle: TextStyle(color: Colors.grey),
+            dayButtonColor: Colors.black.withOpacity(0.3),
 
-              onDayPressed: onDayPressed,
+            onDayPressed: onDayPressed,
 
-              onCalendarChanged: onCalendarChanged,
+            onCalendarChanged: onCalendarChanged,
 
-              weekFormat: false,
-              selectedDateTime: _currentDate,
-              daysHaveCircularBorder: false,
-              customGridViewPhysics: NeverScrollableScrollPhysics(),
-              daysTextStyle: TextStyle(
-                  fontSize: 16.0, color: Colors.white, fontFamily: 'Yomogi'),
-              todayTextStyle: TextStyle(
-                fontSize: 16.0,
-                color: Colors.white,
-                fontFamily: 'Yomogi',
-              ),
+            weekFormat: false,
+            selectedDateTime: _currentDate,
+            daysHaveCircularBorder: false,
+            customGridViewPhysics: NeverScrollableScrollPhysics(),
+            daysTextStyle: TextStyle(fontSize: 16.0, color: Colors.white),
+            todayTextStyle: TextStyle(fontSize: 16.0, color: Colors.white),
 
-              headerTextStyle: TextStyle(fontSize: 18.0, fontFamily: 'Yomogi'),
-              selectedDayTextStyle: TextStyle(fontFamily: 'Yomogi'),
-              prevDaysTextStyle: TextStyle(fontFamily: 'Yomogi'),
-              nextDaysTextStyle: TextStyle(fontFamily: 'Yomogi'),
+            headerTextStyle: TextStyle(fontSize: 18.0),
+
+//            selectedDayTextStyle: TextStyle(fontFamily: 'Yomogi'),
+//            prevDaysTextStyle: TextStyle(fontFamily: 'Yomogi'),
+//            nextDaysTextStyle: TextStyle(fontFamily: 'Yomogi'),
 
 //markedDateCustomTextStyle: TextStyle(fontFamily: 'Yomogi'),
 //markedDateMoreCustomTextStyle: TextStyle(fontFamily: 'Yomogi'),
 
 //inactiveDaysTextStyle: TextStyle(fontFamily: 'Yomogi'),
 //inactiveWeekendTextStyle: TextStyle(fontFamily: 'Yomogi'),
-            ),
           ),
           //////////////////////////////////
           Column(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-              Expanded(child: Container()),
               Container(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -192,7 +167,7 @@ class _CalenderState extends State<Calender> {
               ),
               Container(
                 width: double.infinity,
-                height: 200,
+                height: 210,
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: Colors.black.withOpacity(0.8),
@@ -202,21 +177,53 @@ class _CalenderState extends State<Calender> {
                 ),
                 child: _summaryDataWidget,
               ),
-              Container(
-                padding: EdgeInsets.all(5),
-                width: double.infinity,
-                child: RaisedButton(
-                  color: Colors.black.withOpacity(0.1),
-                  onPressed: () => _goOnedayInputScreen(
-                      context: context, date: _currentDate.toString()),
-                  child: Icon(
-                    Icons.input,
-                    color: Colors.greenAccent,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    child: Row(
+                      children: <Widget>[
+                        RaisedButton(
+                          color: Colors.black.withOpacity(0.5),
+                          onPressed: () => _goOnedayInputScreen(
+                              context: context, date: _currentDate.toString()),
+                          child: Icon(
+                            Icons.input,
+                            color: Colors.greenAccent,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                        ),
+                        RaisedButton(
+                          color: Colors.black.withOpacity(0.5),
+                          onPressed: () => _goScoreDisplayScreen(
+                              context: context, date: _currentDate.toString()),
+                          child: Icon(
+                            Icons.trending_up,
+                            color: Colors.blueAccent,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                        ),
+                        RaisedButton(
+                          color: Colors.black.withOpacity(0.5),
+                          onPressed: () => _goMonthlyScreen(
+                              context: context, date: _currentDate.toString()),
+                          child: Icon(
+                            Icons.list,
+                            color: Colors.blueAccent,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                ),
+                ],
               ),
             ],
           ),
@@ -238,11 +245,14 @@ class _CalenderState extends State<Calender> {
   void onCalendarChanged(DateTime date) async {
     this.setState(() => _currentMonth = date);
 
+    _total = 0;
     _summaryDataWidget = null;
 
     _utility.makeYMDYData(date.toString(), 0);
     _summaryDataWidget = await _makeSpendSummaryData(
         date: '${_utility.year}-${_utility.month}-01');
+
+    Toast.show('呼び出し完了', context, duration: Toast.LENGTH_LONG);
 
     setState(() {});
   }
@@ -261,7 +271,7 @@ class _CalenderState extends State<Calender> {
       var data = Map();
       data = jsonDecode(response.body);
 
-      return Table(
+      return ListView(
         children: _makeSpendSummaryDataRow(data: data['data']),
       );
     } else {
@@ -273,7 +283,7 @@ class _CalenderState extends State<Calender> {
    *
    */
   List _makeSpendSummaryDataRow({List data}) {
-    List<TableRow> _dataList = List();
+    List<Widget> _dataList = List();
 
     _total = 0;
     for (var i = 0; i < data.length; i++) {
@@ -284,24 +294,26 @@ class _CalenderState extends State<Calender> {
     for (var i = 0; i < _loopNum; i++) {
       var _number = (i * 2);
       _dataList.add(
-        TableRow(children: [
-          (data[_number] == null)
-              ? Container()
-              : _getTextDisplayContainer(
-                  text: data[_number]['item'], currency: false),
-          (data[_number] == null)
-              ? Container()
-              : _getTextDisplayContainer(
-                  text: data[_number]['sum'].toString(), currency: true),
-          (_number + 1 >= data.length)
-              ? Container()
-              : _getTextDisplayContainer(
-                  text: data[_number + 1]['item'], currency: false),
-          (_number + 1 >= data.length)
-              ? Container()
-              : _getTextDisplayContainer(
-                  text: data[_number + 1]['sum'].toString(), currency: true),
-        ]),
+        Row(
+          children: <Widget>[
+            (data[_number] == null)
+                ? _getExpandedContainer()
+                : _getTextDisplayContainer(
+                    text: data[_number]['item'], currency: false),
+            (data[_number] == null)
+                ? _getExpandedContainer()
+                : _getTextDisplayContainer(
+                    text: data[_number]['sum'].toString(), currency: true),
+            (_number + 1 >= data.length)
+                ? _getExpandedContainer()
+                : _getTextDisplayContainer(
+                    text: data[_number + 1]['item'], currency: false),
+            (_number + 1 >= data.length)
+                ? _getExpandedContainer()
+                : _getTextDisplayContainer(
+                    text: data[_number + 1]['sum'].toString(), currency: true),
+          ],
+        ),
       );
     }
 
@@ -311,29 +323,38 @@ class _CalenderState extends State<Calender> {
   /**
    *
    */
+  Widget _getExpandedContainer() {
+    return Expanded(
+      child: Container(),
+    );
+  }
+
+  /**
+   *
+   */
   Widget _getTextDisplayContainer({String text, bool currency}) {
     if (currency) {
-      return Container(
-        alignment: Alignment.topRight,
-        padding: EdgeInsets.only(top: 3, right: 5, left: 5),
-        child: DefaultTextStyle(
-          style: TextStyle(
-              fontSize: 10,
-              fontFamily: "roboto",
-              color: Colors.white.withOpacity(0.8)),
-          child: Text('${_utility.makeCurrencyDisplay(text)}'),
+      return Expanded(
+        child: Container(
+          alignment: Alignment.topRight,
+          padding: EdgeInsets.only(top: 3, right: 5, left: 5),
+          child: DefaultTextStyle(
+            style:
+                TextStyle(fontSize: 10, color: Colors.white.withOpacity(0.8)),
+            child: Text('${_utility.makeCurrencyDisplay(text)}'),
+          ),
         ),
       );
     } else {
-      return Container(
-        alignment: Alignment.topLeft,
-        padding: EdgeInsets.only(right: 5, left: 5),
-        child: DefaultTextStyle(
-          style: TextStyle(
-              fontSize: 10,
-              fontFamily: "roboto",
-              color: Colors.white.withOpacity(0.8)),
-          child: Text('${text}'),
+      return Expanded(
+        child: Container(
+          alignment: Alignment.topLeft,
+          padding: EdgeInsets.only(right: 5, left: 5),
+          child: DefaultTextStyle(
+            style:
+                TextStyle(fontSize: 10, color: Colors.white.withOpacity(0.8)),
+            child: Text('${text}'),
+          ),
         ),
       );
     }
@@ -343,11 +364,14 @@ class _CalenderState extends State<Calender> {
    *
    */
   void _reloadSummaryData() async {
+    _total = 0;
     _summaryDataWidget = null;
 
     _utility.makeYMDYData(_currentMonth.toString(), 0);
     _summaryDataWidget = await _makeSpendSummaryData(
         date: '${_utility.year}-${_utility.month}-01');
+
+    Toast.show('呼び出し完了', context, duration: Toast.LENGTH_LONG);
 
     setState(() {});
   }

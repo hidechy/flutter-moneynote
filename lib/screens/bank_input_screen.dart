@@ -490,9 +490,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
       itemBuilder: (context, index) {
         return Slidable(
           actionPane: const SlidableDrawerActionPane(),
-          child: ListTile(
-            title: _listItem(position: index),
-          ),
+          child: _listItem(position: index),
           secondaryActions: <Widget>[
             IconSlideAction(
               color: _getBgColor(_bankData[index]['date']),

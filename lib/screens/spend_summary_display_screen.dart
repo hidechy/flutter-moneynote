@@ -242,7 +242,6 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
                                 entryTextStyle: charts.TextStyleSpec(
                                   color: charts
                                       .MaterialPalette.purple.shadeDefault,
-                                  fontFamily: 'Georgia',
                                   fontSize: 11,
                                 ),
                               )

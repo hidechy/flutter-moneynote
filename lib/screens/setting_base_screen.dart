@@ -21,8 +21,7 @@ class _SettingBaseScreenState extends State<SettingBaseScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text(
-          'Settings',
-          style: const TextStyle(fontFamily: "Yomogi"),
+          'Settings'
         ),
         centerTitle: true,
       ),
