@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moneynote/screens/credit_monthly_list_screen.dart';
 import 'package:moneynote/utilities/utility.dart';
 
 import 'dart:convert';
@@ -202,44 +203,68 @@ class _CreditSpendDisplayScreenState extends State<CreditSpendDisplayScreen> {
           ),
         ),
         Container(
-          child: Table(
-            children: [
-              TableRow(children: [
-                Container(
-                  child: Row(
-                    children: <Widget>[
-                      IconButton(
-                        icon: const Icon(Icons.skip_previous),
-                        tooltip: '前月',
-                        onPressed: () => _goPrevMonth(context: context),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.skip_next),
-                        tooltip: '翌月',
-                        onPressed: () => _goNextMonth(context: context),
-                      ),
-                    ],
-                  ),
+          child: Row(
+            children: <Widget>[
+              Container(
+                width: 100,
+                child: Row(
+                  children: <Widget>[
+                    IconButton(
+                      icon: const Icon(Icons.skip_previous),
+                      tooltip: '前月',
+                      onPressed: () => _goPrevMonth(context: context),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.skip_next),
+                      tooltip: '翌月',
+                      onPressed: () => _goNextMonth(context: context),
+                    ),
+                  ],
                 ),
-                Container(
-                  alignment: Alignment.topRight,
-                  child: GestureDetector(
-                    onTap: () => _goAllCreditListScreen(),
-                    child: Container(
-                      margin: EdgeInsets.all(5),
-                      padding:
-                          EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.blueAccent.withOpacity(0.3),
-                        border: Border.all(
-                          color: Colors.white.withOpacity(0.3),
+              ),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Container(
+                      alignment: Alignment.topRight,
+                      child: GestureDetector(
+                        onTap: () => _goAllCreditListScreen(),
+                        child: Container(
+                          margin: EdgeInsets.all(5),
+                          padding:
+                              EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                          decoration: BoxDecoration(
+                            color: Colors.blueAccent.withOpacity(0.3),
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.3),
+                            ),
+                          ),
+                          child: Text('All Credit'),
                         ),
                       ),
-                      child: Text('All Credit'),
                     ),
-                  ),
+                    Container(
+                      alignment: Alignment.topRight,
+                      child: GestureDetector(
+                        onTap: () => _goMonthlyCreditListScreen(),
+                        child: Container(
+                          margin: EdgeInsets.all(5),
+                          padding:
+                              EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                          decoration: BoxDecoration(
+                            color: Colors.blueAccent.withOpacity(0.3),
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.3),
+                            ),
+                          ),
+                          child: Text('Monthly List'),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ]),
+              ),
             ],
           ),
         ),
@@ -355,6 +380,20 @@ class _CreditSpendDisplayScreenState extends State<CreditSpendDisplayScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => AllCreditListScreen(
+          date: widget.date,
+        ),
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  void _goMonthlyCreditListScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CreditMonthlyListScreen(
           date: widget.date,
         ),
       ),

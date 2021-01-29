@@ -97,6 +97,8 @@ class _CalenderState extends State<Calender> {
         children: <Widget>[
           _utility.getBackGround(),
           CalendarCarousel<Event>(
+            minSelectedDate: new DateTime(2020, 1, 1),
+
             markedDatesMap: _markedDateMap,
 
             locale: 'JA',

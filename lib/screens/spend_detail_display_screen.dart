@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moneynote/screens/duty_data_display_screen.dart';
 import 'package:moneynote/screens/weekly_data_display_screen.dart';
 
 import 'package:toast/toast.dart';
@@ -241,14 +242,26 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
                         ],
                       ),
                     ),
-                    Container(
-                      width: 100,
-                      alignment: Alignment.topRight,
-                      child: IconButton(
-                        icon: Icon(FontAwesomeIcons.calendarWeek),
-                        color: Colors.greenAccent,
-                        onPressed: () => _goWeeklyDataDisplayScreen(),
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Container(
+                          alignment: Alignment.topRight,
+                          child: IconButton(
+                            icon: Icon(FontAwesomeIcons.biohazard),
+                            color: Colors.greenAccent,
+                            onPressed: () => _goDutyDataDisplayScreen(),
+                          ),
+                        ),
+                        Container(
+                          alignment: Alignment.topRight,
+                          child: IconButton(
+                            icon: Icon(FontAwesomeIcons.calendarWeek),
+                            color: Colors.greenAccent,
+                            onPressed: () => _goWeeklyDataDisplayScreen(),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -628,6 +641,18 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => WeeklyDataDisplayScreen(date: widget.date),
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  void _goDutyDataDisplayScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DutyDataDisplayScreen(),
       ),
     );
   }

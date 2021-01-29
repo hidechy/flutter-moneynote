@@ -156,14 +156,14 @@ class _SeiyuuPurchaseListScreenState extends State<SeiyuuPurchaseListScreen> {
   Widget _listItem({int position}) {
     var ex_date = (_seiyuuPurchaseData[position]['date']).split('-');
 
-    var _priceline = "";
-    _priceline +=
-        _utility.makeCurrencyDisplay(_seiyuuPurchaseData[position]['tanka']);
-    _priceline += " * ";
-    _priceline += _seiyuuPurchaseData[position]['kosuu'];
-    _priceline += " = ";
-    _priceline +=
-        _utility.makeCurrencyDisplay(_seiyuuPurchaseData[position]['price']);
+//    var _priceline = "";
+//    _priceline +=
+//        _utility.makeCurrencyDisplay(_seiyuuPurchaseData[position]['tanka']);
+//    _priceline += " * ";
+//    _priceline += _seiyuuPurchaseData[position]['kosuu'];
+//    _priceline += " = ";
+//    _priceline +=
+//        _utility.makeCurrencyDisplay(_seiyuuPurchaseData[position]['price']);
 
     return Card(
       color: Colors.black.withOpacity(0.3),
@@ -190,6 +190,25 @@ class _SeiyuuPurchaseListScreenState extends State<SeiyuuPurchaseListScreen> {
             ],
           ),
         ),
+        trailing: Container(
+          width: 40,
+          margin: EdgeInsets.symmetric(vertical: 5),
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.3),
+            border: Border.all(
+              color: Colors.white.withOpacity(0.3),
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                '${_utility.makeCurrencyDisplay(_seiyuuPurchaseData[position]['price'])}',
+                style: TextStyle(fontSize: 10),
+              ),
+            ],
+          ),
+        ),
         title: DefaultTextStyle(
           style: TextStyle(fontSize: 10.0),
           child: Column(
@@ -199,7 +218,15 @@ class _SeiyuuPurchaseListScreenState extends State<SeiyuuPurchaseListScreen> {
               Text('${_seiyuuPurchaseData[position]['item']}'),
               Container(
                 alignment: Alignment.topRight,
-                child: Text('${_priceline}'),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                        '${_utility.makeCurrencyDisplay(_seiyuuPurchaseData[position]['tanka'])}'),
+                    Text(
+                        '${_utility.makeCurrencyDisplay(_seiyuuPurchaseData[position]['kosuu'])}'),
+                  ],
+                ),
               ),
             ],
           ),
