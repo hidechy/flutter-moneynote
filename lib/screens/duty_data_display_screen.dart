@@ -89,6 +89,21 @@ class _DutyDataDisplayScreenState extends State<DutyDataDisplayScreen> {
         backgroundColor: Colors.black.withOpacity(0.1),
         title: Text('Duty Data'),
         centerTitle: true,
+
+        //-------------------------//これを消すと「←」が出てくる（消さない）
+        leading: Icon(
+          Icons.check_box_outline_blank,
+          color: Color(0xFF2e2e2e),
+        ),
+        //-------------------------//これを消すと「←」が出てくる（消さない）
+
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.close),
+            onPressed: () => Navigator.pop(context),
+            color: Colors.greenAccent,
+          ),
+        ],
       ),
       body: Stack(
         fit: StackFit.expand,

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../utilities/utility.dart';
@@ -273,56 +274,60 @@ class _WeeklyDataDisplayScreenState extends State<WeeklyDataDisplayScreen> {
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: ListTile(
-        title: DefaultTextStyle(
-          style: TextStyle(fontSize: 10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Table(
-                children: [
-                  TableRow(children: [
-                    Text(
-                        '${_weeklyData[position]['date']}（${_utility.youbiStr}）'),
-                    Container(
-                      alignment: Alignment.topRight,
-                      child: Text(
-                          '${_utility.makeCurrencyDisplay(_weeklyData[position]['total'].toString())}'),
-                    ),
-                    Container(
-                      alignment: Alignment.topRight,
-                      child: Text(
-                          '${_utility.makeCurrencyDisplay(_weeklyData[position]['diff'].toString())}'),
-                    ),
-                  ]),
-                ],
-              ),
-              Row(
-                children: <Widget>[
-                  Container(
-                    width: 100,
-                  ),
-                  Expanded(
-                    child: _makeSpendItemData(
-                        spendItem: _weeklyData[position]['spendItem']),
-                  ),
-                ],
-              ),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              '${_weeklyData[position]['date']}（${_utility.youbiStr}）',
+              style: TextStyle(fontSize: 10),
+            ),
+            Row(
+              children: <Widget>[
+                SizedBox(
+                  width: 100,
+                ),
+                Expanded(
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            '${_utility.makeCurrencyDisplay(_weeklyData[position]['total'].toString())}',
+                            style: TextStyle(fontSize: 10),
+                          ),
+                          Text(
+                            '${_utility.makeCurrencyDisplay(_weeklyData[position]['diff'].toString())}',
+                            style: TextStyle(fontSize: 10),
+                          ),
+                        ],
+                      ),
 
-              /////////////
-              Row(
-                children: <Widget>[
-                  Container(
-                    width: 100,
+                      Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: _makeSpendItemData(
+                                spendItem: _weeklyData[position]['spendItem']),
+                          ),
+                        ],
+                      ),
+
+                      /////////////
+                      Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: _makeTimePlaceData(
+                                timePlace: _weeklyData[position]['timePlace']),
+                          ),
+                        ],
+                      ),
+                      /////////////
+                    ],
                   ),
-                  Expanded(
-                    child: _makeTimePlaceData(
-                        timePlace: _weeklyData[position]['timePlace']),
-                  ),
-                ],
-              ),
-              /////////////
-            ],
-          ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
@@ -362,13 +367,16 @@ class _WeeklyDataDisplayScreenState extends State<WeeklyDataDisplayScreen> {
             children: <Widget>[
               Expanded(
                 child: Container(
-                  child: Text('${spendItem[i][0]}'),
+                  child: Text('${spendItem[i][0]}',
+                      style: TextStyle(fontSize: 10)),
                 ),
               ),
               Container(
                 width: 50,
                 alignment: Alignment.topRight,
-                child: Text('${_utility.makeCurrencyDisplay(spendItem[i][1])}'),
+                child: Text(
+                    '${_utility.makeCurrencyDisplay(spendItem[i][1].toString())}',
+                    style: TextStyle(fontSize: 10)),
               ),
             ],
           ),
@@ -412,18 +420,21 @@ class _WeeklyDataDisplayScreenState extends State<WeeklyDataDisplayScreen> {
             children: <Widget>[
               Container(
                 width: 40,
-                child: Text('${timePlace[i]['time']}'),
+                child: Text('${timePlace[i]['time']}',
+                    style: TextStyle(fontSize: 10)),
               ),
               Expanded(
                 child: Container(
-                  child: Text('${timePlace[i]['place']}'),
+                  child: Text('${timePlace[i]['place']}',
+                      style: TextStyle(fontSize: 10)),
                 ),
               ),
               Container(
                 width: 50,
                 alignment: Alignment.topRight,
                 child: Text(
-                    '${_utility.makeCurrencyDisplay(timePlace[i]['price'].toString())}'),
+                    '${_utility.makeCurrencyDisplay(timePlace[i]['price'].toString())}',
+                    style: TextStyle(fontSize: 10)),
               ),
             ],
           ),

@@ -214,9 +214,10 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
+//      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+//        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.black.withOpacity(0.1),
         title: const Text('所持金額'),
         centerTitle: true,
         actions: <Widget>[
@@ -247,7 +248,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
    */
   Widget _detailDisplayBox(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 50),
+//      margin: EdgeInsets.only(top: 50),
       child: Row(
         children: <Widget>[
           Expanded(
@@ -267,9 +268,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                         Container(
                           padding: const EdgeInsets.only(top: 10),
                           child: DefaultTextStyle(
-                            style: const TextStyle(
-                              fontSize: 14
-                            ),
+                            style: const TextStyle(fontSize: 14),
                             child: Text('${_displayDate}（${_youbiStr}）'),
                           ),
                         ),
@@ -380,9 +379,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
     return Column(
       children: <Widget>[
         DefaultTextStyle(
-          style: const TextStyle(
-            fontSize: 14
-          ),
+          style: const TextStyle(fontSize: 14),
           child: Row(
             children: <Widget>[
               Expanded(
@@ -464,9 +461,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                       color: Colors.greenAccent.withOpacity(0.2),
                       nipWidth: 20,
                       child: DefaultTextStyle(
-                        style: TextStyle(
-                          fontSize: 12
-                        ),
+                        style: TextStyle(fontSize: 12),
                         child: Column(
                           children: <Widget>[
                             Table(
@@ -523,9 +518,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
     return Column(
       children: <Widget>[
         DefaultTextStyle(
-          style: const TextStyle(
-            fontSize: 12
-          ),
+          style: const TextStyle(fontSize: 12),
           child: Table(
             children: [
               TableRow(children: [
@@ -721,9 +714,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
     return Column(
       children: <Widget>[
         DefaultTextStyle(
-          style: const TextStyle(
-            fontSize: 12
-          ),
+          style: const TextStyle(fontSize: 12),
           child: Table(
             children: [
               TableRow(children: [
@@ -862,9 +853,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
     return Column(
       children: <Widget>[
         DefaultTextStyle(
-          style: const TextStyle(
-            fontSize: 12
-          ),
+          style: const TextStyle(fontSize: 12),
           child: Table(
             children: [
               TableRow(children: [
