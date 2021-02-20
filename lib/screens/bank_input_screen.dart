@@ -8,6 +8,8 @@ import '../main.dart';
 import '../utilities/utility.dart';
 import '../db/database.dart';
 
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 class BankInputScreen extends StatefulWidget {
   final String date;
   BankInputScreen({@required this.date});
@@ -204,11 +206,11 @@ class _BankInputScreenState extends State<BankInputScreen> {
 
         var _diffMark = 0;
         var _diffPrice = 0;
-        var _diffShirushi = "＝";
+        var _diffShirushi = '0';
         if (_prevValue != _value) {
           _diffMark = 1;
           _diffPrice = (_prevValue - _value) * -1;
-          _diffShirushi = (_value > _prevValue) ? "↑" : "↓";
+          _diffShirushi = (_value > _prevValue) ? '1' : '0';
         }
 
         var _map = Map();
@@ -519,17 +521,6 @@ class _BankInputScreenState extends State<BankInputScreen> {
    * リストアイテム表示
    */
   Widget _listItem({int position}) {
-    var _diffLine = "";
-
-    if (_bankData[position]['diffPrice'] == '0') {
-      _diffLine = '　';
-    } else {
-      _diffLine += _bankData[position]['diffShirushi'];
-      _diffLine += "　";
-      _diffLine +=
-          _utility.makeCurrencyDisplay(_bankData[position]['diffPrice']);
-    }
-
     return Card(
       color: _getBgColor(_bankData[position]['date']),
       elevation: 10.0,
@@ -538,6 +529,7 @@ class _BankInputScreenState extends State<BankInputScreen> {
       ),
       child: ListTile(
         leading: _getLeading(mark: _bankData[position]['diffMark']),
+        trailing: _getTrailing(mark: _bankData[position]['diffShirushi']),
         title: DefaultTextStyle(
           style: TextStyle(fontSize: 10),
           child: Table(
@@ -553,7 +545,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
                     ),
                     Container(
                       alignment: Alignment.topRight,
-                      child: Text('${_diffLine}'),
+                      child: Text(
+                          '${_utility.makeCurrencyDisplay(_bankData[position]['diffPrice'])}'),
                     ),
                   ],
                 ),
@@ -622,6 +615,23 @@ class _BankInputScreenState extends State<BankInputScreen> {
     if (int.parse(mark) == 1) {
       return const Icon(
         Icons.refresh,
+        color: Colors.greenAccent,
+      );
+    } else {
+      return const Icon(
+        Icons.check_box_outline_blank,
+        color: Color(0xFF2e2e2e),
+      );
+    }
+  }
+
+  /**
+   *
+   */
+  Widget _getTrailing({mark}) {
+    if (int.parse(mark) == 1) {
+      return const Icon(
+        FontAwesomeIcons.caretSquareUp,
         color: Colors.greenAccent,
       );
     } else {
