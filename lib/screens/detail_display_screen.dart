@@ -993,12 +993,18 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
       scrollDirection: Axis.vertical,
       controller: _controller,
       children: _monthDays.map<Widget>((data) {
+        var _bgColor = _utility.getBgColor(
+            '${_displayYear}-${_displayMonth}-${data[1]}', _holidayList);
+
+        var ex_displayDate = (_displayDate).split('-');
+        if (data[1] == ex_displayDate[2]) {
+          _bgColor = Colors.orangeAccent.withOpacity(0.3);
+        }
+
         return (data[0] == 0)
             ? Container()
             : Card(
-                color: _utility.getBgColor(
-                    '${_displayYear}-${_displayMonth}-${data[1]}',
-                    _holidayList),
+                color: _bgColor,
                 elevation: 10.0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),

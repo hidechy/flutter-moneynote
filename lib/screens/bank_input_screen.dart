@@ -728,9 +728,13 @@ class _BankInputScreenState extends State<BankInputScreen> {
    * レコード更新
    */
   dynamic _updateRecord({BuildContext context}) async {
-    if (_teContPrice.text == '0') {
-      Toast.show('金額が入力されていません', context, duration: Toast.LENGTH_LONG);
-      return false;
+    if (_chipValue == "bank_e") {
+      //bank_eは0円登録可能
+    } else {
+      if (_teContPrice.text == '0') {
+        Toast.show('金額が入力されていません', context, duration: Toast.LENGTH_LONG);
+        return false;
+      }
     }
 
     //----------------------------------//更新日付リスト作成
