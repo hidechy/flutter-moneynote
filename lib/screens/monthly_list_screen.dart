@@ -317,6 +317,8 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
    * リストアイテム表示
    */
   Widget _listItem({int position}) {
+    _utility.makeYMDYData('${_yearmonth}-${_monthlyData[position]['date']}', 0);
+
     return Slidable(
       actionPane: const SlidableDrawerActionPane(),
       actionExtentRatio: 0.15,
@@ -341,6 +343,10 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text('${_monthlyData[position]['date']}'),
+                Text(
+                  '${_utility.youbiStr}',
+                  style: TextStyle(fontSize: 10),
+                ),
               ],
             ),
           ),
