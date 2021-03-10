@@ -50,10 +50,18 @@ class _SeiyuuPurchaseListScreenState extends State<SeiyuuPurchaseListScreen> {
     if (response != null) {
       Map data = jsonDecode(response.body);
 
+      var _date = '';
       for (var i = 0; i < data['data'].length; i++) {
+        if (data['data'][i]['date'] != _date) {
+          _seiyuuPurchaseData
+              .add(_addSummaryMap(data['data'][i]['date'], data['data']));
+        }
+
         _seiyuuPurchaseData.add(data['data'][i]);
 
         _total += int.parse(data['data'][i]['price']);
+
+        _date = data['data'][i]['date'];
       }
     }
 
@@ -156,83 +164,99 @@ class _SeiyuuPurchaseListScreenState extends State<SeiyuuPurchaseListScreen> {
   Widget _listItem({int position}) {
     var ex_date = (_seiyuuPurchaseData[position]['date']).split('-');
 
-//    var _priceline = "";
-//    _priceline +=
-//        _utility.makeCurrencyDisplay(_seiyuuPurchaseData[position]['tanka']);
-//    _priceline += " * ";
-//    _priceline += _seiyuuPurchaseData[position]['kosuu'];
-//    _priceline += " = ";
-//    _priceline +=
-//        _utility.makeCurrencyDisplay(_seiyuuPurchaseData[position]['price']);
-
-    return Card(
-      color: Colors.black.withOpacity(0.3),
-      elevation: 10.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: ListTile(
-        leading: Container(
-          width: 40,
-          margin: EdgeInsets.symmetric(vertical: 5),
-          decoration: BoxDecoration(
-            color:
-                _getLeadingBgColor(pos: _seiyuuPurchaseData[position]['pos']),
-            border: Border.all(
-              color: Colors.white.withOpacity(0.3),
+    return (_seiyuuPurchaseData[position]['item'] == 'total')
+        ? Card(
+            color: _getLeadingBgColor(
+              pos: _seiyuuPurchaseData[position]['pos'],
             ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text('${ex_date[1]}'),
-              Text('${ex_date[2]}'),
-            ],
-          ),
-        ),
-        trailing: Container(
-          width: 40,
-          margin: EdgeInsets.symmetric(vertical: 5),
-          decoration: BoxDecoration(
+            elevation: 10.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Container(
+              alignment: Alignment.topRight,
+              padding: EdgeInsets.only(right: 20, top: 5, bottom: 5),
+              child: Text(
+                  '${_utility.makeCurrencyDisplay(_seiyuuPurchaseData[position]['price'])}'),
+            ),
+          )
+        : Card(
             color: Colors.black.withOpacity(0.3),
-            border: Border.all(
-              color: Colors.white.withOpacity(0.3),
+            elevation: 10.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
             ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                '${_utility.makeCurrencyDisplay(_seiyuuPurchaseData[position]['price'])}',
-                style: TextStyle(fontSize: 10),
-              ),
-            ],
-          ),
-        ),
-        title: DefaultTextStyle(
-          style: TextStyle(fontSize: 10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text('${_seiyuuPurchaseData[position]['date']}'),
-              Text('${_seiyuuPurchaseData[position]['item']}'),
-              Container(
-                alignment: Alignment.topRight,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: ListTile(
+              leading: Container(
+                width: 40,
+                margin: EdgeInsets.symmetric(vertical: 5),
+                decoration: BoxDecoration(
+                  color: _getLeadingBgColor(
+                      pos: _seiyuuPurchaseData[position]['pos']),
+                  border: Border.all(
+                    color: Colors.white.withOpacity(0.3),
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text(
-                        '${_utility.makeCurrencyDisplay(_seiyuuPurchaseData[position]['tanka'])}'),
-                    Text(
-                        '${_utility.makeCurrencyDisplay(_seiyuuPurchaseData[position]['kosuu'])}'),
+                    Text('${ex_date[1]}'),
+                    Text('${ex_date[2]}'),
                   ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
+              trailing: Container(
+                width: 40,
+                margin: EdgeInsets.symmetric(vertical: 5),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.3),
+                  border: Border.all(
+                    color: Colors.white.withOpacity(0.3),
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      '${_utility.makeCurrencyDisplay(_seiyuuPurchaseData[position]['price'])}',
+                      style: TextStyle(fontSize: 10),
+                    ),
+                  ],
+                ),
+              ),
+              title: DefaultTextStyle(
+                style: TextStyle(fontSize: 10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text('${_seiyuuPurchaseData[position]['date']}'),
+                    (_seiyuuPurchaseData[position]['item'] == '送料')
+                        ? Container(
+                            width: double.infinity,
+                            alignment: Alignment.topCenter,
+                            padding: EdgeInsets.all(1),
+                            color: Colors.yellowAccent.withOpacity(0.3),
+                            child: Text(
+                                '${_seiyuuPurchaseData[position]['item']}'),
+                          )
+                        : Text('${_seiyuuPurchaseData[position]['item']}'),
+                    Container(
+                      alignment: Alignment.topRight,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                              '${_utility.makeCurrencyDisplay(_seiyuuPurchaseData[position]['tanka'])}'),
+                          Text(
+                              '${_utility.makeCurrencyDisplay(_seiyuuPurchaseData[position]['kosuu'])}'),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
   }
 
   /**
@@ -259,6 +283,30 @@ class _SeiyuuPurchaseListScreenState extends State<SeiyuuPurchaseListScreen> {
         return Colors.yellowAccent.withOpacity(0.3);
         break;
     }
+  }
+
+  /**
+   *
+   */
+  Map _addSummaryMap(String date, List data) {
+    var _pos = 0;
+    var _addTotal = 0;
+    for (var i = 0; i < data.length; i++) {
+      if (data[i]['date'] == date) {
+        _pos = data[i]['pos'];
+        _addTotal += int.parse(data[i]['price']);
+      }
+    }
+
+    Map _map = Map();
+    _map['date'] = date;
+    _map['pos'] = _pos;
+    _map['item'] = 'total';
+    _map['tanka'] = 0.toString();
+    _map['kosuu'] = 0.toString();
+    _map['price'] = _addTotal.toString();
+
+    return _map;
   }
 
   /**
