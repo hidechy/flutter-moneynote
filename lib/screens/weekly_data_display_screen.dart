@@ -128,6 +128,7 @@ class _WeeklyDataDisplayScreenState extends State<WeeklyDataDisplayScreen> {
           _map['time'] = data3['data'][i]['time'];
           _map['place'] = data3['data'][i]['place'];
           _map['price'] = data3['data'][i]['price'];
+          _map['inTrain'] = (data3['data'][i]['place'] == "移動中") ? 1 : 0;
           _timePlace.add(_map);
         }
       }
@@ -415,30 +416,56 @@ class _WeeklyDataDisplayScreenState extends State<WeeklyDataDisplayScreen> {
     List<Widget> _dataList = List();
     for (var i = 0; i < timePlace.length; i++) {
       _dataList.add(
-        Container(
-          child: Row(
-            children: <Widget>[
-              Container(
-                width: 40,
-                child: Text('${timePlace[i]['time']}',
-                    style: TextStyle(fontSize: 10)),
-              ),
-              Expanded(
-                child: Container(
-                  child: Text('${timePlace[i]['place']}',
-                      style: TextStyle(fontSize: 10)),
+        (timePlace[i]['inTrain'] == 1)
+            ? Container(
+                color: Colors.green[900],
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      width: 40,
+                      child: Text('${timePlace[i]['time']}',
+                          style: TextStyle(fontSize: 10)),
+                    ),
+                    Expanded(
+                      child: Container(
+                        child: Text('${timePlace[i]['place']}',
+                            style: TextStyle(fontSize: 10)),
+                      ),
+                    ),
+                    Container(
+                      width: 50,
+                      alignment: Alignment.topRight,
+                      child: Text(
+                          '${_utility.makeCurrencyDisplay(timePlace[i]['price'].toString())}',
+                          style: TextStyle(fontSize: 10)),
+                    ),
+                  ],
+                ),
+              )
+            : Container(
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      width: 40,
+                      child: Text('${timePlace[i]['time']}',
+                          style: TextStyle(fontSize: 10)),
+                    ),
+                    Expanded(
+                      child: Container(
+                        child: Text('${timePlace[i]['place']}',
+                            style: TextStyle(fontSize: 10)),
+                      ),
+                    ),
+                    Container(
+                      width: 50,
+                      alignment: Alignment.topRight,
+                      child: Text(
+                          '${_utility.makeCurrencyDisplay(timePlace[i]['price'].toString())}',
+                          style: TextStyle(fontSize: 10)),
+                    ),
+                  ],
                 ),
               ),
-              Container(
-                width: 50,
-                alignment: Alignment.topRight,
-                child: Text(
-                    '${_utility.makeCurrencyDisplay(timePlace[i]['price'].toString())}',
-                    style: TextStyle(fontSize: 10)),
-              ),
-            ],
-          ),
-        ),
       );
     }
     return _dataList;

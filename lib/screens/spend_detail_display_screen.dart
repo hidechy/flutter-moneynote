@@ -422,6 +422,7 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
               color: (_timePlaceData[position]['inTrain'] == 1)
                   ? Colors.greenAccent.withOpacity(0.3)
                   : Colors.black,
+              padding: EdgeInsets.only(bottom: 4),
             ),
             Container(
               child: Text('${_timePlaceData[position]['place']}'),
@@ -435,6 +436,7 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
               color: (_timePlaceData[position]['inTrain'] == 1)
                   ? Colors.greenAccent.withOpacity(0.3)
                   : Colors.black,
+              padding: EdgeInsets.only(bottom: 4),
             ),
           ]),
         ],
