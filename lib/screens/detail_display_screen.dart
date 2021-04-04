@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:moneynote/screens/spend_detail_display_screen.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:bubble/bubble.dart';
@@ -15,6 +14,9 @@ import 'benefit_input_screen.dart';
 import 'sameday_list_screen.dart';
 import 'allday_list_screen.dart';
 import 'setting_base_screen.dart';
+
+import 'spend_detail_display_screen.dart';
+import '../utilities/custom_shape_clipper.dart';
 
 class DetailDisplayScreen extends StatefulWidget {
   final String date;
@@ -247,128 +249,132 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
    *
    */
   Widget _detailDisplayBox(BuildContext context) {
-    return Container(
-//      margin: EdgeInsets.only(top: 50),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: Column(
-              children: <Widget>[
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: Column(
+            children: <Widget>[
+              Stack(
+                children: <Widget>[
+                  ClipPath(
+                    clipper: CustomShapeClipper(),
+                    child: Container(
+                      height: 540,
+                      width: 300,
+                      margin: EdgeInsets.only(top: 5, left: 4),
+                      color: Colors.yellowAccent.withOpacity(0.3),
+                      child: Text(
+                        '■',
+                        style: TextStyle(color: Colors.white.withOpacity(0.1)),
+                      ),
+                    ),
                   ),
-                  color: Colors.black.withOpacity(0.3),
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: Column(
-                      children: <Widget>[
-                        //------------------------------------------------------------------------//
-
-                        Container(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: DefaultTextStyle(
-                            style: const TextStyle(fontSize: 14),
-                            child: Text('${_displayDate}（${_youbiStr}）'),
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    color: Colors.black.withOpacity(0.3),
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: DefaultTextStyle(
+                              style: const TextStyle(fontSize: 14),
+                              child: Text('${_displayDate}（${_youbiStr}）'),
+                            ),
                           ),
-                        ),
-
-                        const Divider(color: Colors.indigo),
-
-                        _dispTotal(),
-
-                        const Divider(color: Colors.indigo),
-
-                        _dispCurrency(),
-                        _dispDeposit(),
-
-                        const Divider(color: Colors.indigo),
-
-                        _dispEMoney(),
-
-                        //------------------------------------------------------------------------//
-                      ],
-                    ),
-                  ),
-                ),
-                //------------------------------------------------------------------------//
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.all(5),
-                    width: double.infinity,
-                    child: RaisedButton(
-                      color: Colors.black.withOpacity(0.3),
-                      onPressed: () => _showUnderMenu(),
-                      child: const Icon(
-                        Icons.keyboard_arrow_up,
-                        color: Colors.greenAccent,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                          const Divider(color: Colors.indigo),
+                          _dispTotal(),
+                          const Divider(color: Colors.indigo),
+                          _dispCurrency(),
+                          _dispDeposit(),
+                          const Divider(color: Colors.indigo),
+                          _dispEMoney(),
+                        ],
                       ),
                     ),
                   ),
+                ],
+              ),
+
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(5),
+                  width: double.infinity,
+                  child: RaisedButton(
+                    color: Colors.black.withOpacity(0.3),
+                    onPressed: () => _showUnderMenu(),
+                    child: const Icon(
+                      Icons.keyboard_arrow_up,
+                      color: Colors.greenAccent,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
                 ),
-                //------------------------------------------------------------------------//
-              ],
-            ),
+              ),
+              //------------------------------------------------------------------------//
+            ],
           ),
-          ///////////////////////////////
-          Container(
-            width: 60,
-            child: Column(
-              children: <Widget>[
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  margin: const EdgeInsets.only(top: 5),
-                  color: Colors.black.withOpacity(0.3),
+        ),
+        ///////////////////////////////
+        Container(
+          width: 60,
+          child: Column(
+            children: <Widget>[
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                margin: const EdgeInsets.only(top: 5),
+                color: Colors.black.withOpacity(0.3),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    IconButton(
+                      icon: const Icon(Icons.refresh),
+                      onPressed: () => _goDetailDisplayScreen(
+                        context: context,
+                        date: _displayDate,
+                        index: widget.index,
+                      ),
+                      color: Colors.greenAccent,
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.calendar_today),
+                      onPressed: () => _showDatepicker(context: context),
+                      color: Colors.blueAccent,
+                    ),
+                  ],
+                ),
+              ),
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                margin: const EdgeInsets.only(top: 5),
+                color: Colors.black.withOpacity(0.1),
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      IconButton(
-                        icon: const Icon(Icons.refresh),
-                        onPressed: () => _goDetailDisplayScreen(
-                          context: context,
-                          date: _displayDate,
-                          index: widget.index,
-                        ),
-                        color: Colors.greenAccent,
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.calendar_today),
-                        onPressed: () => _showDatepicker(context: context),
-                        color: Colors.blueAccent,
-                      ),
+                      Text('${_displayYear}'),
+                      Text('${_displayMonth}'),
                     ],
                   ),
                 ),
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  margin: const EdgeInsets.only(top: 5),
-                  color: Colors.black.withOpacity(0.1),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Text('${_displayYear}'),
-                        Text('${_displayMonth}'),
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: _monthDaysList(),
-                ),
-              ],
-            ),
+              ),
+              Expanded(
+                child: _monthDaysList(),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

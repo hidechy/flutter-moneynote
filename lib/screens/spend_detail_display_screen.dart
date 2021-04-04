@@ -412,31 +412,23 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
    * リストアイテム表示
    */
   Widget _listItem3({int position}) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
+      color: (_timePlaceData[position]['inTrain'] == 1)
+          ? Colors.greenAccent.withOpacity(0.3)
+          : Colors.black.withOpacity(0.1),
       child: Table(
         children: [
           TableRow(children: [
             Container(
               child: Text('${_timePlaceData[position]['time']}'),
-              color: (_timePlaceData[position]['inTrain'] == 1)
-                  ? Colors.greenAccent.withOpacity(0.3)
-                  : Colors.black,
-              padding: EdgeInsets.only(bottom: 4),
             ),
             Container(
               child: Text('${_timePlaceData[position]['place']}'),
-              color: (_timePlaceData[position]['inTrain'] == 1)
-                  ? Colors.greenAccent.withOpacity(0.3)
-                  : Colors.black,
             ),
             Container(
               alignment: Alignment.topRight,
               child: Text('${_timePlaceData[position]['price']}'),
-              color: (_timePlaceData[position]['inTrain'] == 1)
-                  ? Colors.greenAccent.withOpacity(0.3)
-                  : Colors.black,
-              padding: EdgeInsets.only(bottom: 4),
             ),
           ]),
         ],

@@ -6,8 +6,12 @@ import '../utilities/utility.dart';
 
 import '../main.dart';
 
+import 'dart:convert';
+import 'package:http/http.dart';
+
 class AlldayListScreen extends StatefulWidget {
   final String date;
+
   AlldayListScreen({@required this.date});
 
   @override
@@ -42,6 +46,22 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
    * 初期データ作成
    */
   void _makeDefaultDisplayData() async {
+    //------------------------------//
+    var zerousedate;
+
+    String url = "http://toyohide.work/BrainLog/api/timeplacezerousedate";
+    Map<String, String> headers = {'content-type': 'application/json'};
+    String body = json.encode({});
+    Response response = await post(url, headers: headers, body: body);
+
+    if (response != null) {
+      Map data = jsonDecode(response.body);
+      zerousedate = data;
+    }
+    //------------------------------//
+
+    print(zerousedate);
+
     //全データ取得
     var _monieData = await database.selectSortedAllRecord;
     if (_monieData.length > 0) {
@@ -55,6 +75,11 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
         _map['date'] = _monieData[i].strDate;
         _map['total'] = total.toString();
         _map['diff'] = ((_keepTotal - total) * -1).toString();
+
+        _map['zeroflag'] = _getZeroUseDate(
+          date: _monieData[i].strDate,
+          zerousedate: zerousedate,
+        );
 
         _alldayData.add(_map);
 
@@ -73,6 +98,20 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
     }
 
     setState(() {});
+  }
+
+  /**
+   *
+   */
+  int _getZeroUseDate({date, zerousedate}) {
+    var _num = 0;
+    for (var i = 0; i < zerousedate['data'].length; i++) {
+      if (zerousedate['data'][i] == date) {
+        _num = 1;
+        break;
+      }
+    }
+    return _num;
   }
 
   /**
@@ -123,6 +162,8 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
    * リストアイテム表示
    */
   Widget _listItem({int position}) {
+    _utility.makeYMDYData(_alldayData[position]['date'], 0);
+
     return Card(
       color: _utility.getBgColor(_alldayData[position]['date'], _holidayList),
       elevation: 10.0,
@@ -135,7 +176,7 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
           child: Table(
             children: [
               TableRow(children: [
-                Text('${_alldayData[position]['date']}'),
+                Text('${_alldayData[position]['date']}（${_utility.youbiStr}）'),
                 Container(
                   alignment: Alignment.topRight,
                   child: Text(
@@ -150,13 +191,24 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
             ],
           ),
         ),
+        trailing: (_alldayData[position]['zeroflag'] == 1)
+            ? Icon(
+                Icons.star,
+                color: Colors.greenAccent.withOpacity(0.5),
+                size: 10,
+              )
+            : Icon(
+                Icons.check_box_outline_blank,
+                color: Color(0xFF2e2e2e),
+                size: 10,
+              ),
       ),
     );
   }
 
   /**
-      *
-      */
+   *
+   */
   void _scroll() {
     _itemScrollController.scrollTo(
       index: maxNo,

@@ -11,7 +11,7 @@ class Utility {
   Widget getBackGround() {
     return Image.asset(
       'assets/image/bg.png',
-      fit: BoxFit.cover,
+      fit: BoxFit.fitHeight,
       color: Colors.black.withOpacity(0.7),
       colorBlendMode: BlendMode.darken,
     );
