@@ -3,7 +3,6 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:toast/toast.dart';
 
 import '../main.dart';
-
 import '../db/database.dart';
 import '../utilities/utility.dart';
 

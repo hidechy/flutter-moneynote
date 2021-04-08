@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 
 import '../main.dart';
-
 import '../db/database.dart';
 import '../utilities/utility.dart';
+import '../utilities/custom_shape_clipper.dart';
 
 import 'detail_display_screen.dart';
 import 'monthly_list_screen.dart';
@@ -147,7 +147,6 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text('${_date}(${_youbiStr})'),
@@ -169,14 +168,29 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           _utility.getBackGround(),
+          ClipPath(
+            clipper: CustomShapeClipper(),
+            child: Container(
+              height: size.height * 0.7,
+              width: size.width * 0.7,
+              margin: EdgeInsets.only(top: 5, left: 6),
+              color: Colors.yellowAccent.withOpacity(0.2),
+              child: Text(
+                '■',
+                style: TextStyle(color: Colors.white.withOpacity(0.1)),
+              ),
+            ),
+          ),
           SingleChildScrollView(
             child: Container(
-              margin: EdgeInsets.only(top: 50),
               child: Column(
                 children: <Widget>[
                   Card(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20),
+                      ),
                     ),
                     color: Colors.black.withOpacity(0.3),
                     child: Column(

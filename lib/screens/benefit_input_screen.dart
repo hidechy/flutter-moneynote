@@ -3,9 +3,9 @@ import 'package:toast/toast.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../main.dart';
-
 import '../db/database.dart';
 import '../utilities/utility.dart';
+import '../utilities/custom_shape_clipper.dart';
 
 class BenefitInputScreen extends StatefulWidget {
   final String date;
@@ -89,6 +89,8 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
   */
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black.withOpacity(0.1),
@@ -99,11 +101,27 @@ class _BenefitInputScreenState extends State<BenefitInputScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           _utility.getBackGround(),
+          ClipPath(
+            clipper: CustomShapeClipper(),
+            child: Container(
+              height: size.height * 0.7,
+              width: size.width * 0.7,
+              margin: EdgeInsets.only(top: 5, left: 6),
+              color: Colors.yellowAccent.withOpacity(0.2),
+              child: Text(
+                '■',
+                style: TextStyle(color: Colors.white.withOpacity(0.1)),
+              ),
+            ),
+          ),
           Column(
             children: <Widget>[
               Card(
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
+                  ),
                 ),
                 color: Colors.black.withOpacity(0.3),
                 child: Column(

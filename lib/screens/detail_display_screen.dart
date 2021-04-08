@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:moneynote/screens/spend_detail_paging_screen.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:bubble/bubble.dart';
 
 import '../main.dart';
 import '../utilities/utility.dart';
+import '../utilities/custom_shape_clipper.dart';
 
 import 'bank_input_screen.dart';
 import 'monthly_list_screen.dart';
@@ -14,9 +16,7 @@ import 'benefit_input_screen.dart';
 import 'sameday_list_screen.dart';
 import 'allday_list_screen.dart';
 import 'setting_base_screen.dart';
-
 import 'spend_detail_display_screen.dart';
-import '../utilities/custom_shape_clipper.dart';
 
 class DetailDisplayScreen extends StatefulWidget {
   final String date;
@@ -215,6 +215,8 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
    */
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
 //      extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -239,6 +241,19 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           _utility.getBackGround(),
+          ClipPath(
+            clipper: CustomShapeClipper(),
+            child: Container(
+              height: size.height * 0.7,
+              width: size.width * 0.7,
+              margin: EdgeInsets.only(top: 5, left: 6),
+              color: Colors.yellowAccent.withOpacity(0.2),
+              child: Text(
+                '■',
+                style: TextStyle(color: Colors.white.withOpacity(0.1)),
+              ),
+            ),
+          ),
           _detailDisplayBox(context),
         ],
       ),
@@ -254,49 +269,35 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
         Expanded(
           child: Column(
             children: <Widget>[
-              Stack(
-                children: <Widget>[
-                  ClipPath(
-                    clipper: CustomShapeClipper(),
-                    child: Container(
-                      height: 540,
-                      width: 300,
-                      margin: EdgeInsets.only(top: 5, left: 4),
-                      color: Colors.yellowAccent.withOpacity(0.3),
-                      child: Text(
-                        '■',
-                        style: TextStyle(color: Colors.white.withOpacity(0.1)),
-                      ),
-                    ),
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
                   ),
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    color: Colors.black.withOpacity(0.3),
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            padding: const EdgeInsets.only(top: 10),
-                            child: DefaultTextStyle(
-                              style: const TextStyle(fontSize: 14),
-                              child: Text('${_displayDate}（${_youbiStr}）'),
-                            ),
-                          ),
-                          const Divider(color: Colors.indigo),
-                          _dispTotal(),
-                          const Divider(color: Colors.indigo),
-                          _dispCurrency(),
-                          _dispDeposit(),
-                          const Divider(color: Colors.indigo),
-                          _dispEMoney(),
-                        ],
+                ),
+                color: Colors.black.withOpacity(0.3),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: DefaultTextStyle(
+                          style: const TextStyle(fontSize: 14),
+                          child: Text('${_displayDate}（${_youbiStr}）'),
+                        ),
                       ),
-                    ),
+                      const Divider(color: Colors.indigo),
+                      _dispTotal(),
+                      const Divider(color: Colors.indigo),
+                      _dispCurrency(),
+                      _dispDeposit(),
+                      const Divider(color: Colors.indigo),
+                      _dispEMoney(),
+                    ],
                   ),
-                ],
+                ),
               ),
 
               Expanded(
@@ -501,15 +502,38 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                   ],
                 ),
               ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 5),
-                child: IconButton(
-                  color: Colors.greenAccent,
-                  icon: const Icon(Icons.info),
-                  onPressed: () => _goSpendDetailDisplayScreen(
-                      context: context, date: _displayDate),
-                ),
+
+              //
+              //
+              //のちほど削除する
+              //
+              //
+
+              Column(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 5),
+                    child: IconButton(
+                      color: Colors.greenAccent,
+                      icon: const Icon(Icons.info),
+                      onPressed: () => _goSpendDetailDisplayScreen(
+                          context: context, date: _displayDate),
+                    ),
+                  ),
+                  IconButton(
+                    color: Colors.redAccent,
+                    icon: const Icon(Icons.star),
+                    onPressed: () => _goSpendDetailPagingScreen(
+                        context: context, date: _displayDate),
+                  ),
+                ],
               ),
+
+              //
+              //
+              //のちほど削除する
+              //
+              //
             ],
           ),
         ),
@@ -703,7 +727,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
             child: Text(
               _utility.makeCurrencyDisplay(_undercoin.toString()),
               style: const TextStyle(
-                color: Colors.orangeAccent,
+                color: Colors.yellowAccent,
                 fontSize: 12,
               ),
             ),
@@ -1004,7 +1028,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
 
         var ex_displayDate = (_displayDate).split('-');
         if (data[1] == ex_displayDate[2]) {
-          _bgColor = Colors.orangeAccent.withOpacity(0.3);
+          _bgColor = Colors.yellowAccent.withOpacity(0.3);
         }
 
         return (data[0] == 0)
@@ -1068,7 +1092,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
             child: Text(
               _getDisplayText(text: text, currencyDisp: currencyDisp),
               style: TextStyle(
-                color: Colors.orangeAccent,
+                color: Colors.yellowAccent,
               ),
             ),
           );
@@ -1104,7 +1128,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
             child: Text(
               _getDisplayText(text: text, currencyDisp: currencyDisp),
               style: TextStyle(
-                color: Colors.orangeAccent,
+                color: Colors.yellowAccent,
               ),
             ),
           );
@@ -1472,6 +1496,18 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => SpendDetailDisplayScreen(date: date),
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  _goSpendDetailPagingScreen({BuildContext context, String date}) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SpendDetailPagingScreen(date: date),
       ),
     );
   }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:moneynote/screens/credit_monthly_list_screen.dart';
 import 'package:moneynote/utilities/utility.dart';
+import 'package:http/http.dart';
 
 import 'dart:convert';
-import 'package:http/http.dart';
 
 import 'all_credit_list_screen.dart';
 
@@ -139,7 +139,7 @@ class _CreditSpendDisplayScreenState extends State<CreditSpendDisplayScreen> {
         Container(
           width: double.infinity,
           decoration: BoxDecoration(
-            color: Colors.orangeAccent.withOpacity(0.3),
+            color: Colors.yellowAccent.withOpacity(0.3),
             border: Border.all(
               color: Colors.white.withOpacity(0.3),
             ),

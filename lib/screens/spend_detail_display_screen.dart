@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:moneynote/screens/duty_data_display_screen.dart';
-import 'package:moneynote/screens/weekly_data_display_screen.dart';
-import 'package:moneynote/screens/yachin_data_display_screen.dart';
-
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart';
-import 'dart:convert';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'spend_summary_display_screen.dart';
+import 'dart:convert';
 
 import '../main.dart';
 import '../utilities/utility.dart';
+
+import 'spend_summary_display_screen.dart';
+import 'duty_data_display_screen.dart';
+import 'weekly_data_display_screen.dart';
+import 'yachin_data_display_screen.dart';
 
 class SpendDetailDisplayScreen extends StatefulWidget {
   final String date;
@@ -604,7 +604,7 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
       case '10':
       case '5':
       case '1':
-        return Colors.orangeAccent;
+        return Colors.yellowAccent;
         break;
       default:
         return Colors.white;

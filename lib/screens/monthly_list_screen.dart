@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-
-//graph
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../utilities/utility.dart';
 import '../main.dart';
+
 import 'detail_display_screen.dart';
 import 'oneday_input_screen.dart';
 
@@ -272,7 +271,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
                 ),
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Colors.orangeAccent.withOpacity(0.3),
+                  color: Colors.yellowAccent.withOpacity(0.3),
                   border: Border.all(
                     color: Colors.white.withOpacity(0.3),
                   ),
@@ -413,17 +412,17 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
                       Text(
                         '${_monthlyData[position]['strYen10']}',
                         style: TextStyle(
-                            color: Colors.orangeAccent.withOpacity(0.6)),
+                            color: Colors.yellowAccent.withOpacity(0.6)),
                       ),
                       Text(
                         '${_monthlyData[position]['strYen5']}',
                         style: TextStyle(
-                            color: Colors.orangeAccent.withOpacity(0.6)),
+                            color: Colors.yellowAccent.withOpacity(0.6)),
                       ),
                       Text(
                         '${_monthlyData[position]['strYen1']}',
                         style: TextStyle(
-                            color: Colors.orangeAccent.withOpacity(0.6)),
+                            color: Colors.yellowAccent.withOpacity(0.6)),
                       ),
                     ]),
                   ],

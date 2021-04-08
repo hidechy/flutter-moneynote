@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+
+import 'dart:convert';
 
 import '../utilities/utility.dart';
-
-import '../db/database.dart';
 import '../main.dart';
-
-import 'package:http/http.dart';
-import 'dart:convert';
 
 class WeeklyDataDisplayScreen extends StatefulWidget {
   final String date;
@@ -229,7 +227,7 @@ class _WeeklyDataDisplayScreenState extends State<WeeklyDataDisplayScreen> {
                     child: Container(
                       alignment: Alignment.topRight,
                       decoration: BoxDecoration(
-                        color: Colors.orangeAccent.withOpacity(0.3),
+                        color: Colors.yellowAccent.withOpacity(0.3),
                         border: Border.all(
                           color: Colors.white.withOpacity(0.3),
                         ),

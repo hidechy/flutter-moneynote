@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-
-import '../utilities/utility.dart';
-
-import 'dart:convert';
+import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:http/http.dart';
 
-//graph
-import 'package:charts_flutter/flutter.dart' as charts;
+import 'dart:convert';
+
+import '../utilities/utility.dart';
 
 import 'credit_spend_display_screen.dart';
 
@@ -161,7 +159,7 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
             margin: EdgeInsets.all(2),
             decoration: BoxDecoration(
               color: (i.toString().padLeft(2, '0') == _selectedMonth)
-                  ? Colors.orangeAccent.withOpacity(0.3)
+                  ? Colors.yellowAccent.withOpacity(0.3)
                   : Colors.black.withOpacity(0.3),
               border: Border.all(
                 color: Colors.white.withOpacity(0.3),

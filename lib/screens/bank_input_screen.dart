@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:toast/toast.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../main.dart';
-
 import '../utilities/utility.dart';
 import '../db/database.dart';
-
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../utilities/custom_shape_clipper.dart';
 
 class BankInputScreen extends StatefulWidget {
   final String date;
@@ -264,8 +263,9 @@ class _BankInputScreenState extends State<BankInputScreen> {
    */
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
-      extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text('銀行預金'),
@@ -275,12 +275,24 @@ class _BankInputScreenState extends State<BankInputScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           _utility.getBackGround(),
+          ClipPath(
+            clipper: CustomShapeClipper(),
+            child: Container(
+              height: size.height * 0.7,
+              width: size.width * 0.7,
+              margin: EdgeInsets.only(top: 5, left: 6),
+              color: Colors.yellowAccent.withOpacity(0.2),
+              child: Text(
+                '■',
+                style: TextStyle(color: Colors.white.withOpacity(0.1)),
+              ),
+            ),
+          ),
           Column(
             children: <Widget>[
               Container(
-                margin: EdgeInsets.only(top: 50),
                 decoration: BoxDecoration(
-                  color: Colors.orangeAccent.withOpacity(0.3),
+                  color: Colors.yellowAccent.withOpacity(0.3),
                   border: Border.all(
                     color: Colors.white.withOpacity(0.3),
                   ),
@@ -437,7 +449,10 @@ class _BankInputScreenState extends State<BankInputScreen> {
                               width: double.infinity,
                               child: Card(
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20),
+                                  ),
                                 ),
                                 color: Colors.black.withOpacity(0.3),
                                 child: Column(

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-
-import '../utilities/utility.dart';
-
-import '../main.dart';
+import 'package:http/http.dart';
 
 import 'dart:convert';
-import 'package:http/http.dart';
+
+import '../utilities/utility.dart';
+import '../main.dart';
 
 class AlldayListScreen extends StatefulWidget {
   final String date;

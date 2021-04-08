@@ -309,7 +309,7 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
     if (text != '') {
       switch (text) {
         case 'score : ':
-          return Text('${text}', style: TextStyle(color: Colors.orangeAccent));
+          return Text('${text}', style: TextStyle(color: Colors.yellowAccent));
           break;
         case 'gain : ':
           return Text('${text}', style: TextStyle(color: Colors.greenAccent));
@@ -324,7 +324,7 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
       case 'score':
         return Text(
           '${_scoreData[position][column]}',
-          style: TextStyle(color: Colors.orangeAccent),
+          style: TextStyle(color: Colors.yellowAccent),
         );
         break;
       case 'gain':

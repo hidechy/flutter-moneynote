@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-
-import '../utilities/utility.dart';
-
-import 'dart:convert';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart';
 
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'dart:convert';
+
+import '../utilities/utility.dart';
 
 class YachinDataDisplayScreen extends StatefulWidget {
   @override

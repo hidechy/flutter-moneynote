@@ -5,6 +5,8 @@ class CustomShapeClipper extends CustomClipper<Path> {
   Path getClip(Size size) {
     final Path path = Path();
     path.lineTo(0.0, size.height);
+    path.lineTo(size.width * 0.4, size.height * 0.1);
+    path.lineTo(size.width * 0.4, size.height * 0.5);
     path.lineTo(size.width, 0.0);
     return path;
   }
