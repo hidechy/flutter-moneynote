@@ -523,6 +523,7 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: GestureDetector(
+                onTap: () => _uploadDailyData(index: index),
                 child: Icon(
                   Icons.cloud_upload,
                   color: Colors.blueAccent,
@@ -605,6 +606,10 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
    *
    */
   Widget _getSpendItemList({value}) {
+    if (value == null) {
+      return Container();
+    }
+
     List _list = List<Widget>();
     for (var i = 0; i < value.length; i++) {
       _list.add(Table(children: [
@@ -653,6 +658,10 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
    *
    */
   Widget _getTimePlaceList({value}) {
+    if (value == null) {
+      return Container();
+    }
+
     List _list = List<Widget>();
     for (var i = 0; i < value.length; i++) {
       _list.add(Table(children: [

@@ -502,38 +502,15 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                   ],
                 ),
               ),
-
-              //
-              //
-              //のちほど削除する
-              //
-              //
-
-              Column(
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 5),
-                    child: IconButton(
-                      color: Colors.greenAccent,
-                      icon: const Icon(Icons.info),
-                      onPressed: () => _goSpendDetailDisplayScreen(
-                          context: context, date: _displayDate),
-                    ),
-                  ),
-                  IconButton(
-                    color: Colors.redAccent,
-                    icon: const Icon(Icons.star),
-                    onPressed: () => _goSpendDetailPagingScreen(
-                        context: context, date: _displayDate),
-                  ),
-                ],
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                child: IconButton(
+                  color: Colors.greenAccent,
+                  icon: const Icon(Icons.info),
+                  onPressed: () => _goSpendDetailPagingScreen(
+                      context: context, date: _displayDate),
+                ),
               ),
-
-              //
-              //
-              //のちほど削除する
-              //
-              //
             ],
           ),
         ),
