@@ -43,6 +43,10 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
   // ページインデックス
   int currentPage = 0;
 
+  int _monthend = 0;
+
+  bool _arrowDisp = false;
+
   /**
    * 初期動作
    */
@@ -62,6 +66,13 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
     _month = _utility.month;
 
     _yearmonth = '${_year}-${_month}';
+
+    //))))))))))))))))))))
+    _utility.makeMonthEnd(
+        int.parse(_utility.year), int.parse(_utility.month) + 1, 0);
+    _utility.makeYMDYData(_utility.monthEndDateTime, 0);
+    _monthend = int.parse(_utility.day);
+    //))))))))))))))))))))
 
     ///////////////////////////
     _utility.makeMonthEnd(int.parse(_year), int.parse(_month), 0);
@@ -266,27 +277,100 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
             ),
           ),
           PageView.builder(
-              controller: pageController,
-              itemCount: _monthlyData.length,
-              itemBuilder: (context, index) {
-                //--------------------------------------// リセット
-                bool active = (index == currentPage);
-                if (active == false) {
-                  //print(currentPage);
-                }
-                //--------------------------------------//
+            controller: pageController,
+            itemCount: _monthlyData.length,
+            itemBuilder: (context, index) {
+              //--------------------------------------// リセット
+              bool active = (index == currentPage);
+              if (active == false) {
+                //print(currentPage);
+                _arrowDisp = true;
+              }
+              //--------------------------------------//
 
-                return Card(
-                  color: Colors.black.withOpacity(0.3),
-                  child: Container(
-                    padding: EdgeInsets.all(20),
-                    child: _dispMonthlyDetail(index),
-                  ),
-                );
-              }),
+              return Card(
+                color: Colors.black.withOpacity(0.3),
+                child: Container(
+                  padding: EdgeInsets.all(20),
+                  child: _dispMonthlyDetail(index),
+                ),
+              );
+            },
+          ),
+          _dispMonthMoveArrow(context),
         ],
       ),
     );
+  }
+
+  /**
+   *
+   */
+  Widget _dispMonthMoveArrow(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Expanded(
+          child: Text(
+            '■',
+            style: TextStyle(color: Colors.white.withOpacity(0.1)),
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            _dispPrevArrow(),
+            _dispNextArrow(),
+          ],
+        ),
+      ],
+    );
+  }
+
+  /**
+   *
+   */
+  Widget _dispPrevArrow() {
+    if (_arrowDisp == false) {
+      return Container();
+    }
+
+    return (currentPage == 0)
+        ? Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: 5,
+              vertical: 20,
+            ),
+            child: IconButton(
+              icon: Icon(Icons.keyboard_arrow_left),
+              color: Colors.greenAccent,
+              onPressed: () => _goPrevDate(context: context),
+            ),
+          )
+        : Container();
+  }
+
+  /**
+   *
+   */
+  Widget _dispNextArrow() {
+    if (_arrowDisp == false) {
+      return Container();
+    }
+
+    return (currentPage == (_monthend - 1))
+        ? Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: 5,
+              vertical: 20,
+            ),
+            child: IconButton(
+              icon: Icon(Icons.keyboard_arrow_right),
+              color: Colors.greenAccent,
+              onPressed: () => _goNextDate(context: context),
+            ),
+          )
+        : Container();
   }
 
   /**
@@ -612,17 +696,28 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
 
     List _list = List<Widget>();
     for (var i = 0; i < value.length; i++) {
-      _list.add(Table(children: [
-        TableRow(children: [
-          Text(''),
-          Text('${value[i]['koumoku']}'),
-          Container(
-            alignment: Alignment.topRight,
-            child: Text(
-                '${_utility.makeCurrencyDisplay(value[i]['price'].toString())}'),
-          ),
-        ])
-      ]));
+      _list.add(
+        Table(
+          children: [
+            TableRow(
+              children: [
+                Text(''),
+                Text(
+                  '${value[i]['koumoku']}',
+                  strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+                ),
+                Container(
+                  alignment: Alignment.topRight,
+                  child: Text(
+                    '${_utility.makeCurrencyDisplay(value[i]['price'].toString())}',
+                    strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
+      );
     }
 
     return SingleChildScrollView(
@@ -664,17 +759,58 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
 
     List _list = List<Widget>();
     for (var i = 0; i < value.length; i++) {
-      _list.add(Table(children: [
-        TableRow(children: [
-          Text('${value[i]['time']}'),
-          Text('${value[i]['place']}'),
-          Container(
-            alignment: Alignment.topRight,
-            child: Text(
-                '${_utility.makeCurrencyDisplay(value[i]['price'].toString())}'),
-          ),
-        ])
-      ]));
+      _list.add(
+        (value[i]['place'] == '移動中')
+            ? Container(
+                color: Colors.green[900].withOpacity(0.5),
+                child: Table(
+                  children: [
+                    TableRow(
+                      children: [
+                        Text(
+                          '${value[i]['time']}',
+                          strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+                        ),
+                        Text(
+                          '${value[i]['place']}',
+                          strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+                        ),
+                        Container(
+                          alignment: Alignment.topRight,
+                          child: Text(
+                            '${_utility.makeCurrencyDisplay(value[i]['price'].toString())}',
+                            strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              )
+            : Table(
+                children: [
+                  TableRow(
+                    children: [
+                      Text(
+                        '${value[i]['time']}',
+                        strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+                      ),
+                      Text(
+                        '${value[i]['place']}',
+                        strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+                      ),
+                      Container(
+                        alignment: Alignment.topRight,
+                        child: Text(
+                          '${_utility.makeCurrencyDisplay(value[i]['price'].toString())}',
+                          strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+      );
     }
 
     return SingleChildScrollView(
@@ -805,6 +941,42 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => YachinDataDisplayScreen(),
+      ),
+    );
+  }
+
+  /**
+   * 画面遷移（前日）
+   */
+  void _goPrevDate({BuildContext context}) {
+    _utility.makeYMDYData(widget.date, 0);
+    var _prevDate =
+        new DateTime(int.parse(_utility.year), int.parse(_utility.month), 0);
+    _utility.makeYMDYData(_prevDate.toString(), 0);
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SpendDetailPagingScreen(
+            date: '${_utility.year}-${_utility.month}-${_utility.day}'),
+      ),
+    );
+  }
+
+  /**
+   * 画面遷移（翌日）
+   */
+  void _goNextDate({BuildContext context}) {
+    _utility.makeYMDYData(widget.date, 0);
+    var _nextDate = new DateTime(
+        int.parse(_utility.year), int.parse(_utility.month), _monthend + 1);
+    _utility.makeYMDYData(_nextDate.toString(), 0);
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SpendDetailPagingScreen(
+            date: '${_utility.year}-${_utility.month}-${_utility.day}'),
       ),
     );
   }
