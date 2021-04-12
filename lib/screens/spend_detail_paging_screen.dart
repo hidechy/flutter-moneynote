@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:moneynote/db/database.dart';
+import 'package:moneynote/screens/weekly_data_accordion_screen.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart';
 
@@ -46,6 +48,9 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
   int _monthend = 0;
 
   bool _arrowDisp = false;
+
+  String _benefitDate;
+  String _benefit;
 
   /**
    * 初期動作
@@ -188,18 +193,24 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
           var _monthdate = '${_utility.year}-${_utility.month}-${_utility.day}';
 
           _map['spenditem'] = null;
-          if (monthlyspenditem['data'][_monthdate] != null) {
-            _map['spenditem'] = monthlyspenditem['data'][_monthdate];
+          if (monthlyspenditem['data'].length > 0) {
+            if (monthlyspenditem['data'][_monthdate] != null) {
+              _map['spenditem'] = monthlyspenditem['data'][_monthdate];
+            }
           }
 
           _map['traindata'] = null;
-          if (monthlytraindata['data'][_monthdate] != null) {
-            _map['traindata'] = monthlytraindata['data'][_monthdate];
+          if (monthlytraindata['data'].length > 0) {
+            if (monthlytraindata['data'][_monthdate] != null) {
+              _map['traindata'] = monthlytraindata['data'][_monthdate];
+            }
           }
 
           _map['timeplace'] = null;
-          if (monthlytimeplace['data'][_monthdate] != null) {
-            _map['timeplace'] = monthlytimeplace['data'][_monthdate];
+          if (monthlytimeplace['data'].length > 0) {
+            if (monthlytimeplace['data'][_monthdate] != null) {
+              _map['timeplace'] = monthlytimeplace['data'][_monthdate];
+            }
           }
           /////////////////////////////////////////
 
@@ -227,6 +238,9 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
       }
     });
     /////////////////////////////////
+
+    var _allBenefit = await database.selectBenefitSortedAllRecord;
+    _setBenefitData(yearmonth: '${_year}-${_month}', benefit: _allBenefit);
 
     setState(() {});
   }
@@ -446,6 +460,25 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
                   ),
                 ),
               ),
+
+              //
+              //
+              //
+
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: GestureDetector(
+                  onTap: () => _goWeeklyDataAccordionScreen(index: index),
+                  child: Icon(
+                    FontAwesomeIcons.calendarWeek,
+                    color: Colors.redAccent,
+                  ),
+                ),
+              ),
+
+              //
+              //
+              //
             ],
           ),
         ),
@@ -679,7 +712,10 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
           ),
           Container(
             height: 130,
-            child: _getSpendItemList(value: value),
+            child: _getSpendItemList(
+              value: value,
+              index: index,
+            ),
           ),
         ],
       ),
@@ -689,9 +725,21 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
   /**
    *
    */
-  Widget _getSpendItemList({value}) {
+  bool benefitAdd = false;
+  Widget _getSpendItemList({value, index}) {
     if (value == null) {
       return Container();
+    }
+
+    if (benefitAdd == false) {
+      if ('${_year}-${_month}-${_monthlyData[index]['date']}' == _benefitDate) {
+        Map _map = Map();
+        _map['koumoku'] = '収入';
+        _map['price'] = _benefit;
+        value.add(_map);
+
+        benefitAdd = true;
+      }
     }
 
     List _list = List<Widget>();
@@ -702,15 +750,23 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
             TableRow(
               children: [
                 Text(''),
-                Text(
-                  '${value[i]['koumoku']}',
-                  strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+                Container(
+                  child: Text(
+                    '${value[i]['koumoku']}',
+                    strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+                    style: (value[i]['koumoku'] == '収入')
+                        ? TextStyle(color: Colors.yellowAccent)
+                        : null,
+                  ),
                 ),
                 Container(
                   alignment: Alignment.topRight,
                   child: Text(
                     '${_utility.makeCurrencyDisplay(value[i]['price'].toString())}',
                     strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+                    style: (value[i]['koumoku'] == '収入')
+                        ? TextStyle(color: Colors.yellowAccent)
+                        : null,
                   ),
                 ),
               ],
@@ -896,6 +952,19 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
   /**
    *
    */
+  void _setBenefitData({String yearmonth, List<Benefit> benefit}) {
+    for (var i = 0; i < benefit.length; i++) {
+      var ex_date = (benefit[i].strDate).split('-');
+      if ('${ex_date[0]}-${ex_date[1]}' == yearmonth) {
+        _benefitDate = benefit[i].strDate;
+        _benefit = benefit[i].strPrice;
+      }
+    }
+  }
+
+  /**
+   *
+   */
   void _goSpendSummaryDisplayScreen({int index}) {
     var date = '${_year}-${_month}-${_monthlyData[index]['date']}';
 
@@ -977,6 +1046,20 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
       MaterialPageRoute(
         builder: (context) => SpendDetailPagingScreen(
             date: '${_utility.year}-${_utility.month}-${_utility.day}'),
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  _goWeeklyDataAccordionScreen({int index}) {
+    var date = '${_year}-${_month}-${_monthlyData[index]['date']}';
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => WeeklyDataAccordionScreen(date: date),
       ),
     );
   }
