@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:moneynote/db/database.dart';
-import 'package:moneynote/screens/weekly_data_accordion_screen.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart';
 
@@ -15,6 +13,9 @@ import 'duty_data_display_screen.dart';
 import 'yachin_data_display_screen.dart';
 import 'spend_summary_display_screen.dart';
 import 'weekly_data_display_screen.dart';
+
+import '../db/database.dart';
+import 'weekly_data_accordion_screen.dart';
 
 class SpendDetailPagingScreen extends StatefulWidget {
   final String date;
@@ -52,6 +53,8 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
   String _benefitDate;
   String _benefit;
 
+  Map<String, dynamic> _holidayList = Map();
+
   /**
    * 初期動作
    */
@@ -66,6 +69,15 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
    * 初期データ作成
    */
   void _makeDefaultDisplayData() async {
+    //----------------------- holiday
+    var holidays = await database.selectHolidaySortedAllRecord;
+    if (holidays.length > 0) {
+      for (int i = 0; i < holidays.length; i++) {
+        _holidayList[holidays[i].strDate] = '';
+      }
+    }
+    //----------------------- holiday
+
     _utility.makeYMDYData(widget.date, 0);
     _year = _utility.year;
     _month = _utility.month;
@@ -146,6 +158,22 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
         if ('${_year}-${_month}' == '${_utility.year}-${_utility.month}') {
           var _map = Map();
           _map["date"] = _utility.day;
+
+          _map['youbiNo'] = _utility.youbiNo;
+
+          var holiday_flag = 0;
+          switch (_utility.youbiNo) {
+            case 0:
+            case 6:
+              holiday_flag = 1;
+              break;
+          }
+          if (holiday_flag == 0) {
+            if (_holidayList['${_year}-${_month}-${_utility.day}'] != null) {
+              holiday_flag = 1;
+            }
+          }
+          _map['holiday_flag'] = holiday_flag;
 
           _map["strYen10000"] = _monieData[i].strYen10000;
           _map["strYen5000"] = _monieData[i].strYen5000;
@@ -414,9 +442,15 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
    */
   Widget _dateLineDisplay({int index}) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text('${_utility.day}（${_utility.youbiStr}）'),
+        Expanded(
+          child: Container(
+            child: Text('${_utility.day}（${_utility.youbiStr}）'),
+            color: (_monthlyData[index]['holiday_flag'] == 1)
+                ? _getBGColor(youbiNo: _monthlyData[index]['youbiNo'])
+                : null,
+          ),
+        ),
         Container(
           child: Row(
             children: <Widget>[
@@ -453,37 +487,35 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: GestureDetector(
-                  onTap: () => _goWeeklyDataDisplayScreen(index: index),
+                  onTap: () => _goWeeklyDataAccordionScreen(index: index),
                   child: Icon(
                     FontAwesomeIcons.calendarWeek,
                     color: Colors.greenAccent,
                   ),
                 ),
               ),
-
-              //
-              //
-              //
-
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: GestureDetector(
-                  onTap: () => _goWeeklyDataAccordionScreen(index: index),
-                  child: Icon(
-                    FontAwesomeIcons.calendarWeek,
-                    color: Colors.redAccent,
-                  ),
-                ),
-              ),
-
-              //
-              //
-              //
             ],
           ),
         ),
       ],
     );
+  }
+
+  /**
+   *
+   */
+  Color _getBGColor({youbiNo}) {
+    switch (youbiNo) {
+      case 0:
+        return Colors.redAccent[700].withOpacity(0.3);
+        break;
+      case 6:
+        return Colors.blueAccent[700].withOpacity(0.3);
+        break;
+      default:
+        return Colors.greenAccent[700].withOpacity(0.3);
+        break;
+    }
   }
 
   /**
@@ -816,56 +848,34 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
     List _list = List<Widget>();
     for (var i = 0; i < value.length; i++) {
       _list.add(
-        (value[i]['place'] == '移動中')
-            ? Container(
-                color: Colors.green[900].withOpacity(0.5),
-                child: Table(
-                  children: [
-                    TableRow(
-                      children: [
-                        Text(
-                          '${value[i]['time']}',
-                          strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
-                        ),
-                        Text(
-                          '${value[i]['place']}',
-                          strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
-                        ),
-                        Container(
-                          alignment: Alignment.topRight,
-                          child: Text(
-                            '${_utility.makeCurrencyDisplay(value[i]['price'].toString())}',
-                            strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              )
-            : Table(
+        Container(
+          color: (value[i]['place'] == '移動中')
+              ? Colors.green[900].withOpacity(0.5)
+              : null,
+          child: Table(
+            children: [
+              TableRow(
                 children: [
-                  TableRow(
-                    children: [
-                      Text(
-                        '${value[i]['time']}',
-                        strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
-                      ),
-                      Text(
-                        '${value[i]['place']}',
-                        strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
-                      ),
-                      Container(
-                        alignment: Alignment.topRight,
-                        child: Text(
-                          '${_utility.makeCurrencyDisplay(value[i]['price'].toString())}',
-                          strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
-                        ),
-                      ),
-                    ],
-                  )
+                  Text(
+                    '${value[i]['time']}',
+                    strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+                  ),
+                  Text(
+                    '${value[i]['place']}',
+                    strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+                  ),
+                  Container(
+                    alignment: Alignment.topRight,
+                    child: Text(
+                      '${_utility.makeCurrencyDisplay(value[i]['price'].toString())}',
+                      strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+                    ),
+                  ),
                 ],
-              ),
+              )
+            ],
+          ),
+        ),
       );
     }
 

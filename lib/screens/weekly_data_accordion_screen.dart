@@ -6,6 +6,8 @@ import 'dart:convert';
 import '../utilities/utility.dart';
 import '../main.dart';
 
+import '../db/database.dart';
+
 class WeeklyDataAccordionScreen extends StatefulWidget {
   final String date;
   WeeklyDataAccordionScreen({@required this.date});
@@ -21,11 +23,19 @@ class _WeeklyDataAccordionScreenState extends State<WeeklyDataAccordionScreen> {
   String _year = '';
   String _month = '';
 
-  int _weeknum;
+  int _weeknum = 0;
 
   List<String> _weekday = List();
 
   var _weekDayList = new List<WeekDay>();
+
+  String _benefitDate;
+  String _benefit;
+
+  Map<String, dynamic> _holidayList = Map();
+
+  DateTime _prevDate = DateTime.now();
+  DateTime _nextDate = DateTime.now();
 
   /**
    * 初期動作
@@ -41,6 +51,15 @@ class _WeeklyDataAccordionScreenState extends State<WeeklyDataAccordionScreen> {
    * 初期データ作成
    */
   void _makeDefaultDisplayData() async {
+    //----------------------- holiday
+    var holidays = await database.selectHolidaySortedAllRecord;
+    if (holidays.length > 0) {
+      for (int i = 0; i < holidays.length; i++) {
+        _holidayList[holidays[i].strDate] = '';
+      }
+    }
+    //----------------------- holiday
+
     _utility.makeYMDYData(widget.date, 0);
     _year = _utility.year;
     _month = _utility.month;
@@ -70,8 +89,6 @@ class _WeeklyDataAccordionScreenState extends State<WeeklyDataAccordionScreen> {
     if (response2 != null) {
       spenditemweekly = jsonDecode(response2.body);
 
-      print(spenditemweekly);
-
       for (var i = 0; i < spenditemweekly['data'].length; i++) {
         _weekday.add(spenditemweekly['data'][i]['date'].toString());
       }
@@ -99,12 +116,16 @@ class _WeeklyDataAccordionScreenState extends State<WeeklyDataAccordionScreen> {
 
     //-----------------//
     int _prevWeekEndTotal = 0;
-    var ex_weekday0 = _weekday[0].split('-');
 
-    var _prevWeekEndDateTime = new DateTime(int.parse(ex_weekday0[0]),
+    var ex_weekday0 = _weekday[0].split('-');
+    _prevDate = new DateTime(int.parse(ex_weekday0[0]),
         int.parse(ex_weekday0[1]), int.parse(ex_weekday0[2]) - 1);
 
-    _utility.makeYMDYData(_prevWeekEndDateTime.toString(), 0);
+    var ex_weekday6 = _weekday[6].split('-');
+    _nextDate = new DateTime(int.parse(ex_weekday6[0]),
+        int.parse(ex_weekday6[1]), int.parse(ex_weekday6[2]) + 1);
+
+    _utility.makeYMDYData(_prevDate.toString(), 0);
 
     var val = await database
         .selectRecord('${_utility.year}-${_utility.month}-${_utility.day}');
@@ -203,12 +224,27 @@ class _WeeklyDataAccordionScreenState extends State<WeeklyDataAccordionScreen> {
 
       _utility.makeYMDYData(_weekday[i], 0);
 
+      var holiday_flag = 0;
+      switch (_utility.youbiNo) {
+        case 0:
+        case 6:
+          holiday_flag = 1;
+          break;
+      }
+      if (holiday_flag == 0) {
+        if (_holidayList['${_year}-${_month}-${_utility.day}'] != null) {
+          holiday_flag = 1;
+        }
+      }
+
       _weekDayList.add(
         WeekDay(
           isExpanded: false,
           date: _weekday[i],
           youbi: _utility.youbiStr,
           data: _map,
+          youbiNo: _utility.youbiNo,
+          holidayFlag: holiday_flag,
         ),
       );
 
@@ -217,6 +253,9 @@ class _WeeklyDataAccordionScreenState extends State<WeeklyDataAccordionScreen> {
       j++;
     }
     //<<<<<<<<<<<<<<<<<<<<<<<<<//
+
+    var _allBenefit = await database.selectBenefitSortedAllRecord;
+    _setBenefitData(yearmonth: '${_year}-${_month}', benefit: _allBenefit);
 
     setState(() {});
   }
@@ -252,24 +291,29 @@ class _WeeklyDataAccordionScreenState extends State<WeeklyDataAccordionScreen> {
    */
   @override
   Widget build(BuildContext context) {
+    var _headerTitle =
+        (_weekDayList.length > 0) ? '${_year}-${_month} [${_weeknum}wks]' : '';
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black.withOpacity(0.1),
-        title: Text('${_year}-${_month} [${_weeknum}wks]'),
+        title: Text('${_headerTitle}'),
         centerTitle: true,
-
-        //-------------------------//これを消すと「←」が出てくる（消さない）
-        leading: Icon(
-          Icons.check_box_outline_blank,
-          color: Color(0xFF2e2e2e),
+        leading: IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: () => Navigator.pop(context),
+          color: Colors.greenAccent,
         ),
-        //-------------------------//これを消すと「←」が出てくる（消さない）
-
         actions: <Widget>[
           IconButton(
-            icon: const Icon(Icons.close),
-            onPressed: () => Navigator.pop(context),
-            color: Colors.greenAccent,
+            icon: const Icon(Icons.skip_previous),
+            tooltip: '前日',
+            onPressed: () => _goPrevWeek(context: context),
+          ),
+          IconButton(
+            icon: const Icon(Icons.skip_next),
+            tooltip: '翌日',
+            onPressed: () => _goNextWeek(context: context),
           ),
         ],
       ),
@@ -303,35 +347,36 @@ class _WeeklyDataAccordionScreenState extends State<WeeklyDataAccordionScreen> {
    *
    */
   ExpansionPanel _createPanel(WeekDay wday) {
-    var ex_date = (wday.date).split('-');
-
     return ExpansionPanel(
       canTapOnHeader: true,
       //
       headerBuilder: (BuildContext context, bool isExpanded) {
         return Container(
-          color: Colors.black.withOpacity(0.1),
+          color: _getBGColor(value: wday),
           padding: EdgeInsets.all(8.0),
-          child: Row(
-            children: <Widget>[
-              Text(
-                '${ex_date[0]}\n${ex_date[1]}-${ex_date[2]}（${wday.youbi}）',
-                style: TextStyle(fontSize: 12),
-              ),
-              Expanded(
-                child: Container(
+          child: DefaultTextStyle(
+            style: TextStyle(fontSize: 12),
+            child: Row(
+              children: <Widget>[
+                Text(
+                  '${wday.date}（${wday.youbi}）',
+                  style: TextStyle(fontSize: 12),
+                ),
+                Expanded(
+                  child: Container(
+                    alignment: Alignment.topRight,
+                    child: Text(
+                        '${_utility.makeCurrencyDisplay(wday.data['total'].toString())}'),
+                  ),
+                ),
+                Container(
+                  width: 80,
                   alignment: Alignment.topRight,
                   child: Text(
-                      '${_utility.makeCurrencyDisplay(wday.data['total'].toString())}'),
+                      '${_utility.makeCurrencyDisplay(wday.data['diff'].toString())}'),
                 ),
-              ),
-              Container(
-                width: 80,
-                alignment: Alignment.topRight,
-                child: Text(
-                    '${_utility.makeCurrencyDisplay(wday.data['diff'].toString())}'),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
@@ -380,6 +425,7 @@ class _WeeklyDataAccordionScreenState extends State<WeeklyDataAccordionScreen> {
               indent: 20.0,
               endIndent: 20.0,
             ),
+            //
             (wday.data['strBankA'] == '0')
                 ? Container()
                 : Table(
@@ -430,6 +476,7 @@ class _WeeklyDataAccordionScreenState extends State<WeeklyDataAccordionScreen> {
               indent: 20.0,
               endIndent: 20.0,
             ),
+            //
             (wday.data['strPayA'] == '0')
                 ? Container()
                 : Table(
@@ -480,12 +527,44 @@ class _WeeklyDataAccordionScreenState extends State<WeeklyDataAccordionScreen> {
               indent: 20.0,
               endIndent: 20.0,
             ),
+            //
+            _spendItemDisplay(value: wday.data),
+            const Divider(
+              color: Colors.indigo,
+              height: 20.0,
+              indent: 20.0,
+              endIndent: 20.0,
+            ),
+            //
+
+            _timeplaceDisplay(value: wday.data),
           ],
         ),
       ),
       //
       isExpanded: wday.isExpanded,
     );
+  }
+
+  /**
+   *
+   */
+  Color _getBGColor({WeekDay value}) {
+    if (value.holidayFlag == 0) {
+      return Colors.black.withOpacity(0.1);
+    }
+
+    switch (value.youbiNo) {
+      case 0:
+        return Colors.redAccent[700].withOpacity(0.3);
+        break;
+      case 6:
+        return Colors.blueAccent[700].withOpacity(0.3);
+        break;
+      default:
+        return Colors.greenAccent[700].withOpacity(0.3);
+        break;
+    }
   }
 
   /**
@@ -522,6 +601,195 @@ class _WeeklyDataAccordionScreenState extends State<WeeklyDataAccordionScreen> {
         break;
     }
   }
+
+  /**
+   *
+   */
+  Widget _spendItemDisplay({value}) {
+    if (value['spend'][0]['koumoku'] == '') {
+      return Container();
+    }
+
+    return Column(
+      children: <Widget>[
+        Container(
+          alignment: Alignment.topRight,
+          child: Text(
+            '${_utility.makeCurrencyDisplay(value['diff'].toString())}',
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.greenAccent,
+            ),
+          ),
+        ),
+        _getSpendItemList(value: value['spend']),
+      ],
+    );
+  }
+
+  /**
+   *
+   */
+  bool benefitAdd = false;
+  Widget _getSpendItemList({value}) {
+    if (benefitAdd == false) {
+      if ('${value[0]['date']}' == _benefitDate) {
+        Map _map = Map();
+        _map['koumoku'] = '収入';
+        _map['price'] = _benefit;
+        value.add(_map);
+
+        benefitAdd = true;
+      }
+    }
+
+    List _list = List<Widget>();
+    for (var i = 0; i < value.length; i++) {
+      _list.add(
+        Table(
+          children: [
+            TableRow(
+              children: [
+                Text(''),
+                Text(''),
+                Text(
+                  '${value[i]['koumoku']}',
+                  strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+                  style: (value[i]['koumoku'] == '収入')
+                      ? TextStyle(color: Colors.yellowAccent)
+                      : null,
+                ),
+                Container(
+                  alignment: Alignment.topRight,
+                  child: Text(
+                    '${_utility.makeCurrencyDisplay(value[i]['price'].toString())}',
+                    strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+                    style: (value[i]['koumoku'] == '収入')
+                        ? TextStyle(color: Colors.yellowAccent)
+                        : null,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
+
+    return DefaultTextStyle(
+      style: TextStyle(fontSize: 12),
+      child: Column(
+        children: _list,
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  void _setBenefitData({String yearmonth, List<Benefit> benefit}) {
+    for (var i = 0; i < benefit.length; i++) {
+      var ex_date = (benefit[i].strDate).split('-');
+      if ('${ex_date[0]}-${ex_date[1]}' == yearmonth) {
+        _benefitDate = benefit[i].strDate;
+        _benefit = benefit[i].strPrice;
+      }
+    }
+  }
+
+  /**
+   *
+   */
+  Widget _timeplaceDisplay({Map value}) {
+    if (value['timeplace'].length == 0) {
+      return Container();
+    }
+
+    return Row(
+      children: <Widget>[
+        Container(
+          width: 90,
+        ),
+        Expanded(
+          child: _getTimeplaceList(value: value['timeplace']),
+        ),
+      ],
+    );
+  }
+
+  /**
+   *
+   */
+  Widget _getTimeplaceList({value}) {
+    List _list = List<Widget>();
+    for (var i = 0; i < value.length; i++) {
+      _list.add(
+        Container(
+          color: (value[i]['place'] == '移動中')
+              ? Colors.green[900].withOpacity(0.5)
+              : null,
+          child: Table(
+            children: [
+              TableRow(
+                children: [
+                  Text(
+                    '${value[i]['time']}',
+                    strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+                  ),
+                  Text(
+                    '${value[i]['place']}',
+                    strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+                  ),
+                  Container(
+                    alignment: Alignment.topRight,
+                    child: Text(
+                      '${_utility.makeCurrencyDisplay(value[i]['price'].toString())}',
+                      strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      );
+    }
+
+    return SingleChildScrollView(
+      child: DefaultTextStyle(
+        style: TextStyle(fontSize: 12),
+        child: Column(
+          children: _list,
+        ),
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  _goPrevWeek({BuildContext context}) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            WeeklyDataAccordionScreen(date: _prevDate.toString()),
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  _goNextWeek({BuildContext context}) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            WeeklyDataAccordionScreen(date: _nextDate.toString()),
+      ),
+    );
+  }
 }
 
 class WeekDay {
@@ -529,6 +797,15 @@ class WeekDay {
   String date;
   String youbi;
   Map data;
+  int youbiNo;
+  int holidayFlag;
 
-  WeekDay({this.isExpanded, this.date, this.youbi, this.data});
+  WeekDay({
+    this.isExpanded,
+    this.date,
+    this.youbi,
+    this.data,
+    this.youbiNo,
+    this.holidayFlag,
+  });
 }
