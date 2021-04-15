@@ -4,6 +4,7 @@ import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel;
 import 'package:flutter_calendar_carousel/classes/event.dart';
+import 'package:moneynote/utilities/custom_shape_clipper.dart';
 import 'main.dart';
 
 import 'screens/monthly_list_screen.dart';
@@ -90,12 +91,29 @@ class _CalenderState extends State<Calender> {
    */
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return new Scaffold(
       extendBodyBehindAppBar: true,
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
           _utility.getBackGround(context: context),
+
+          ClipPath(
+            clipper: CustomShapeClipper(),
+            child: Container(
+              height: size.height * 0.7,
+              width: size.width * 0.7,
+              margin: EdgeInsets.only(top: 5, left: 6),
+              color: Colors.yellowAccent.withOpacity(0.2),
+              child: Text(
+                '■',
+                style: TextStyle(color: Colors.white.withOpacity(0.1)),
+              ),
+            ),
+          ),
+
           CalendarCarousel<Event>(
             minSelectedDate: new DateTime(2020, 1, 1),
 

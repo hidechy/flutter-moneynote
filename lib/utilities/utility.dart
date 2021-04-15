@@ -12,28 +12,11 @@ class Utility {
   Widget getBackGround({context}) {
     Size size = MediaQuery.of(context).size;
 
-    return Stack(
-      children: <Widget>[
-        Image.asset(
-          'assets/image/bg.png',
-          fit: BoxFit.fitHeight,
-          color: Colors.black.withOpacity(0.7),
-          colorBlendMode: BlendMode.darken,
-        ),
-        ClipPath(
-          clipper: CustomShapeClipper(),
-          child: Container(
-            height: size.height * 0.7,
-            width: size.width * 0.7,
-            margin: EdgeInsets.only(top: 5, left: 6),
-            color: Colors.yellowAccent.withOpacity(0.2),
-            child: Text(
-              '■',
-              style: TextStyle(color: Colors.white.withOpacity(0.1)),
-            ),
-          ),
-        ),
-      ],
+    return Image.asset(
+      'assets/image/bg.png',
+      fit: BoxFit.fitHeight,
+      color: Colors.black.withOpacity(0.7),
+      colorBlendMode: BlendMode.darken,
     );
   }
 

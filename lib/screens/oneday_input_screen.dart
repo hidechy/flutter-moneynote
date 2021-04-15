@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:moneynote/utilities/custom_shape_clipper.dart';
 import 'package:toast/toast.dart';
 
 import '../main.dart';
@@ -167,6 +168,19 @@ class _OnedayInputScreenState extends State<OnedayInputScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           _utility.getBackGround(context: context),
+          ClipPath(
+            clipper: CustomShapeClipper(),
+            child: Container(
+              height: size.height * 0.7,
+              width: size.width * 0.7,
+              margin: EdgeInsets.only(top: 5, left: 6),
+              color: Colors.yellowAccent.withOpacity(0.2),
+              child: Text(
+                '■',
+                style: TextStyle(color: Colors.white.withOpacity(0.1)),
+              ),
+            ),
+          ),
           SingleChildScrollView(
             child: Container(
               child: Column(

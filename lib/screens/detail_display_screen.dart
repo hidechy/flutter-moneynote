@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moneynote/screens/spend_detail_paging_screen.dart';
+import 'package:moneynote/utilities/custom_shape_clipper.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:bubble/bubble.dart';
@@ -240,6 +241,19 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           _utility.getBackGround(context: context),
+          ClipPath(
+            clipper: CustomShapeClipper(),
+            child: Container(
+              height: size.height * 0.7,
+              width: size.width * 0.7,
+              margin: EdgeInsets.only(top: 5, left: 6),
+              color: Colors.yellowAccent.withOpacity(0.2),
+              child: Text(
+                '■',
+                style: TextStyle(color: Colors.white.withOpacity(0.1)),
+              ),
+            ),
+          ),
           _detailDisplayBox(context),
         ],
       ),

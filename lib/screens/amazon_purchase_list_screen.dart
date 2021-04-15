@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:moneynote/utilities/custom_shape_clipper.dart';
 
 import 'dart:convert';
 
@@ -67,6 +68,8 @@ class _AmazonPurchaseListScreenState extends State<AmazonPurchaseListScreen> {
   Widget build(BuildContext context) {
     _utility.makeYMDYData(widget.date, 0);
 
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black.withOpacity(0.1),
@@ -92,6 +95,19 @@ class _AmazonPurchaseListScreenState extends State<AmazonPurchaseListScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           _utility.getBackGround(context: context),
+          ClipPath(
+            clipper: CustomShapeClipper(),
+            child: Container(
+              height: size.height * 0.7,
+              width: size.width * 0.7,
+              margin: EdgeInsets.only(top: 5, left: 6),
+              color: Colors.yellowAccent.withOpacity(0.2),
+              child: Text(
+                '■',
+                style: TextStyle(color: Colors.white.withOpacity(0.1)),
+              ),
+            ),
+          ),
           Column(
             children: <Widget>[
               Container(
