@@ -219,7 +219,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          _utility.getBackGround(),
+          _utility.getBackGround(context: context),
 
           //----------------------//graph
           Card(

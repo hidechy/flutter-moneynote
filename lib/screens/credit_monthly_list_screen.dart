@@ -140,7 +140,7 @@ class _CreditMonthlyListScreenState extends State<CreditMonthlyListScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          _utility.getBackGround(),
+          _utility.getBackGround(context: context),
           _monthlyCreditList(),
         ],
       ),

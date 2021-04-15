@@ -206,7 +206,7 @@ class _SpendDetailDisplayScreenState extends State<SpendDetailDisplayScreen> {
         ],
       ),
       body: Stack(fit: StackFit.expand, children: <Widget>[
-        _utility.getBackGround(),
+        _utility.getBackGround(context: context),
         Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),

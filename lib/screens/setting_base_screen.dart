@@ -20,15 +20,13 @@ class _SettingBaseScreenState extends State<SettingBaseScreen> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: Text(
-          'Settings'
-        ),
+        title: Text('Settings'),
         centerTitle: true,
       ),
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          _utility.getBackGround(),
+          _utility.getBackGround(context: context),
           Container(
             margin: EdgeInsets.only(top: 50),
             child: Column(

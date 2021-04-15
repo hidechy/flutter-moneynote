@@ -135,6 +135,8 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
       _scoreData.add(_map);
     } //for[i]
 
+    _scoreData.removeLast();
+
     //////////////////////////////////////////////////
     var scoreCount = _scoreData.length;
     var gain = 0;
@@ -170,7 +172,7 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          _utility.getBackGround(),
+          _utility.getBackGround(context: context),
           _scoreList(),
         ],
       ),
@@ -239,16 +241,6 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
               TableRow(children: [
                 _getDisplayContainer(
                     align: 'right',
-                    text: 'score : ',
-                    position: null,
-                    column: null),
-                _getDisplayContainer(
-                    align: 'right',
-                    text: '',
-                    position: position,
-                    column: 'score'),
-                _getDisplayContainer(
-                    align: 'right',
                     text: 'spend : ',
                     position: null,
                     column: null),
@@ -257,9 +249,6 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
                     text: '',
                     position: position,
                     column: 'minus'),
-                Container(),
-              ]),
-              TableRow(children: [
                 _getDisplayContainer(
                     align: 'right',
                     text: 'benefit : ',
@@ -270,6 +259,19 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
                     text: '',
                     position: position,
                     column: 'benefit'),
+                Container(),
+              ]),
+              TableRow(children: [
+                _getDisplayContainer(
+                    align: 'right',
+                    text: 'score : ',
+                    position: null,
+                    column: null),
+                _getDisplayContainer(
+                    align: 'right',
+                    text: '',
+                    position: position,
+                    column: 'score'),
                 _getDisplayContainer(
                     align: 'right',
                     text: 'gain : ',

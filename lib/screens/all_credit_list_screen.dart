@@ -93,7 +93,7 @@ class _AllCreditListScreenState extends State<AllCreditListScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          _utility.getBackGround(),
+          _utility.getBackGround(context: context),
           Container(
             margin: EdgeInsets.only(top: 50),
             child: Column(

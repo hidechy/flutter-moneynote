@@ -201,7 +201,7 @@ class _WeeklyDataDisplayScreenState extends State<WeeklyDataDisplayScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          _utility.getBackGround(),
+          _utility.getBackGround(context: context),
           Column(
             children: <Widget>[
               Row(

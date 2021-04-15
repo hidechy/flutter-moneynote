@@ -139,7 +139,7 @@ class _AlldayListScreenState extends State<AlldayListScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          _utility.getBackGround(),
+          _utility.getBackGround(context: context),
           Container(
             margin: EdgeInsets.only(top: 50),
             child: ScrollablePositionedList.builder(

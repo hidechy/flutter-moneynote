@@ -95,7 +95,7 @@ class _CalenderState extends State<Calender> {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          _utility.getBackGround(),
+          _utility.getBackGround(context: context),
           CalendarCarousel<Event>(
             minSelectedDate: new DateTime(2020, 1, 1),
 

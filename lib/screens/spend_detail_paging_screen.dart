@@ -7,7 +7,6 @@ import 'dart:convert';
 
 import '../utilities/utility.dart';
 import '../main.dart';
-import '../utilities/custom_shape_clipper.dart';
 
 import 'duty_data_display_screen.dart';
 import 'yachin_data_display_screen.dart';
@@ -304,20 +303,7 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          _utility.getBackGround(),
-          ClipPath(
-            clipper: CustomShapeClipper(),
-            child: Container(
-              height: size.height * 0.7,
-              width: size.width * 0.7,
-              margin: EdgeInsets.only(top: 5, left: 6),
-              color: Colors.yellowAccent.withOpacity(0.2),
-              child: Text(
-                '■',
-                style: TextStyle(color: Colors.white.withOpacity(0.1)),
-              ),
-            ),
-          ),
+          _utility.getBackGround(context: context),
           PageView.builder(
             controller: pageController,
             itemCount: _monthlyData.length,

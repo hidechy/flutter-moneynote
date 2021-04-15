@@ -91,7 +91,7 @@ class _AmazonPurchaseListScreenState extends State<AmazonPurchaseListScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          _utility.getBackGround(),
+          _utility.getBackGround(context: context),
           Column(
             children: <Widget>[
               Container(

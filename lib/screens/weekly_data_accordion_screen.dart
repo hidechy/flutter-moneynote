@@ -5,7 +5,6 @@ import 'dart:convert';
 
 import '../utilities/utility.dart';
 import '../main.dart';
-
 import '../db/database.dart';
 
 class WeeklyDataAccordionScreen extends StatefulWidget {
@@ -294,6 +293,8 @@ class _WeeklyDataAccordionScreenState extends State<WeeklyDataAccordionScreen> {
     var _headerTitle =
         (_weekDayList.length > 0) ? '${_year}-${_month} [${_weeknum}wks]' : '';
 
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black.withOpacity(0.1),
@@ -320,7 +321,7 @@ class _WeeklyDataAccordionScreenState extends State<WeeklyDataAccordionScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          _utility.getBackGround(),
+          _utility.getBackGround(context: context),
           ListView(
             children: <Widget>[
               Theme(

@@ -77,7 +77,7 @@ class _SamedayListScreenState extends State<SamedayListScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          _utility.getBackGround(),
+          _utility.getBackGround(context: context),
           DefaultTextStyle(
             style: const TextStyle(fontSize: 16.0),
             child: Column(

@@ -52,7 +52,7 @@ class _HolidayYearListScreenState extends State<HolidayYearListScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          _utility.getBackGround(),
+          _utility.getBackGround(context: context),
           _alldayList(),
         ],
       ),

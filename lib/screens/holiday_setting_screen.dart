@@ -104,7 +104,7 @@ class _HolidaySettingScreenState extends State<HolidaySettingScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          _utility.getBackGround(),
+          _utility.getBackGround(context: context),
           _hidukeList(),
         ],
       ),

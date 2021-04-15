@@ -108,7 +108,7 @@ class _DutyDataDisplayScreenState extends State<DutyDataDisplayScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          _utility.getBackGround(),
+          _utility.getBackGround(context: context),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: Column(

@@ -99,7 +99,7 @@ class _SeiyuuPurchaseListScreenState extends State<SeiyuuPurchaseListScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          _utility.getBackGround(),
+          _utility.getBackGround(context: context),
           Column(
             children: <Widget>[
               Container(
