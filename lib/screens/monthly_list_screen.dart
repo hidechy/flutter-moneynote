@@ -265,7 +265,7 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
                 height: 250,
               ),
               Expanded(
-                child: _utility.getBackGround(),
+                child: _utility.getBackGround(context: context),
               ),
             ],
           ),
@@ -314,17 +314,6 @@ class _MonthlyListScreenState extends State<MonthlyListScreen> {
         return _listItem(position: position);
       },
     );
-
-    /*
-            body: ListView.builder(
-          itemBuilder: (BuildContext context, int index) {
-            if (index >= list.length) {
-              list.addAll(["メッセージ","メッセージ","メッセージ","メッセージ",]);
-            }
-            return _messageItem(list[index]);
-          },
-        )
-    */
   }
 
   /**

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:moneynote/utilities/custom_shape_clipper.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart';
 
@@ -8,14 +7,15 @@ import 'dart:convert';
 
 import '../utilities/utility.dart';
 import '../main.dart';
+import '../db/database.dart';
+import '../utilities/custom_shape_clipper.dart';
 
 import 'duty_data_display_screen.dart';
 import 'yachin_data_display_screen.dart';
 import 'spend_summary_display_screen.dart';
 import 'weekly_data_display_screen.dart';
-
-import '../db/database.dart';
 import 'weekly_data_accordion_screen.dart';
+import 'monthly_trend_display_screen.dart';
 
 class SpendDetailPagingScreen extends StatefulWidget {
   final String date;
@@ -665,19 +665,33 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
           ),
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text(
-                '${_utility.makeCurrencyDisplay(_monthlyData[index]['total'].toString())}'),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: GestureDetector(
-                onTap: () => _uploadDailyData(index: index),
+                onTap: () => _goMonthlyTrendDisplayScreen(),
                 child: Icon(
-                  Icons.cloud_upload,
-                  color: Colors.blueAccent,
+                  Icons.center_focus_strong,
+                  color: Colors.yellowAccent,
                 ),
               ),
+            ),
+            Row(
+              children: <Widget>[
+                Text(
+                    '${_utility.makeCurrencyDisplay(_monthlyData[index]['total'].toString())}'),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: GestureDetector(
+                    onTap: () => _uploadDailyData(index: index),
+                    child: Icon(
+                      Icons.cloud_upload,
+                      color: Colors.blueAccent,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -1070,6 +1084,18 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => WeeklyDataAccordionScreen(date: date),
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  void _goMonthlyTrendDisplayScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MonthlyTrendDisplayScreen(),
       ),
     );
   }
