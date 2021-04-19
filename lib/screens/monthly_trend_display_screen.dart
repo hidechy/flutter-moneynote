@@ -21,6 +21,8 @@ class _MonthlyTrendDisplayScreenState extends State<MonthlyTrendDisplayScreen> {
   final _controllerX = ScrollController();
   final _controllerY = ScrollController();
 
+  List<Map<dynamic, dynamic>> _yearStartMoney = List();
+
   /**
    * 初期動作
    */
@@ -58,6 +60,8 @@ class _MonthlyTrendDisplayScreenState extends State<MonthlyTrendDisplayScreen> {
       Map data = jsonDecode(response.body);
 
       for (var i = 0; i < data['data'].length; i++) {
+        _makeYearStartMoney(data: data['data'][i]);
+
         Map _map = Map();
         _map['year'] = data['data'][i]['year'];
         _map['price'] = data['data'][i]['price'];
@@ -75,9 +79,22 @@ class _MonthlyTrendDisplayScreenState extends State<MonthlyTrendDisplayScreen> {
     }
     ///////////////////////////////////////////
 
-    print(_trendData);
+    print(_yearStartMoney);
 
     setState(() {});
+  }
+
+  /**
+   *
+   */
+  _makeYearStartMoney({data}) {
+    var ex_price = (data['price']).split('|');
+    if (data['year'] > 2014) {
+      Map _map = Map();
+      _map['year'] = data['year'];
+      _map['price'] = ex_price[0];
+      _yearStartMoney.add(_map);
+    }
   }
 
   /**
@@ -189,6 +206,8 @@ class _MonthlyTrendDisplayScreenState extends State<MonthlyTrendDisplayScreen> {
       ),
     );
 
+    var _cellHeight = 160.0;
+
     List<Widget> _listColumn = [];
     for (var j = 0; j < _trendData.length; j++) {
       var ex_manen = (_trendData[j]['manen']).split('|');
@@ -200,13 +219,14 @@ class _MonthlyTrendDisplayScreenState extends State<MonthlyTrendDisplayScreen> {
       var ex_price = (_trendData[j]['price']).split('|');
       ex_price.insert(0, _trendData[j]['year'].toString());
       for (var i = 0; i < ex_price.length; i++) {
+        ////////////////////////////////////
         _listRow.add(
           (i == 0)
               ? Container(
                   decoration: (i != 0) ? _decoration : _decoration2,
                   margin: EdgeInsets.all(2),
                   width: 80,
-                  height: 120,
+                  height: _cellHeight,
                   child: Text('${ex_price[i]}'),
                 )
               : Container(
@@ -214,60 +234,27 @@ class _MonthlyTrendDisplayScreenState extends State<MonthlyTrendDisplayScreen> {
                   margin: EdgeInsets.all(2),
                   padding: EdgeInsets.all(5),
                   width: 80,
-                  height: 120,
+                  height: _cellHeight,
                   alignment: Alignment.topCenter,
                   child: (ex_price[i] == '-')
                       ? Text(
                           '',
                           style: TextStyle(fontSize: 12),
                         )
-                      : Column(
-                          children: <Widget>[
-                            //-----------------------------------//
-                            Text(
-                              '${_utility.makeCurrencyDisplay(ex_price[i])}',
-                              style: TextStyle(fontSize: 12),
-                              strutStyle:
-                                  StrutStyle(fontSize: 12.0, height: 1.3),
-                            ),
-                            //
-                            Text(
-                              '${ex_manen[i - 1]}',
-                              style: TextStyle(fontSize: 12),
-                              strutStyle:
-                                  StrutStyle(fontSize: 12.0, height: 1.3),
-                            ),
-                            //
-                            (ex_updown[i - 1] == '1')
-                                ? Icon(Icons.add,
-                                    size: 20, color: Colors.greenAccent)
-                                : Icon(Icons.remove,
-                                    size: 20, color: Colors.redAccent),
-                            //
-                            Text(
-                              '${ex_sagaku[i - 1]}',
-                              style: TextStyle(fontSize: 12),
-                              strutStyle:
-                                  StrutStyle(fontSize: 12.0, height: 1.3),
-                            ),
-                            //
-                            Container(
-                              alignment: Alignment.topCenter,
-                              margin: EdgeInsets.only(top: 5),
-                              color: Colors.yellowAccent.withOpacity(0.3),
-                              width: double.infinity,
-                              child: Text(
-                                '${ex_salary[i - 1]}',
-                                style: TextStyle(fontSize: 12),
-                                strutStyle:
-                                    StrutStyle(fontSize: 12.0, height: 1.3),
-                              ),
-                            ),
-                            //-----------------------------------//
-                          ],
+                      : _getOneBlockItem(
+                          year: _trendData[j]['year'],
+                          month: i,
+                          cellNo: i,
+                          price: ex_price,
+                          manen: ex_manen,
+                          updown: ex_updown,
+                          sagaku: ex_sagaku,
+                          salary: ex_salary,
                         ),
                 ),
         );
+        ////////////////////////////////////
+
       }
 
       _listColumn.add(
@@ -279,6 +266,7 @@ class _MonthlyTrendDisplayScreenState extends State<MonthlyTrendDisplayScreen> {
 
     List<Widget> _listRow = [];
 
+    //---------------------------------------//line1 month
     for (var i = 0; i <= 12; i++) {
       _listRow.add(
         Container(
@@ -298,11 +286,160 @@ class _MonthlyTrendDisplayScreenState extends State<MonthlyTrendDisplayScreen> {
         children: _listRow,
       ),
     );
+    //---------------------------------------//line1 month
 
     return Container(
       child: Column(
         children: _listColumn,
       ),
     );
+  }
+
+  /**
+   *
+   */
+  Widget _getOneBlockItem({
+    year,
+    month,
+    cellNo,
+    price,
+    manen,
+    updown,
+    sagaku,
+    salary,
+  }) {
+    var ym = '${year}-${month.toString().padLeft(2, "0")}';
+
+    return Column(
+      children: <Widget>[
+        //-----------------------------------//
+        //
+        Container(
+          padding: EdgeInsets.only(bottom: 3),
+          alignment: Alignment.topRight,
+          child: Text(
+            '${ym}',
+            style: TextStyle(fontSize: 10),
+          ),
+        ),
+        //
+        Text(
+          '${_utility.makeCurrencyDisplay(price[cellNo])}',
+          style: TextStyle(fontSize: 12),
+          strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+        ),
+        //
+        Text(
+          '${manen[cellNo - 1]}',
+          style: TextStyle(fontSize: 12),
+          strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+        ),
+        //
+        (updown[cellNo - 1] == '1')
+            ? Icon(Icons.add, size: 20, color: Colors.greenAccent)
+            : Icon(Icons.remove, size: 20, color: Colors.redAccent),
+        //
+        Text(
+          '${sagaku[cellNo - 1]}',
+          style: TextStyle(fontSize: 12),
+          strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+        ),
+        //
+        Container(
+          alignment: Alignment.topCenter,
+          margin: EdgeInsets.only(top: 5),
+          color: Colors.yellowAccent.withOpacity(0.3),
+          width: double.infinity,
+          child: Text(
+            '${salary[cellNo - 1]}',
+            style: TextStyle(fontSize: 12),
+            strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+          ),
+        ),
+        //
+        _getMonthSpend(
+            cellNo: cellNo,
+            updown: updown,
+            salary: salary,
+            sagaku: sagaku,
+            ym: ym,
+            price: price),
+        //
+        //-----------------------------------//
+      ],
+    );
+  }
+
+  /**
+   *
+   */
+  Widget _getMonthSpend({cellNo, updown, salary, sagaku, ym, price}) {
+    var answer = 0;
+
+    if (cellNo > updown.length) {
+      return Container();
+    } else if (cellNo == updown.length) {
+      var _nextYearStart = _getNextYearStart(ym: ym, data: _yearStartMoney);
+      var diff = (int.parse(_nextYearStart) - int.parse(price[cellNo]));
+      var _sagaku = (diff / 10000).round();
+
+      var _salary = (salary[cellNo - 1]).replaceAll('万円', '');
+      if (_salary == '-') {
+        _salary = '0';
+      }
+
+      if (_sagaku < 0) {
+        answer = (int.parse(_salary) + (_sagaku * -1));
+      } else {
+        answer = (int.parse(_salary) - _sagaku);
+      }
+    } else {
+      var _salary = (salary[cellNo - 1]).replaceAll('万円', '');
+      if (_salary == '-') {
+        _salary = '0';
+      }
+
+      var _sagaku = (sagaku[cellNo]).replaceAll('万円', '');
+
+      switch (updown[cellNo]) {
+        case '0':
+          answer = (int.parse(_salary) + int.parse(_sagaku));
+          break;
+        case '1':
+          answer = (int.parse(_salary) - int.parse(_sagaku));
+          break;
+      }
+    }
+
+    return Container(
+      alignment: Alignment.topCenter,
+      margin: EdgeInsets.only(top: 5),
+      color: Colors.redAccent.withOpacity(0.3),
+      width: double.infinity,
+      child: Column(
+        children: <Widget>[
+          Text(
+            '${answer}万円',
+            style: TextStyle(fontSize: 12),
+            strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  String _getNextYearStart({ym, List<Map> data}) {
+    var price;
+    var ex_ym = (ym).split('-');
+    for (var i = 0; i < data.length; i++) {
+      if ((int.parse(ex_ym[0]) + 1) == data[i]['year']) {
+        price = data[i]['price'];
+        break;
+      }
+    }
+    return price;
   }
 }
