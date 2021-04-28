@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:http/http.dart';
@@ -291,6 +292,26 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
                   ],
                 ),
               ),
+              (_selectedMonth != "")
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        InkWell(
+                          onTap: () => _showBankRecord(),
+                          child: Container(
+                            margin: EdgeInsets.only(right: 20),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                                color: Colors.green[900].withOpacity(0.5)),
+                            child: Icon(Icons.keyboard_arrow_up),
+                          ),
+                        ),
+                      ],
+                    )
+                  : Container(),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 8),
                 child: Row(
@@ -491,6 +512,142 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
     _summaryData = _summaryData2;
 
     setState(() {});
+  }
+
+  /**
+   *
+   */
+  void _showBankRecord() async {
+    var bankTotal = 0;
+
+    //----------------------------//
+    Map bankRecord = Map();
+
+    String url = "http://toyohide.work/BrainLog/api/getMonthlyBankRecord";
+    Map<String, String> headers = {'content-type': 'application/json'};
+    String body =
+        json.encode({"date": '${_selectedYear}-${_selectedMonth}-01'});
+    Response response = await post(url, headers: headers, body: body);
+
+    if (response != null) {
+      bankRecord = jsonDecode(response.body);
+      for (var i = 0; i < bankRecord['data'].length; i++) {
+        bankTotal += int.parse(bankRecord['data'][i]['price']);
+      }
+    }
+    //----------------------------//
+
+    return showModalBottomSheet(
+      backgroundColor: Colors.black.withOpacity(0.1),
+      context: context,
+      builder: (BuildContext context) {
+        return SingleChildScrollView(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.3),
+              border: Border(
+                top: BorderSide(
+                  color: Colors.yellowAccent.withOpacity(0.3),
+                  width: 10,
+                ),
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const Divider(color: Colors.indigo),
+                Container(
+                  height: 300,
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: _showBankRecordRow(value: bankRecord['data']),
+                ),
+                const Divider(color: Colors.indigo),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Text(
+                          '${_utility.makeCurrencyDisplay(_total.toString())}'),
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 20),
+                        child: Text('-'),
+                      ),
+                      Text(
+                          '${_utility.makeCurrencyDisplay(bankTotal.toString())}'),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Text('<Hand>'),
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 20),
+                        child: Text('='),
+                      ),
+                      Text(
+                          '${_utility.makeCurrencyDisplay((_total - bankTotal).toString())}'),
+                    ],
+                  ),
+                ),
+                Container(
+                  height: 50,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  /**
+   *
+   */
+  Widget _showBankRecordRow({value}) {
+    List _list = List<Widget>();
+    for (var i = 0; i < value.length; i++) {
+      _list.add(
+        Container(
+          child: Table(
+            children: [
+              TableRow(
+                children: [
+                  Text(''),
+                  Text(
+                    '${value[i]['day']}',
+                    strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+                  ),
+                  Text(
+                    '${value[i]['item']}',
+                    strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+                  ),
+                  Container(
+                    alignment: Alignment.topRight,
+                    child: Text(
+                      '${_utility.makeCurrencyDisplay(value[i]['price'].toString())}',
+                      strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      );
+    }
+
+    return SingleChildScrollView(
+      child: DefaultTextStyle(
+        style: TextStyle(fontSize: 12),
+        child: Column(
+          children: _list,
+        ),
+      ),
+    );
   }
 
   /**

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:moneynote/utilities/custom_shape_clipper.dart';
+import 'package:toast/toast.dart';
 
 import 'dart:convert';
 
@@ -402,6 +403,27 @@ class _WeeklyDataAccordionScreenState extends State<WeeklyDataAccordionScreen> {
         padding: EdgeInsets.all(10),
         child: Column(
           children: <Widget>[
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.only(
+                      right: 10,
+                      bottom: 10,
+                    ),
+                    child: GestureDetector(
+                      onTap: () => _downloadDailyData(date: wday.data['date']),
+                      child: Icon(
+                        Icons.cloud_download,
+                        color: Colors.green,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
             Table(
               children: [
                 TableRow(
@@ -783,6 +805,69 @@ class _WeeklyDataAccordionScreenState extends State<WeeklyDataAccordionScreen> {
   /**
    *
    */
+  _downloadDailyData({date}) async {
+    ////////////////////////////////////////////
+    String url = "http://toyohide.work/BrainLog/api/moneydownload";
+    Map<String, String> headers = {'content-type': 'application/json'};
+    String body = json.encode({"date": date});
+    Response response = await post(url, headers: headers, body: body);
+
+    if (response != null) {
+      Map data = jsonDecode(response.body);
+
+      var ex_data = data['data'].split('|');
+
+      var monie = Monie(
+        strDate: date,
+        strYen10000: ex_data[0],
+        strYen5000: ex_data[1],
+        strYen2000: ex_data[2],
+        strYen1000: ex_data[3],
+        strYen500: ex_data[4],
+        strYen100: ex_data[5],
+        strYen50: ex_data[6],
+        strYen10: ex_data[7],
+        strYen5: ex_data[8],
+        strYen1: ex_data[9],
+        //
+        strBankA: ex_data[10],
+        strBankB: ex_data[11],
+        strBankC: ex_data[12],
+        strBankD: ex_data[13],
+        strBankE: ex_data[14],
+        strBankF: 0.toString(),
+        strBankG: 0.toString(),
+        strBankH: 0.toString(),
+        //
+        strPayA: ex_data[15],
+        strPayB: ex_data[16],
+        strPayC: ex_data[17],
+        strPayD: ex_data[18],
+        strPayE: 0.toString(),
+        strPayF: 0.toString(),
+        strPayG: 0.toString(),
+        strPayH: 0.toString(),
+      );
+      ////////////////////////////////////////////
+
+      var todayData = await database.selectRecord('${date}');
+      if (todayData.length > 0) {
+        await database.updateRecord(monie);
+        Toast.show('更新が完了しました', context, duration: Toast.LENGTH_LONG);
+      } else {
+        await database.insertRecord(monie);
+        Toast.show('登録が完了しました', context, duration: Toast.LENGTH_LONG);
+      }
+    } //if (response != null)
+
+    _goWeeklyDataAccordionScreen(
+      date: date,
+    );
+  }
+
+  /**
+   *
+   */
   _goPrevWeek({BuildContext context}) {
     Navigator.pushReplacement(
       context,
@@ -805,6 +890,11 @@ class _WeeklyDataAccordionScreenState extends State<WeeklyDataAccordionScreen> {
       ),
     );
   }
+
+  /**
+   *
+   */
+  _goWeeklyDataAccordionScreen({date}) {}
 }
 
 class WeekDay {
