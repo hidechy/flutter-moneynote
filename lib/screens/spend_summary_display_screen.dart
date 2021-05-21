@@ -44,6 +44,9 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
   bool _graphDisplay = false;
   List<charts.Series<SpendSummary, String>> seriesList = List();
 
+  List<Map<dynamic, dynamic>> _timeplace1000over = List();
+  int _totalTm1000over = 0;
+
   /**
    * 初期動作
    */
@@ -531,11 +534,41 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
 
     if (response != null) {
       bankRecord = jsonDecode(response.body);
+
       for (var i = 0; i < bankRecord['data'].length; i++) {
         bankTotal += int.parse(bankRecord['data'][i]['price']);
       }
     }
     //----------------------------//
+
+    /////////////////////////////
+    Map _tm = Map();
+
+    String url2 = "http://toyohide.work/BrainLog/api/monthlytimeplace";
+    Map<String, String> headers2 = {'content-type': 'application/json'};
+    String body2 =
+        json.encode({"date": '${_selectedYear}-${_selectedMonth}-01'});
+    Response response2 = await post(url2, headers: headers2, body: body2);
+
+    if (response2 != null) {
+      _timeplace1000over = List();
+      _totalTm1000over = 0;
+      _tm = jsonDecode(response2.body);
+      _tm['data'].forEach((key, value) {
+        for (var i = 0; i < value.length; i++) {
+          if (value[i]['price'] >= 1000) {
+            Map _map = Map();
+            _map['date'] = '${key}　${value[i]['time']}';
+            _map['place'] = value[i]['place'];
+            _map['price'] = value[i]['price'];
+            _timeplace1000over.add(_map);
+
+            _totalTm1000over += value[i]['price'];
+          }
+        }
+      });
+    }
+    /////////////////////////////
 
     return showModalBottomSheet(
       backgroundColor: Colors.black.withOpacity(0.1),
@@ -593,6 +626,18 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
                     ],
                   ),
                 ),
+                const Divider(color: Colors.indigo),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: _showTm1000OverRow(value: _timeplace1000over),
+                ),
+                const Divider(color: Colors.indigo),
+                Container(
+                  alignment: Alignment.topRight,
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                      '${_utility.makeCurrencyDisplay(_totalTm1000over.toString())}'),
+                ),
                 Container(
                   height: 50,
                 ),
@@ -624,6 +669,54 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
                   Text(
                     '${value[i]['item']}',
                     strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+                  ),
+                  Container(
+                    alignment: Alignment.topRight,
+                    child: Text(
+                      '${_utility.makeCurrencyDisplay(value[i]['price'].toString())}',
+                      strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      );
+    }
+
+    return SingleChildScrollView(
+      child: DefaultTextStyle(
+        style: TextStyle(fontSize: 12),
+        child: Column(
+          children: _list,
+        ),
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  _showTm1000OverRow({List<Map> value}) {
+    List _list = List<Widget>();
+    for (var i = 0; i < value.length; i++) {
+      _list.add(
+        Container(
+          child: Table(
+            children: [
+              TableRow(
+                children: [
+                  Text(
+                    '${value[i]['date']}',
+                    strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 20),
+                    child: Text(
+                      '${value[i]['place']}',
+                      strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+                    ),
                   ),
                   Container(
                     alignment: Alignment.topRight,

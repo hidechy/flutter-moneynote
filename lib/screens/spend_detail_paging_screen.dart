@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:moneynote/screens/gold_display_screen.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart';
 
@@ -667,15 +668,29 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: GestureDetector(
-                onTap: () => _goMonthlyTrendDisplayScreen(),
-                child: Icon(
-                  Icons.center_focus_strong,
-                  color: Colors.yellowAccent,
+            Row(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: GestureDetector(
+                    onTap: () => _goMonthlyTrendDisplayScreen(),
+                    child: Icon(
+                      Icons.center_focus_strong,
+                      color: Colors.yellowAccent,
+                    ),
+                  ),
                 ),
-              ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: GestureDetector(
+                    onTap: () => _goGoldDisplayScreen(),
+                    child: Icon(
+                      Icons.label,
+                      color: Colors.yellowAccent,
+                    ),
+                  ),
+                ),
+              ],
             ),
             Row(
               children: <Widget>[
@@ -1077,7 +1092,7 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
   /**
    *
    */
-  _goWeeklyDataAccordionScreen({int index}) {
+  void _goWeeklyDataAccordionScreen({int index}) {
     var date = '${_year}-${_month}-${_monthlyData[index]['date']}';
 
     Navigator.push(
@@ -1096,6 +1111,18 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => MonthlyTrendDisplayScreen(),
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  void _goGoldDisplayScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => GoldDisplayScreen(),
       ),
     );
   }
