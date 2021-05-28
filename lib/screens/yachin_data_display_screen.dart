@@ -160,57 +160,72 @@ class _YachinDataDisplayScreenState extends State<YachinDataDisplayScreen> {
                 child: Table(
                   children: [
                     TableRow(children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.yellowAccent.withOpacity(0.2)),
-                        padding: EdgeInsets.only(top: 2, bottom: 2, right: 10),
-                        child: Row(
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Icon(FontAwesomeIcons.bolt, size: 12),
-                            ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
+                      (_yachinData[position]['electric'] == 0)
+                          ? Container()
+                          : Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.yellowAccent.withOpacity(0.2)),
+                              padding:
+                                  EdgeInsets.only(top: 2, bottom: 2, right: 10),
+                              child: Row(
                                 children: <Widget>[
-                                  Text(
-                                      '${_utility.makeCurrencyDisplay(_yachinData[position]['electric'])}'),
-                                  Text(
-                                      '${_yachinData[position]['electric_date']}',
-                                      style: TextStyle(
-                                          color: Colors.grey.withOpacity(0.8))),
+                                  Container(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10),
+                                    child:
+                                        Icon(FontAwesomeIcons.bolt, size: 12),
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        Text(
+                                            '${_utility.makeCurrencyDisplay(_yachinData[position]['electric'])}'),
+                                        Text(
+                                            '${_yachinData[position]['electric_date']}',
+                                            style: TextStyle(
+                                                color: Colors.grey
+                                                    .withOpacity(0.8))),
+                                      ],
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.redAccent.withOpacity(0.2)),
-                        padding: EdgeInsets.only(top: 2, bottom: 2, right: 10),
-                        child: Row(
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Icon(FontAwesomeIcons.burn, size: 12),
-                            ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
+                      (_yachinData[position]['gas'] == 0)
+                          ? Container()
+                          : Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.redAccent.withOpacity(0.2)),
+                              padding:
+                                  EdgeInsets.only(top: 2, bottom: 2, right: 10),
+                              child: Row(
                                 children: <Widget>[
-                                  Text(
-                                      '${_utility.makeCurrencyDisplay(_yachinData[position]['gas'])}'),
-                                  Text('${_yachinData[position]['gas_date']}',
-                                      style: TextStyle(
-                                          color: Colors.grey.withOpacity(0.8))),
+                                  Container(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10),
+                                    child:
+                                        Icon(FontAwesomeIcons.burn, size: 12),
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        Text(
+                                            '${_utility.makeCurrencyDisplay(_yachinData[position]['gas'])}'),
+                                        Text(
+                                            '${_yachinData[position]['gas_date']}',
+                                            style: TextStyle(
+                                                color: Colors.grey
+                                                    .withOpacity(0.8))),
+                                      ],
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
                       (_yachinData[position]['water'] == 0)
                           ? Container()
                           : Container(

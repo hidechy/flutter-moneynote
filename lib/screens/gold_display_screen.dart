@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'dart:convert';
 
@@ -19,6 +20,13 @@ class _GoldDisplayScreenState extends State<GoldDisplayScreen> {
   List<Map<dynamic, dynamic>> _goldData = List();
 
   Map<String, dynamic> _holidayList = Map();
+
+  final ItemScrollController _itemScrollController = ItemScrollController();
+
+  final ItemPositionsListener _itemPositionsListener =
+      ItemPositionsListener.create();
+
+  int maxNo = 0;
 
   /**
    * 初期動作
@@ -59,6 +67,8 @@ class _GoldDisplayScreenState extends State<GoldDisplayScreen> {
       }
     }
 
+    maxNo = _goldData.length;
+
     setState(() {});
   }
 
@@ -74,15 +84,17 @@ class _GoldDisplayScreenState extends State<GoldDisplayScreen> {
         backgroundColor: Colors.black.withOpacity(0.1),
         title: Text('Gold List'),
         centerTitle: true,
-
-        //-------------------------//これを消すと「←」が出てくる（消さない）
-        leading: Icon(
-          Icons.check_box_outline_blank,
-          color: Color(0xFF2e2e2e),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_downward),
+          color: Colors.greenAccent,
+          onPressed: () => _scroll(),
         ),
-        //-------------------------//これを消すと「←」が出てくる（消さない）
-
         actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () => _goGoldDisplayScreen(),
+            color: Colors.greenAccent,
+          ),
           IconButton(
             icon: const Icon(Icons.close),
             onPressed: () => Navigator.pop(context),
@@ -122,12 +134,25 @@ class _GoldDisplayScreenState extends State<GoldDisplayScreen> {
   /**
    *
    */
-  _goldList() {
-    return ListView.builder(
-      itemCount: _goldData.length,
-      itemBuilder: (context, int position) {
-        return _listItem(position: position);
+  void _scroll() {
+    _itemScrollController.scrollTo(
+      index: maxNo,
+      duration: Duration(seconds: 1),
+      curve: Curves.easeInOutCubic,
+    );
+  }
+
+  /**
+   *
+   */
+  Widget _goldList() {
+    return ScrollablePositionedList.builder(
+      itemBuilder: (context, index) {
+        return _listItem(position: index);
       },
+      itemCount: _goldData.length,
+      itemScrollController: _itemScrollController,
+      itemPositionsListener: _itemPositionsListener,
     );
   }
 
@@ -139,81 +164,120 @@ class _GoldDisplayScreenState extends State<GoldDisplayScreen> {
         '${_goldData[position]['year']}-${_goldData[position]['month']}-${_goldData[position]['day']}';
     _utility.makeYMDYData(date, 0);
 
-    return Container(
-      decoration: BoxDecoration(
-        color: _utility.getBgColor(date, _holidayList),
-        border: Border.all(color: Colors.white.withOpacity(0.3)),
+    return Card(
+      color: _utility.getBgColor(date, _holidayList),
+      elevation: 10.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
       ),
-      margin: EdgeInsets.symmetric(vertical: 3, horizontal: 10),
-      child: DefaultTextStyle(
-        style: TextStyle(fontSize: 12),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text('${date}（${_utility.youbiStr}）'),
-                      (_goldData[position]['gold_value'] == "-")
-                          ? Text('')
-                          : Text(
-                              '${_utility.makeCurrencyDisplay(_goldData[position]['gold_value'].toString())}'),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          (_goldData[position]['total_gram'] == "-")
-                              ? Text('')
-                              : Text(
-                                  '(total gram)　${_goldData[position]['total_gram']}　g'),
-                          (_goldData[position]['gram_num'] == "-")
-                              ? Text('')
-                              : Text(
-                                  '(today add)　${_goldData[position]['gram_num']}　g'),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          (_goldData[position]['gold_tanka'] == "-")
-                              ? Text('')
-                              : Text(
-                                  '1g　${_utility.makeCurrencyDisplay(_goldData[position]['gold_tanka'])}'),
-                          (_goldData[position]['diff'] == "-")
-                              ? Text('')
-                              : Text('${_goldData[position]['diff']}'),
+      child: ListTile(
+        title: DefaultTextStyle(
+            style: TextStyle(fontSize: 12),
+            child: Column(
+              children: <Widget>[
+                //----------------------------------
+                Container(
+                  padding: EdgeInsets.only(right: 80),
+                  child: Table(
+                    children: [
+                      TableRow(
+                        children: [
+                          Text('${date}（${_utility.youbiStr}）'),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: <Widget>[
+                                    (_goldData[position]['gold_tanka'] == "-")
+                                        ? Text('')
+                                        : Text(
+                                            '1g　${_utility.makeCurrencyDisplay(_goldData[position]['gold_tanka'])}'),
+                                    (_goldData[position]['diff'] == "-")
+                                        ? Text('')
+                                        : Text(
+                                            '${_goldData[position]['diff']}'),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 5),
+                                child: _getUpDownMark(
+                                    updown: _goldData[position]['up_down']),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ],
                   ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 5),
-              child: _getUpDownMark(updown: _goldData[position]['up_down']),
-              //child: Text('${_goldData[position]['up_down']}'),
-              // child: (_goldData[position]['up_down'] == "-")
-              //     ? Text('')
-              //     : (_goldData[position]['up_down'] == 9)
-              //         ? Icon(Icons.crop_square, color: Colors.black)
-              //         : (_goldData[position]['up_down'] == 1)
-              //             ? Icon(Icons.arrow_upward, color: Colors.greenAccent)
-              //             : Icon(
-              //                 Icons.arrow_downward,
-              //                 color: Colors.redAccent,
-              //               ),
-            ),
-          ],
-        ),
+                ),
+                //----------------------------------
+
+                Divider(color: Colors.indigo, indent: 10.0, endIndent: 10.0),
+                //----------------------------------
+                Table(
+                  children: [
+                    TableRow(
+                      children: [
+                        (_goldData[position]['gold_value'] == "-")
+                            ? Text('')
+                            : Text(
+                                '${_utility.makeCurrencyDisplay(_goldData[position]['gold_value'].toString())}'),
+                        (_goldData[position]['pay_price'] == "-")
+                            ? Text('')
+                            : Text(
+                                '${_utility.makeCurrencyDisplay(_goldData[position]['pay_price'].toString())}'),
+                        (_goldData[position]['gold_value'] == "-")
+                            ? Text('')
+                            : Text(
+                                '${_utility.makeCurrencyDisplay((_goldData[position]['gold_value'] - _goldData[position]['pay_price']).toString())}',
+                                style: (_goldData[position]['gold_value'] -
+                                            _goldData[position]['pay_price'] >
+                                        0)
+                                    ? TextStyle(color: Colors.yellowAccent)
+                                    : TextStyle(color: Colors.redAccent),
+                              ),
+                        Text(''),
+                        Text(''),
+                      ],
+                    ),
+                  ],
+                ),
+                //----------------------------------
+
+                //----------------------------------
+                Table(
+                  children: [
+                    TableRow(
+                      children: [
+                        Text(''),
+                        Text(''),
+                        (_goldData[position]['gold_price'] == "-")
+                            ? Text('')
+                            : Text(
+                                '${_utility.makeCurrencyDisplay(_goldData[position]['gold_price'])}'),
+                        (_goldData[position]['gram_num'] == "-")
+                            ? Text('')
+                            : Container(
+                                alignment: Alignment.topRight,
+                                child:
+                                    Text('${_goldData[position]['gram_num']}g'),
+                              ),
+                        (_goldData[position]['total_gram'] == "-")
+                            ? Text('')
+                            : Container(
+                                alignment: Alignment.topRight,
+                                child: Text(
+                                    '${_goldData[position]['total_gram']}g'),
+                              ),
+                      ],
+                    ),
+                  ],
+                ),
+                //----------------------------------
+              ],
+            )),
       ),
     );
   }
@@ -233,5 +297,17 @@ class _GoldDisplayScreenState extends State<GoldDisplayScreen> {
         return Icon(Icons.crop_square, color: Colors.black);
         break;
     }
+  }
+
+  /**
+   *
+   */
+  void _goGoldDisplayScreen() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => GoldDisplayScreen(),
+      ),
+    );
   }
 }

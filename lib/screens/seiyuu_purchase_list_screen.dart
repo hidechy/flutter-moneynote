@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:moneynote/utilities/custom_shape_clipper.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'dart:convert';
 
@@ -24,6 +25,13 @@ class _SeiyuuPurchaseListScreenState extends State<SeiyuuPurchaseListScreen> {
 
   int _prevYear = 0;
   int _nextYear = 0;
+
+  final ItemScrollController _itemScrollController = ItemScrollController();
+
+  final ItemPositionsListener _itemPositionsListener =
+      ItemPositionsListener.create();
+
+  int maxNo = 0;
 
   /**
    * 初期動作
@@ -66,6 +74,8 @@ class _SeiyuuPurchaseListScreenState extends State<SeiyuuPurchaseListScreen> {
       }
     }
 
+    maxNo = _seiyuuPurchaseData.length;
+
     setState(() {});
   }
 
@@ -83,15 +93,17 @@ class _SeiyuuPurchaseListScreenState extends State<SeiyuuPurchaseListScreen> {
         backgroundColor: Colors.black.withOpacity(0.1),
         title: Text('西友(${_utility.year})'),
         centerTitle: true,
-
-        //-------------------------//これを消すと「←」が出てくる（消さない）
-        leading: Icon(
-          Icons.check_box_outline_blank,
-          color: Color(0xFF2e2e2e),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_downward),
+          color: Colors.greenAccent,
+          onPressed: () => _scroll(),
         ),
-        //-------------------------//これを消すと「←」が出てくる（消さない）
-
         actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () => _goSeiyuuPurchaseListScreen(),
+            color: Colors.greenAccent,
+          ),
           IconButton(
             icon: Icon(Icons.close),
             onPressed: () => Navigator.pop(context),
@@ -165,17 +177,32 @@ class _SeiyuuPurchaseListScreenState extends State<SeiyuuPurchaseListScreen> {
   }
 
   /**
-   * リスト表示
+   *
    */
-  Widget _amazonPurchaseList() {
-    return ListView.builder(
-      itemCount: _seiyuuPurchaseData.length,
-      itemBuilder: (context, int position) => _listItem(position: position),
+  void _scroll() {
+    _itemScrollController.scrollTo(
+      index: maxNo,
+      duration: Duration(seconds: 1),
+      curve: Curves.easeInOutCubic,
     );
   }
 
   /**
-   * リストアイテム表示
+   * リスト表示
+   */
+  Widget _amazonPurchaseList() {
+    return ScrollablePositionedList.builder(
+      itemBuilder: (context, index) {
+        return _listItem(position: index);
+      },
+      itemCount: _seiyuuPurchaseData.length,
+      itemScrollController: _itemScrollController,
+      itemPositionsListener: _itemPositionsListener,
+    );
+  }
+
+  /**
+   *
    */
   Widget _listItem({int position}) {
     var ex_date = (_seiyuuPurchaseData[position]['date']).split('-');
@@ -347,6 +374,20 @@ class _SeiyuuPurchaseListScreenState extends State<SeiyuuPurchaseListScreen> {
       MaterialPageRoute(
         builder: (context) =>
             SeiyuuPurchaseListScreen(date: '${_nextYear}-01-01'),
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  void _goSeiyuuPurchaseListScreen() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SeiyuuPurchaseListScreen(
+          date: widget.date,
+        ),
       ),
     );
   }
