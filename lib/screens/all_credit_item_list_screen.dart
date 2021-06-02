@@ -186,70 +186,85 @@ class _AllCreditItemListScreenState extends State<AllCreditItemListScreen> {
   Widget _listItem({int position}) {
     var ex_pm = (_creditCardItemData[position]['pay_month']).split('-');
 
-    return Card(
-      color: Colors.black.withOpacity(0.3),
-      elevation: 10.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: ListTile(
-        leading: Container(
-          width: 40,
-          margin: EdgeInsets.symmetric(vertical: 5),
-          decoration: BoxDecoration(
-            color: _getLeadingBgColor(month: ex_pm[1]),
-            border: Border.all(
-              color: Colors.white.withOpacity(0.3),
-            ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text('${ex_pm[0]}'),
-              Text('${ex_pm[1]}'),
-            ],
-          ),
-        ),
-        trailing:
-            _getCreditTrailing(kind: _creditCardItemData[position]['kind']),
-        title: Row(
-          children: <Widget>[
-            Expanded(
-              child: DefaultTextStyle(
-                style: TextStyle(fontSize: 10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text('${_creditCardItemData[position]['date']}'),
-                    Text('${_creditCardItemData[position]['item']}'),
-                    Container(
-                      width: double.infinity,
-                      alignment: Alignment.topRight,
-                      child: Text(
-                          '${_utility.makeCurrencyDisplay(_creditCardItemData[position]['price'])}'),
-                    ),
-                  ],
+    return Column(
+      children: <Widget>[
+        (_creditCardItemData[position]['flag'] == 1)
+            ? Container(
+                decoration:
+                    BoxDecoration(color: Colors.yellowAccent.withOpacity(0.3)),
+                width: double.infinity,
+                child: Text(
+                  'x',
+                  style: TextStyle(color: Colors.yellowAccent.withOpacity(0.3)),
                 ),
-              ),
-            ),
-            Container(
-              width: 20,
-              alignment: Alignment.center,
-              margin: EdgeInsets.only(left: 5),
-              padding: EdgeInsets.symmetric(vertical: 5),
+              )
+            : Container(),
+        Card(
+          color: Colors.black.withOpacity(0.3),
+          elevation: 10.0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: ListTile(
+            leading: Container(
+              width: 40,
+              margin: EdgeInsets.symmetric(vertical: 5),
               decoration: BoxDecoration(
+                color: _getLeadingBgColor(month: ex_pm[1]),
                 border: Border.all(
                   color: Colors.white.withOpacity(0.3),
                 ),
               ),
-              child: Text(
-                '${_creditCardItemData[position]['month_diff']}',
-                style: TextStyle(fontSize: 10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text('${ex_pm[0]}'),
+                  Text('${ex_pm[1]}'),
+                ],
               ),
             ),
-          ],
+            trailing:
+                _getCreditTrailing(kind: _creditCardItemData[position]['kind']),
+            title: Row(
+              children: <Widget>[
+                Expanded(
+                  child: DefaultTextStyle(
+                    style: TextStyle(fontSize: 10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text('${_creditCardItemData[position]['date']}'),
+                        Text('${_creditCardItemData[position]['item']}'),
+                        Container(
+                          width: double.infinity,
+                          alignment: Alignment.topRight,
+                          child: Text(
+                              '${_utility.makeCurrencyDisplay(_creditCardItemData[position]['price'])}'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  width: 20,
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.only(left: 5),
+                  padding: EdgeInsets.symmetric(vertical: 5),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.white.withOpacity(0.3),
+                    ),
+                  ),
+                  child: Text(
+                    '${_creditCardItemData[position]['month_diff']}',
+                    style: TextStyle(fontSize: 10),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
-      ),
+      ],
     );
   }
 

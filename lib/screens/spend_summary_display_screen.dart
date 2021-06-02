@@ -2,13 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:http/http.dart';
-import 'package:moneynote/utilities/custom_shape_clipper.dart';
 
 import 'dart:convert';
 
 import '../utilities/utility.dart';
+import '../utilities/custom_shape_clipper.dart';
 
 import 'credit_spend_display_screen.dart';
+import 'food_expenses_display_screen.dart';
 
 class SpendSummaryDisplayScreen extends StatefulWidget {
   final String date;
@@ -420,20 +421,32 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
    *
    */
   Widget _makeTrailing({position}) {
-    if (_summaryData[position]['item'] == "credit") {
-      if (_selectedMonth == '') {
-        return Icon(Icons.check_box_outline_blank, color: Color(0xFF2e2e2e));
-      } else {
-        return GestureDetector(
-          onTap: () => _goUcCardSpendDisplayScreen(),
-          child: Icon(
-            Icons.credit_card,
-            color: Colors.greenAccent,
-          ),
-        );
-      }
-    } else {
+    if (_selectedMonth == '') {
       return Icon(Icons.check_box_outline_blank, color: Color(0xFF2e2e2e));
+    } else {
+      switch (_summaryData[position]['item']) {
+        case "credit":
+          return GestureDetector(
+            onTap: () => _goUcCardSpendDisplayScreen(),
+            child: Icon(
+              Icons.credit_card,
+              color: Colors.greenAccent,
+            ),
+          );
+          break;
+        case "食費":
+          return GestureDetector(
+            onTap: () => _goFoodExpensesDisplayScreen(),
+            child: Icon(
+              Icons.fastfood,
+              color: Colors.greenAccent,
+            ),
+          );
+          break;
+        default:
+          return Icon(Icons.check_box_outline_blank, color: Color(0xFF2e2e2e));
+          break;
+      }
     }
   }
 
@@ -657,40 +670,41 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
     for (var i = 0; i < value.length; i++) {
       _list.add(
         Container(
-          child: Table(
-            children: [
-              TableRow(
-                children: [
-                  Text(''),
-                  Text(
-                    '${value[i]['day']}',
-                    strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
-                  ),
-                  Text(
-                    '${value[i]['item']}',
-                    strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
-                  ),
-                  Container(
-                    alignment: Alignment.topRight,
-                    child: Text(
-                      '${_utility.makeCurrencyDisplay(value[i]['price'].toString())}',
-                      strutStyle: StrutStyle(fontSize: 12.0, height: 1.3),
+          decoration: BoxDecoration(
+              border: Border(
+            bottom: BorderSide(
+              color: Colors.white.withOpacity(0.2),
+              width: 1,
+            ),
+          )),
+          child: DefaultTextStyle(
+            style: TextStyle(
+              fontSize: 12,
+              height: 1.5,
+            ),
+            child: Table(
+              children: [
+                TableRow(
+                  children: [
+                    Text('${value[i]['bank']} / ${value[i]['day']}'),
+                    Text('${value[i]['item']}'),
+                    Container(
+                      alignment: Alignment.topRight,
+                      child: Text(
+                          '${_utility.makeCurrencyDisplay(value[i]['price'].toString())}'),
                     ),
-                  ),
-                ],
-              )
-            ],
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       );
     }
 
     return SingleChildScrollView(
-      child: DefaultTextStyle(
-        style: TextStyle(fontSize: 12),
-        child: Column(
-          children: _list,
-        ),
+      child: Column(
+        children: _list,
       ),
     );
   }
@@ -765,6 +779,20 @@ class _SpendSummaryDisplayScreenState extends State<SpendSummaryDisplayScreen> {
         builder: (context) => CreditSpendDisplayScreen(
             date: '${_selectedYear}-${_selectedMonth}-01'),
       ),
+    );
+  }
+
+  /**
+   *
+   */
+  void _goFoodExpensesDisplayScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => FoodExpensesDisplayScreen(
+                year: _selectedYear,
+                month: _selectedMonth,
+              )),
     );
   }
 }
