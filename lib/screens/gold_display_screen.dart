@@ -216,33 +216,36 @@ class _GoldDisplayScreenState extends State<GoldDisplayScreen> {
 
                 Divider(color: Colors.indigo, indent: 10.0, endIndent: 10.0),
                 //----------------------------------
-                Table(
-                  children: [
-                    TableRow(
-                      children: [
-                        (_goldData[position]['gold_value'] == "-")
-                            ? Text('')
-                            : Text(
-                                '${_utility.makeCurrencyDisplay(_goldData[position]['gold_value'].toString())}'),
-                        (_goldData[position]['pay_price'] == "-")
-                            ? Text('')
-                            : Text(
-                                '${_utility.makeCurrencyDisplay(_goldData[position]['pay_price'].toString())}'),
-                        (_goldData[position]['gold_value'] == "-")
-                            ? Text('')
-                            : Text(
-                                '${_utility.makeCurrencyDisplay((_goldData[position]['gold_value'] - _goldData[position]['pay_price']).toString())}',
-                                style: (_goldData[position]['gold_value'] -
-                                            _goldData[position]['pay_price'] >
-                                        0)
-                                    ? TextStyle(color: Colors.yellowAccent)
-                                    : TextStyle(color: Colors.redAccent),
-                              ),
-                        Text(''),
-                        Text(''),
-                      ],
-                    ),
-                  ],
+                Container(
+                  padding: EdgeInsets.only(left: 30),
+                  child: Table(
+                    children: [
+                      TableRow(
+                        children: [
+                          (_goldData[position]['gold_value'] == "-")
+                              ? Text('')
+                              : Text(
+                                  '${_utility.makeCurrencyDisplay(_goldData[position]['gold_value'].toString())}'),
+                          (_goldData[position]['pay_price'] == "-")
+                              ? Text('')
+                              : Text(
+                                  '${_utility.makeCurrencyDisplay(_goldData[position]['pay_price'].toString())}'),
+                          (_goldData[position]['gold_value'] == "-")
+                              ? Text('')
+                              : Text(
+                                  '${_utility.makeCurrencyDisplay((_goldData[position]['gold_value'] - _goldData[position]['pay_price']).toString())}',
+                                  style: (_goldData[position]['gold_value'] -
+                                              _goldData[position]['pay_price'] >
+                                          0)
+                                      ? TextStyle(color: Colors.yellowAccent)
+                                      : TextStyle(color: Colors.redAccent),
+                                ),
+                          Text(''),
+                          Text(''),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
                 //----------------------------------
 

@@ -41,10 +41,22 @@ class _FoodExpensesDisplayScreenState extends State<FoodExpensesDisplayScreen> {
    * 初期データ作成
    */
   void _makeDefaultDisplayData() async {
-    _utility.makeMonthEnd(
-        int.parse(widget.year), int.parse(widget.month) + 1, 0);
-    _utility.makeYMDYData(_utility.monthEndDateTime, 0);
-    _monthEndDay = int.parse(_utility.day);
+    DateTime _today = DateTime.now();
+    _utility.makeYMDYData(_today.toString(), 0);
+
+    print(_utility.year);
+    print(_utility.month);
+
+    var __year = null;
+    var __month = null;
+    if (_utility.year == widget.year && _utility.month == widget.month) {
+      _monthEndDay = int.parse(_utility.day);
+    } else {
+      _utility.makeMonthEnd(
+          int.parse(widget.year), int.parse(widget.month) + 1, 0);
+      _utility.makeYMDYData(_utility.monthEndDateTime, 0);
+      _monthEndDay = int.parse(_utility.day);
+    }
 
     ////////////////////////////////////////
     String url = "http://toyohide.work/BrainLog/api/monthsummary";

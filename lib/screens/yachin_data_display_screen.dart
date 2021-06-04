@@ -38,10 +38,59 @@ class _YachinDataDisplayScreenState extends State<YachinDataDisplayScreen> {
     Response response = await post(url, headers: headers, body: body);
 
     if (response != null) {
+      ///////////////////////////////////////////////
+      Map allCredit = Map();
+      String url2 = "http://toyohide.work/BrainLog/api/allcardspend";
+      Map<String, String> headers2 = {'content-type': 'application/json'};
+      String body2 = json.encode({});
+      Response response2 = await post(url2, headers: headers2, body: body2);
+
+      if (response2 != null) {
+        allCredit = jsonDecode(response2.body);
+      }
+      ///////////////////////////////////////////////
+
       Map data = jsonDecode(response.body);
 
       for (var i = 0; i < data['data'].length; i++) {
-        _yachinData.add(data['data'][i]);
+        Map _map = Map();
+        _map['date'] = data['data'][i]['date'];
+
+        _map['yachin'] = data['data'][i]['yachin'];
+        _map['yachin_date'] = data['data'][i]['yachin_date'];
+
+        _map['electric'] = data['data'][i]['electric'];
+        _map['electric_date'] = data['data'][i]['electric_date'];
+
+        _map['gas'] = data['data'][i]['gas'];
+        _map['gas_date'] = data['data'][i]['gas_date'];
+
+        _map['water'] = data['data'][i]['water'];
+        _map['water_date'] = data['data'][i]['water_date'];
+
+        _map['broadband'] = 0;
+        _map['broadband_date'] = '-';
+        var _broadBandData = _getBroadBandData(
+          date: data['data'][i]['date'],
+          creditData: allCredit,
+        );
+        _map['broadband'] =
+            (_broadBandData['price'] == null) ? 0 : _broadBandData['price'];
+        _map['broadband_date'] =
+            (_broadBandData['date'] == null) ? '-' : _broadBandData['date'];
+
+        _map['mobile'] = 0;
+        _map['mobile_date'] = '-';
+        var _mobileData = _getMobileData(
+          date: data['data'][i]['date'],
+          creditData: allCredit,
+        );
+        _map['mobile'] =
+            (_mobileData['price'] == null) ? 0 : _mobileData['price'];
+        _map['mobile_date'] =
+            (_mobileData['date'] == null) ? '-' : _mobileData['date'];
+
+        _yachinData.add(_map);
       }
     }
 
@@ -263,10 +312,127 @@ class _YachinDataDisplayScreenState extends State<YachinDataDisplayScreen> {
                   ],
                 ),
               ),
+              Container(
+                padding: EdgeInsets.only(left: 50),
+                child: Table(
+                  children: [
+                    TableRow(children: [
+                      (_yachinData[position]['mobile'] == 0)
+                          ? Container()
+                          : Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.greenAccent.withOpacity(0.2)),
+                              padding:
+                                  EdgeInsets.only(top: 2, bottom: 2, right: 10),
+                              child: Row(
+                                children: <Widget>[
+                                  Container(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10),
+                                    child: Icon(FontAwesomeIcons.mobileAlt,
+                                        size: 12),
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        Text(
+                                            '${_yachinData[position]['mobile']}'),
+                                        Text(
+                                            '${_yachinData[position]['mobile_date']}',
+                                            style: TextStyle(
+                                                color: Colors.grey
+                                                    .withOpacity(0.8))),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                      (_yachinData[position]['broadband'] == 0)
+                          ? Container()
+                          : Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.purpleAccent.withOpacity(0.2)),
+                              padding:
+                                  EdgeInsets.only(top: 2, bottom: 2, right: 10),
+                              child: Row(
+                                children: <Widget>[
+                                  Container(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10),
+                                    child:
+                                        Icon(FontAwesomeIcons.wifi, size: 12),
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        Text(
+                                            '${_yachinData[position]['broadband']}'),
+                                        Text(
+                                            '${_yachinData[position]['broadband_date']}',
+                                            style: TextStyle(
+                                                color: Colors.grey
+                                                    .withOpacity(0.8))),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                      Container()
+                    ]),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  /**
+   *
+   */
+  Map _getBroadBandData({date, creditData}) {
+    Map _map = Map();
+    for (var i = 0; i < creditData['data'].length; i++) {
+      var ex_creditDate = (creditData['data'][i]['date']).split('-');
+      if ('${ex_creditDate[0]}-${ex_creditDate[1]}' == date) {
+        if (creditData['data'][i]['item'] == "楽天ブロードバンド") {
+          _map['date'] = ex_creditDate[2];
+          _map['price'] = creditData['data'][i]['price'];
+        }
+      }
+    }
+    return _map;
+  }
+
+  /**
+   *
+   */
+  Map _getMobileData({date, Map creditData}) {
+    Map _map = Map();
+    for (var i = 0; i < creditData['data'].length; i++) {
+      var ex_creditDate = (creditData['data'][i]['date']).split('-');
+      if ('${ex_creditDate[0]}-${ex_creditDate[1]}' == date) {
+        var _price = 0;
+        var _date = '-';
+        if (creditData['data'][i]['item'] == "楽天モバイル") {
+          _price += int.parse(creditData['data'][i]['price']);
+          _date = ex_creditDate[2];
+        }
+
+        if (_price > 0) {
+          _map['date'] = _date;
+          _map['price'] = _price;
+        }
+      }
+    }
+    return _map;
   }
 }

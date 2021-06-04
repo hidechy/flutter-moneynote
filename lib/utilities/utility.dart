@@ -216,7 +216,7 @@ class Utility {
     bankNames['bank_b'] = '住友547';
     bankNames['bank_c'] = '住友259';
     bankNames['bank_d'] = 'UFJ';
-    bankNames['bank_e'] = '楽天証券';
+    bankNames['bank_e'] = '楽天';
 
     bankNames['pay_a'] = 'Suica1';
     bankNames['pay_b'] = 'PayPay';

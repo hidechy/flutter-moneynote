@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:moneynote/screens/gold_display_screen.dart';
+import 'package:moneynote/screens/train_data_display_screen.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart';
 
@@ -690,6 +691,16 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
                     ),
                   ),
                 ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: GestureDetector(
+                    onTap: () => _goTrainDataDisplayScreen(),
+                    child: Icon(
+                      Icons.train,
+                      color: Colors.yellowAccent,
+                    ),
+                  ),
+                ),
               ],
             ),
             Row(
@@ -1123,6 +1134,18 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => GoldDisplayScreen(),
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  void _goTrainDataDisplayScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TrainDataDisplayScreen(),
       ),
     );
   }
