@@ -94,6 +94,8 @@ class _BankInputScreenState extends State<BankInputScreen> {
     int _prevValue = 0;
     if (_monieData.length > 0) {
       _bankData = List();
+
+      var _addFlag = false;
       for (int i = 0; i < _monieData.length; i++) {
         _lastYen_bankA = _monieData[i].strBankA;
         _lastYen_bankB = _monieData[i].strBankB;
@@ -220,7 +222,13 @@ class _BankInputScreenState extends State<BankInputScreen> {
         _map['diffPrice'] = _diffPrice.toString();
         _map['diffShirushi'] = _diffShirushi;
 
-        _bankData..add(_map);
+        if (_value > 0) {
+          _addFlag = true;
+        }
+
+        if (_addFlag) {
+          _bankData..add(_map);
+        }
 
         _prevValue = _value;
 
@@ -455,32 +463,35 @@ class _BankInputScreenState extends State<BankInputScreen> {
                                   ),
                                 ),
                                 color: Colors.black.withOpacity(0.3),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    _getChoiceChip(selectedChip: 'bank_a'),
-                                    _getChoiceChip(selectedChip: 'bank_b'),
-                                    _getChoiceChip(selectedChip: 'bank_c'),
-                                    _getChoiceChip(selectedChip: 'bank_d'),
-                                    _getChoiceChip(selectedChip: 'bank_e'),
-                                    _getChoiceChip(selectedChip: 'bank_f'),
-                                    _getChoiceChip(selectedChip: 'bank_g'),
-                                    _getChoiceChip(selectedChip: 'bank_h'),
-                                    const Divider(
-                                      color: Colors.indigo,
-                                      indent: 20.0,
-                                      endIndent: 20.0,
-                                    ),
-                                    _getChoiceChip(selectedChip: 'pay_a'),
-                                    _getChoiceChip(selectedChip: 'pay_b'),
-                                    _getChoiceChip(selectedChip: 'pay_c'),
-                                    _getChoiceChip(selectedChip: 'pay_d'),
-                                    _getChoiceChip(selectedChip: 'pay_e'),
-                                    _getChoiceChip(selectedChip: 'pay_f'),
-                                    _getChoiceChip(selectedChip: 'pay_g'),
-                                    _getChoiceChip(selectedChip: 'pay_h'),
-                                  ],
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      _getChoiceChip(selectedChip: 'bank_a'),
+                                      _getChoiceChip(selectedChip: 'bank_b'),
+                                      _getChoiceChip(selectedChip: 'bank_c'),
+                                      _getChoiceChip(selectedChip: 'bank_d'),
+                                      _getChoiceChip(selectedChip: 'bank_e'),
+                                      _getChoiceChip(selectedChip: 'bank_f'),
+                                      _getChoiceChip(selectedChip: 'bank_g'),
+                                      _getChoiceChip(selectedChip: 'bank_h'),
+                                      const Divider(
+                                        color: Colors.indigo,
+                                        indent: 20.0,
+                                        endIndent: 20.0,
+                                      ),
+                                      _getChoiceChip(selectedChip: 'pay_a'),
+                                      _getChoiceChip(selectedChip: 'pay_b'),
+                                      _getChoiceChip(selectedChip: 'pay_c'),
+                                      _getChoiceChip(selectedChip: 'pay_d'),
+                                      _getChoiceChip(selectedChip: 'pay_e'),
+                                      _getChoiceChip(selectedChip: 'pay_f'),
+                                      _getChoiceChip(selectedChip: 'pay_g'),
+                                      _getChoiceChip(selectedChip: 'pay_h'),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

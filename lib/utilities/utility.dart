@@ -222,6 +222,7 @@ class Utility {
     bankNames['pay_b'] = 'PayPay';
     bankNames['pay_c'] = 'PASUMO';
     bankNames['pay_d'] = 'Suica2';
+    bankNames['pay_e'] = 'メルカリ';
 
     return bankNames;
   }

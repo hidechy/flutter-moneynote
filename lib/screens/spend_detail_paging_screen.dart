@@ -13,6 +13,7 @@ import '../db/database.dart';
 import '../utilities/custom_shape_clipper.dart';
 
 import 'duty_data_display_screen.dart';
+import 'mercari_data_display_screen.dart';
 import 'yachin_data_display_screen.dart';
 import 'spend_summary_display_screen.dart';
 import 'weekly_data_display_screen.dart';
@@ -701,6 +702,16 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
                     ),
                   ),
                 ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: GestureDetector(
+                    onTap: () => _goMercariDataDisplayScreen(),
+                    child: Icon(
+                      FontAwesomeIcons.handshake,
+                      color: Colors.yellowAccent,
+                    ),
+                  ),
+                ),
               ],
             ),
             Row(
@@ -943,7 +954,7 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
             child: Column(
               children: <Widget>[
                 Container(
-                  height: 130,
+                  height: 120,
                   child: Text(
                     '${value[0]}',
                     style: TextStyle(fontSize: 12),
@@ -1146,6 +1157,18 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => TrainDataDisplayScreen(),
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  void _goMercariDataDisplayScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MercariDataDisplayScreen(),
       ),
     );
   }

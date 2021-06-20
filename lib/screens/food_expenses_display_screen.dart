@@ -4,6 +4,7 @@ import 'package:moneynote/utilities/custom_shape_clipper.dart';
 
 import 'dart:convert';
 
+import '../main.dart';
 import '../utilities/utility.dart';
 
 class FoodExpensesDisplayScreen extends StatefulWidget {
@@ -27,6 +28,8 @@ class _FoodExpensesDisplayScreenState extends State<FoodExpensesDisplayScreen> {
 
   int _monthEndDay = 0;
 
+  int _monthTotal = 0;
+
   /**
    * 初期動作
    */
@@ -44,19 +47,70 @@ class _FoodExpensesDisplayScreenState extends State<FoodExpensesDisplayScreen> {
     DateTime _today = DateTime.now();
     _utility.makeYMDYData(_today.toString(), 0);
 
-    print(_utility.year);
-    print(_utility.month);
-
     var __year = null;
     var __month = null;
     if (_utility.year == widget.year && _utility.month == widget.month) {
       _monthEndDay = int.parse(_utility.day);
+
+      //-------------------------------------------//(s)
+      var _moneyData2 = await database
+          .selectRecord('${_utility.year}-${_utility.month}-${_utility.day}');
+
+      _utility.makeTotal(_moneyData2[0]);
+      var _num2 = _utility.total;
+
+      _utility.makeMonthEnd(int.parse(widget.year), int.parse(widget.month), 0);
+
+      _utility.makeYMDYData(_utility.monthEndDateTime, 0);
+
+      var _moneyData1 = await database
+          .selectRecord('${_utility.year}-${_utility.month}-${_utility.day}');
+
+      _utility.makeTotal(_moneyData1[0]);
+      var _num1 = _utility.total;
+
+      _monthTotal = (_num1 - _num2);
+      //-------------------------------------------//(e)
     } else {
       _utility.makeMonthEnd(
           int.parse(widget.year), int.parse(widget.month) + 1, 0);
       _utility.makeYMDYData(_utility.monthEndDateTime, 0);
       _monthEndDay = int.parse(_utility.day);
+
+      //-------------------------------------------//(s)
+      var _moneyData2 = await database
+          .selectRecord('${widget.year}-${widget.month}-${_monthEndDay}');
+
+      _utility.makeTotal(_moneyData2[0]);
+      var _num2 = _utility.total;
+
+      _utility.makeMonthEnd(int.parse(widget.year), int.parse(widget.month), 0);
+
+      _utility.makeYMDYData(_utility.monthEndDateTime, 0);
+
+      var _moneyData1 = await database
+          .selectRecord('${_utility.year}-${_utility.month}-${_utility.day}');
+
+      _utility.makeTotal(_moneyData1[0]);
+      var _num1 = _utility.total;
+
+      //<<<<<<<<<<<<//
+      var _bene = '0';
+      var benefits = await database.selectBenefitSortedAllRecord;
+      for (var i = 0; i < benefits.length; i++) {
+        var ex_date = (benefits[i].strDate).split('-');
+        if (ex_date[0] == widget.year && ex_date[1] == widget.month) {
+          _bene = benefits[i].strPrice;
+          break;
+        }
+      }
+      //<<<<<<<<<<<<//
+
+      _monthTotal = (_num2 - _num1 - int.parse(_bene)) * -1;
+      //-------------------------------------------//(e)
     }
+
+    // ///////////////////////////////////////
 
     ////////////////////////////////////////
     String url = "http://toyohide.work/BrainLog/api/monthsummary";
@@ -107,6 +161,8 @@ class _FoodExpensesDisplayScreenState extends State<FoodExpensesDisplayScreen> {
 
     var sum = (_foodExpenses + _seiyuPurchase);
     var ave = (sum / _monthEndDay).floor();
+
+    var engels = (_monthTotal > 0) ? ((sum / _monthTotal) * 100).floor() : 0;
 
     return Scaffold(
       appBar: AppBar(
@@ -211,6 +267,16 @@ class _FoodExpensesDisplayScreenState extends State<FoodExpensesDisplayScreen> {
                         alignment: Alignment.topRight,
                         child: Text(
                             '${_utility.makeCurrencyDisplay(ave.toString())}'),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Container(
+                        alignment: Alignment.topRight,
+                        child: Text('エンゲル係数'),
+                      ),
+                      Container(
+                        alignment: Alignment.topRight,
+                        child: Text('${engels} %'),
                       ),
                     ]),
                   ],
