@@ -314,70 +314,75 @@ class _CalenderState extends State<Calender> {
     for (var i = 0; i < _loopNum; i++) {
       var _number = (i * 2);
       _dataList.add(
-        Row(
-          children: <Widget>[
-            (data[_number] == null)
-                ? _getExpandedContainer()
-                : _getTextDisplayContainer(
-                    text: data[_number]['item'], currency: false),
-            (data[_number] == null)
-                ? _getExpandedContainer()
-                : _getTextDisplayContainer(
-                    text: data[_number]['sum'].toString(), currency: true),
-            (_number + 1 >= data.length)
-                ? _getExpandedContainer()
-                : _getTextDisplayContainer(
-                    text: data[_number + 1]['item'], currency: false),
-            (_number + 1 >= data.length)
-                ? _getExpandedContainer()
-                : _getTextDisplayContainer(
-                    text: data[_number + 1]['sum'].toString(), currency: true),
-          ],
+        DefaultTextStyle(
+          style: TextStyle(fontSize: 10, color: Colors.grey),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                          color: Colors.white.withOpacity(0.3), width: 1),
+                    ),
+                  ),
+                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        child: Text('${data[_number]['item']}'),
+                      ),
+                      Container(
+                        child: Text(
+                            '${_utility.makeCurrencyDisplay(data[_number]['sum'].toString())}'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              (_number + 1 >= data.length)
+                  ? Expanded(
+                      child: Container(
+                        child: Row(
+                          children: <Widget>[
+                            Container(),
+                            Container(),
+                          ],
+                        ),
+                      ),
+                    )
+                  : Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                                color: Colors.white.withOpacity(0.3), width: 1),
+                          ),
+                        ),
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                              child: Text('${data[_number + 1]['item']}'),
+                            ),
+                            Container(
+                              child: Text(
+                                  '${_utility.makeCurrencyDisplay(data[_number + 1]['sum'].toString())}'),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+            ],
+          ),
         ),
       );
     }
 
     return _dataList;
-  }
-
-  /**
-   *
-   */
-  Widget _getExpandedContainer() {
-    return Expanded(
-      child: Container(),
-    );
-  }
-
-  /**
-   *
-   */
-  Widget _getTextDisplayContainer({String text, bool currency}) {
-    if (currency) {
-      return Expanded(
-        child: Container(
-          alignment: Alignment.topRight,
-          padding: EdgeInsets.only(top: 3, right: 5, left: 5),
-          child: DefaultTextStyle(
-            style:
-                TextStyle(fontSize: 10, color: Colors.white.withOpacity(0.8)),
-            child: Text('${_utility.makeCurrencyDisplay(text)}'),
-          ),
-        ),
-      );
-    } else {
-      return Expanded(
-        child: Container(
-          alignment: Alignment.topLeft,
-          padding: EdgeInsets.only(right: 5, left: 5),
-          child: DefaultTextStyle(
-            style:
-                TextStyle(fontSize: 10, color: Colors.white.withOpacity(0.8)),
-            child: Text('${text}'),
-          ),
-        ),
-      );
-    }
   }
 
   /**

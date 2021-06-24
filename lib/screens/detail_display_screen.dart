@@ -97,6 +97,9 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   int _depositTotal = 0;
   int _eMoneyTotal = 0;
 
+  Map ITFRecord = Map();
+  int _ITFTotal = 0;
+
   /**
    * 初期動作
    */
@@ -214,7 +217,6 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
     }
 
     //----------------------------//
-
     String url = "http://toyohide.work/BrainLog/api/getgolddata";
     Map<String, String> headers = {'content-type': 'application/json'};
     String body = json.encode({"date": ""});
@@ -227,9 +229,29 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
         _lastGold = golddata['data'][i];
       }
 
-      _goldValue = _lastGold['gold_value'];
+      if (_lastGold['gold_value'] != "-") {
+        _goldValue = _lastGold['gold_value'];
+      }
     }
     //----------------------------//
+
+    //>>>>>>>>>>>>>>>>>>>>>>>>
+    _utility.makeYMDYData(widget.date, 0);
+
+    String url2 = "http://toyohide.work/BrainLog/api/getITFRecord";
+    Map<String, String> headers2 = {'content-type': 'application/json'};
+    String body2 = json
+        .encode({"date": "${_utility.year}-${_utility.month}-${_utility.day}"});
+    Response response2 = await post(url2, headers: headers2, body: body2);
+
+    if (response2 != null) {
+      ITFRecord = jsonDecode(response2.body);
+
+      for (var i = 0; i < ITFRecord['data'].length; i++) {
+        _ITFTotal += int.parse(ITFRecord['data'][i]['price']);
+      }
+    }
+    //>>>>>>>>>>>>>>>>>>>>>>>>
 
     setState(() {});
   }
@@ -316,15 +338,13 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                       _dispTotal(),
                       const Divider(color: Colors.indigo),
                       _dispCurrency(),
+                      SizedBox(height: 20),
                       _dispDeposit(),
+                      SizedBox(height: 20),
                       _dispEMoney(),
                       const Divider(color: Colors.indigo),
                       _dispGold(),
-
-                      //
-                      // const Divider(color: Colors.indigo),
-                      // _dispStock(),
-                      //
+                      _dispITF(),
                     ],
                   ),
                 ),
@@ -484,10 +504,22 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                             ),
                             Container(
                               alignment: Alignment.topRight,
-                              child: Text(
-                                '${_utility.makeCurrencyDisplay(_total.toString())}',
-                                style:
-                                    const TextStyle(color: Colors.yellowAccent),
+                              child: Text.rich(
+                                TextSpan(
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: '①②③　',
+                                      style:
+                                          TextStyle(color: Colors.greenAccent),
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          '${_utility.makeCurrencyDisplay(_total.toString())}',
+                                      style: const TextStyle(
+                                          color: Colors.yellowAccent),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ]),
@@ -576,26 +608,33 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                       ),
                     ),
                     Container(),
-                    Container(),
-                    Container(),
+                    Container(
+                      child: Container(
+                        alignment: Alignment.topRight,
+                        child: Text('①',
+                            style: TextStyle(color: Colors.greenAccent)),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                              color: Colors.greenAccent.withOpacity(0.3),
+                              width: 1),
+                        ),
+                      ),
+                      alignment: Alignment.topRight,
+                      padding: EdgeInsets.only(right: 5),
+                      child: Text(
+                        '${_utility.makeCurrencyDisplay(_temochi.toString())}',
+                        style: TextStyle(color: Colors.greenAccent),
+                      ),
+                    ),
                   ]),
                 ],
               ),
               ___dispCurrencyData(),
             ],
-          ),
-        ),
-        Container(
-          alignment: Alignment.centerRight,
-          child: Padding(
-            padding: const EdgeInsets.only(right: 15.0),
-            child: Text(
-              _utility.makeCurrencyDisplay(_temochi.toString()),
-              style: const TextStyle(
-                color: Colors.greenAccent,
-                fontSize: 12,
-              ),
-            ),
           ),
         ),
       ],
@@ -625,6 +664,21 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
    *
    */
   Widget _dispDeposit() {
+    List<String> _tot = List();
+    _tot.add(_bankA);
+    _tot.add(_bankB);
+    _tot.add(_bankC);
+    _tot.add(_bankD);
+    _tot.add(_bankE);
+    _tot.add(_bankF);
+    _tot.add(_bankG);
+    _tot.add(_bankH);
+
+    _depositTotal = 0;
+    for (var i = 0; i < _tot.length; i++) {
+      _depositTotal += int.parse(_tot[i]);
+    }
+
     return Column(
       children: <Widget>[
         DefaultTextStyle(
@@ -648,26 +702,31 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                       ),
                     ),
                     Container(),
-                    Container(),
-                    Container(),
+                    Container(
+                      alignment: Alignment.topRight,
+                      child: Text('②',
+                          style: TextStyle(color: Colors.greenAccent)),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                              color: Colors.greenAccent.withOpacity(0.3),
+                              width: 1),
+                        ),
+                      ),
+                      padding: EdgeInsets.only(right: 5),
+                      alignment: Alignment.topRight,
+                      child: Text(
+                        '${_utility.makeCurrencyDisplay(_depositTotal.toString())}',
+                        style: TextStyle(color: Colors.greenAccent),
+                      ),
+                    ),
                   ]),
                 ],
               ),
               ___dispDepositData(),
             ],
-          ),
-        ),
-        Container(
-          alignment: Alignment.centerRight,
-          child: Padding(
-            padding: const EdgeInsets.only(right: 15.0),
-            child: Text(
-              _utility.makeCurrencyDisplay(_depositTotal.toString()),
-              style: const TextStyle(
-                color: Colors.greenAccent,
-                fontSize: 12,
-              ),
-            ),
           ),
         ),
       ],
@@ -695,6 +754,21 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
    *
    */
   Widget _dispEMoney() {
+    List<String> _tot = List();
+    _tot.add(_payA);
+    _tot.add(_payB);
+    _tot.add(_payC);
+    _tot.add(_payD);
+    _tot.add(_payE);
+    _tot.add(_payF);
+    _tot.add(_payG);
+    _tot.add(_payH);
+
+    _eMoneyTotal = 0;
+    for (var i = 0; i < _tot.length; i++) {
+      _eMoneyTotal += int.parse(_tot[i]);
+    }
+
     return Column(
       children: <Widget>[
         DefaultTextStyle(
@@ -718,26 +792,31 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                       ),
                     ),
                     Container(),
-                    Container(),
-                    Container(),
+                    Container(
+                      alignment: Alignment.topRight,
+                      child: Text('③',
+                          style: TextStyle(color: Colors.greenAccent)),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                              color: Colors.greenAccent.withOpacity(0.3),
+                              width: 1),
+                        ),
+                      ),
+                      padding: EdgeInsets.only(right: 5),
+                      alignment: Alignment.topRight,
+                      child: Text(
+                        '${_utility.makeCurrencyDisplay(_eMoneyTotal.toString())}',
+                        style: TextStyle(color: Colors.greenAccent),
+                      ),
+                    ),
                   ]),
                 ],
               ),
               ___dispEMoneyData(),
             ],
-          ),
-        ),
-        Container(
-          alignment: Alignment.centerRight,
-          child: Padding(
-            padding: const EdgeInsets.only(right: 15.0),
-            child: Text(
-              _utility.makeCurrencyDisplay(_eMoneyTotal.toString()),
-              style: const TextStyle(
-                color: Colors.greenAccent,
-                fontSize: 12,
-              ),
-            ),
           ),
         ),
       ],
@@ -769,9 +848,6 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
 
     var _roopNum = ((list.length) / 2).round();
 
-    _depositTotal = 0;
-    _eMoneyTotal = 0;
-
     for (var i = 0; i < _roopNum; i++) {
       var ex_data = (list[i]).split(':');
       var ex_data2 = (list[i + _roopNum]).split(':');
@@ -789,9 +865,6 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
           money2 = Text('${ex_data2[1]}');
           break;
         case "deposit":
-          _depositTotal += int.parse(ex_data[1]);
-          _depositTotal += int.parse(ex_data2[1]);
-
           if (int.parse(ex_data[1]) > 0) {
             name1 = Text('${_bankNames[ex_data[0]]}');
             money1 = Text('${_utility.makeCurrencyDisplay(ex_data[1])}');
@@ -811,9 +884,6 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
           }
           break;
         case "e-money":
-          _eMoneyTotal += int.parse(ex_data[1]);
-          _eMoneyTotal += int.parse(ex_data2[1]);
-
           if (int.parse(ex_data[1]) > 0) {
             name1 = Text('${_bankNames[ex_data[0]]}');
             money1 = Text('${_utility.makeCurrencyDisplay(ex_data[1])}');
@@ -947,7 +1017,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   /**
    *
    */
-  Widget _dispStock() {
+  Widget _dispITF() {
     return Column(
       children: <Widget>[
         DefaultTextStyle(
@@ -966,13 +1036,21 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                           padding: const EdgeInsets.symmetric(
                             vertical: 2,
                           ),
-                          child: Text('stock'),
+                          child: Text('ITF'),
                         ),
                       ),
                     ),
                     Container(),
                     Container(),
-                    Container(),
+                    Container(
+                      alignment: Alignment.topRight,
+                      padding: EdgeInsets.only(right: 15),
+                      child: Text(
+                        '${_utility.makeCurrencyDisplay(_ITFTotal.toString())}',
+                        style:
+                            TextStyle(fontSize: 12, color: Colors.yellowAccent),
+                      ),
+                    ),
                   ]),
                 ],
               ),
