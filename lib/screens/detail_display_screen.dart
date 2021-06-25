@@ -93,12 +93,14 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
   Map golddata = Map();
   Map _lastGold = Map();
   int _goldValue = 0;
+  String _goldDate = '-';
 
   int _depositTotal = 0;
   int _eMoneyTotal = 0;
 
   Map ITFRecord = Map();
   int _ITFTotal = 0;
+  String _ITFDate = '-';
 
   /**
    * 初期動作
@@ -226,11 +228,11 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
       golddata = jsonDecode(response.body);
 
       for (var i = 0; i < golddata['data'].length; i++) {
-        _lastGold = golddata['data'][i];
-      }
-
-      if (_lastGold['gold_value'] != "-") {
-        _goldValue = _lastGold['gold_value'];
+        if (golddata['data'][i]['gold_value'] != '-') {
+          _goldValue = golddata['data'][i]['gold_value'];
+          _goldDate =
+              '${golddata['data'][i]['year']}-${golddata['data'][i]['month']}-${golddata['data'][i]['day']}';
+        }
       }
     }
     //----------------------------//
@@ -249,6 +251,7 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
 
       for (var i = 0; i < ITFRecord['data'].length; i++) {
         _ITFTotal += int.parse(ITFRecord['data'][i]['price']);
+        _ITFDate = ITFRecord['data'][i]['date'];
       }
     }
     //>>>>>>>>>>>>>>>>>>>>>>>>
@@ -994,7 +997,14 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                       ),
                     ),
                     Container(),
-                    Container(),
+                    Container(
+                      alignment: Alignment.topRight,
+                      child: Text(
+                        '（${_goldDate}）',
+                        style:
+                            TextStyle(color: Colors.yellowAccent, fontSize: 10),
+                      ),
+                    ),
                     Container(
                       alignment: Alignment.topRight,
                       padding: EdgeInsets.only(right: 15),
@@ -1041,7 +1051,14 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                       ),
                     ),
                     Container(),
-                    Container(),
+                    Container(
+                      alignment: Alignment.topRight,
+                      child: Text(
+                        '（${_ITFDate}）',
+                        style:
+                            TextStyle(color: Colors.yellowAccent, fontSize: 10),
+                      ),
+                    ),
                     Container(
                       alignment: Alignment.topRight,
                       padding: EdgeInsets.only(right: 15),

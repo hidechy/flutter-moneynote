@@ -53,12 +53,19 @@ class _TrainDataDisplayScreenState extends State<TrainDataDisplayScreen> {
     if (response != null) {
       train = jsonDecode(response.body);
 
-//      print(traindata);
-
       train['data'].forEach((key, value) {
         Map _map = Map();
         _map['date'] = key;
-        _map['value'] = value[0];
+
+        if (value == '') {
+          _map['value'] = '';
+          _map['price'] = '';
+        } else {
+          var ex_value = (value).split('|');
+          _map['value'] = ex_value[0];
+          _map['price'] = (ex_value[1] != '') ? ex_value[1] : '';
+        }
+
         _trainData.add(_map);
       });
     }
@@ -167,26 +174,65 @@ class _TrainDataDisplayScreenState extends State<TrainDataDisplayScreen> {
   Widget _listItem({int position}) {
     _utility.makeYMDYData(_trainData[position]['date'], 0);
 
-    return Card(
-      color: _utility.getBgColor(_trainData[position]['date'], _holidayList),
-      elevation: 10.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: ListTile(
-          title: DefaultTextStyle(
-        style: TextStyle(fontSize: 12),
-        child: Table(
-          children: [
-            TableRow(children: [
-              Text(
-                  '${_utility.year}-${_utility.month}-${_utility.day}（${_utility.youbiStr}）'),
-              Text('${_trainData[position]['value']}'),
-            ]),
-          ],
-        ),
-      )),
-    );
+    return (_trainData[position]['value'] == '')
+        ? Row(
+            children: <Widget>[
+              Container(
+                width: 100,
+                margin: EdgeInsets.all(2),
+                decoration: BoxDecoration(
+                  color: _utility.getBgColor(
+                      _trainData[position]['date'], _holidayList),
+                  border: Border.all(color: Colors.white.withOpacity(0.3)),
+                ),
+                child: Text(
+                  '${_trainData[position]['date']}（${_utility.youbiStr}）',
+                  style: TextStyle(fontSize: 10),
+                ),
+              ),
+              Expanded(
+                child: Container(),
+              ),
+            ],
+          )
+        : Card(
+            color:
+                _utility.getBgColor(_trainData[position]['date'], _holidayList),
+            elevation: 10.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: ListTile(
+                title: DefaultTextStyle(
+              style: TextStyle(fontSize: 12),
+              child: Table(
+                children: [
+                  TableRow(children: [
+                    Text(
+                        '${_utility.year}-${_utility.month}-${_utility.day}（${_utility.youbiStr}）'),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text('${_trainData[position]['value']}'),
+                        Container(
+                          alignment: Alignment.topRight,
+                          padding: EdgeInsets.all(2),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.1),
+                            border: Border.all(
+                                color: Colors.white.withOpacity(0.3)),
+                          ),
+                          child: Text(
+                              '${_utility.makeCurrencyDisplay(_trainData[position]['price'])}'),
+                        ),
+                      ],
+                    ),
+                  ]),
+                ],
+              ),
+            )),
+          );
   }
 
   /**
