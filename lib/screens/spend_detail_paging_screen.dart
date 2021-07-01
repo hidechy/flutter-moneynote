@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:moneynote/screens/fund_data_display_screen.dart';
 import 'package:moneynote/screens/gold_display_screen.dart';
 import 'package:moneynote/screens/train_data_display_screen.dart';
 import 'package:toast/toast.dart';
@@ -288,14 +289,6 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
         backgroundColor: Colors.black.withOpacity(0.1),
         title: Text('${_year}-${_month}'),
         centerTitle: true,
-
-        //-------------------------//これを消すと「←」が出てくる（消さない）
-        leading: Icon(
-          Icons.check_box_outline_blank,
-          color: Color(0xFF2e2e2e),
-        ),
-        //-------------------------//これを消すと「←」が出てくる（消さない）
-
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.close),
@@ -304,6 +297,7 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
           ),
         ],
       ),
+      drawer: dispDrawer(),
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
@@ -328,7 +322,6 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
               //--------------------------------------// リセット
               bool active = (index == currentPage);
               if (active == false) {
-                //print(currentPage);
                 _arrowDisp = true;
               }
               //--------------------------------------//
@@ -344,6 +337,125 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
           ),
           _dispMonthMoveArrow(context),
         ],
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  Widget dispDrawer() {
+    return Theme(
+      data: ThemeData(
+        canvasColor: Colors.black.withOpacity(0.3),
+      ),
+      child: Drawer(
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border(
+              right: BorderSide(
+                color: Colors.yellowAccent.withOpacity(0.3),
+                width: 10,
+              ),
+            ),
+          ),
+          child: ListView(
+            children: <Widget>[
+              SizedBox(
+                height: 60,
+                child: DrawerHeader(
+                  child: Container(
+                    alignment: Alignment.topRight,
+                    child: Text(
+                      'MENU',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.1),
+                  ),
+                ),
+              ),
+
+              //
+
+              ListTile(
+                leading: Icon(FontAwesomeIcons.home, color: Colors.white),
+                title: Text(
+                  "Home Fixed Cost",
+                  style: TextStyle(fontSize: 12, color: Colors.white),
+                ),
+                onTap: () => _goYachinDataDisplayScreen(),
+              ),
+
+              ListTile(
+                leading: Icon(FontAwesomeIcons.biohazard, color: Colors.white),
+                title: Text(
+                  "Duty Fixed Cost",
+                  style: TextStyle(fontSize: 12, color: Colors.white),
+                ),
+                onTap: () => _goDutyDataDisplayScreen(),
+              ),
+
+              Divider(color: Colors.greenAccent, indent: 10.0, endIndent: 10.0),
+
+              ListTile(
+                leading: Icon(Icons.center_focus_strong, color: Colors.white),
+                title: Text(
+                  "History Data",
+                  style: TextStyle(fontSize: 12, color: Colors.white),
+                ),
+                onTap: () => _goMonthlyTrendDisplayScreen(),
+              ),
+
+              Divider(color: Colors.greenAccent, indent: 10.0, endIndent: 10.0),
+
+              ListTile(
+                leading: Icon(Icons.train, color: Colors.white),
+                title: Text(
+                  "Train History",
+                  style: TextStyle(fontSize: 12, color: Colors.white),
+                ),
+                onTap: () => _goTrainDataDisplayScreen(),
+              ),
+
+              //
+
+              ListTile(
+                leading: Icon(Icons.label, color: Colors.white),
+                title: Text(
+                  "Gold History",
+                  style: TextStyle(fontSize: 12, color: Colors.white),
+                ),
+                onTap: () => _goGoldDisplayScreen(),
+              ),
+
+              //
+
+              ListTile(
+                leading: Icon(Icons.favorite, color: Colors.white),
+                title: Text(
+                  "Fund History",
+                  style: TextStyle(fontSize: 12, color: Colors.white),
+                ),
+                onTap: () => _goFundDisplayScreen(),
+              ),
+
+              //
+
+              ListTile(
+                leading: Icon(FontAwesomeIcons.handshake, color: Colors.white),
+                title: Text(
+                  "Mercari History",
+                  style: TextStyle(fontSize: 12, color: Colors.white),
+                ),
+                onTap: () => _goMercariDataDisplayScreen(),
+              ),
+
+              //
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -422,6 +534,9 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
    *
    */
   Widget _dispMonthlyDetail(int index) {
+    Size size = MediaQuery.of(context).size;
+    var oneHeight = ((size.height - 300) / 3);
+
     _utility.makeYMDYData(
         '${_year}-${_month}-${_monthlyData[index]['date']}', 0);
 
@@ -431,11 +546,11 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
         Divider(color: Colors.greenAccent, indent: 10.0, endIndent: 10.0),
         _makeDisplayMoneyItem(index: index),
         Divider(color: Colors.greenAccent, indent: 10.0, endIndent: 10.0),
-        _spendItemDisplay(index: index),
+        _spendItemDisplay(index: index, oneHeight: oneHeight),
         Divider(color: Colors.greenAccent, indent: 10.0, endIndent: 10.0),
-        _timePlaceDisplay(index: index),
+        _timePlaceDisplay(index: index, oneHeight: oneHeight),
         Divider(color: Colors.greenAccent, indent: 10.0, endIndent: 10.0),
-        _trainDataDisplay(index: index),
+        _trainDataDisplay(index: index, oneHeight: oneHeight),
       ],
     );
   }
@@ -470,30 +585,23 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: GestureDetector(
-                  onTap: () => _goYachinDataDisplayScreen(),
-                  child: Icon(
-                    FontAwesomeIcons.home,
-                    color: Colors.greenAccent,
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: GestureDetector(
-                  onTap: () => _goDutyDataDisplayScreen(),
-                  child: Icon(
-                    FontAwesomeIcons.biohazard,
-                    color: Colors.greenAccent,
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: GestureDetector(
                   onTap: () => _goWeeklyDataAccordionScreen(index: index),
                   child: Icon(
                     FontAwesomeIcons.calendarWeek,
                     color: Colors.greenAccent,
+                  ),
+                ),
+              ),
+              SizedBox(width: 20),
+              Text(
+                  '${_utility.makeCurrencyDisplay(_monthlyData[index]['total'].toString())}'),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: GestureDetector(
+                  onTap: () => _uploadDailyData(index: index),
+                  child: Icon(
+                    Icons.cloud_upload,
+                    color: Colors.blueAccent,
                   ),
                 ),
               ),
@@ -667,71 +775,6 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
             ),
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: GestureDetector(
-                    onTap: () => _goMonthlyTrendDisplayScreen(),
-                    child: Icon(
-                      Icons.center_focus_strong,
-                      color: Colors.yellowAccent,
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: GestureDetector(
-                    onTap: () => _goGoldDisplayScreen(),
-                    child: Icon(
-                      Icons.label,
-                      color: Colors.yellowAccent,
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: GestureDetector(
-                    onTap: () => _goTrainDataDisplayScreen(),
-                    child: Icon(
-                      Icons.train,
-                      color: Colors.yellowAccent,
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: GestureDetector(
-                    onTap: () => _goMercariDataDisplayScreen(),
-                    child: Icon(
-                      FontAwesomeIcons.handshake,
-                      color: Colors.yellowAccent,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: <Widget>[
-                Text(
-                    '${_utility.makeCurrencyDisplay(_monthlyData[index]['total'].toString())}'),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: GestureDetector(
-                    onTap: () => _uploadDailyData(index: index),
-                    child: Icon(
-                      Icons.cloud_upload,
-                      color: Colors.blueAccent,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
       ],
     );
   }
@@ -776,7 +819,7 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
   /**
    *
    */
-  Widget _spendItemDisplay({int index}) {
+  Widget _spendItemDisplay({int index, oneHeight}) {
     var value = _monthlyData[index]['spenditem'];
 
     return Container(
@@ -794,7 +837,7 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
             ),
           ),
           Container(
-            height: 130,
+            height: oneHeight,
             child: _getSpendItemList(
               value: value,
               index: index,
@@ -872,7 +915,7 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
   /**
    *
    */
-  Widget _timePlaceDisplay({int index}) {
+  Widget _timePlaceDisplay({int index, oneHeight}) {
     var value = _monthlyData[index]['timeplace'];
 
     return Container(
@@ -880,7 +923,7 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
       child: Column(
         children: <Widget>[
           Container(
-            height: 130,
+            height: oneHeight,
             child: _getTimePlaceList(value: value),
           ),
         ],
@@ -943,7 +986,7 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
   /**
    *
    */
-  Widget _trainDataDisplay({int index}) {
+  Widget _trainDataDisplay({int index, oneHeight}) {
     var value = _monthlyData[index]['traindata'];
 
     return (value == null)
@@ -954,7 +997,7 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
             child: Column(
               children: <Widget>[
                 Container(
-                  height: 120,
+                  height: oneHeight,
                   child: Text(
                     '${value[0]}',
                     style: TextStyle(fontSize: 12),
@@ -1169,6 +1212,18 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => MercariDataDisplayScreen(),
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  void _goFundDisplayScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FundDataDisplayScreen(),
       ),
     );
   }

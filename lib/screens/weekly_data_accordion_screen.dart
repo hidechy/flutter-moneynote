@@ -843,7 +843,7 @@ class _WeeklyDataAccordionScreenState extends State<WeeklyDataAccordionScreen> {
         strPayB: ex_data[16],
         strPayC: ex_data[17],
         strPayD: ex_data[18],
-        strPayE: 0.toString(),
+        strPayE: ex_data[19],
         strPayF: 0.toString(),
         strPayG: 0.toString(),
         strPayH: 0.toString(),

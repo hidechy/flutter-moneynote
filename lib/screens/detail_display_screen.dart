@@ -999,11 +999,17 @@ class _DetailDisplayScreenState extends State<DetailDisplayScreen> {
                     Container(),
                     Container(
                       alignment: Alignment.topRight,
-                      child: Text(
-                        '（${_goldDate}）',
-                        style:
-                            TextStyle(color: Colors.yellowAccent, fontSize: 10),
-                      ),
+                      child: (_displayDate != _goldDate)
+                          ? Text(
+                              '（${_goldDate}）',
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 10),
+                            )
+                          : Text(
+                              '（${_goldDate}）',
+                              style: TextStyle(
+                                  color: Colors.yellowAccent, fontSize: 10),
+                            ),
                     ),
                     Container(
                       alignment: Alignment.topRight,

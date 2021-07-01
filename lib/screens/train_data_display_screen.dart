@@ -60,10 +60,12 @@ class _TrainDataDisplayScreenState extends State<TrainDataDisplayScreen> {
         if (value == '') {
           _map['value'] = '';
           _map['price'] = '';
+          _map['oufuku'] = '';
         } else {
           var ex_value = (value).split('|');
           _map['value'] = ex_value[0];
           _map['price'] = (ex_value[1] != '') ? ex_value[1] : '';
+          _map['oufuku'] = ex_value[2];
         }
 
         _trainData.add(_map);
@@ -214,17 +216,29 @@ class _TrainDataDisplayScreenState extends State<TrainDataDisplayScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text('${_trainData[position]['value']}'),
-                        Container(
-                          alignment: Alignment.topRight,
-                          padding: EdgeInsets.all(2),
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.1),
-                            border: Border.all(
-                                color: Colors.white.withOpacity(0.3)),
-                          ),
-                          child: Text(
-                              '${_utility.makeCurrencyDisplay(_trainData[position]['price'])}'),
+                        Row(
+                          children: <Widget>[
+                            Container(
+                              width: 80,
+                              alignment: Alignment.topCenter,
+                              child: (_trainData[position]['oufuku'] == '1')
+                                  ? Text('＜往復＞')
+                                  : Text('＜片道＞'),
+                            ),
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.topRight,
+                                padding: EdgeInsets.all(2),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.1),
+                                  border: Border.all(
+                                      color: Colors.white.withOpacity(0.3)),
+                                ),
+                                child: Text(
+                                    '${_utility.makeCurrencyDisplay(_trainData[position]['price'])}'),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
