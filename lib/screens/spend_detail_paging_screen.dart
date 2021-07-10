@@ -535,7 +535,7 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
    */
   Widget _dispMonthlyDetail(int index) {
     Size size = MediaQuery.of(context).size;
-    var oneHeight = ((size.height - 300) / 3);
+    var oneHeight = ((size.height - 340) / 3);
 
     _utility.makeYMDYData(
         '${_year}-${_month}-${_monthlyData[index]['date']}', 0);

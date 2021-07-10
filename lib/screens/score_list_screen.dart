@@ -19,6 +19,10 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
 
   List<Map<dynamic, dynamic>> _scoreData = List();
 
+  int StartMoney = 1333926;
+
+  int _allGain = 0;
+
   /**
   * 初期動作
   */
@@ -29,9 +33,6 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
     _makeDefaultDisplayData();
   }
 
-  /**
-  * 初期データ作成
-  */
   void _makeDefaultDisplayData() async {
     ///////////////////////////////////benefit
     var val2 = await database.selectBenefitSortedAllRecord;
@@ -105,7 +106,7 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
 
         switch (j) {
           case 1: //先月末の日付
-            prevTotal = 0;
+            prevTotal = StartMoney;
             if (monie.length > 0) {
               _utility.makeTotal(monie[0]);
               prevTotal = _utility.total;
@@ -143,12 +144,13 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
       var value = _scoreData[i];
 
       if (i == 0) {
-        value['gain'] = '';
+        value['gain'] = value['score'];
+        _allGain = int.parse(value['score']);
       } else if (i == (scoreCount - 1)) {
         value['gain'] = '';
       } else {
-        gain += int.parse(value['score']);
-        value['gain'] = gain;
+        _allGain += int.parse(value['score']);
+        value['gain'] = _allGain;
       }
     }
     //////////////////////////////////////////////////
@@ -156,9 +158,6 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
     setState(() {});
   }
 
-  /**
-  * 画面描画
-  */
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -193,9 +192,6 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
     );
   }
 
-  /**
-  * リスト表示
-  */
   Widget _scoreList() {
     return ListView.builder(
       itemCount: _scoreData.length,
@@ -203,10 +199,11 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
     );
   }
 
-  /**
-  * リストアイテム表示
-  */
   Widget _listItem({int position}) {
+    if (position == _scoreData.length - 1) {
+      return Container();
+    }
+
     return Card(
       color: Colors.black.withOpacity(0.3),
       elevation: 10.0,
@@ -214,158 +211,78 @@ class _ScoreListScreenState extends State<ScoreListScreen> {
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: ListTile(
-        title: DefaultTextStyle(
-          style: TextStyle(fontSize: 10.0),
-          child: Table(
-            children: [
-              TableRow(children: [
-                _getDisplayContainer(
-                    align: 'left',
-                    text: '',
-                    position: position,
-                    column: 'month'),
-                Container(),
-                Container(),
-                Container(),
-                Container(),
-              ]),
-              TableRow(children: [
-                _getDisplayContainer(
-                    align: 'right',
-                    text: 'start : ',
-                    position: null,
-                    column: null),
-                _getDisplayContainer(
-                    align: 'right',
-                    text: '',
-                    position: position,
-                    column: 'prev_total'),
-                _getDisplayContainer(
-                    align: 'right',
-                    text: 'end : ',
-                    position: null,
-                    column: null),
-                _getDisplayContainer(
-                    align: 'right',
-                    text: '',
-                    position: position,
-                    column: 'this_total'),
-                Container(),
-              ]),
-              TableRow(children: [
-                _getDisplayContainer(
-                    align: 'right',
-                    text: 'spend : ',
-                    position: null,
-                    column: null),
-                _getDisplayContainer(
-                    align: 'right',
-                    text: '',
-                    position: position,
-                    column: 'minus'),
-                _getDisplayContainer(
-                    align: 'right',
-                    text: 'benefit : ',
-                    position: null,
-                    column: null),
-                _getDisplayContainer(
-                    align: 'right',
-                    text: '',
-                    position: position,
-                    column: 'benefit'),
-                Container(),
-              ]),
-              TableRow(children: [
-                _getDisplayContainer(
-                    align: 'right',
-                    text: 'score : ',
-                    position: null,
-                    column: null),
-                _getDisplayContainer(
-                    align: 'right',
-                    text: '',
-                    position: position,
-                    column: 'score'),
-                _getDisplayContainer(
-                    align: 'right',
-                    text: 'gain : ',
-                    position: null,
-                    column: null),
-                _getDisplayContainer(
-                    align: 'right',
-                    text: '',
-                    position: position,
-                    column: 'gain'),
-                Container(),
-              ]),
-            ],
-          ),
+          title: DefaultTextStyle(
+        style: TextStyle(fontSize: 10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text('${_scoreData[position]['month']}'),
+            Table(
+              children: [
+                TableRow(children: [
+                  Container(
+                      alignment: Alignment.topRight, child: Text('start')),
+                  Container(
+                      alignment: Alignment.topRight,
+                      child: Text('${_scoreData[position]['prev_total']}')),
+                  Container(alignment: Alignment.topRight, child: Text('end')),
+                  Container(
+                      alignment: Alignment.topRight,
+                      child: Text('${_scoreData[position]['this_total']}')),
+                  Container(),
+                  Container(),
+                ]),
+                TableRow(children: [
+                  Container(
+                      alignment: Alignment.topRight, child: Text('benefit')),
+                  Container(
+                      alignment: Alignment.topRight,
+                      child: Text('${_scoreData[position]['benefit']}')),
+                  Container(
+                      alignment: Alignment.topRight, child: Text('minus')),
+                  Container(
+                      alignment: Alignment.topRight,
+                      child: Text('${_scoreData[position]['minus']}')),
+                  Container(
+                    alignment: Alignment.topRight,
+                    child: Text(
+                      'score',
+                      style: TextStyle(color: Colors.yellowAccent),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.topRight,
+                    child: Text(
+                      '${_scoreData[position]['score']}',
+                      style: TextStyle(color: Colors.yellowAccent),
+                    ),
+                  ),
+                ]),
+                TableRow(children: [
+                  Container(),
+                  Container(),
+                  Container(),
+                  Container(),
+                  Container(
+                    alignment: Alignment.topRight,
+                    child: Text(
+                      'gain',
+                      style: TextStyle(color: Colors.greenAccent),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.topRight,
+                    child: Text(
+                      '${_scoreData[position]['gain']}',
+                      style: TextStyle(color: Colors.greenAccent),
+                    ),
+                  ),
+                ]),
+              ],
+            ),
+          ],
         ),
-        onLongPress: () => _goMonthlyListScreen(
-            context: context, date: '${_scoreData[position]['month']}-01'),
-      ),
-    );
-  }
-
-  /**
-  * データコンテナ表示
-  */
-  Widget _getDisplayContainer(
-      {String align, String text, int position, String column}) {
-    return Container(
-      alignment: (align == 'left') ? Alignment.topLeft : Alignment.topRight,
-      child: _getDisplayText(text: text, position: position, column: column),
-    );
-  }
-
-  /**
-   * 表示するテキストを取得
-   */
-  Widget _getDisplayText({String text, int position, String column}) {
-    if (text != '') {
-      switch (text) {
-        case 'score : ':
-          return Text('${text}', style: TextStyle(color: Colors.yellowAccent));
-          break;
-        case 'gain : ':
-          return Text('${text}', style: TextStyle(color: Colors.greenAccent));
-          break;
-        default:
-          return Text('${text}');
-          break;
-      }
-    }
-
-    switch (column) {
-      case 'score':
-        return Text(
-          '${_scoreData[position][column]}',
-          style: TextStyle(color: Colors.yellowAccent),
-        );
-        break;
-      case 'gain':
-        return Text(
-          '${_scoreData[position][column]}',
-          style: TextStyle(color: Colors.greenAccent),
-        );
-        break;
-      default:
-        return Text('${_scoreData[position][column]}');
-        break;
-    }
-  }
-
-  /**
-   * 画面遷移（MonthlyListScreen）
-   */
-  void _goMonthlyListScreen({BuildContext context, String date}) {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => MonthlyListScreen(
-          date: date,
-        ),
-      ),
+      )),
     );
   }
 }
