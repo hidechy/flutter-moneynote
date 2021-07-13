@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:moneynote/utilities/custom_shape_clipper.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'dart:convert';
 
 import '../utilities/utility.dart';
+import '../utilities/custom_shape_clipper.dart';
+
+import './seiyuu_item_list_screen.dart';
 
 class SeiyuuPurchaseListScreen extends StatefulWidget {
   final String date;
@@ -93,14 +95,11 @@ class _SeiyuuPurchaseListScreenState extends State<SeiyuuPurchaseListScreen> {
         backgroundColor: Colors.black.withOpacity(0.1),
         title: Text('Seiyuu Purchase'),
         centerTitle: true,
-
-        //-------------------------//これを消すと「←」が出てくる（消さない）
-        leading: Icon(
-          Icons.check_box_outline_blank,
-          color: Color(0xFF2e2e2e),
+        leading: IconButton(
+          icon: Icon(Icons.format_list_bulleted),
+          onPressed: () => _goSeiyuuItemListScreen(),
+          color: Colors.greenAccent,
         ),
-        //-------------------------//これを消すと「←」が出てくる（消さない）
-
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -314,6 +313,20 @@ class _SeiyuuPurchaseListScreenState extends State<SeiyuuPurchaseListScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => SeiyuuPurchaseListScreen(
+          date: widget.date,
+        ),
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  _goSeiyuuItemListScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SeiyuuItemListScreen(
           date: widget.date,
         ),
       ),
