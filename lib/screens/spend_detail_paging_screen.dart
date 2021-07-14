@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:moneynote/screens/fund_data_display_screen.dart';
-import 'package:moneynote/screens/gold_display_screen.dart';
-import 'package:moneynote/screens/train_data_display_screen.dart';
+import 'package:moneynote/screens/wells_data_display_screen.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart';
 
@@ -20,6 +18,9 @@ import 'spend_summary_display_screen.dart';
 import 'weekly_data_display_screen.dart';
 import 'weekly_data_accordion_screen.dart';
 import 'monthly_trend_display_screen.dart';
+import 'fund_data_display_screen.dart';
+import 'gold_display_screen.dart';
+import 'train_data_display_screen.dart';
 
 class SpendDetailPagingScreen extends StatefulWidget {
   final String date;
@@ -450,6 +451,17 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
                   style: TextStyle(fontSize: 12, color: Colors.white),
                 ),
                 onTap: () => _goMercariDataDisplayScreen(),
+              ),
+
+              //
+
+              ListTile(
+                leading: Icon(FontAwesomeIcons.pagelines, color: Colors.white),
+                title: Text(
+                  "Wells Reserve",
+                  style: TextStyle(fontSize: 12, color: Colors.white),
+                ),
+                onTap: () => _goWellsDataDisplayScreen(),
               ),
 
               //
@@ -1224,6 +1236,18 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => FundDataDisplayScreen(),
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  _goWellsDataDisplayScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => WellsDataDisplayScreen(),
       ),
     );
   }
