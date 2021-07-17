@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:moneynote/screens/balancesheet_data_display_screen.dart';
 import 'package:moneynote/screens/wells_data_display_screen.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart';
@@ -462,6 +463,18 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
                   style: TextStyle(fontSize: 12, color: Colors.white),
                 ),
                 onTap: () => _goWellsDataDisplayScreen(),
+              ),
+
+              //
+
+              ListTile(
+                leading:
+                    Icon(FontAwesomeIcons.balanceScale, color: Colors.white),
+                title: Text(
+                  "BalanceSheet",
+                  style: TextStyle(fontSize: 12, color: Colors.white),
+                ),
+                onTap: () => _goBalancesheetDataDisplayScreen(),
               ),
 
               //
@@ -1248,6 +1261,18 @@ class _SpendDetailPagingScreenState extends State<SpendDetailPagingScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => WellsDataDisplayScreen(),
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  _goBalancesheetDataDisplayScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BalancesheetDataDisplayScreen(),
       ),
     );
   }
